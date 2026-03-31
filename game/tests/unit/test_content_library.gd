@@ -7,8 +7,9 @@ func _init() -> void:
 
 func _run_test() -> void:
 	var content_library := root.get_node_or_null("ContentLibrary")
-	assert_true(content_library != null, "ContentLibrary autoload should be registered.")
-	content_library.call("load_all")
+	if not assert_true(content_library != null, "ContentLibrary autoload should be registered."):
+		return
+
 	var jobs: Dictionary = content_library.get("jobs")
 	var traits: Dictionary = content_library.get("traits")
 	var buildings: Dictionary = content_library.get("buildings")
