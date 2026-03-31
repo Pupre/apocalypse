@@ -74,6 +74,7 @@ func _run_test() -> void:
 	assert_eq(String(survivor_config.get("job_id", "")), "courier", "The creator should build the selected job payload.")
 	assert_eq(Array(survivor_config.get("trait_ids", [])), ["athlete", "unlucky"], "The creator should preserve the selected trait order.")
 	assert_eq(int(survivor_config.get("remaining_points", -1)), 0, "The creator payload should spend all available points.")
+	assert_true(not confirm_button.disabled, "The creator confirm button should be enabled before confirmation.")
 
 	confirm_button.emit_signal("pressed")
 	assert_eq(_confirmed_job_id, "courier", "Confirm should emit the selected job id.")
