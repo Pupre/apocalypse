@@ -40,7 +40,7 @@ func _run_test() -> void:
 	var clock = time_clock_script.new()
 	assert_eq(clock.day_index, 1, "TimeClock should start on day one.")
 	assert_eq(clock.minute_of_day, 480, "TimeClock should start at 08:00.")
-	assert_eq(clock.get_clock_label(), "Day 1 08:00", "TimeClock should expose a readable label.")
+	assert_eq(clock.get_clock_label(), "1일차 08:00", "TimeClock should expose a readable label.")
 
 	clock.advance_minutes(-30)
 	assert_eq(clock.day_index, 1, "Negative clock input should not rewind the day.")
@@ -49,7 +49,7 @@ func _run_test() -> void:
 	clock.advance_minutes(180)
 	assert_eq(clock.day_index, 1, "Advancing the clock should stay on day one for three hours.")
 	assert_eq(clock.minute_of_day, 660, "TimeClock should advance to 11:00 after three hours.")
-	assert_eq(clock.get_clock_label(), "Day 1 11:00", "Clock label should update after advancing.")
+	assert_eq(clock.get_clock_label(), "1일차 11:00", "Clock label should update after advancing.")
 
 	var state = run_state_script.from_survivor_config({
 		"job_id": "courier",
@@ -60,16 +60,16 @@ func _run_test() -> void:
 
 	assert_eq(state.clock.day_index, 1, "RunState should start on day one.")
 	assert_eq(state.clock.minute_of_day, 480, "RunState should start at 08:00.")
-	assert_eq(state.clock.get_clock_label(), "Day 1 08:00", "RunState clock label should be readable.")
+	assert_eq(state.clock.get_clock_label(), "1일차 08:00", "RunState clock label should be readable.")
 	assert_eq(int(state.move_speed), 230, "Job and trait modifiers should increase move speed.")
-	assert_eq(state.fatigue_model.get_band(state.fatigue), "light", "Fresh runs should start in the light fatigue band.")
+	assert_eq(state.fatigue_model.get_band(state.fatigue), "양호", "Fresh runs should start in the light fatigue band.")
 	assert_eq(state.inventory.carry_limit, 8, "This build should keep the default carry limit.")
 
 	state.advance_minutes(180)
 
 	assert_eq(state.clock.day_index, 1, "Three hours should stay on day one.")
 	assert_eq(state.clock.minute_of_day, 660, "Clock should advance from 08:00 to 11:00.")
-	assert_eq(state.clock.get_clock_label(), "Day 1 11:00", "RunState clock label should reflect elapsed time.")
+	assert_eq(state.clock.get_clock_label(), "1일차 11:00", "RunState clock label should reflect elapsed time.")
 
 	var before_day_index: int = state.clock.day_index
 	var before_minute_of_day: int = state.clock.minute_of_day
@@ -91,7 +91,7 @@ func _run_test() -> void:
 	state.fatigue = 52.0
 	var sleep_preview: Dictionary = state.get_sleep_preview()
 	assert_eq(sleep_preview["sleep_minutes"], 420, "Fatigue preview should map to seven hours of sleep.")
-	assert_eq(sleep_preview["band"], "tired", "Sleep preview should preserve the current fatigue band.")
+	assert_eq(sleep_preview["band"], "피곤", "Sleep preview should preserve the current fatigue band.")
 
 	var canned_beans := {"id": "canned_beans", "bulk": 1}
 	assert_true(state.inventory.can_add(canned_beans), "Inventory should accept a small loot item.")

@@ -25,27 +25,27 @@ offset_bottom = -24.0
 theme_override_constants/separation = 10
 
 [node name="TitleLabel" type="Label" parent="Panel/VBox"]
-text = "Indoor"
+text = "실내"
 
 [node name="SummaryLabel" type="Label" parent="Panel/VBox"]
-text = "Search the room for clues."
+text = "방 안을 살펴 단서를 찾아본다."
 autowrap_mode = 3
 
 [node name="SleepPreviewLabel" type="Label" parent="Panel/VBox"]
-text = "Sleep preview: unavailable"
+text = "수면 예상: 확인 불가"
 
 [node name="ResultLabel" type="Label" parent="Panel/VBox"]
 text = ""
 autowrap_mode = 3
 
 [node name="ClueHeadingLabel" type="Label" parent="Panel/VBox"]
-text = "Clues"
+text = "단서"
 
 [node name="ClueList" type="VBoxContainer" parent="Panel/VBox"]
 theme_override_constants/separation = 6
 
 [node name="ActionHeadingLabel" type="Label" parent="Panel/VBox"]
-text = "Actions"
+text = "행동"
 
 [node name="ActionButtons" type="VBoxContainer" parent="Panel/VBox"]
 theme_override_constants/separation = 8

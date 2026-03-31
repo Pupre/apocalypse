@@ -24,7 +24,7 @@ var _player_marker: Polygon2D = null
 var _building_marker: Polygon2D = null
 var _exposure_label: Label = null
 var _hint_label: Label = null
-var _building_name := "Building"
+var _building_name := "건물"
 
 
 func _ready() -> void:
@@ -95,7 +95,7 @@ func _is_player_near_building() -> bool:
 
 func _refresh_building_position() -> void:
 	var building_data := _get_building_data(_building_id)
-	_building_name = String(building_data.get("name", "Building"))
+	_building_name = String(building_data.get("name", "건물"))
 	var outdoor_position: Dictionary = building_data.get("outdoor_position", {})
 	if outdoor_position.is_empty():
 		_building_position = Vector2(640.0, 360.0)
@@ -119,9 +119,9 @@ func _sync_view() -> void:
 
 	if _hint_label != null:
 		if _is_player_near_building():
-			_hint_label.text = "Press E to enter %s" % _building_name
+			_hint_label.text = "E 키로 %s 진입" % _building_name
 		else:
-			_hint_label.text = "Move with WASD"
+			_hint_label.text = "WASD로 이동"
 
 
 func _cache_nodes() -> void:

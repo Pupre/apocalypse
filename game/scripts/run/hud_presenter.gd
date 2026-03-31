@@ -22,13 +22,13 @@ func refresh() -> void:
 		_clock_label.text = run_state.clock.get_clock_label()
 
 	if _fatigue_label != null:
-		_fatigue_label.text = "Fatigue: %d (%s)" % [int(run_state.fatigue), run_state.fatigue_model.get_band(run_state.fatigue)]
+		_fatigue_label.text = "피로: %d (%s)" % [int(run_state.fatigue), run_state.fatigue_model.get_band(run_state.fatigue)]
 
 	if _hunger_label != null:
-		_hunger_label.text = "Hunger: %d" % int(run_state.hunger)
+		_hunger_label.text = "허기: %d" % int(run_state.hunger)
 
 	if _carry_label != null:
-		_carry_label.text = "Carry: %d/%d" % [run_state.inventory.total_bulk(), run_state.inventory.carry_limit]
+		_carry_label.text = "소지량: %d/%d" % [run_state.inventory.total_bulk(), run_state.inventory.carry_limit]
 
 
 func _cache_nodes() -> void:
@@ -40,13 +40,13 @@ func _cache_nodes() -> void:
 
 func _set_empty_state() -> void:
 	if _clock_label != null:
-		_clock_label.text = "Clock: --"
+		_clock_label.text = "시각: --"
 
 	if _fatigue_label != null:
-		_fatigue_label.text = "Fatigue: --"
+		_fatigue_label.text = "피로: --"
 
 	if _hunger_label != null:
-		_hunger_label.text = "Hunger: --"
+		_hunger_label.text = "허기: --"
 
 	if _carry_label != null:
-		_carry_label.text = "Carry: --"
+		_carry_label.text = "소지량: --"

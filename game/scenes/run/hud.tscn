@@ -18,16 +18,16 @@ offset_bottom = 180.0
 theme_override_constants/separation = 8
 
 [node name="TitleLabel" type="Label" parent="Panel/VBox"]
-text = "Run HUD"
+text = "생존 정보"
 
 [node name="ClockLabel" type="Label" parent="Panel/VBox"]
-text = "Clock: --"
+text = "시각: --"
 
 [node name="FatigueLabel" type="Label" parent="Panel/VBox"]
-text = "Fatigue: --"
+text = "피로: --"
 
 [node name="HungerLabel" type="Label" parent="Panel/VBox"]
-text = "Hunger: --"
+text = "허기: --"
 
 [node name="CarryLabel" type="Label" parent="Panel/VBox"]
-text = "Carry: --"
+text = "소지량: --"

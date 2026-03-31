@@ -22,4 +22,4 @@ func advance_minutes(amount: int) -> void:
 func get_clock_label() -> String:
 	var hours := minute_of_day / 60
 	var minutes := minute_of_day % 60
-	return "Day %d %02d:%02d" % [day_index, hours, minutes]
+	return "%d일차 %02d:%02d" % [day_index, hours, minutes]

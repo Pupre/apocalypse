@@ -102,7 +102,7 @@ func _run_test() -> void:
 	if not assert_true(hud_clock_label != null, "HUD clock label should be present."):
 		bootstrap.free()
 		return
-	assert_eq(hud_clock_label.text, "Day 1 08:00", "The run should start at 08:00.")
+	assert_eq(hud_clock_label.text, "1일차 08:00", "The run should start at 08:00.")
 
 	var outdoor_mode: Node = run_shell.get_node_or_null("ModeHost/OutdoorMode")
 	if not assert_true(outdoor_mode != null, "Run shell should launch the outdoor mode first."):
@@ -121,7 +121,7 @@ func _run_test() -> void:
 	var before_outdoor_minutes: int = run_shell.run_state.clock.minute_of_day
 	outdoor_mode.simulate_seconds(120.0)
 	assert_eq(run_shell.run_state.clock.minute_of_day, before_outdoor_minutes + 120, "Outdoor time should advance the shared clock.")
-	assert_eq(hud_clock_label.text, "Day 1 10:00", "HUD time should reflect outdoor time spent.")
+	assert_eq(hud_clock_label.text, "1일차 10:00", "HUD time should reflect outdoor time spent.")
 
 	outdoor_mode.move_player(Vector2.RIGHT, 1.5)
 	assert_true(player_marker.position.distance_to(building_marker.position) <= 72.0, "The player should move into building entry range.")
@@ -154,13 +154,13 @@ func _run_test() -> void:
 	await process_frame
 
 	assert_eq(run_shell.run_state.inventory.total_bulk(), 1, "The first indoor action should add loot to inventory.")
-	assert_eq(hud_clock_label.text, "Day 1 10:30", "The first indoor action should advance shared time.")
+	assert_eq(hud_clock_label.text, "1일차 10:30", "The first indoor action should advance shared time.")
 
 	var result_label := indoor_mode.get_node_or_null("Panel/VBox/ResultLabel") as Label
 	if not assert_true(result_label != null, "Indoor result label should be present."):
 		bootstrap.free()
 		return
-	assert_true(result_label.text.find("Spent 30 minutes searching.") != -1, "Indoor feedback should describe the spent time.")
+	assert_true(result_label.text.find("30분 동안 수색했다.") != -1, "Indoor feedback should describe the spent time.")
 
 	bootstrap.free()
 	bootstrap = null

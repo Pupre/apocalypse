@@ -144,7 +144,7 @@ func _run_test() -> void:
 		"Loot should stay out of the inventory when it cannot fit."
 	)
 	assert_true(
-		String(overflow_event_state.get("last_feedback_message", "")).find("Canned Beans") != -1,
+		String(overflow_event_state.get("last_feedback_message", "")).find("통조림 콩") != -1,
 		"Overflowing loot should leave feedback that names the blocked item."
 	)
 

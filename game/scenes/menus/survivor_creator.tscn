@@ -20,26 +20,26 @@ custom_minimum_size = Vector2(560, 420)
 theme_override_constants/separation = 10
 
 [node name="TitleLabel" type="Label" parent="Center/Panel/VBox"]
-text = "Create Survivor"
+text = "생존자 생성"
 horizontal_alignment = 1
 
 [node name="JobHeadingLabel" type="Label" parent="Center/Panel/VBox"]
-text = "Job"
+text = "직업"
 
 [node name="JobButtons" type="HBoxContainer" parent="Center/Panel/VBox"]
 theme_override_constants/separation = 8
 
 [node name="ClerkButton" type="Button" parent="Center/Panel/VBox/JobButtons"]
-text = "Store Clerk"
+text = "매장 직원"
 
 [node name="CourierButton" type="Button" parent="Center/Panel/VBox/JobButtons"]
-text = "Courier"
+text = "배달원"
 
 [node name="JobStatusLabel" type="Label" parent="Center/Panel/VBox"]
-text = "Job: none selected"
+text = "직업: 선택 안 함"
 
 [node name="TraitHeadingLabel" type="Label" parent="Center/Panel/VBox"]
-text = "Traits"
+text = "특성"
 
 [node name="TraitButtons" type="GridContainer" parent="Center/Panel/VBox"]
 columns = 2
@@ -47,22 +47,22 @@ theme_override_constants/h_separation = 8
 theme_override_constants/v_separation = 8
 
 [node name="AthleteButton" type="CheckButton" parent="Center/Panel/VBox/TraitButtons"]
-text = "Athlete (-4)"
+text = "운동선수 (-4)"
 
 [node name="LightSleeperButton" type="CheckButton" parent="Center/Panel/VBox/TraitButtons"]
-text = "Light Sleeper (-2)"
+text = "잠귀 밝음 (-2)"
 
 [node name="UnluckyButton" type="CheckButton" parent="Center/Panel/VBox/TraitButtons"]
-text = "Unlucky (+4)"
+text = "운 없음 (+4)"
 
 [node name="HeavySleeperButton" type="CheckButton" parent="Center/Panel/VBox/TraitButtons"]
-text = "Heavy Sleeper (+2)"
+text = "깊은 잠 (+2)"
 
 [node name="TraitStatusLabel" type="Label" parent="Center/Panel/VBox"]
-text = "Traits: none selected"
+text = "특성: 선택 안 함"
 
 [node name="PointsLabel" type="Label" parent="Center/Panel/VBox"]
-text = "Remaining points: 0"
+text = "남은 포인트: 0"
 
 [node name="ConfirmButton" type="Button" parent="Center/Panel/VBox"]
-text = "Confirm"
+text = "확정"

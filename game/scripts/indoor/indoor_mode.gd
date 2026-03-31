@@ -46,7 +46,7 @@ func _refresh_view() -> void:
 
 	if _summary_label != null and _director.has_method("get_event_summary"):
 		var summary: String = String(_director.get_event_summary())
-		_summary_label.text = summary if not summary.is_empty() else "Search the room for clues."
+		_summary_label.text = summary if not summary.is_empty() else "방 안을 살펴 단서를 찾아본다."
 
 	if _sleep_preview_label != null and _director.has_method("get_sleep_preview"):
 		_sleep_preview_label.text = _sleep_preview_text(_director.get_sleep_preview())
@@ -99,9 +99,9 @@ func _on_action_pressed(action_id: String) -> void:
 
 func _sleep_preview_text(preview: Dictionary) -> String:
 	if preview.is_empty():
-		return "Sleep preview: unavailable"
+		return "수면 예상: 확인 불가"
 
-	return "Sleep preview: %d min (%s)" % [int(preview.get("sleep_minutes", 0)), String(preview.get("band", "unknown"))]
+	return "수면 예상: %d분 (%s)" % [int(preview.get("sleep_minutes", 0)), String(preview.get("band", "알 수 없음"))]
 
 
 func _cache_nodes() -> void:

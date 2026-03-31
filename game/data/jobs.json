@@ -1,8 +1,8 @@
 [
   {
     "id": "clerk",
-    "name": "Store Clerk",
-    "description": "Knows where practical supplies tend to be stored.",
+    "name": "매장 직원",
+    "description": "생활용품이 어디에 보관되는지 잘 알고 있다.",
     "modifiers": {
       "indoor_find_bias": 0.15,
       "carry_limit": 1
@@ -10,8 +10,8 @@
   },
   {
     "id": "courier",
-    "name": "Courier",
-    "description": "Moves fast and handles route pressure well.",
+    "name": "배달원",
+    "description": "빠르게 움직이며 이동 동선을 잘 읽는다.",
     "modifiers": {
       "move_speed": 30.0,
       "fatigue_gain": -0.1

@@ -85,7 +85,7 @@ func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, ac
 
 			var loot := loot_variant as Dictionary
 			if not run_state.inventory.add_item(loot):
-				loot_messages.append("Left %s behind because inventory is full." % _loot_label(loot))
+				loot_messages.append("가방이 가득 차서 %s 챙기지 못했다." % _loot_label(loot))
 
 		if not loot_messages.is_empty():
 			var feedback_message := ""
@@ -95,9 +95,9 @@ func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, ac
 				feedback_message += message
 			event_state["last_feedback_message"] = feedback_message
 		elif minute_cost > 0:
-			event_state["last_feedback_message"] = "Spent %d minutes searching." % minute_cost
+			event_state["last_feedback_message"] = "%d분 동안 수색했다." % minute_cost
 		elif int(action.get("sleep_minutes", 0)) > 0:
-			event_state["last_feedback_message"] = "Rested for %d minutes." % int(action.get("sleep_minutes", 0))
+			event_state["last_feedback_message"] = "%d분 동안 휴식했다." % int(action.get("sleep_minutes", 0))
 
 	if _action_consumes_on_use(action):
 		var spent_action_ids := _string_id_array(event_state.get("spent_action_ids", []))

@@ -1,7 +1,7 @@
 [
   {
     "id": "athlete",
-    "name": "Athlete",
+    "name": "운동선수",
     "cost": -4,
     "modifiers": {
       "move_speed": 40.0,
@@ -10,7 +10,7 @@
   },
   {
     "id": "light_sleeper",
-    "name": "Light Sleeper",
+    "name": "잠귀 밝음",
     "cost": -2,
     "modifiers": {
       "sleep_hours_adjustment": -1
@@ -18,7 +18,7 @@
   },
   {
     "id": "unlucky",
-    "name": "Unlucky",
+    "name": "운 없음",
     "cost": 4,
     "modifiers": {
       "indoor_find_bias": -0.2
@@ -26,7 +26,7 @@
   },
   {
     "id": "heavy_sleeper",
-    "name": "Heavy Sleeper",
+    "name": "깊은 잠",
     "cost": 2,
     "modifiers": {
       "sleep_hours_adjustment": 1

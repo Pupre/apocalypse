@@ -185,7 +185,7 @@ func _refresh_view() -> void:
 		_trait_status_label.text = _trait_status_text()
 
 	if _points_label != null:
-		_points_label.text = "Remaining points: %d" % remaining_points
+		_points_label.text = "남은 포인트: %d" % remaining_points
 
 	if _confirm_button != null:
 		_confirm_button.disabled = not is_valid_selection()
@@ -210,22 +210,22 @@ func _selected_trait_cost_total() -> int:
 
 func _job_status_text() -> String:
 	if job_id == "":
-		return "Job: none selected"
+		return "직업: 선택 안 함"
 
 	var job_data: Dictionary = _jobs.get(job_id, {})
-	return "Job: %s" % String(job_data.get("name", job_id))
+	return "직업: %s" % String(job_data.get("name", job_id))
 
 
 func _trait_status_text() -> String:
 	if trait_ids.is_empty():
-		return "Traits: none selected"
+		return "특성: 선택 안 함"
 
 	var selected_traits: Array[String] = []
 	for trait_key in trait_ids:
 		var trait_data: Dictionary = _traits.get(trait_key, {})
 		selected_traits.append(String(trait_data.get("name", trait_key)))
 
-	return "Traits: %s" % ", ".join(selected_traits)
+	return "특성: %s" % ", ".join(selected_traits)
 
 
 func _get_content_library() -> Node:

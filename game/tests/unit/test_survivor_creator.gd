@@ -115,7 +115,7 @@ func _run_test() -> void:
 	if not assert_true(hud_clock_label != null, "HUD clock label should be present."):
 		bootstrap.free()
 		return
-	assert_eq(hud_clock_label.text, "Day 1 08:00", "The run shell should start at the run-state clock.")
+	assert_eq(hud_clock_label.text, "1일차 08:00", "The run shell should start at the run-state clock.")
 
 	var player_marker := outdoor_mode.get_node_or_null("PlayerMarker") as Polygon2D
 	var building_marker := outdoor_mode.get_node_or_null("BuildingMarker") as Polygon2D
@@ -156,8 +156,8 @@ func _run_test() -> void:
 	search_button.emit_signal("pressed")
 	await process_frame
 
-	assert_eq(hud_clock_label.text, "Day 1 08:30", "Pressing the indoor action should advance the HUD clock.")
-	assert_true(result_label.text.find("Spent 30 minutes searching.") != -1, "Pressing the indoor action should refresh the result feedback.")
+	assert_eq(hud_clock_label.text, "1일차 08:30", "Pressing the indoor action should advance the HUD clock.")
+	assert_true(result_label.text.find("30분 동안 수색했다.") != -1, "Pressing the indoor action should refresh the result feedback.")
 	assert_eq(action_buttons.get_child_count(), 1, "The one-shot search action should be removed after use.")
 
 	bootstrap.free()

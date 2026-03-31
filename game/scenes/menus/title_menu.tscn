@@ -20,12 +20,12 @@ custom_minimum_size = Vector2(360, 180)
 theme_override_constants/separation = 12
 
 [node name="TitleLabel" type="Label" parent="Center/Panel/VBox"]
-text = "Apocalypse"
+text = "아포칼립스"
 horizontal_alignment = 1
 
 [node name="SubtitleLabel" type="Label" parent="Center/Panel/VBox"]
-text = "Start a new survivor run."
+text = "새 생존을 시작합니다."
 horizontal_alignment = 1
 
 [node name="StartButton" type="Button" parent="Center/Panel/VBox"]
-text = "Start"
+text = "시작"

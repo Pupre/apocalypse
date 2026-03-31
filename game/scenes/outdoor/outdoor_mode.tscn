@@ -27,11 +27,11 @@ offset_bottom = 132.0
 theme_override_constants/separation = 6
 
 [node name="TitleLabel" type="Label" parent="CanvasLayer/StatusPanel/VBox"]
-text = "Outside"
+text = "외부"
 
 [node name="ExposureLabel" type="Label" parent="CanvasLayer/StatusPanel/VBox"]
-text = "Exposure: 100"
+text = "노출: 100"
 
 [node name="HintLabel" type="Label" parent="CanvasLayer/StatusPanel/VBox"]
-text = "Move with WASD"
+text = "WASD로 이동"
 autowrap_mode = 3

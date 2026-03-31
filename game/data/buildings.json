@@ -1,7 +1,7 @@
 [
   {
     "id": "mart_01",
-    "name": "Neighborhood Mart",
+    "name": "동네 마트",
     "category": "retail",
     "base_candidate": true,
     "outdoor_position": {
