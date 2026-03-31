@@ -22,6 +22,13 @@ func _run_test() -> void:
 	root.add_child(transition_layer)
 
 	if not assert_true(
+		transition_layer.layer == 20,
+		"Transition layer should pin CanvasLayer.layer to 20."
+	):
+		transition_layer.free()
+		return
+
+	if not assert_true(
 		transition_layer.has_method("set_duration_for_tests"),
 		"Transition layer should expose set_duration_for_tests()."
 	):
