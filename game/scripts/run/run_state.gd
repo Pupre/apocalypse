@@ -27,6 +27,9 @@ var _content_source = null
 static func from_survivor_config(config: Dictionary, content_source = null):
 	var state = new()
 	state.set_content_source(content_source)
+	if not state._validate_survivor_config(config):
+		return null
+
 	state._apply_survivor_config(config)
 	return state
 
@@ -46,10 +49,6 @@ func advance_sleep_time(minutes: int) -> void:
 
 	clock.advance_minutes(minutes)
 	hunger += float(minutes) * HUNGER_GAIN_PER_MINUTE
-
-
-func advance_sleep(minutes: int) -> void:
-	advance_sleep_time(minutes)
 
 
 func get_sleep_preview() -> Dictionary:
@@ -105,33 +104,61 @@ func _get_content_source():
 	return ContentLibrary if _content_source == null else _content_source
 
 
-func _require_job_data(job_id: String) -> Dictionary:
-	var content_source = _get_content_source()
-	if content_source == null or not content_source.has_method("get_job"):
-		push_error("RunState content source must expose get_job(job_id).")
-		assert(false)
-		return {}
+func _validate_survivor_config(config: Dictionary) -> bool:
+	var job_id := String(config.get("job_id", ""))
+	if job_id.is_empty():
+		push_error("RunState requires a non-empty job id.")
+		return false
 
-	var job_data: Variant = content_source.get_job(job_id)
-	if typeof(job_data) != TYPE_DICTIONARY or (job_data as Dictionary).is_empty():
-		push_error("Unknown job id '%s'." % job_id)
-		assert(false)
+	if _lookup_job_data(job_id) == null:
+		return false
+
+	for trait_id_variant in config.get("trait_ids", []):
+		if _lookup_trait_data(String(trait_id_variant)) == null:
+			return false
+
+	return true
+
+
+func _require_job_data(job_id: String) -> Dictionary:
+	var job_data: Variant = _lookup_job_data(job_id)
+	if job_data == null:
 		return {}
 
 	return job_data
 
 
+func _lookup_job_data(job_id: String) -> Variant:
+	var content_source = _get_content_source()
+	if content_source == null or not content_source.has_method("get_job"):
+		push_error("RunState content source must expose get_job(job_id).")
+		return null
+
+	var job_data: Variant = content_source.get_job(job_id)
+	if typeof(job_data) != TYPE_DICTIONARY or (job_data as Dictionary).is_empty():
+		push_error("Unknown job id '%s'." % job_id)
+		return null
+
+	return job_data
+
+
 func _require_trait_data(trait_id: String) -> Dictionary:
+	var trait_data: Variant = _lookup_trait_data(trait_id)
+	if trait_data == null:
+		return {}
+
+	return trait_data
+
+
+func _lookup_trait_data(trait_id: String) -> Variant:
 	var content_source = _get_content_source()
 	if content_source == null or not content_source.has_method("get_trait"):
 		push_error("RunState content source must expose get_trait(trait_id).")
-		assert(false)
-		return {}
+		return null
 
 	var trait_data: Variant = content_source.get_trait(trait_id)
 	if typeof(trait_data) != TYPE_DICTIONARY or (trait_data as Dictionary).is_empty():
 		push_error("Unknown trait id '%s'." % trait_id)
-		assert(false)
-		return {}
+		return null
 
 	return trait_data

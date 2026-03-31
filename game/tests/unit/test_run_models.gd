@@ -1,6 +1,33 @@
 extends "res://tests/support/test_case.gd"
 
 
+var _test_jobs: Dictionary = {
+	"courier": {
+		"id": "courier",
+		"modifiers": {
+			"move_speed": 30.0,
+			"fatigue_gain": -0.1,
+		},
+	},
+}
+
+var _test_traits: Dictionary = {
+	"athlete": {
+		"id": "athlete",
+		"modifiers": {
+			"move_speed": 40.0,
+			"fatigue_gain": -0.15,
+		},
+	},
+	"light_sleeper": {
+		"id": "light_sleeper",
+		"modifiers": {
+			"sleep_hours_adjustment": -1,
+		},
+	},
+}
+
+
 func _init() -> void:
 	call_deferred("_run_test")
 
@@ -8,6 +35,7 @@ func _init() -> void:
 func _run_test() -> void:
 	var run_state_script: Script = load("res://scripts/run/run_state.gd")
 	var time_clock_script: Script = load("res://scripts/run/time_clock.gd")
+	var content_source = self
 
 	var clock = time_clock_script.new()
 	assert_eq(clock.day_index, 1, "TimeClock should start on day one.")
@@ -27,7 +55,8 @@ func _run_test() -> void:
 		"job_id": "courier",
 		"trait_ids": PackedStringArray(["athlete", "light_sleeper"]),
 		"remaining_points": 0,
-	})
+	}, content_source)
+	assert_true(state != null, "Injected content source should produce a valid run state.")
 
 	assert_eq(state.clock.day_index, 1, "RunState should start on day one.")
 	assert_eq(state.clock.minute_of_day, 480, "RunState should start at 08:00.")
@@ -71,4 +100,19 @@ func _run_test() -> void:
 	assert_true(added, "Inventory should accept a small loot item.")
 	assert_eq(state.inventory.total_bulk(), 1, "Inventory bulk should reflect the added item.")
 
+	var invalid_state = run_state_script.from_survivor_config({
+		"job_id": "missing_job",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, content_source)
+	assert_true(invalid_state == null, "Unknown job ids should fail construction cleanly.")
+
 	pass_test("RUN_MODELS_OK")
+
+
+func get_job(job_id: String) -> Dictionary:
+	return _test_jobs.get(job_id, {})
+
+
+func get_trait(trait_id: String) -> Dictionary:
+	return _test_traits.get(trait_id, {})
