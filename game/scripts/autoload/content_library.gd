@@ -30,16 +30,37 @@ func get_building(building_id: String) -> Dictionary:
 func _load_indexed_array(path: String) -> Dictionary:
 	var file := FileAccess.open(path, FileAccess.READ)
 	if file == null:
-		push_error("Could not open %s" % path)
+		push_error("%s: could not open content file." % path)
 		return {}
 
-	var parsed: Variant = JSON.parse_string(file.get_as_text())
+	var json := JSON.new()
+	var parse_error := json.parse(file.get_as_text())
+	if parse_error != OK:
+		push_error("%s: invalid JSON at line %d: %s" % [path, json.get_error_line(), json.get_error_message()])
+		return {}
+
+	var parsed: Variant = json.data
 	if typeof(parsed) != TYPE_ARRAY:
-		push_error("Expected array in %s" % path)
+		push_error("%s: expected a top-level array, got %s." % [path, type_string(typeof(parsed))])
 		return {}
 
 	var indexed: Dictionary = {}
+	var row_number := 0
 	for entry in parsed:
-		if entry is Dictionary and entry.has("id"):
-			indexed[entry["id"]] = entry
+		row_number += 1
+		if typeof(entry) != TYPE_DICTIONARY:
+			push_error("%s: row %d must be an object." % [path, row_number])
+			continue
+
+		var row := entry as Dictionary
+		if not row.has("id") or String(row["id"]).is_empty():
+			push_error("%s: row %d is missing a non-empty 'id' field." % [path, row_number])
+			continue
+
+		var row_id := String(row["id"])
+		if indexed.has(row_id):
+			push_error("%s: duplicate id '%s' at row %d." % [path, row_id, row_number])
+			continue
+
+		indexed[row_id] = row
 	return indexed
