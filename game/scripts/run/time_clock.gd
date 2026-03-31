@@ -10,13 +10,13 @@ var minute_of_day: int = START_MINUTE_OF_DAY
 
 
 func advance_minutes(amount: int) -> void:
+	if amount < 0:
+		return
+
 	minute_of_day += amount
 	while minute_of_day >= MINUTES_PER_DAY:
 		minute_of_day -= MINUTES_PER_DAY
 		day_index += 1
-	while minute_of_day < 0:
-		minute_of_day += MINUTES_PER_DAY
-		day_index -= 1
 
 
 func get_clock_label() -> String:
