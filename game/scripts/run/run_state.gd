@@ -22,11 +22,13 @@ var exposure: float = 100.0
 var move_speed: float = BASE_MOVE_SPEED
 var fatigue_gain_multiplier: float = BASE_FATIGUE_GAIN_MULTIPLIER
 var _content_source = null
+var _report_validation_errors := true
 
 
-static func from_survivor_config(config: Dictionary, content_source = null):
+static func from_survivor_config(config: Dictionary, content_source = null, report_validation_errors: bool = true):
 	var state = new()
 	state.set_content_source(content_source)
+	state.set_validation_reporting(report_validation_errors)
 	if not state._validate_survivor_config(config):
 		return null
 
@@ -100,6 +102,10 @@ func set_content_source(content_source) -> void:
 	_content_source = content_source
 
 
+func set_validation_reporting(enabled: bool) -> void:
+	_report_validation_errors = enabled
+
+
 func _get_content_source():
 	return ContentLibrary if _content_source == null else _content_source
 
@@ -107,7 +113,7 @@ func _get_content_source():
 func _validate_survivor_config(config: Dictionary) -> bool:
 	var job_id := String(config.get("job_id", ""))
 	if job_id.is_empty():
-		push_error("RunState requires a non-empty job id.")
+		_report_validation_error("RunState requires a non-empty job id.")
 		return false
 
 	if _lookup_job_data(job_id) == null:
@@ -131,12 +137,12 @@ func _require_job_data(job_id: String) -> Dictionary:
 func _lookup_job_data(job_id: String) -> Variant:
 	var content_source = _get_content_source()
 	if content_source == null or not content_source.has_method("get_job"):
-		push_error("RunState content source must expose get_job(job_id).")
+		_report_validation_error("RunState content source must expose get_job(job_id).")
 		return null
 
 	var job_data: Variant = content_source.get_job(job_id)
 	if typeof(job_data) != TYPE_DICTIONARY or (job_data as Dictionary).is_empty():
-		push_error("Unknown job id '%s'." % job_id)
+		_report_validation_error("Unknown job id '%s'." % job_id)
 		return null
 
 	return job_data
@@ -153,12 +159,17 @@ func _require_trait_data(trait_id: String) -> Dictionary:
 func _lookup_trait_data(trait_id: String) -> Variant:
 	var content_source = _get_content_source()
 	if content_source == null or not content_source.has_method("get_trait"):
-		push_error("RunState content source must expose get_trait(trait_id).")
+		_report_validation_error("RunState content source must expose get_trait(trait_id).")
 		return null
 
 	var trait_data: Variant = content_source.get_trait(trait_id)
 	if typeof(trait_data) != TYPE_DICTIONARY or (trait_data as Dictionary).is_empty():
-		push_error("Unknown trait id '%s'." % trait_id)
+		_report_validation_error("Unknown trait id '%s'." % trait_id)
 		return null
 
 	return trait_data
+
+
+func _report_validation_error(message: String) -> void:
+	if _report_validation_errors:
+		push_error(message)

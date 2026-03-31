@@ -100,12 +100,27 @@ func _run_test() -> void:
 	assert_true(added, "Inventory should accept a small loot item.")
 	assert_eq(state.inventory.total_bulk(), 1, "Inventory bulk should reflect the added item.")
 
-	var invalid_state = run_state_script.from_survivor_config({
+	var bad_trait_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete", "missing_trait"]),
+		"remaining_points": 0,
+	}, content_source, false)
+	assert_true(bad_trait_state == null, "Unknown trait ids should fail construction cleanly.")
+
+	var invalid_job_state = run_state_script.from_survivor_config({
 		"job_id": "missing_job",
 		"trait_ids": PackedStringArray(["athlete"]),
 		"remaining_points": 0,
-	}, content_source)
-	assert_true(invalid_state == null, "Unknown job ids should fail construction cleanly.")
+	}, content_source, false)
+	assert_true(invalid_job_state == null, "Unknown job ids should fail construction cleanly.")
+
+	var missing_method_source := RefCounted.new()
+	var missing_method_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, missing_method_source, false)
+	assert_true(missing_method_state == null, "Missing content source methods should fail construction cleanly.")
 
 	pass_test("RUN_MODELS_OK")
 
