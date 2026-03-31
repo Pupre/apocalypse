@@ -38,6 +38,7 @@ func _show_indoor_mode(building_id: String) -> void:
 		push_error("RunController is missing the mode host.")
 		return
 
+	_current_building_id = building_id
 	for child in _mode_host.get_children():
 		child.queue_free()
 
@@ -46,10 +47,11 @@ func _show_indoor_mode(building_id: String) -> void:
 
 	if indoor_mode.has_signal("state_changed"):
 		indoor_mode.state_changed.connect(Callable(self, "_on_indoor_state_changed"))
+	if indoor_mode.has_signal("exit_requested"):
+		indoor_mode.exit_requested.connect(Callable(self, "_on_indoor_exit_requested"))
 
 	if indoor_mode.has_method("configure"):
 		indoor_mode.configure(run_state, building_id)
-	_current_building_id = building_id
 	_current_mode_name = "indoor"
 
 
@@ -109,6 +111,10 @@ func _on_mode_state_changed() -> void:
 
 func _on_indoor_state_changed() -> void:
 	_refresh_hud()
+
+
+func _on_indoor_exit_requested() -> void:
+	await _transition_to_mode("outdoor", _current_building_id)
 
 
 func _refresh_hud() -> void:
