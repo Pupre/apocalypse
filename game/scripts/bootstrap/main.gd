@@ -1,5 +1,6 @@
 extends Node
 
+
 func _ready() -> void:
 	var app_router := get_node_or_null("/root/AppRouter")
 	if app_router == null:
@@ -8,3 +9,10 @@ func _ready() -> void:
 
 	app_router.set_host(self)
 	app_router.show_title()
+
+
+func get_active_screen() -> Node:
+	if get_child_count() == 0:
+		return null
+
+	return get_child(0)

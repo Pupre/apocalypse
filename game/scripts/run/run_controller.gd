@@ -7,6 +7,7 @@ const INDOOR_MODE_SCENE := preload("res://scenes/indoor/indoor_mode.tscn")
 var run_state = null
 var _hud_presenter: Node = null
 var _mode_host: Node = null
+var _current_mode_name := ""
 
 
 func start_run(survivor_config: Dictionary, building_id: String = "mart_01") -> void:
@@ -17,6 +18,7 @@ func start_run(survivor_config: Dictionary, building_id: String = "mart_01") -> 
 
 	_hud_presenter = get_node_or_null("HUD")
 	_mode_host = get_node_or_null("ModeHost")
+	_current_mode_name = "outdoor"
 
 	if _hud_presenter != null and _hud_presenter.has_method("set_run_state"):
 		_hud_presenter.set_run_state(run_state)
@@ -41,6 +43,7 @@ func _show_indoor_mode(building_id: String) -> void:
 
 	if indoor_mode.has_method("configure"):
 		indoor_mode.configure(run_state, building_id)
+	_current_mode_name = "indoor"
 
 
 func _show_outdoor_mode(building_id: String) -> void:
@@ -62,6 +65,7 @@ func _show_outdoor_mode(building_id: String) -> void:
 
 	if outdoor_mode.has_method("bind_run_state"):
 		outdoor_mode.bind_run_state(run_state, building_id)
+	_current_mode_name = "outdoor"
 
 
 func _on_building_entered(building_id: String) -> void:
@@ -79,3 +83,27 @@ func _on_indoor_state_changed() -> void:
 func _refresh_hud() -> void:
 	if _hud_presenter != null and _hud_presenter.has_method("refresh"):
 		_hud_presenter.refresh()
+
+
+func get_current_mode_name() -> String:
+	return _current_mode_name
+
+
+func resolve_first_indoor_action() -> bool:
+	if _mode_host == null or _current_mode_name != "indoor":
+		return false
+
+	var indoor_mode := _mode_host.get_node_or_null("IndoorMode")
+	if indoor_mode == null:
+		return false
+
+	var action_buttons := indoor_mode.get_node_or_null("Panel/VBox/ActionButtons") as VBoxContainer
+	if action_buttons == null or action_buttons.get_child_count() == 0:
+		return false
+
+	var first_button := action_buttons.get_child(0) as Button
+	if first_button == null:
+		return false
+
+	first_button.emit_signal("pressed")
+	return true

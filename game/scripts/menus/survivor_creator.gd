@@ -94,6 +94,14 @@ func confirm_selection() -> void:
 	survivor_confirmed.emit(job_id, trait_ids.duplicate())
 
 
+func get_survivor_config() -> Dictionary:
+	return {
+		"job_id": job_id,
+		"trait_ids": trait_ids.duplicate(),
+		"remaining_points": remaining_points,
+	}
+
+
 func is_valid_selection() -> bool:
 	return job_id != "" and remaining_points == 0
 
