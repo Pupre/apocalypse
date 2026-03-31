@@ -1,0 +1,68 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/menus/survivor_creator.gd" id="1"]
+
+[node name="SurvivorCreator" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1")
+
+[node name="Center" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Panel" type="PanelContainer" parent="Center"]
+custom_minimum_size = Vector2(560, 420)
+
+[node name="VBox" type="VBoxContainer" parent="Center/Panel"]
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="Center/Panel/VBox"]
+text = "Create Survivor"
+horizontal_alignment = 1
+
+[node name="JobHeadingLabel" type="Label" parent="Center/Panel/VBox"]
+text = "Job"
+
+[node name="JobButtons" type="HBoxContainer" parent="Center/Panel/VBox"]
+theme_override_constants/separation = 8
+
+[node name="ClerkButton" type="Button" parent="Center/Panel/VBox/JobButtons"]
+text = "Store Clerk"
+
+[node name="CourierButton" type="Button" parent="Center/Panel/VBox/JobButtons"]
+text = "Courier"
+
+[node name="JobStatusLabel" type="Label" parent="Center/Panel/VBox"]
+text = "Job: none selected"
+
+[node name="TraitHeadingLabel" type="Label" parent="Center/Panel/VBox"]
+text = "Traits"
+
+[node name="TraitButtons" type="GridContainer" parent="Center/Panel/VBox"]
+columns = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+
+[node name="AthleteButton" type="CheckButton" parent="Center/Panel/VBox/TraitButtons"]
+text = "Athlete (-4)"
+
+[node name="LightSleeperButton" type="CheckButton" parent="Center/Panel/VBox/TraitButtons"]
+text = "Light Sleeper (-2)"
+
+[node name="UnluckyButton" type="CheckButton" parent="Center/Panel/VBox/TraitButtons"]
+text = "Unlucky (+4)"
+
+[node name="HeavySleeperButton" type="CheckButton" parent="Center/Panel/VBox/TraitButtons"]
+text = "Heavy Sleeper (+2)"
+
+[node name="TraitStatusLabel" type="Label" parent="Center/Panel/VBox"]
+text = "Traits: none selected"
+
+[node name="PointsLabel" type="Label" parent="Center/Panel/VBox"]
+text = "Remaining points: 0"
+
+[node name="ConfirmButton" type="Button" parent="Center/Panel/VBox"]
+text = "Confirm"
