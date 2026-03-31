@@ -1,6 +1,11 @@
 extends Control
 
+const OUTDOOR_TITLE := "외부 생존 정보"
+const INDOOR_TITLE := "실내 생존 정보"
+
 var run_state = null
+var _panel: PanelContainer
+var _title_label: Label
 var _clock_label: Label
 var _fatigue_label: Label
 var _hunger_label: Label
@@ -10,6 +15,28 @@ var _carry_label: Label
 func set_run_state(state) -> void:
 	run_state = state
 	refresh()
+
+
+func set_mode_presentation(mode_name: String) -> void:
+	_cache_nodes()
+	if _panel == null or _title_label == null:
+		return
+
+	if mode_name == "indoor":
+		_panel.offset_left = 24.0
+		_panel.offset_top = 20.0
+		_panel.offset_right = 272.0
+		_panel.offset_bottom = 156.0
+		_panel.modulate = Color(1, 1, 1, 0.9)
+		_title_label.text = INDOOR_TITLE
+		return
+
+	_panel.offset_left = 16.0
+	_panel.offset_top = 16.0
+	_panel.offset_right = 336.0
+	_panel.offset_bottom = 180.0
+	_panel.modulate = Color(1, 1, 1, 1.0)
+	_title_label.text = OUTDOOR_TITLE
 
 
 func refresh() -> void:
@@ -32,6 +59,8 @@ func refresh() -> void:
 
 
 func _cache_nodes() -> void:
+	_panel = get_node_or_null("Panel") as PanelContainer
+	_title_label = get_node_or_null("Panel/VBox/TitleLabel") as Label
 	_clock_label = get_node_or_null("Panel/VBox/ClockLabel") as Label
 	_fatigue_label = get_node_or_null("Panel/VBox/FatigueLabel") as Label
 	_hunger_label = get_node_or_null("Panel/VBox/HungerLabel") as Label

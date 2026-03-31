@@ -6,8 +6,11 @@ const INDOOR_MODE_SCENE := preload("res://scenes/indoor/indoor_mode.tscn")
 
 var run_state = null
 var _hud_presenter: Node = null
+var _transition_layer: Node = null
 var _mode_host: Node = null
 var _current_mode_name := ""
+var _current_building_id := "mart_01"
+var _transition_in_progress := false
 
 
 func start_run(survivor_config: Dictionary, building_id: String = "mart_01") -> void:
@@ -17,14 +20,17 @@ func start_run(survivor_config: Dictionary, building_id: String = "mart_01") -> 
 		return
 
 	_hud_presenter = get_node_or_null("HUD")
+	_transition_layer = get_node_or_null("TransitionLayer")
 	_mode_host = get_node_or_null("ModeHost")
-	_current_mode_name = "outdoor"
+	_current_building_id = building_id
 
 	if _hud_presenter != null and _hud_presenter.has_method("set_run_state"):
 		_hud_presenter.set_run_state(run_state)
+	if _hud_presenter != null and _hud_presenter.has_method("set_mode_presentation"):
+		_hud_presenter.set_mode_presentation("outdoor")
 
-	_refresh_hud()
 	_show_outdoor_mode(building_id)
+	_refresh_hud()
 
 
 func _show_indoor_mode(building_id: String) -> void:
@@ -43,6 +49,7 @@ func _show_indoor_mode(building_id: String) -> void:
 
 	if indoor_mode.has_method("configure"):
 		indoor_mode.configure(run_state, building_id)
+	_current_building_id = building_id
 	_current_mode_name = "indoor"
 
 
@@ -65,11 +72,35 @@ func _show_outdoor_mode(building_id: String) -> void:
 
 	if outdoor_mode.has_method("bind_run_state"):
 		outdoor_mode.bind_run_state(run_state, building_id)
+	_current_building_id = building_id
 	_current_mode_name = "outdoor"
 
 
 func _on_building_entered(building_id: String) -> void:
-	_show_indoor_mode(building_id)
+	await _transition_to_mode("indoor", building_id)
+
+
+func _transition_to_mode(mode_name: String, building_id: String) -> void:
+	if _transition_in_progress:
+		return
+	_transition_in_progress = true
+
+	if _transition_layer != null and _transition_layer.has_method("fade_out"):
+		await _transition_layer.fade_out()
+
+	if mode_name == "indoor":
+		_show_indoor_mode(building_id)
+	else:
+		_show_outdoor_mode(building_id)
+
+	if _hud_presenter != null and _hud_presenter.has_method("set_mode_presentation"):
+		_hud_presenter.set_mode_presentation(mode_name)
+	_refresh_hud()
+
+	if _transition_layer != null and _transition_layer.has_method("fade_in"):
+		await _transition_layer.fade_in()
+
+	_transition_in_progress = false
 
 
 func _on_mode_state_changed() -> void:
