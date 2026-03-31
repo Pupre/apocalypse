@@ -107,6 +107,33 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
+	var hud_clock_label := hud.get_node_or_null("Panel/VBox/ClockLabel") as Label
+	var result_label := indoor_mode.get_node_or_null("Panel/VBox/ResultLabel") as Label
+	var action_buttons := indoor_mode.get_node_or_null("Panel/VBox/ActionButtons") as VBoxContainer
+	if not assert_true(hud_clock_label != null, "HUD clock label should be present."):
+		bootstrap.free()
+		return
+	if not assert_true(result_label != null, "Indoor result label should be present."):
+		bootstrap.free()
+		return
+	if not assert_true(action_buttons != null, "Indoor action buttons container should be present."):
+		bootstrap.free()
+		return
+	assert_eq(hud_clock_label.text, "Day 1 08:00", "The run shell should start at the run-state clock.")
+	assert_eq(action_buttons.get_child_count(), 2, "Mart indoor mode should start with two actions.")
+
+	var search_button := action_buttons.get_child(0) as Button
+	if not assert_true(search_button != null, "The first indoor action should be a button."):
+		bootstrap.free()
+		return
+
+	search_button.emit_signal("pressed")
+	await process_frame
+
+	assert_eq(hud_clock_label.text, "Day 1 08:30", "Pressing the indoor action should advance the HUD clock.")
+	assert_true(result_label.text.find("Spent 30 minutes searching.") != -1, "Pressing the indoor action should refresh the result feedback.")
+	assert_eq(action_buttons.get_child_count(), 1, "The one-shot search action should be removed after use.")
+
 	bootstrap.free()
 	bootstrap = null
 	bootstrap_scene = null

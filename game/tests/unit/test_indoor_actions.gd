@@ -91,6 +91,35 @@ func _run_test() -> void:
 		"Spent indoor actions should not be reusable."
 	)
 
+	var before_rest_clock_minute_of_day: int = run_state.clock.minute_of_day
+	var before_rest_fatigue: float = run_state.fatigue
+	assert_true(
+		resolver.apply_action(run_state, event_data, event_state, "rest"),
+		"Repeatable rest actions should still be usable after searching."
+	)
+	assert_eq(
+		run_state.clock.minute_of_day,
+		before_rest_clock_minute_of_day + 60,
+		"Rest should use sleep minutes and advance the clock."
+	)
+	assert_eq(
+		run_state.fatigue,
+		before_rest_fatigue,
+		"Rest should not add active-time fatigue."
+	)
+	assert_true(
+		resolver.apply_action(run_state, event_data, event_state, "rest"),
+		"Repeatable rest actions should stay usable after being used once."
+	)
+	assert_eq(
+		run_state.clock.minute_of_day,
+		before_rest_clock_minute_of_day + 120,
+		"Repeatable rest should keep advancing the clock."
+	)
+	actions = resolver.get_actions(event_data, event_state)
+	assert_eq(actions.size(), 1, "Repeatable rest should remain available after use.")
+	assert_eq(String(actions[0].get("id", "")), "rest", "Rest should remain in the action list after use.")
+
 	var full_run_state = run_state_script.from_survivor_config({
 		"job_id": "courier",
 		"trait_ids": PackedStringArray(["athlete"]),

@@ -18,6 +18,7 @@
     {
       "id": "search_counter",
       "label": "Search the counter",
+      "consume_on_use": true,
       "minute_cost": 30,
       "reveal_clue_ids": [
         "stock_room"

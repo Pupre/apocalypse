@@ -48,7 +48,7 @@ func get_actions(event_data: Dictionary, event_state: Dictionary = {}) -> Array[
 		if typeof(action_variant) == TYPE_DICTIONARY:
 			var action := action_variant as Dictionary
 			var action_id := String(action.get("id", ""))
-			if not spent_action_ids.has(action_id):
+			if not _action_consumes_on_use(action) or not spent_action_ids.has(action_id):
 				actions.append(action)
 
 	return actions
@@ -62,11 +62,11 @@ func get_sleep_preview(run_state) -> Dictionary:
 
 
 func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, action_id: String) -> bool:
-	if _is_action_spent(event_state, action_id):
-		return false
-
 	var action := _get_action(event_data, action_id)
 	if action.is_empty():
+		return false
+
+	if _action_consumes_on_use(action) and _is_action_spent(event_state, action_id):
 		return false
 
 	if run_state != null:
@@ -99,10 +99,11 @@ func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, ac
 		elif int(action.get("sleep_minutes", 0)) > 0:
 			event_state["last_feedback_message"] = "Rested for %d minutes." % int(action.get("sleep_minutes", 0))
 
-	var spent_action_ids := _string_id_array(event_state.get("spent_action_ids", []))
-	if not spent_action_ids.has(action_id):
-		spent_action_ids.append(action_id)
-	event_state["spent_action_ids"] = spent_action_ids
+	if _action_consumes_on_use(action):
+		var spent_action_ids := _string_id_array(event_state.get("spent_action_ids", []))
+		if not spent_action_ids.has(action_id):
+			spent_action_ids.append(action_id)
+		event_state["spent_action_ids"] = spent_action_ids
 	var revealed_clue_ids := _string_id_array(event_state.get("revealed_clue_ids", []))
 	for clue_id_variant in action.get("reveal_clue_ids", []):
 		var clue_id := String(clue_id_variant)
@@ -143,3 +144,7 @@ func _loot_label(loot: Dictionary) -> String:
 func _is_action_spent(event_state: Dictionary, action_id: String) -> bool:
 	var spent_action_ids := _string_id_array(event_state.get("spent_action_ids", []))
 	return spent_action_ids.has(action_id)
+
+
+func _action_consumes_on_use(action: Dictionary) -> bool:
+	return bool(action.get("consume_on_use", false))
