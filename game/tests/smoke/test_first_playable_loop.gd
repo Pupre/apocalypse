@@ -137,6 +137,7 @@ func _run_test() -> void:
 
 	outdoor_mode.move_player(Vector2.RIGHT, 1.5)
 	assert_true(player_marker.position.distance_to(building_marker.position) <= 72.0, "The player should move into building entry range.")
+	var pre_entry_player_position := player_marker.position
 
 	outdoor_mode.try_enter_building("mart_01")
 	await process_frame
@@ -174,6 +175,32 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 	assert_true(result_label.text.find("30분 동안 수색했다.") != -1, "Indoor feedback should describe the spent time.")
+
+	var exit_button := indoor_mode.get_node_or_null("Panel/VBox/Header/ExitButton") as Button
+	if not assert_true(exit_button != null, "Indoor mode should expose an ExitButton for returning outside."):
+		bootstrap.free()
+		return
+
+	exit_button.emit_signal("pressed")
+	await process_frame
+	await process_frame
+	await process_frame
+
+	assert_eq(run_shell.get_current_mode_name(), "outdoor", "Pressing ExitButton should return the run shell to outdoor mode.")
+
+	outdoor_mode = run_shell.get_node_or_null("ModeHost/OutdoorMode")
+	if not assert_true(outdoor_mode != null, "Run shell should recreate the outdoor mode after exit."):
+		bootstrap.free()
+		return
+
+	player_marker = outdoor_mode.get_node_or_null("PlayerMarker") as Polygon2D
+	if not assert_true(player_marker != null, "Outdoor mode should restore the player marker after exit."):
+		bootstrap.free()
+		return
+	assert_true(
+		player_marker.position.distance_to(pre_entry_player_position) <= 0.01,
+		"Exiting the building should restore the previous outdoor player position."
+	)
 
 	bootstrap.free()
 	bootstrap = null

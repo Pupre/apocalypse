@@ -10,6 +10,7 @@ var _transition_layer: Node = null
 var _mode_host: Node = null
 var _current_mode_name := ""
 var _current_building_id := "mart_01"
+var _return_outdoor_player_position = null
 var _transition_in_progress := false
 
 
@@ -55,7 +56,7 @@ func _show_indoor_mode(building_id: String) -> void:
 	_current_mode_name = "indoor"
 
 
-func _show_outdoor_mode(building_id: String) -> void:
+func _show_outdoor_mode(building_id: String, player_position = null) -> void:
 	if _mode_host == null:
 		push_error("RunController is missing the mode host.")
 		return
@@ -73,12 +74,14 @@ func _show_outdoor_mode(building_id: String) -> void:
 		outdoor_mode.building_entered.connect(Callable(self, "_on_building_entered"))
 
 	if outdoor_mode.has_method("bind_run_state"):
-		outdoor_mode.bind_run_state(run_state, building_id)
+		outdoor_mode.bind_run_state(run_state, building_id, player_position)
+	_return_outdoor_player_position = null
 	_current_building_id = building_id
 	_current_mode_name = "outdoor"
 
 
 func _on_building_entered(building_id: String) -> void:
+	_return_outdoor_player_position = _get_current_outdoor_player_position()
 	await _transition_to_mode("indoor", building_id)
 
 
@@ -93,7 +96,7 @@ func _transition_to_mode(mode_name: String, building_id: String) -> void:
 	if mode_name == "indoor":
 		_show_indoor_mode(building_id)
 	else:
-		_show_outdoor_mode(building_id)
+		_show_outdoor_mode(building_id, _return_outdoor_player_position)
 
 	if _hud_presenter != null and _hud_presenter.has_method("set_mode_presentation"):
 		_hud_presenter.set_mode_presentation(mode_name)
@@ -115,6 +118,17 @@ func _on_indoor_state_changed() -> void:
 
 func _on_indoor_exit_requested() -> void:
 	await _transition_to_mode("outdoor", _current_building_id)
+
+
+func _get_current_outdoor_player_position():
+	if _mode_host == null:
+		return null
+
+	var outdoor_mode := _mode_host.get_node_or_null("OutdoorMode")
+	if outdoor_mode == null or not outdoor_mode.has_method("get_player_position"):
+		return null
+
+	return outdoor_mode.get_player_position()
 
 
 func _refresh_hud() -> void:

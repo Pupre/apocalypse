@@ -30,6 +30,7 @@ func _run_test() -> void:
 	if not assert_true(exit_button != null, "Indoor mode should expose an ExitButton."):
 		indoor_mode.free()
 		return
+	assert_eq(exit_button.text, "건물 밖으로", "Indoor mode should label the exit action as 건물 밖으로.")
 
 	var backdrop := indoor_mode.get_node_or_null("Backdrop") as ColorRect
 	if not assert_true(backdrop != null, "Indoor mode should expose a Backdrop node for the reading surface."):
