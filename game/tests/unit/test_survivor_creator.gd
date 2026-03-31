@@ -175,11 +175,25 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
+	var expected_feedback := "30분 동안 수색했다."
 	search_button.emit_signal("pressed")
-	await process_frame
+	if not await _wait_until(
+		Callable(self, "_is_indoor_action_applied").bind(
+			run_shell,
+			hud_clock_label,
+			result_label,
+			action_buttons,
+			"1일차 08:30",
+			expected_feedback,
+			1
+		),
+		"Timed out waiting for the indoor action result to settle."
+	):
+		bootstrap.free()
+		return
 
 	assert_eq(hud_clock_label.text, "1일차 08:30", "Pressing the indoor action should advance the HUD clock.")
-	assert_true(result_label.text.find("30분 동안 수색했다.") != -1, "Pressing the indoor action should refresh the result feedback.")
+	assert_true(result_label.text.find(expected_feedback) != -1, "Pressing the indoor action should refresh the result feedback.")
 	assert_eq(action_buttons.get_child_count(), 1, "The one-shot search action should be removed after use.")
 
 	bootstrap.free()
@@ -212,6 +226,26 @@ func _wait_until(predicate: Callable, failure_message: String, max_frames: int =
 		await process_frame
 
 	return assert_true(predicate.call(), failure_message)
+
+
+func _is_indoor_action_applied(
+	run_shell: Node,
+	hud_clock_label: Label,
+	result_label: Label,
+	action_buttons: VBoxContainer,
+	expected_clock_text: String,
+	expected_feedback_substring: String,
+	expected_action_count: int
+) -> bool:
+	if run_shell == null or hud_clock_label == null or result_label == null or action_buttons == null:
+		return false
+
+	return (
+		run_shell.run_state.inventory.total_bulk() == 1
+		and hud_clock_label.text == expected_clock_text
+		and result_label.text.find(expected_feedback_substring) != -1
+		and action_buttons.get_child_count() == expected_action_count
+	)
 
 
 func _has_transition_completed(run_shell: Node, expected_mode_name: String) -> bool:

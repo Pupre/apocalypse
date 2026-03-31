@@ -34,7 +34,12 @@ func _run_test() -> void:
 		return
 
 	start_button.emit_signal("pressed")
-	await process_frame
+	if not await _wait_until(
+		Callable(self, "_active_screen_name_is").bind(bootstrap, "SurvivorCreator"),
+		"Timed out waiting for the survivor creator screen."
+	):
+		bootstrap.free()
+		return
 
 	active_screen = bootstrap.get_active_screen()
 	if not assert_true(active_screen != null, "Bootstrap should show the survivor creator after start."):
@@ -80,8 +85,12 @@ func _run_test() -> void:
 	confirm_button.emit_signal("pressed")
 	assert_eq(_confirmed_job_id, "courier", "Confirm should emit the selected job id.")
 	assert_eq(_confirmed_trait_ids, ["athlete", "unlucky"], "Confirm should emit the selected trait order.")
-
-	await process_frame
+	if not await _wait_until(
+		Callable(self, "_active_screen_name_is").bind(bootstrap, "RunShell"),
+		"Timed out waiting for the run shell screen."
+	):
+		bootstrap.free()
+		return
 
 	var run_shell: Node = bootstrap.get_node_or_null("RunShell")
 	if not assert_true(run_shell != null, "Bootstrap should swap to the run shell after confirmation."):
@@ -201,16 +210,30 @@ func _run_test() -> void:
 		return
 	assert_true(not first_action_button.disabled, "The first indoor action should be enabled before it is pressed.")
 
-	first_action_button.emit_signal("pressed")
-	await process_frame
-
-	assert_eq(run_shell.run_state.inventory.total_bulk(), 1, "The first indoor action should add loot to inventory.")
-	assert_eq(hud_clock_label.text, "1일차 10:30", "The first indoor action should advance shared time.")
-
 	var result_label := indoor_mode.get_node_or_null("Panel/VBox/ResultLabel") as Label
 	if not assert_true(result_label != null, "Indoor result label should be present."):
 		bootstrap.free()
 		return
+
+	first_action_button.emit_signal("pressed")
+	if not await _wait_until(
+		Callable(self, "_is_indoor_action_applied").bind(
+			run_shell,
+			hud_clock_label,
+			result_label,
+			action_buttons,
+			1,
+			"1일차 10:30",
+			"30분 동안 수색했다.",
+			1
+		),
+		"Timed out waiting for the first indoor action to apply."
+	):
+		bootstrap.free()
+		return
+
+	assert_eq(run_shell.run_state.inventory.total_bulk(), 1, "The first indoor action should add loot to inventory.")
+	assert_eq(hud_clock_label.text, "1일차 10:30", "The first indoor action should advance shared time.")
 	assert_true(result_label.text.find("30분 동안 수색했다.") != -1, "Indoor feedback should describe the spent time.")
 
 	var exit_button := indoor_mode.get_node_or_null("Panel/VBox/Header/ExitButton") as Button
@@ -261,6 +284,14 @@ func _on_survivor_confirmed(job_id: String, trait_ids: Array[String]) -> void:
 	_confirmed_trait_ids = trait_ids.duplicate()
 
 
+func _active_screen_name_is(bootstrap: Node, expected_name: String) -> bool:
+	if bootstrap == null or not bootstrap.has_method("get_active_screen"):
+		return false
+
+	var active_screen: Node = bootstrap.get_active_screen()
+	return active_screen != null and active_screen.name == expected_name
+
+
 func _await_transition_completion(
 	run_shell: Node,
 	hud_title_label: Label,
@@ -294,6 +325,27 @@ func _wait_until(predicate: Callable, failure_message: String, max_frames: int =
 		await process_frame
 
 	return assert_true(predicate.call(), failure_message)
+
+
+func _is_indoor_action_applied(
+	run_shell: Node,
+	hud_clock_label: Label,
+	result_label: Label,
+	action_buttons: VBoxContainer,
+	expected_inventory_bulk: int,
+	expected_clock_text: String,
+	expected_feedback_substring: String,
+	expected_action_count: int
+) -> bool:
+	if run_shell == null or hud_clock_label == null or result_label == null or action_buttons == null:
+		return false
+
+	return (
+		run_shell.run_state.inventory.total_bulk() == expected_inventory_bulk
+		and hud_clock_label.text == expected_clock_text
+		and result_label.text.find(expected_feedback_substring) != -1
+		and action_buttons.get_child_count() == expected_action_count
+	)
 
 
 func _is_transition_settled(
