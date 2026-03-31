@@ -116,6 +116,18 @@ func _run_test() -> void:
 		return
 	assert_eq(hud_clock_label.text, "1일차 08:00", "The run should start at 08:00.")
 
+	var hud_title_label := hud.get_node_or_null("Panel/VBox/TitleLabel") as Label
+	if not assert_true(hud_title_label != null, "HUD title label should be present."):
+		bootstrap.free()
+		return
+	assert_eq(hud_title_label.text, "외부 생존 정보", "Outdoor mode should use the outdoor HUD title.")
+
+	var fade_rect := transition_layer.get_node_or_null("FadeRect") as ColorRect
+	if not assert_true(fade_rect != null, "Transition layer should expose a FadeRect node."):
+		bootstrap.free()
+		return
+	assert_eq(fade_rect.color.a, 0.0, "The transition layer should start transparent.")
+
 	var outdoor_mode: Node = run_shell.get_node_or_null("ModeHost/OutdoorMode")
 	if not assert_true(outdoor_mode != null, "Run shell should launch the outdoor mode first."):
 		bootstrap.free()
@@ -140,10 +152,11 @@ func _run_test() -> void:
 	var pre_entry_player_position := player_marker.position
 
 	outdoor_mode.try_enter_building("mart_01")
-	await process_frame
-	await process_frame
+	await _wait_process_frames(3)
 
 	assert_eq(run_shell.get_current_mode_name(), "indoor", "Entering the building should swap the run shell to indoor mode.")
+	assert_eq(hud_title_label.text, "실내 생존 정보", "Indoor mode should switch the shared HUD presentation.")
+	assert_eq(fade_rect.color.a, 0.0, "The transition layer should end transparent after entering a building.")
 
 	var indoor_mode: Node = run_shell.get_node_or_null("ModeHost/IndoorMode")
 	if not assert_true(indoor_mode != null, "Run shell should contain the indoor mode after entry."):
@@ -182,11 +195,11 @@ func _run_test() -> void:
 		return
 
 	exit_button.emit_signal("pressed")
-	await process_frame
-	await process_frame
-	await process_frame
+	await _wait_process_frames(3)
 
 	assert_eq(run_shell.get_current_mode_name(), "outdoor", "Pressing ExitButton should return the run shell to outdoor mode.")
+	assert_eq(hud_title_label.text, "외부 생존 정보", "Returning outside should restore the outdoor HUD presentation.")
+	assert_eq(fade_rect.color.a, 0.0, "The transition layer should end transparent after leaving the building.")
 
 	outdoor_mode = run_shell.get_node_or_null("ModeHost/OutdoorMode")
 	if not assert_true(outdoor_mode != null, "Run shell should recreate the outdoor mode after exit."):
@@ -212,3 +225,8 @@ func _run_test() -> void:
 func _on_survivor_confirmed(job_id: String, trait_ids: Array[String]) -> void:
 	_confirmed_job_id = job_id
 	_confirmed_trait_ids = trait_ids.duplicate()
+
+
+func _wait_process_frames(frame_count: int) -> void:
+	for _i in range(frame_count):
+		await process_frame
