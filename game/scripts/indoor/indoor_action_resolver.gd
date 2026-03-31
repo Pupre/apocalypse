@@ -40,12 +40,16 @@ func get_visible_clues(event_data: Dictionary, event_state: Dictionary) -> Array
 	return visible_clues
 
 
-func get_actions(event_data: Dictionary) -> Array[Dictionary]:
+func get_actions(event_data: Dictionary, event_state: Dictionary = {}) -> Array[Dictionary]:
 	var actions: Array[Dictionary] = []
+	var spent_action_ids := _string_id_array(event_state.get("spent_action_ids", []))
 
 	for action_variant in event_data.get("actions", []):
 		if typeof(action_variant) == TYPE_DICTIONARY:
-			actions.append(action_variant)
+			var action := action_variant as Dictionary
+			var action_id := String(action.get("id", ""))
+			if not spent_action_ids.has(action_id):
+				actions.append(action)
 
 	return actions
 
@@ -58,19 +62,47 @@ func get_sleep_preview(run_state) -> Dictionary:
 
 
 func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, action_id: String) -> bool:
+	if _is_action_spent(event_state, action_id):
+		return false
+
 	var action := _get_action(event_data, action_id)
 	if action.is_empty():
 		return false
 
 	if run_state != null:
-		var sleep_minutes := int(action.get("sleep_minutes", 0))
-		if sleep_minutes > 0 and run_state.has_method("advance_sleep_time"):
-			run_state.advance_sleep_time(sleep_minutes)
+		var minute_cost := int(action.get("minute_cost", 0))
+		if minute_cost > 0 and run_state.has_method("advance_minutes"):
+			run_state.advance_minutes(minute_cost)
+		else:
+			var sleep_minutes := int(action.get("sleep_minutes", 0))
+			if sleep_minutes > 0 and run_state.has_method("advance_sleep_time"):
+				run_state.advance_sleep_time(sleep_minutes)
 
+		var loot_messages: Array[String] = []
 		for loot_variant in action.get("loot", []):
-			if typeof(loot_variant) == TYPE_DICTIONARY and run_state != null:
-				run_state.inventory.add_item(loot_variant)
+			if typeof(loot_variant) != TYPE_DICTIONARY or run_state == null:
+				continue
 
+			var loot := loot_variant as Dictionary
+			if not run_state.inventory.add_item(loot):
+				loot_messages.append("Left %s behind because inventory is full." % _loot_label(loot))
+
+		if not loot_messages.is_empty():
+			var feedback_message := ""
+			for message in loot_messages:
+				if not feedback_message.is_empty():
+					feedback_message += " "
+				feedback_message += message
+			event_state["last_feedback_message"] = feedback_message
+		elif minute_cost > 0:
+			event_state["last_feedback_message"] = "Spent %d minutes searching." % minute_cost
+		elif int(action.get("sleep_minutes", 0)) > 0:
+			event_state["last_feedback_message"] = "Rested for %d minutes." % int(action.get("sleep_minutes", 0))
+
+	var spent_action_ids := _string_id_array(event_state.get("spent_action_ids", []))
+	if not spent_action_ids.has(action_id):
+		spent_action_ids.append(action_id)
+	event_state["spent_action_ids"] = spent_action_ids
 	var revealed_clue_ids := _string_id_array(event_state.get("revealed_clue_ids", []))
 	for clue_id_variant in action.get("reveal_clue_ids", []):
 		var clue_id := String(clue_id_variant)
@@ -98,3 +130,16 @@ func _string_id_array(values) -> Array[String]:
 	for value in values:
 		result.append(String(value))
 	return result
+
+
+func _loot_label(loot: Dictionary) -> String:
+	var name := String(loot.get("name", ""))
+	if not name.is_empty():
+		return name
+
+	return String(loot.get("id", "item"))
+
+
+func _is_action_spent(event_state: Dictionary, action_id: String) -> bool:
+	var spent_action_ids := _string_id_array(event_state.get("spent_action_ids", []))
+	return spent_action_ids.has(action_id)

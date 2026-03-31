@@ -41,11 +41,15 @@ func get_visible_clues() -> Array[Dictionary]:
 
 
 func get_actions() -> Array[Dictionary]:
-	return _resolver.get_actions(_event_data)
+	return _resolver.get_actions(_event_data, _event_state)
 
 
 func get_sleep_preview() -> Dictionary:
 	return _resolver.get_sleep_preview(_run_state)
+
+
+func get_feedback_message() -> String:
+	return String(_event_state.get("last_feedback_message", ""))
 
 
 func apply_action(action_id: String) -> bool:

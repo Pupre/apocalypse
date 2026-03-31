@@ -84,6 +84,29 @@ func _run_test() -> void:
 	assert_eq(_confirmed_job_id, "courier", "Confirmed job should match the selected job.")
 	assert_eq(_confirmed_trait_ids, ["athlete", "unlucky"], "Confirmed trait order should match the selection order.")
 
+	var run_shell = bootstrap.get_node_or_null("RunShell")
+	if not assert_true(run_shell != null, "Bootstrap should swap to the run shell after survivor confirmation."):
+		bootstrap.free()
+		return
+
+	if not assert_true(bootstrap.get_node_or_null("SurvivorCreator") == null, "Survivor creator should be replaced by the run shell."):
+		bootstrap.free()
+		return
+
+	var hud = run_shell.get_node_or_null("HUD")
+	var mode_host = run_shell.get_node_or_null("ModeHost")
+	var indoor_mode = run_shell.get_node_or_null("ModeHost/IndoorMode")
+
+	if not assert_true(hud != null, "Run shell should include a HUD."):
+		bootstrap.free()
+		return
+	if not assert_true(mode_host != null, "Run shell should include a mode host."):
+		bootstrap.free()
+		return
+	if not assert_true(indoor_mode != null, "Run shell should launch the first indoor mode."):
+		bootstrap.free()
+		return
+
 	bootstrap.free()
 	bootstrap = null
 	bootstrap_scene = null

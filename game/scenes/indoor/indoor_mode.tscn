@@ -34,6 +34,10 @@ autowrap_mode = 3
 [node name="SleepPreviewLabel" type="Label" parent="Panel/VBox"]
 text = "Sleep preview: unavailable"
 
+[node name="ResultLabel" type="Label" parent="Panel/VBox"]
+text = ""
+autowrap_mode = 3
+
 [node name="ClueHeadingLabel" type="Label" parent="Panel/VBox"]
 text = "Clues"
 

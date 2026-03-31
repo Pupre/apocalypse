@@ -6,6 +6,7 @@ var _director: Node = null
 var _title_label: Label = null
 var _summary_label: Label = null
 var _sleep_preview_label: Label = null
+var _result_label: Label = null
 var _clue_list: VBoxContainer = null
 var _action_buttons: VBoxContainer = null
 var _director_connected := false
@@ -49,6 +50,9 @@ func _refresh_view() -> void:
 
 	if _sleep_preview_label != null and _director.has_method("get_sleep_preview"):
 		_sleep_preview_label.text = _sleep_preview_text(_director.get_sleep_preview())
+
+	if _result_label != null and _director.has_method("get_feedback_message"):
+		_result_label.text = String(_director.get_feedback_message())
 
 	_refresh_clue_list()
 	_refresh_action_buttons()
@@ -105,6 +109,7 @@ func _cache_nodes() -> void:
 	_title_label = get_node_or_null("Panel/VBox/TitleLabel") as Label
 	_summary_label = get_node_or_null("Panel/VBox/SummaryLabel") as Label
 	_sleep_preview_label = get_node_or_null("Panel/VBox/SleepPreviewLabel") as Label
+	_result_label = get_node_or_null("Panel/VBox/ResultLabel") as Label
 	_clue_list = get_node_or_null("Panel/VBox/ClueList") as VBoxContainer
 	_action_buttons = get_node_or_null("Panel/VBox/ActionButtons") as VBoxContainer
 
