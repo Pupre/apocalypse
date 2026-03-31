@@ -7,6 +7,7 @@ var _fade_rect: ColorRect
 
 func _ready() -> void:
 	_cache_fade_rect()
+	_set_input_blocking(false)
 	_set_fade_alpha(0.0)
 
 
@@ -27,14 +28,21 @@ func _fade_to(target_alpha: float) -> void:
 	if _fade_rect == null:
 		return
 
+	if target_alpha > 0.0:
+		_set_input_blocking(true)
+
 	if fade_duration <= 0.0:
 		_set_fade_alpha(target_alpha)
+		if is_equal_approx(target_alpha, 0.0):
+			_set_input_blocking(false)
 		await get_tree().process_frame
 		return
 
 	var tween := create_tween()
 	tween.tween_property(_fade_rect, "color:a", target_alpha, fade_duration)
 	await tween.finished
+	if is_equal_approx(target_alpha, 0.0):
+		_set_input_blocking(false)
 
 
 func _cache_fade_rect() -> void:
@@ -49,3 +57,10 @@ func _set_fade_alpha(alpha: float) -> void:
 	var color := _fade_rect.color
 	color.a = alpha
 	_fade_rect.color = color
+
+
+func _set_input_blocking(enabled: bool) -> void:
+	if _fade_rect == null:
+		return
+
+	_fade_rect.mouse_filter = Control.MOUSE_FILTER_STOP if enabled else Control.MOUSE_FILTER_IGNORE

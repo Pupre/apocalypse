@@ -89,6 +89,7 @@ func _transition_to_mode(mode_name: String, building_id: String) -> void:
 	if _transition_in_progress:
 		return
 	_transition_in_progress = true
+	_set_mode_host_processing_enabled(false)
 
 	if _transition_layer != null and _transition_layer.has_method("fade_out"):
 		await _transition_layer.fade_out()
@@ -105,6 +106,7 @@ func _transition_to_mode(mode_name: String, building_id: String) -> void:
 	if _transition_layer != null and _transition_layer.has_method("fade_in"):
 		await _transition_layer.fade_in()
 
+	_set_mode_host_processing_enabled(true)
 	_transition_in_progress = false
 
 
@@ -142,3 +144,10 @@ func get_current_mode_name() -> String:
 
 func is_transition_in_progress() -> bool:
 	return _transition_in_progress
+
+
+func _set_mode_host_processing_enabled(enabled: bool) -> void:
+	if _mode_host == null:
+		return
+
+	_mode_host.process_mode = Node.PROCESS_MODE_INHERIT if enabled else Node.PROCESS_MODE_DISABLED

@@ -55,6 +55,13 @@ func _run_test() -> void:
 		return
 
 	transition_layer.set_duration_for_tests(0.0)
+	if not assert_eq(
+		fade_rect.mouse_filter,
+		Control.MOUSE_FILTER_IGNORE,
+		"FadeRect should ignore pointer input before fade_out()."
+	):
+		transition_layer.free()
+		return
 
 	await transition_layer.fade_out()
 	if not assert_true(
@@ -63,11 +70,25 @@ func _run_test() -> void:
 	):
 		transition_layer.free()
 		return
+	if not assert_eq(
+		fade_rect.mouse_filter,
+		Control.MOUSE_FILTER_STOP,
+		"FadeRect should block pointer input after fade_out()."
+	):
+		transition_layer.free()
+		return
 
 	await transition_layer.fade_in()
 	if not assert_true(
 		fade_rect.color.a == 0.0,
 		"fade_in() should restore the overlay to transparent."
+	):
+		transition_layer.free()
+		return
+	if not assert_eq(
+		fade_rect.mouse_filter,
+		Control.MOUSE_FILTER_IGNORE,
+		"FadeRect should stop blocking pointer input after fade_in()."
 	):
 		transition_layer.free()
 		return
