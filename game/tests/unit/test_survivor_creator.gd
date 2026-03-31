@@ -95,7 +95,7 @@ func _run_test() -> void:
 
 	var hud = run_shell.get_node_or_null("HUD")
 	var mode_host = run_shell.get_node_or_null("ModeHost")
-	var indoor_mode = run_shell.get_node_or_null("ModeHost/IndoorMode")
+	var outdoor_mode = run_shell.get_node_or_null("ModeHost/OutdoorMode")
 
 	if not assert_true(hud != null, "Run shell should include a HUD."):
 		bootstrap.free()
@@ -103,23 +103,35 @@ func _run_test() -> void:
 	if not assert_true(mode_host != null, "Run shell should include a mode host."):
 		bootstrap.free()
 		return
-	if not assert_true(indoor_mode != null, "Run shell should launch the first indoor mode."):
+	if not assert_true(outdoor_mode != null, "Run shell should launch the first outdoor mode."):
+		bootstrap.free()
+		return
+
+	if not assert_true(outdoor_mode.has_method("try_enter_building"), "Outdoor mode should expose building entry."):
 		bootstrap.free()
 		return
 
 	var hud_clock_label := hud.get_node_or_null("Panel/VBox/ClockLabel") as Label
-	var result_label := indoor_mode.get_node_or_null("Panel/VBox/ResultLabel") as Label
-	var action_buttons := indoor_mode.get_node_or_null("Panel/VBox/ActionButtons") as VBoxContainer
 	if not assert_true(hud_clock_label != null, "HUD clock label should be present."):
 		bootstrap.free()
 		return
+	assert_eq(hud_clock_label.text, "Day 1 08:00", "The run shell should start at the run-state clock.")
+
+	outdoor_mode.try_enter_building("mart_01")
+	await process_frame
+
+	var indoor_mode = run_shell.get_node_or_null("ModeHost/IndoorMode")
+	if not assert_true(indoor_mode != null, "Entering a building should swap to the indoor mode."):
+		bootstrap.free()
+		return
+	var result_label := indoor_mode.get_node_or_null("Panel/VBox/ResultLabel") as Label
+	var action_buttons := indoor_mode.get_node_or_null("Panel/VBox/ActionButtons") as VBoxContainer
 	if not assert_true(result_label != null, "Indoor result label should be present."):
 		bootstrap.free()
 		return
 	if not assert_true(action_buttons != null, "Indoor action buttons container should be present."):
 		bootstrap.free()
 		return
-	assert_eq(hud_clock_label.text, "Day 1 08:00", "The run shell should start at the run-state clock.")
 	assert_eq(action_buttons.get_child_count(), 2, "Mart indoor mode should start with two actions.")
 
 	var search_button := action_buttons.get_child(0) as Button

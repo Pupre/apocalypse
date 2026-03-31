@@ -1,5 +1,6 @@
 extends Node
 
+const OUTDOOR_MODE_SCENE := preload("res://scenes/outdoor/outdoor_mode.tscn")
 const RUN_STATE_SCRIPT := preload("res://scripts/run/run_state.gd")
 const INDOOR_MODE_SCENE := preload("res://scenes/indoor/indoor_mode.tscn")
 
@@ -21,7 +22,7 @@ func start_run(survivor_config: Dictionary, building_id: String = "mart_01") -> 
 		_hud_presenter.set_run_state(run_state)
 
 	_refresh_hud()
-	_show_indoor_mode(building_id)
+	_show_outdoor_mode(building_id)
 
 
 func _show_indoor_mode(building_id: String) -> void:
@@ -40,6 +41,35 @@ func _show_indoor_mode(building_id: String) -> void:
 
 	if indoor_mode.has_method("configure"):
 		indoor_mode.configure(run_state, building_id)
+
+
+func _show_outdoor_mode(building_id: String) -> void:
+	if _mode_host == null:
+		push_error("RunController is missing the mode host.")
+		return
+
+	for child in _mode_host.get_children():
+		child.queue_free()
+
+	var outdoor_mode := OUTDOOR_MODE_SCENE.instantiate()
+	_mode_host.add_child(outdoor_mode)
+
+	if outdoor_mode.has_signal("state_changed"):
+		outdoor_mode.state_changed.connect(Callable(self, "_on_mode_state_changed"))
+
+	if outdoor_mode.has_signal("building_entered"):
+		outdoor_mode.building_entered.connect(Callable(self, "_on_building_entered"))
+
+	if outdoor_mode.has_method("bind_run_state"):
+		outdoor_mode.bind_run_state(run_state, building_id)
+
+
+func _on_building_entered(building_id: String) -> void:
+	_show_indoor_mode(building_id)
+
+
+func _on_mode_state_changed() -> void:
+	_refresh_hud()
 
 
 func _on_indoor_state_changed() -> void:
