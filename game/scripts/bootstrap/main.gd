@@ -11,11 +11,13 @@ func _ready() -> void:
 
 
 func _show_title_menu() -> void:
-	_swap_screen(TITLE_MENU_SCENE.instantiate() as Node)
+	var title_menu = TITLE_MENU_SCENE.instantiate()
+	title_menu.start_requested.connect(Callable(self, "_show_survivor_creator"))
+	_swap_screen(title_menu)
 
 
 func _show_survivor_creator() -> void:
-	_swap_screen(SURVIVOR_CREATOR_SCENE.instantiate() as Node)
+	_swap_screen(SURVIVOR_CREATOR_SCENE.instantiate())
 
 
 func _swap_screen(screen: Node) -> void:
@@ -24,10 +26,5 @@ func _swap_screen(screen: Node) -> void:
 		_active_screen.queue_free()
 
 	_active_screen = screen
-	if _active_screen == null:
-		return
-
-	if _active_screen.has_signal("start_requested"):
-		_active_screen.connect("start_requested", Callable(self, "_show_survivor_creator"))
-
-	add_child(_active_screen)
+	if _active_screen != null:
+		add_child(_active_screen)

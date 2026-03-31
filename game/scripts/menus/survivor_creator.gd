@@ -22,6 +22,7 @@ var job_id: String = ""
 var trait_ids: Array[String] = []
 var remaining_points: int = BASE_POINTS
 
+var _content_library
 var _jobs: Dictionary = {}
 var _traits: Dictionary = {}
 var _job_buttons: Dictionary = {}
@@ -40,14 +41,16 @@ func _ready() -> void:
 
 func load_content() -> void:
 	_cache_ui()
-	var content_library = _get_content_library()
-	if content_library == null:
+	_content_library = _get_content_library()
+	if _content_library == null:
 		push_error("ContentLibrary autoload is missing.")
 		return
 
-	content_library.load_all()
-	_jobs = content_library.jobs
-	_traits = content_library.traits
+	_jobs = _content_library.jobs
+	_traits = _content_library.traits
+	if _jobs.is_empty() or _traits.is_empty():
+		push_error("ContentLibrary has not loaded its content.")
+		return
 
 	if not _ui_bound:
 		_bind_ui()
@@ -113,40 +116,40 @@ func _cache_ui() -> void:
 
 
 func _bind_ui() -> void:
-	_bind_job_button("clerk", "Store Clerk")
-	_bind_job_button("courier", "Courier")
-	_bind_trait_button("athlete", "Athlete", -4)
-	_bind_trait_button("light_sleeper", "Light Sleeper", -2)
-	_bind_trait_button("unlucky", "Unlucky", 4)
-	_bind_trait_button("heavy_sleeper", "Heavy Sleeper", 2)
+	_bind_job_button("clerk")
+	_bind_job_button("courier")
+	_bind_trait_button("athlete")
+	_bind_trait_button("light_sleeper")
+	_bind_trait_button("unlucky")
+	_bind_trait_button("heavy_sleeper")
 
 	if _confirm_button != null:
 		_confirm_button.pressed.connect(Callable(self, "confirm_selection"))
 
 
-func _bind_job_button(job_key: String, fallback_name: String) -> void:
+func _bind_job_button(job_key: String) -> void:
 	var button := _job_buttons.get(job_key) as Button
 	if button == null:
 		push_error("Missing job button for %s." % job_key)
 		return
 
 	var job_data: Dictionary = _jobs.get(job_key, {})
-	button.text = String(job_data.get("name", fallback_name))
+	if not job_data.is_empty():
+		button.text = String(job_data.get("name", button.text))
 
 	var selected_job_key := job_key
 	button.pressed.connect(Callable(self, "_on_job_button_pressed").bind(selected_job_key))
 
 
-func _bind_trait_button(trait_key: String, fallback_name: String, fallback_cost: int) -> void:
+func _bind_trait_button(trait_key: String) -> void:
 	var button := _trait_buttons.get(trait_key) as CheckButton
 	if button == null:
 		push_error("Missing trait button for %s." % trait_key)
 		return
 
 	var trait_data: Dictionary = _traits.get(trait_key, {})
-	var trait_name := String(trait_data.get("name", fallback_name))
-	var trait_cost := int(trait_data.get("cost", fallback_cost))
-	button.text = "%s (%+d)" % [trait_name, trait_cost]
+	if not trait_data.is_empty():
+		button.text = "%s (%+d)" % [String(trait_data.get("name", button.text)), int(trait_data.get("cost", 0))]
 
 	var selected_trait_key := trait_key
 	button.toggled.connect(Callable(self, "_on_trait_button_toggled").bind(selected_trait_key))
