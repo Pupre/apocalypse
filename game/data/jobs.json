@@ -1,0 +1,20 @@
+[
+  {
+    "id": "clerk",
+    "name": "Store Clerk",
+    "description": "Knows where practical supplies tend to be stored.",
+    "modifiers": {
+      "indoor_find_bias": 0.15,
+      "carry_limit": 1
+    }
+  },
+  {
+    "id": "courier",
+    "name": "Courier",
+    "description": "Moves fast and handles route pressure well.",
+    "modifiers": {
+      "move_speed": 30.0,
+      "fatigue_gain": -0.1
+    }
+  }
+]

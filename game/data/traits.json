@@ -1,0 +1,35 @@
+[
+  {
+    "id": "athlete",
+    "name": "Athlete",
+    "cost": -4,
+    "modifiers": {
+      "move_speed": 40.0,
+      "fatigue_gain": -0.15
+    }
+  },
+  {
+    "id": "light_sleeper",
+    "name": "Light Sleeper",
+    "cost": -2,
+    "modifiers": {
+      "sleep_hours_adjustment": -1
+    }
+  },
+  {
+    "id": "unlucky",
+    "name": "Unlucky",
+    "cost": 4,
+    "modifiers": {
+      "indoor_find_bias": -0.2
+    }
+  },
+  {
+    "id": "heavy_sleeper",
+    "name": "Heavy Sleeper",
+    "cost": 2,
+    "modifiers": {
+      "sleep_hours_adjustment": 1
+    }
+  }
+]

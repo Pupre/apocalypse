@@ -1,0 +1,13 @@
+[
+  {
+    "id": "mart_01",
+    "name": "Neighborhood Mart",
+    "category": "retail",
+    "base_candidate": true,
+    "outdoor_position": {
+      "x": 640,
+      "y": 360
+    },
+    "indoor_event_path": "res://data/events/indoor/mart_01.json"
+  }
+]

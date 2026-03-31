@@ -9,6 +9,10 @@ config/name="Apocalypse"
 run/main_scene="res://scenes/bootstrap/main.tscn"
 config/icon="res://icon.svg"
 
+[autoload]
+
+ContentLibrary="*res://scripts/autoload/content_library.gd"
+
 [rendering]
 
 renderer/rendering_method="mobile"
