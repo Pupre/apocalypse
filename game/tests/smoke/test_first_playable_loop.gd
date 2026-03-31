@@ -152,7 +152,19 @@ func _run_test() -> void:
 	var pre_entry_player_position := player_marker.position
 
 	outdoor_mode.try_enter_building("mart_01")
-	await _wait_process_frames(3)
+	if not await _wait_until(
+		Callable(self, "_is_transition_settled").bind(
+			run_shell,
+			hud_title_label,
+			fade_rect,
+			"indoor",
+			"실내 생존 정보",
+			"IndoorMode"
+		),
+		"Timed out waiting for the enter transition to settle on indoor mode."
+	):
+		bootstrap.free()
+		return
 
 	assert_eq(run_shell.get_current_mode_name(), "indoor", "Entering the building should swap the run shell to indoor mode.")
 	assert_eq(hud_title_label.text, "실내 생존 정보", "Indoor mode should switch the shared HUD presentation.")
@@ -195,7 +207,19 @@ func _run_test() -> void:
 		return
 
 	exit_button.emit_signal("pressed")
-	await _wait_process_frames(3)
+	if not await _wait_until(
+		Callable(self, "_is_transition_settled").bind(
+			run_shell,
+			hud_title_label,
+			fade_rect,
+			"outdoor",
+			"외부 생존 정보",
+			"OutdoorMode"
+		),
+		"Timed out waiting for the exit transition to settle on outdoor mode."
+	):
+		bootstrap.free()
+		return
 
 	assert_eq(run_shell.get_current_mode_name(), "outdoor", "Pressing ExitButton should return the run shell to outdoor mode.")
 	assert_eq(hud_title_label.text, "외부 생존 정보", "Returning outside should restore the outdoor HUD presentation.")
@@ -227,6 +251,35 @@ func _on_survivor_confirmed(job_id: String, trait_ids: Array[String]) -> void:
 	_confirmed_trait_ids = trait_ids.duplicate()
 
 
-func _wait_process_frames(frame_count: int) -> void:
-	for _i in range(frame_count):
+func _wait_until(predicate: Callable, failure_message: String, max_frames: int = 10) -> bool:
+	for _i in range(max_frames):
+		if predicate.call():
+			return true
 		await process_frame
+
+	return assert_true(predicate.call(), failure_message)
+
+
+func _is_transition_settled(
+	run_shell: Node,
+	hud_title_label: Label,
+	fade_rect: ColorRect,
+	expected_mode_name: String,
+	expected_hud_title: String,
+	expected_mode_node_name: String
+) -> bool:
+	if run_shell == null or hud_title_label == null or fade_rect == null:
+		return false
+	if not run_shell.has_method("get_current_mode_name"):
+		return false
+
+	var mode_host := run_shell.get_node_or_null("ModeHost")
+	if mode_host == null:
+		return false
+
+	return (
+		run_shell.get_current_mode_name() == expected_mode_name
+		and hud_title_label.text == expected_hud_title
+		and is_equal_approx(fade_rect.color.a, 0.0)
+		and mode_host.get_node_or_null(expected_mode_node_name) != null
+	)
