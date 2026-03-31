@@ -90,8 +90,18 @@ func _run_test() -> void:
 	if not assert_true(run_shell.has_method("get_current_mode_name"), "RunController should expose get_current_mode_name() for smoke verification."):
 		bootstrap.free()
 		return
+	if not assert_true(
+		run_shell.has_method("is_transition_in_progress"),
+		"RunController should expose is_transition_in_progress() for smoke verification."
+	):
+		bootstrap.free()
+		return
 
 	assert_eq(run_shell.get_current_mode_name(), "outdoor", "The run should begin in outdoor mode.")
+	assert_true(
+		not run_shell.is_transition_in_progress(),
+		"The run should start without a mode transition in progress."
+	)
 
 	var hud: Node = run_shell.get_node_or_null("HUD")
 	var transition_layer: Node = run_shell.get_node_or_null("TransitionLayer")
@@ -272,6 +282,8 @@ func _is_transition_settled(
 		return false
 	if not run_shell.has_method("get_current_mode_name"):
 		return false
+	if not run_shell.has_method("is_transition_in_progress"):
+		return false
 
 	var mode_host := run_shell.get_node_or_null("ModeHost")
 	if mode_host == null:
@@ -279,6 +291,7 @@ func _is_transition_settled(
 
 	return (
 		run_shell.get_current_mode_name() == expected_mode_name
+		and not run_shell.is_transition_in_progress()
 		and hud_title_label.text == expected_hud_title
 		and is_equal_approx(fade_rect.color.a, 0.0)
 		and mode_host.get_node_or_null(expected_mode_node_name) != null

@@ -138,3 +138,7 @@ func _refresh_hud() -> void:
 
 func get_current_mode_name() -> String:
 	return _current_mode_name
+
+
+func is_transition_in_progress() -> bool:
+	return _transition_in_progress
