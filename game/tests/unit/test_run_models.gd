@@ -9,7 +9,7 @@ func _run_test() -> void:
 	var run_state_script: Script = load("res://scripts/run/run_state.gd")
 	var state = run_state_script.from_survivor_config({
 		"job_id": "courier",
-		"trait_ids": PackedStringArray(["athlete", "unlucky"]),
+		"trait_ids": PackedStringArray(["athlete", "light_sleeper"]),
 		"remaining_points": 0,
 	})
 
@@ -20,7 +20,7 @@ func _run_test() -> void:
 	assert_eq(int(state.move_speed), 230, "Job and trait modifiers should increase move speed.")
 
 	state.fatigue = 52.0
-	var sleep_preview: Dictionary = state.fatigue_model.get_sleep_preview(state.fatigue, -1)
+	var sleep_preview: Dictionary = state.get_sleep_preview()
 	assert_eq(sleep_preview["sleep_minutes"], 420, "Fatigue preview should map to seven hours of sleep.")
 
 	var added: bool = state.inventory.add_item({"id": "canned_beans", "bulk": 1})
