@@ -23,7 +23,7 @@ var _test_traits: Dictionary = {
 	},
 }
 
-var _building_entered := false
+var _building_entered_count := 0
 var _entered_building_id := ""
 
 
@@ -77,13 +77,40 @@ func _run_test() -> void:
 	)
 	assert_true(run_state.exposure < before_exposure, "Outdoor time should drain exposure.")
 
+	var player_marker := outdoor_mode.get_node_or_null("PlayerMarker") as Polygon2D
+	var building_marker := outdoor_mode.get_node_or_null("BuildingMarker") as Polygon2D
+	if not assert_true(player_marker != null, "Outdoor mode should expose a player marker."):
+		outdoor_mode.free()
+		return
+	if not assert_true(building_marker != null, "Outdoor mode should expose a building marker."):
+		outdoor_mode.free()
+		return
+
+	var far_distance := player_marker.position.distance_to(building_marker.position)
+	assert_true(far_distance > 72.0, "The player should start outside the entry radius.")
+
+	outdoor_mode.try_enter_building("mart_01")
+	assert_eq(_building_entered_count, 0, "Trying to enter from far away should not emit building_entered.")
+
 	if not assert_true(outdoor_mode.has_method("try_enter_building"), "Outdoor mode should expose try_enter_building()."):
 		outdoor_mode.free()
 		return
 
+	if not assert_true(outdoor_mode.has_method("move_player"), "Outdoor mode should expose move_player()."):
+		outdoor_mode.free()
+		return
+
+	outdoor_mode.move_player(Vector2.RIGHT, 1.5)
+
+	var near_distance := player_marker.position.distance_to(building_marker.position)
+	assert_true(near_distance <= 72.0, "Moving toward the building should place the player in entry range.")
+
+	outdoor_mode.try_enter_building("wrong_building")
+	assert_eq(_building_entered_count, 0, "The wrong building id should not emit building_entered.")
+
 	outdoor_mode.try_enter_building("mart_01")
 
-	assert_true(_building_entered, "Trying to enter a building should emit building_entered.")
+	assert_eq(_building_entered_count, 1, "Trying to enter from nearby should emit building_entered.")
 	assert_eq(_entered_building_id, "mart_01", "The emitted building id should match the entry target.")
 
 	outdoor_mode.free()
@@ -91,7 +118,7 @@ func _run_test() -> void:
 
 
 func _on_building_entered(building_id: String) -> void:
-	_building_entered = true
+	_building_entered_count += 1
 	_entered_building_id = building_id
 
 

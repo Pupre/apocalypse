@@ -117,6 +117,20 @@ func _run_test() -> void:
 		return
 	assert_eq(hud_clock_label.text, "Day 1 08:00", "The run shell should start at the run-state clock.")
 
+	var player_marker := outdoor_mode.get_node_or_null("PlayerMarker") as Polygon2D
+	var building_marker := outdoor_mode.get_node_or_null("BuildingMarker") as Polygon2D
+	if not assert_true(player_marker != null, "Outdoor player marker should be present."):
+		bootstrap.free()
+		return
+	if not assert_true(building_marker != null, "Outdoor building marker should be present."):
+		bootstrap.free()
+		return
+
+	assert_true(player_marker.position.distance_to(building_marker.position) > 72.0, "The run should start outside the entry radius.")
+
+	outdoor_mode.move_player(Vector2.RIGHT, 1.5)
+	assert_true(player_marker.position.distance_to(building_marker.position) <= 72.0, "Moving right should bring the player into entry range.")
+
 	outdoor_mode.try_enter_building("mart_01")
 	await process_frame
 

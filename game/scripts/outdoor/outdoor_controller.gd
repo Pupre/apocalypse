@@ -8,6 +8,11 @@ const EXPOSURE_MODEL_SCRIPT := preload("res://scripts/outdoor/exposure_model.gd"
 const DEFAULT_BUILDING_ID := "mart_01"
 const DEFAULT_PLAYER_POSITION := Vector2(240.0, 360.0)
 const ENTER_RADIUS := 72.0
+const MOVE_LEFT_ACTION := "move_left"
+const MOVE_RIGHT_ACTION := "move_right"
+const MOVE_UP_ACTION := "move_up"
+const MOVE_DOWN_ACTION := "move_down"
+const ENTER_BUILDING_ACTION := "enter_building"
 
 var run_state = null
 var exposure_model := EXPOSURE_MODEL_SCRIPT.new()
@@ -63,11 +68,12 @@ func move_player(direction: Vector2, seconds_elapsed: float) -> void:
 	state_changed.emit()
 
 
-func try_enter_building(building_id: String) -> void:
-	if building_id.is_empty():
-		return
+func try_enter_building(building_id: String) -> bool:
+	if building_id.is_empty() or building_id != _building_id or not _is_player_near_building():
+		return false
 
 	building_entered.emit(building_id)
+	return true
 
 
 func _process(delta: float) -> void:
@@ -75,11 +81,11 @@ func _process(delta: float) -> void:
 		return
 
 	simulate_seconds(delta)
-	var direction := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	var direction := Input.get_vector(MOVE_LEFT_ACTION, MOVE_RIGHT_ACTION, MOVE_UP_ACTION, MOVE_DOWN_ACTION)
 	if direction != Vector2.ZERO:
 		move_player(direction, delta)
 
-	if _is_player_near_building() and Input.is_action_just_pressed("ui_accept"):
+	if _is_player_near_building() and Input.is_action_just_pressed(ENTER_BUILDING_ACTION):
 		try_enter_building(_building_id)
 
 
@@ -113,7 +119,7 @@ func _sync_view() -> void:
 
 	if _hint_label != null:
 		if _is_player_near_building():
-			_hint_label.text = "Press Enter to enter %s" % _building_name
+			_hint_label.text = "Press E to enter %s" % _building_name
 		else:
 			_hint_label.text = "Move with WASD"
 
