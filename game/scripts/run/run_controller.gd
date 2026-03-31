@@ -1,5 +1,8 @@
 extends Node
 
+signal transition_started(mode_name: String)
+signal transition_completed(mode_name: String)
+
 const OUTDOOR_MODE_SCENE := preload("res://scenes/outdoor/outdoor_mode.tscn")
 const RUN_STATE_SCRIPT := preload("res://scripts/run/run_state.gd")
 const INDOOR_MODE_SCENE := preload("res://scenes/indoor/indoor_mode.tscn")
@@ -90,6 +93,7 @@ func _transition_to_mode(mode_name: String, building_id: String) -> void:
 		return
 	_transition_in_progress = true
 	_set_mode_host_processing_enabled(false)
+	transition_started.emit(mode_name)
 
 	if _transition_layer != null and _transition_layer.has_method("fade_out"):
 		await _transition_layer.fade_out()
@@ -108,6 +112,7 @@ func _transition_to_mode(mode_name: String, building_id: String) -> void:
 
 	_set_mode_host_processing_enabled(true)
 	_transition_in_progress = false
+	transition_completed.emit(mode_name)
 
 
 func _on_mode_state_changed() -> void:

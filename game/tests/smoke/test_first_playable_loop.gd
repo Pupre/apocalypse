@@ -4,6 +4,7 @@ const BOOTSTRAP_SCENE_PATH := "res://scenes/bootstrap/main.tscn"
 
 var _confirmed_job_id := ""
 var _confirmed_trait_ids: Array[String] = []
+var _transition_completed_modes: Array[String] = []
 
 
 func _init() -> void:
@@ -90,6 +91,9 @@ func _run_test() -> void:
 	if not assert_true(run_shell.has_method("get_current_mode_name"), "RunController should expose get_current_mode_name() for smoke verification."):
 		bootstrap.free()
 		return
+	if not assert_true(run_shell.has_signal("transition_completed"), "RunController should expose transition_completed for smoke verification."):
+		bootstrap.free()
+		return
 	if not assert_true(
 		run_shell.has_method("is_transition_in_progress"),
 		"RunController should expose is_transition_in_progress() for smoke verification."
@@ -162,15 +166,13 @@ func _run_test() -> void:
 	var pre_entry_player_position := player_marker.position
 
 	outdoor_mode.try_enter_building("mart_01")
-	if not await _wait_until(
-		Callable(self, "_is_transition_settled").bind(
-			run_shell,
-			hud_title_label,
-			fade_rect,
-			"indoor",
-			"실내 생존 정보",
-			"IndoorMode"
-		),
+	if not await _await_transition_completion(
+		run_shell,
+		hud_title_label,
+		fade_rect,
+		"indoor",
+		"실내 생존 정보",
+		"IndoorMode",
 		"Timed out waiting for the enter transition to settle on indoor mode."
 	):
 		bootstrap.free()
@@ -217,15 +219,13 @@ func _run_test() -> void:
 		return
 
 	exit_button.emit_signal("pressed")
-	if not await _wait_until(
-		Callable(self, "_is_transition_settled").bind(
-			run_shell,
-			hud_title_label,
-			fade_rect,
-			"outdoor",
-			"외부 생존 정보",
-			"OutdoorMode"
-		),
+	if not await _await_transition_completion(
+		run_shell,
+		hud_title_label,
+		fade_rect,
+		"outdoor",
+		"외부 생존 정보",
+		"OutdoorMode",
 		"Timed out waiting for the exit transition to settle on outdoor mode."
 	):
 		bootstrap.free()
@@ -261,7 +261,33 @@ func _on_survivor_confirmed(job_id: String, trait_ids: Array[String]) -> void:
 	_confirmed_trait_ids = trait_ids.duplicate()
 
 
-func _wait_until(predicate: Callable, failure_message: String, max_frames: int = 10) -> bool:
+func _await_transition_completion(
+	run_shell: Node,
+	hud_title_label: Label,
+	fade_rect: ColorRect,
+	expected_mode_name: String,
+	expected_hud_title: String,
+	expected_mode_node_name: String,
+	failure_message: String,
+	max_frames: int = 30
+) -> bool:
+	_transition_completed_modes.clear()
+	run_shell.transition_completed.connect(Callable(self, "_on_transition_completed"))
+	var predicate := Callable(self, "_is_transition_settled").bind(
+		run_shell,
+		hud_title_label,
+		fade_rect,
+		expected_mode_name,
+		expected_hud_title,
+		expected_mode_node_name
+	)
+	var result := await _wait_until(predicate, failure_message, max_frames)
+	if run_shell.transition_completed.is_connected(Callable(self, "_on_transition_completed")):
+		run_shell.transition_completed.disconnect(Callable(self, "_on_transition_completed"))
+	return result
+
+
+func _wait_until(predicate: Callable, failure_message: String, max_frames: int = 30) -> bool:
 	for _i in range(max_frames):
 		if predicate.call():
 			return true
@@ -290,9 +316,15 @@ func _is_transition_settled(
 		return false
 
 	return (
-		run_shell.get_current_mode_name() == expected_mode_name
+		_transition_completed_modes.has(expected_mode_name)
+		and run_shell.get_current_mode_name() == expected_mode_name
 		and not run_shell.is_transition_in_progress()
 		and hud_title_label.text == expected_hud_title
 		and is_equal_approx(fade_rect.color.a, 0.0)
 		and mode_host.get_node_or_null(expected_mode_node_name) != null
 	)
+
+
+func _on_transition_completed(mode_name: String) -> void:
+	if not _transition_completed_modes.has(mode_name):
+		_transition_completed_modes.append(mode_name)

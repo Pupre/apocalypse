@@ -5,6 +5,7 @@ const BOOTSTRAP_SCENE_PATH := "res://scenes/bootstrap/main.tscn"
 var _confirmed := false
 var _confirmed_job_id := ""
 var _confirmed_trait_ids: Array[String] = []
+var _transition_completed_modes: Array[String] = []
 
 
 func _init() -> void:
@@ -110,6 +111,9 @@ func _run_test() -> void:
 	if not assert_true(transition_layer != null, "Run shell should include a transition layer."):
 		bootstrap.free()
 		return
+	if not assert_true(run_shell.has_signal("transition_completed"), "RunController should expose transition_completed for creator verification."):
+		bootstrap.free()
+		return
 
 	if not assert_true(outdoor_mode.has_method("try_enter_building"), "Outdoor mode should expose building entry."):
 		bootstrap.free()
@@ -144,8 +148,13 @@ func _run_test() -> void:
 	assert_true(player_marker.position.distance_to(building_marker.position) <= 72.0, "Moving right should bring the player into entry range.")
 
 	outdoor_mode.try_enter_building("mart_01")
-	await process_frame
-	await process_frame
+	if not await _await_transition_completion(
+		run_shell,
+		"indoor",
+		"Timed out waiting for the creator flow to enter indoor mode."
+	):
+		bootstrap.free()
+		return
 
 	var indoor_mode = run_shell.get_node_or_null("ModeHost/IndoorMode")
 	if not assert_true(indoor_mode != null, "Entering a building should swap to the indoor mode."):
@@ -184,3 +193,42 @@ func _on_survivor_confirmed(job_id: String, trait_ids: Array[String]) -> void:
 	_confirmed = true
 	_confirmed_job_id = job_id
 	_confirmed_trait_ids = trait_ids.duplicate()
+
+
+func _await_transition_completion(run_shell: Node, expected_mode_name: String, failure_message: String, max_frames: int = 30) -> bool:
+	_transition_completed_modes.clear()
+	run_shell.transition_completed.connect(Callable(self, "_on_transition_completed"))
+	var predicate := Callable(self, "_has_transition_completed").bind(run_shell, expected_mode_name)
+	var result := await _wait_until(predicate, failure_message, max_frames)
+	if run_shell.transition_completed.is_connected(Callable(self, "_on_transition_completed")):
+		run_shell.transition_completed.disconnect(Callable(self, "_on_transition_completed"))
+	return result
+
+
+func _wait_until(predicate: Callable, failure_message: String, max_frames: int = 30) -> bool:
+	for _i in range(max_frames):
+		if predicate.call():
+			return true
+		await process_frame
+
+	return assert_true(predicate.call(), failure_message)
+
+
+func _has_transition_completed(run_shell: Node, expected_mode_name: String) -> bool:
+	if run_shell == null:
+		return false
+	if not run_shell.has_method("get_current_mode_name"):
+		return false
+	if not run_shell.has_method("is_transition_in_progress"):
+		return false
+
+	return (
+		_transition_completed_modes.has(expected_mode_name)
+		and run_shell.get_current_mode_name() == expected_mode_name
+		and not run_shell.is_transition_in_progress()
+	)
+
+
+func _on_transition_completed(mode_name: String) -> void:
+	if not _transition_completed_modes.has(mode_name):
+		_transition_completed_modes.append(mode_name)
