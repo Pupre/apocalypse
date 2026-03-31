@@ -1,0 +1,41 @@
+{
+  "id": "mart_01",
+  "name": "Neighborhood Mart",
+  "summary": "Shelves are half-empty, but the counter and back room still hide useful supplies.",
+  "clues": [
+    {
+      "id": "front_aisles",
+      "text": "The front aisles are stripped bare, but the counter is still intact.",
+      "visible": true
+    },
+    {
+      "id": "stock_room",
+      "text": "A gap behind the counter leads toward a half-closed stock room door.",
+      "visible": false
+    }
+  ],
+  "actions": [
+    {
+      "id": "search_counter",
+      "label": "Search the counter",
+      "sleep_minutes": 30,
+      "reveal_clue_ids": [
+        "stock_room"
+      ],
+      "loot": [
+        {
+          "id": "canned_beans",
+          "name": "Canned Beans",
+          "bulk": 1
+        }
+      ]
+    },
+    {
+      "id": "rest",
+      "label": "Rest for an hour",
+      "sleep_minutes": 60,
+      "reveal_clue_ids": [],
+      "loot": []
+    }
+  ]
+}

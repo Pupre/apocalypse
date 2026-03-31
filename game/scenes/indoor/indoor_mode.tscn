@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/indoor/indoor_mode.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/indoor/indoor_director.gd" id="2"]
+
+[node name="IndoorMode" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1")
+
+[node name="Director" type="Node" parent="."]
+script = ExtResource("2")
+
+[node name="Panel" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = -24.0
+
+[node name="VBox" type="VBoxContainer" parent="Panel"]
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="Panel/VBox"]
+text = "Indoor"
+
+[node name="SummaryLabel" type="Label" parent="Panel/VBox"]
+text = "Search the room for clues."
+autowrap_mode = 3
+
+[node name="SleepPreviewLabel" type="Label" parent="Panel/VBox"]
+text = "Sleep preview: unavailable"
+
+[node name="ClueHeadingLabel" type="Label" parent="Panel/VBox"]
+text = "Clues"
+
+[node name="ClueList" type="VBoxContainer" parent="Panel/VBox"]
+theme_override_constants/separation = 6
+
+[node name="ActionHeadingLabel" type="Label" parent="Panel/VBox"]
+text = "Actions"
+
+[node name="ActionButtons" type="VBoxContainer" parent="Panel/VBox"]
+theme_override_constants/separation = 8
