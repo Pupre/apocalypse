@@ -89,9 +89,6 @@ func _run_test() -> void:
 	if not assert_true(run_shell.has_method("get_current_mode_name"), "RunController should expose get_current_mode_name() for smoke verification."):
 		bootstrap.free()
 		return
-	if not assert_true(run_shell.has_method("resolve_first_indoor_action"), "RunController should expose resolve_first_indoor_action() for smoke verification."):
-		bootstrap.free()
-		return
 
 	assert_eq(run_shell.get_current_mode_name(), "outdoor", "The run should begin in outdoor mode.")
 
@@ -138,7 +135,21 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
-	assert_true(run_shell.resolve_first_indoor_action(), "The run controller should resolve the first indoor action.")
+	var action_buttons := indoor_mode.get_node_or_null("Panel/VBox/ActionButtons") as VBoxContainer
+	if not assert_true(action_buttons != null, "Indoor action buttons should be mounted in the UI tree."):
+		bootstrap.free()
+		return
+	if not assert_true(action_buttons.get_child_count() > 0, "The indoor UI should expose at least one action button."):
+		bootstrap.free()
+		return
+
+	var first_action_button := action_buttons.get_child(0) as Button
+	if not assert_true(first_action_button != null, "The first indoor action should be a button."):
+		bootstrap.free()
+		return
+	assert_true(not first_action_button.disabled, "The first indoor action should be enabled before it is pressed.")
+
+	first_action_button.emit_signal("pressed")
 	await process_frame
 
 	assert_eq(run_shell.run_state.inventory.total_bulk(), 1, "The first indoor action should add loot to inventory.")

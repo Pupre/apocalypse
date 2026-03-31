@@ -87,23 +87,3 @@ func _refresh_hud() -> void:
 
 func get_current_mode_name() -> String:
 	return _current_mode_name
-
-
-func resolve_first_indoor_action() -> bool:
-	if _mode_host == null or _current_mode_name != "indoor":
-		return false
-
-	var indoor_mode := _mode_host.get_node_or_null("IndoorMode")
-	if indoor_mode == null:
-		return false
-
-	var action_buttons := indoor_mode.get_node_or_null("Panel/VBox/ActionButtons") as VBoxContainer
-	if action_buttons == null or action_buttons.get_child_count() == 0:
-		return false
-
-	var first_button := action_buttons.get_child(0) as Button
-	if first_button == null:
-		return false
-
-	first_button.emit_signal("pressed")
-	return true
