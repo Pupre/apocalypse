@@ -5,6 +5,7 @@ This repository is docs-first during pre-production.
 ## Approved Documents
 
 - `specs/`: approved design documents that define accepted parts of the project direction
+- `setup/`: machine and tool setup guides for local development
 
 ## Document Lifecycle
 
@@ -19,3 +20,5 @@ This repository is docs-first during pre-production.
 ## Current Documents
 
 - [Core Gameplay Design](specs/core-gameplay-design.md)
+- [Godot Technical Architecture](specs/godot-technical-architecture.md)
+- [Godot Android Development Setup](setup/godot-android-development-setup.md)
