@@ -32,14 +32,20 @@ func _run_test() -> void:
 		return
 
 	hud.set_mode_presentation("outdoor")
-	var outdoor_width := panel.offset_right - panel.offset_left
+	assert_eq(panel.offset_left, 16.0, "Outdoor mode should pin the HUD left offset to 16.")
+	assert_eq(panel.offset_top, 16.0, "Outdoor mode should pin the HUD top offset to 16.")
+	assert_eq(panel.offset_right, 336.0, "Outdoor mode should pin the HUD right offset to 336.")
+	assert_eq(panel.offset_bottom, 180.0, "Outdoor mode should pin the HUD bottom offset to 180.")
+	assert_true(is_equal_approx(panel.modulate.a, 1.0), "Outdoor mode should keep the HUD fully opaque.")
 	assert_eq(title_label.text, "외부 생존 정보", "Outdoor mode should use the outdoor HUD title.")
 
 	hud.set_mode_presentation("indoor")
-	var indoor_width := panel.offset_right - panel.offset_left
+	assert_eq(panel.offset_left, 24.0, "Indoor mode should pin the HUD left offset to 24.")
+	assert_eq(panel.offset_top, 20.0, "Indoor mode should pin the HUD top offset to 20.")
+	assert_eq(panel.offset_right, 272.0, "Indoor mode should pin the HUD right offset to 272.")
+	assert_eq(panel.offset_bottom, 156.0, "Indoor mode should pin the HUD bottom offset to 156.")
+	assert_true(is_equal_approx(panel.modulate.a, 0.9), "Indoor mode should dim the HUD to alpha 0.9.")
 	assert_eq(title_label.text, "실내 생존 정보", "Indoor mode should use the indoor HUD title.")
-	assert_true(indoor_width < outdoor_width, "Indoor HUD should be visually narrower than outdoor HUD.")
-	assert_true(panel.modulate.a < 1.0, "Indoor HUD should feel more subdued than outdoor HUD.")
 
 	hud.free()
 	pass_test("HUD_PRESENTATION_OK")

@@ -96,6 +96,7 @@ func _run_test() -> void:
 	var hud = run_shell.get_node_or_null("HUD")
 	var mode_host = run_shell.get_node_or_null("ModeHost")
 	var outdoor_mode = run_shell.get_node_or_null("ModeHost/OutdoorMode")
+	var transition_layer = run_shell.get_node_or_null("TransitionLayer")
 
 	if not assert_true(hud != null, "Run shell should include a HUD."):
 		bootstrap.free()
@@ -106,10 +107,21 @@ func _run_test() -> void:
 	if not assert_true(outdoor_mode != null, "Run shell should launch the first outdoor mode."):
 		bootstrap.free()
 		return
+	if not assert_true(transition_layer != null, "Run shell should include a transition layer."):
+		bootstrap.free()
+		return
 
 	if not assert_true(outdoor_mode.has_method("try_enter_building"), "Outdoor mode should expose building entry."):
 		bootstrap.free()
 		return
+	if not assert_true(
+		transition_layer.has_method("set_duration_for_tests"),
+		"Transition layer should expose set_duration_for_tests()."
+	):
+		bootstrap.free()
+		return
+
+	transition_layer.set_duration_for_tests(0.0)
 
 	var hud_clock_label := hud.get_node_or_null("Panel/VBox/ClockLabel") as Label
 	if not assert_true(hud_clock_label != null, "HUD clock label should be present."):
@@ -132,6 +144,7 @@ func _run_test() -> void:
 	assert_true(player_marker.position.distance_to(building_marker.position) <= 72.0, "Moving right should bring the player into entry range.")
 
 	outdoor_mode.try_enter_building("mart_01")
+	await process_frame
 	await process_frame
 
 	var indoor_mode = run_shell.get_node_or_null("ModeHost/IndoorMode")
