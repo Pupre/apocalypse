@@ -21,5 +21,6 @@ This repository is docs-first during pre-production.
 
 - [Core Gameplay Design](specs/core-gameplay-design.md)
 - [Godot Technical Architecture](specs/godot-technical-architecture.md)
+- [Mart Indoor Content Design](specs/mart-indoor-content-design.md)
 - [Mode Transition Presentation Design](specs/mode-transition-presentation-design.md)
 - [Godot Android Development Setup](setup/godot-android-development-setup.md)
