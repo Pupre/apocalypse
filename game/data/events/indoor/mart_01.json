@@ -2,6 +2,40 @@
   "id": "mart_01",
   "name": "동네 마트",
   "summary": "진열대는 반쯤 비어 있지만, 계산대와 뒷방에는 아직 쓸 만한 물건이 남아 있다.",
+  "entry_zone_id": "mart_entrance",
+  "zones": [
+    {
+      "id": "mart_entrance",
+      "label": "정문 진입부",
+      "summary": "깨진 자동문과 쓰러진 장바구니가 보인다.",
+      "connected_zone_ids": [
+        "checkout",
+        "food_aisle"
+      ],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "checkout",
+      "label": "계산대",
+      "summary": "계산대 뒤쪽에는 창고로 이어지는 문이 있다.",
+      "connected_zone_ids": [
+        "mart_entrance"
+      ],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "food_aisle",
+      "label": "식품 진열대",
+      "summary": "빈 선반 사이로 통조림 몇 개가 남아 있다.",
+      "connected_zone_ids": [
+        "mart_entrance"
+      ],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    }
+  ],
   "clues": [
     {
       "id": "front_aisles",

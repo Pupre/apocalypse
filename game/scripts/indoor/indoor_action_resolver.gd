@@ -24,6 +24,47 @@ func load_event(path: String) -> Dictionary:
 	return json.data
 
 
+func get_entry_zone_id(event_data: Dictionary) -> String:
+	return String(event_data.get("entry_zone_id", ""))
+
+
+func get_zone(event_data: Dictionary, zone_id: String) -> Dictionary:
+	for zone_variant in event_data.get("zones", []):
+		if typeof(zone_variant) != TYPE_DICTIONARY:
+			continue
+
+		var zone := zone_variant as Dictionary
+		if String(zone.get("id", "")) == zone_id:
+			return zone
+
+	return {}
+
+
+func get_move_actions(event_data: Dictionary, event_state: Dictionary) -> Array[Dictionary]:
+	var zone := get_zone(event_data, String(event_state.get("current_zone_id", "")))
+	if zone.is_empty():
+		return []
+
+	var visited_zone_ids := _string_id_array(event_state.get("visited_zone_ids", []))
+	var actions: Array[Dictionary] = []
+	for connected_zone_id_variant in zone.get("connected_zone_ids", []):
+		var connected_zone_id := String(connected_zone_id_variant)
+		var connected_zone := get_zone(event_data, connected_zone_id)
+		if connected_zone.is_empty():
+			continue
+
+		var minute_cost := int(connected_zone.get("revisit_cost", 10)) if visited_zone_ids.has(connected_zone_id) else int(connected_zone.get("first_visit_cost", 30))
+		actions.append({
+			"id": "move_%s" % connected_zone_id,
+			"type": "move",
+			"label": "%s로 이동한다" % String(connected_zone.get("label", connected_zone_id)),
+			"target_zone_id": connected_zone_id,
+			"minute_cost": minute_cost,
+		})
+
+	return actions
+
+
 func get_visible_clues(event_data: Dictionary, event_state: Dictionary) -> Array[Dictionary]:
 	var revealed_clue_ids := _string_id_array(event_state.get("revealed_clue_ids", []))
 	var visible_clues: Array[Dictionary] = []
