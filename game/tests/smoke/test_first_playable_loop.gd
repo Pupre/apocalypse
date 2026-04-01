@@ -196,6 +196,12 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
+	var location_label := indoor_mode.get_node_or_null("Panel/VBox/Header/LocationLabel") as Label
+	if not assert_true(location_label != null, "Indoor mode should expose a location label."):
+		bootstrap.free()
+		return
+	assert_eq(location_label.text, "위치: 정문 진입부", "Indoor mode should begin at the mart entrance zone.")
+
 	var action_buttons := indoor_mode.get_node_or_null("Panel/VBox/ActionButtons") as VBoxContainer
 	if not assert_true(action_buttons != null, "Indoor action buttons should be mounted in the UI tree."):
 		bootstrap.free()
@@ -208,14 +214,36 @@ func _run_test() -> void:
 	if not assert_true(first_action_button != null, "The first indoor action should be a button."):
 		bootstrap.free()
 		return
-	assert_true(not first_action_button.disabled, "The first indoor action should be enabled before it is pressed.")
+	var move_checkout_button := _find_button_by_text(action_buttons, "계산대로 이동한다")
+	if not assert_true(move_checkout_button != null, "Indoor mode should expose a movement action into checkout."):
+		bootstrap.free()
+		return
+	assert_true(not move_checkout_button.disabled, "The checkout movement action should be enabled before it is pressed.")
 
 	var result_label := indoor_mode.get_node_or_null("Panel/VBox/ResultLabel") as Label
 	if not assert_true(result_label != null, "Indoor result label should be present."):
 		bootstrap.free()
 		return
 
-	first_action_button.emit_signal("pressed")
+	move_checkout_button.emit_signal("pressed")
+	if not await _wait_until(
+		Callable(self, "_label_text_is").bind(location_label, "위치: 계산대"),
+		"Timed out waiting for the indoor location to change to checkout."
+	):
+		bootstrap.free()
+		return
+
+	assert_true(
+		_buttons_include_text(action_buttons, "조용히 서랍을 연다"),
+		"Checkout should expose its local search action."
+	)
+
+	var checkout_search_button := _find_button_by_text(action_buttons, "조용히 서랍을 연다")
+	if not assert_true(checkout_search_button != null, "Checkout search action should be selectable."):
+		bootstrap.free()
+		return
+
+	checkout_search_button.emit_signal("pressed")
 	if not await _wait_until(
 		Callable(self, "_is_indoor_action_applied").bind(
 			run_shell,
@@ -223,17 +251,17 @@ func _run_test() -> void:
 			result_label,
 			action_buttons,
 			1,
-			"1일차 10:30",
+			"1일차 11:00",
 			"30분 동안 수색했다.",
-			1
+			4
 		),
-		"Timed out waiting for the first indoor action to apply."
+		"Timed out waiting for the checkout search to apply."
 	):
 		bootstrap.free()
 		return
 
 	assert_eq(run_shell.run_state.inventory.total_bulk(), 1, "The first indoor action should add loot to inventory.")
-	assert_eq(hud_clock_label.text, "1일차 10:30", "The first indoor action should advance shared time.")
+	assert_eq(hud_clock_label.text, "1일차 11:00", "The checkout search should advance shared time.")
 	assert_true(result_label.text.find("30분 동안 수색했다.") != -1, "Indoor feedback should describe the spent time.")
 
 	var exit_button := indoor_mode.get_node_or_null("Panel/VBox/Header/ExitButton") as Button
@@ -290,6 +318,26 @@ func _active_screen_name_is(bootstrap: Node, expected_name: String) -> bool:
 
 	var active_screen: Node = bootstrap.get_active_screen()
 	return active_screen != null and active_screen.name == expected_name
+
+
+func _find_button_by_text(container: VBoxContainer, text: String) -> Button:
+	if container == null:
+		return null
+
+	for child in container.get_children():
+		var button := child as Button
+		if button != null and button.text == text:
+			return button
+
+	return null
+
+
+func _buttons_include_text(container: VBoxContainer, text: String) -> bool:
+	return _find_button_by_text(container, text) != null
+
+
+func _label_text_is(label: Label, expected_text: String) -> bool:
+	return label != null and label.text == expected_text
 
 
 func _await_transition_completion(

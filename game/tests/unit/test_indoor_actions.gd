@@ -171,6 +171,25 @@ func _run_test() -> void:
 		"Checkout gate forcing should stay gated until the drawer flag is set."
 	)
 
+	var hall_state := {
+		"current_zone_id": "back_hall",
+		"visited_zone_ids": PackedStringArray(["mart_entrance", "food_aisle", "back_hall"]),
+		"revealed_clue_ids": PackedStringArray(),
+		"spent_action_ids": PackedStringArray(),
+		"zone_flags": {},
+		"noise": 0,
+	}
+
+	var hall_actions: Array = resolver.get_actions(event_data, hall_state)
+	assert_true(
+		_action_ids(hall_actions).has("wait_and_listen"),
+		"Back hall should expose a human-encounter-ready wait and listen option."
+	)
+	assert_true(
+		_clue_ids(event_data.get("clues", [])).has("recent_human_presence_hint"),
+		"Mart data should include the recent human presence clue for the back hall."
+	)
+
 	var before_checkout_clock_minute_of_day: int = checkout_run_state.clock.minute_of_day
 	assert_true(
 		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "search_checkout_drawer"),
@@ -231,6 +250,29 @@ func _run_test() -> void:
 		"Forcing the staff gate should add its noise cost."
 	)
 
+	var hall_run_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, self)
+	if not assert_true(hall_run_state != null, "RunState should build for back hall option tests."):
+		return
+
+	var before_hall_clock_minute_of_day: int = hall_run_state.clock.minute_of_day
+	assert_true(
+		resolver.apply_action(hall_run_state, event_data, hall_state, "wait_and_listen"),
+		"Back hall wait and listen should resolve through the indoor resolver."
+	)
+	assert_true(
+		_string_values(hall_state.get("revealed_clue_ids", [])).has("recent_human_presence_hint"),
+		"Waiting in the back hall should reveal the recent human presence clue."
+	)
+	assert_eq(
+		hall_run_state.clock.minute_of_day,
+		before_hall_clock_minute_of_day + 10,
+		"Waiting in the back hall should spend its minute cost."
+	)
+
 	var full_run_state = run_state_script.from_survivor_config({
 		"job_id": "courier",
 		"trait_ids": PackedStringArray(["athlete"]),
@@ -284,6 +326,17 @@ func _string_values(values) -> PackedStringArray:
 		result.append(String(value))
 
 	return PackedStringArray(result)
+
+
+func _clue_ids(clues: Array) -> Array[String]:
+	var result: Array[String] = []
+	for clue_variant in clues:
+		if typeof(clue_variant) != TYPE_DICTIONARY:
+			continue
+
+		result.append(String((clue_variant as Dictionary).get("id", "")))
+
+	return result
 
 
 func _action_ids(actions: Array) -> Array[String]:

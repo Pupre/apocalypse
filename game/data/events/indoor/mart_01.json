@@ -38,9 +38,25 @@
       "label": "식품 진열대",
       "summary": "빈 선반 사이로 통조림 몇 개가 남아 있다.",
       "connected_zone_ids": [
-        "mart_entrance"
+        "mart_entrance",
+        "back_hall"
       ],
       "event_ids": [],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "back_hall",
+      "floor_id": "floor_1",
+      "label": "음료/후면 통로",
+      "summary": "바닥에 난 끌린 자국이 안쪽에서 멈춘다.",
+      "connected_zone_ids": [
+        "food_aisle",
+        "staff_corridor_gate"
+      ],
+      "event_ids": [
+        "drag_marks_event"
+      ],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -50,7 +66,8 @@
       "label": "직원 통로 입구",
       "summary": "계산대 뒤쪽 철문 너머로 창고 복도가 이어진다.",
       "connected_zone_ids": [
-        "checkout"
+        "checkout",
+        "back_hall"
       ],
       "event_ids": [
         "staff_gate_event"
@@ -78,6 +95,11 @@
     {
       "id": "muffled_breath_hint",
       "text": "문 너머에서 숨죽인 인기척이 아주 희미하게 들린다.",
+      "visible": false
+    },
+    {
+      "id": "recent_human_presence_hint",
+      "text": "누군가 최근까지 뒤쪽 통로를 서성였던 것 같은 기척이 남아 있다.",
       "visible": false
     }
   ],
@@ -150,6 +172,29 @@
           "outcomes": {
             "set_flags": [
               "staff_gate_forced"
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "drag_marks_event",
+      "zone_id": "back_hall",
+      "type": "human_encounter",
+      "hint_text": "무거운 상자를 끈 자국이 통로 안쪽으로 이어진다.",
+      "options": [
+        {
+          "id": "wait_and_listen",
+          "label": "소리를 죽이고 기다린다",
+          "requirements": {},
+          "costs": {
+            "minutes": 10,
+            "noise": 0
+          },
+          "outcomes": {
+            "reveal_clue_ids": [
+              "recent_human_presence_hint"
             ],
             "consume_on_use": true
           }
