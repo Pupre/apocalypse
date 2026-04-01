@@ -159,6 +159,11 @@ func _run_test() -> void:
 		["소지품 없음"],
 		"Indoor mode should show an empty inventory placeholder before the player loots anything."
 	)
+	var item_sheet := indoor_mode.get_node_or_null("ItemSheet") as Control
+	if not assert_true(item_sheet != null, "Indoor mode should expose a bottom item sheet."):
+		indoor_mode.free()
+		return
+	assert_true(not item_sheet.visible, "Indoor mode should keep the item sheet hidden until an inventory item is selected.")
 
 	var director := indoor_mode.get_node_or_null("Director")
 	if not assert_true(director != null and director.has_method("apply_action"), "Indoor mode should expose its Director node."):
@@ -225,18 +230,69 @@ func _run_test() -> void:
 		"Director should allow picking up a discovered item with a separate action."
 	)
 	await process_frame
+	var take_energy_bar_button := _find_button_by_text(action_buttons, "에너지바 챙긴다")
+	if not assert_true(take_energy_bar_button != null, "Indoor mode should refresh take actions after picking the first discovered item."):
+		indoor_mode.free()
+		return
+	take_energy_bar_button.emit_signal("pressed")
+	await process_frame
+	assert_eq(
+		_inventory_labels(inventory_items),
+		["라이터 x1", "에너지바 x1"],
+		"Picking up discovered items should update the indoor inventory list."
+	)
+	assert_eq(
+		inventory_title_label.text,
+		"소지품 (2/8)",
+		"Indoor mode should refresh the carry usage after looting items."
+	)
+	var energy_bar_button := _find_button_by_text(inventory_items, "에너지바 x1")
+	if not assert_true(energy_bar_button != null, "Indoor inventory should expose carried items as selectable buttons."):
+		indoor_mode.free()
+		return
+	energy_bar_button.emit_signal("pressed")
+	await process_frame
+	assert_true(item_sheet.visible, "Selecting an inventory item should open the bottom item sheet.")
+	var item_sheet_title := indoor_mode.get_node_or_null("ItemSheet/VBox/ItemNameLabel") as Label
+	var item_sheet_description := indoor_mode.get_node_or_null("ItemSheet/VBox/ItemDescriptionLabel") as Label
+	var item_sheet_effect := indoor_mode.get_node_or_null("ItemSheet/VBox/ItemEffectLabel") as Label
+	var item_sheet_actions := indoor_mode.get_node_or_null("ItemSheet/VBox/ActionButtons") as HBoxContainer
+	if not assert_true(item_sheet_title != null and item_sheet_description != null and item_sheet_effect != null and item_sheet_actions != null, "Indoor item sheet should expose detail labels and action buttons."):
+		indoor_mode.free()
+		return
+	assert_eq(item_sheet_title.text, "에너지바", "Indoor item sheet should show the selected item title.")
+	assert_true(item_sheet_description.text.length() > 0, "Indoor item sheet should show an item description.")
+	assert_true(item_sheet_effect.text.find("포만감") != -1, "Indoor item sheet should show food effect details.")
+	assert_true(_find_button_in_container(item_sheet_actions, "먹는다") != null, "Food items should expose an eat action in the item sheet.")
+	assert_true(_find_button_in_container(item_sheet_actions, "버린다") != null, "Item sheet should expose a drop action.")
+
+	var eat_button := _find_button_in_container(item_sheet_actions, "먹는다")
+	eat_button.emit_signal("pressed")
+	await process_frame
 	assert_eq(
 		_inventory_labels(inventory_items),
 		["라이터 x1"],
-		"Picking up a discovered item should update the indoor inventory list."
+		"Eating a food item should remove it from the carried inventory list."
 	)
 	assert_eq(
 		inventory_title_label.text,
 		"소지품 (1/8)",
-		"Indoor mode should refresh the carry usage after looting an item."
+		"Eating an item should free carry space in the inventory title."
 	)
-	var drop_button := _find_inventory_button_by_text(inventory_items, "버린다")
-	if not assert_true(drop_button != null, "Indoor inventory rows should expose a drop button for carried items."):
+	assert_true(
+		result_label.text.find("먹었다") != -1,
+		"Eating an item should leave readable feedback."
+	)
+	assert_true(not item_sheet.visible, "Resolving an item-sheet action should close the bottom sheet.")
+
+	var lighter_button := _find_button_by_text(inventory_items, "라이터 x1")
+	if not assert_true(lighter_button != null, "Remaining carried items should stay selectable after eating another item."):
+		indoor_mode.free()
+		return
+	lighter_button.emit_signal("pressed")
+	await process_frame
+	var drop_button := _find_button_in_container(item_sheet_actions, "버린다")
+	if not assert_true(drop_button != null, "Utility items should still expose a drop action from the item sheet."):
 		indoor_mode.free()
 		return
 	drop_button.emit_signal("pressed")
@@ -244,16 +300,16 @@ func _run_test() -> void:
 	assert_eq(
 		_inventory_labels(inventory_items),
 		["소지품 없음"],
-		"Pressing the inventory drop button should remove the carried item from the sidebar."
+		"Dropping the remaining utility item should empty the inventory list."
 	)
 	assert_eq(
 		inventory_title_label.text,
 		"소지품 (0/8)",
-		"Dropping an item should free carry space in the inventory title."
+		"Dropping the remaining item should free all carry space."
 	)
 	assert_true(
 		result_label.text.find("버렸다") != -1,
-		"Dropping an item should leave readable feedback."
+		"Dropping an item from the sheet should leave readable feedback."
 	)
 
 	assert_true(
@@ -316,6 +372,18 @@ func _find_inventory_button_by_text(container: VBoxContainer, expected_text: Str
 	return null
 
 
+func _find_button_in_container(container: Container, expected_text: String) -> Button:
+	if container == null:
+		return null
+
+	for child in container.get_children():
+		var button := child as Button
+		if button != null and button.text == expected_text:
+			return button
+
+	return null
+
+
 func _map_labels(container: Control) -> Array[String]:
 	var labels: Array[String] = []
 	if container == null:
@@ -336,12 +404,20 @@ func _inventory_labels(container: VBoxContainer) -> Array[String]:
 		return labels
 
 	for child in container.get_children():
+		var button := child as Button
+		if button != null:
+			labels.append(button.text)
+			continue
 		var label := child as Label
 		if label != null:
 			labels.append(label.text)
 			continue
 		if child is Container:
 			for nested_child in child.get_children():
+				var nested_button := nested_child as Button
+				if nested_button != null:
+					labels.append(nested_button.text)
+					break
 				var nested_label := nested_child as Label
 				if nested_label != null:
 					labels.append(nested_label.text)

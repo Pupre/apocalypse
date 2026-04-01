@@ -15,12 +15,14 @@ var clock = TIME_CLOCK_SCRIPT.new()
 var fatigue_model = FATIGUE_MODEL_SCRIPT.new()
 var inventory = INVENTORY_MODEL_SCRIPT.new()
 var survivor_config: Dictionary = {}
+var equipped_items: Dictionary = {}
 var fatigue: float = 0.0
 var hunger: float = 0.0
 var health: float = 100.0
 var exposure: float = 100.0
 var move_speed: float = BASE_MOVE_SPEED
 var fatigue_gain_multiplier: float = BASE_FATIGUE_GAIN_MULTIPLIER
+var base_carry_limit: int = BASE_CARRY_LIMIT
 var _content_source = null
 var _report_validation_errors := true
 
@@ -63,6 +65,7 @@ func is_dead() -> bool:
 
 func _apply_survivor_config(config: Dictionary) -> void:
 	survivor_config = config.duplicate(true)
+	equipped_items = {}
 
 	var carry_limit_bonus := 0
 	carry_limit_bonus += _apply_job_modifiers(String(survivor_config.get("job_id", "")))
@@ -70,7 +73,50 @@ func _apply_survivor_config(config: Dictionary) -> void:
 	for trait_id_variant in survivor_config.get("trait_ids", []):
 		carry_limit_bonus += _apply_trait_modifiers(String(trait_id_variant))
 
-	inventory.carry_limit = BASE_CARRY_LIMIT + carry_limit_bonus
+	base_carry_limit = BASE_CARRY_LIMIT + carry_limit_bonus
+	_recalculate_carry_limit()
+
+
+func consume_inventory_item(item_id: String, item_data: Dictionary) -> bool:
+	if item_id.is_empty():
+		return false
+
+	var removed_item := inventory.take_first_item_by_id(item_id)
+	if removed_item.is_empty():
+		return false
+
+	hunger = max(0.0, hunger - float(item_data.get("hunger_restore", 0.0)))
+	return true
+
+
+func equip_inventory_item(item_id: String, item_data: Dictionary) -> Dictionary:
+	var result := {
+		"ok": false,
+		"message": "",
+		"replaced_item": {},
+	}
+
+	var equip_slot := String(item_data.get("equip_slot", ""))
+	if equip_slot.is_empty():
+		result["message"] = "지금은 장착할 수 없는 아이템이다."
+		return result
+
+	var removed_item := inventory.take_first_item_by_id(item_id)
+	if removed_item.is_empty():
+		result["message"] = "장착할 아이템을 찾지 못했다."
+		return result
+
+	var replaced_item: Dictionary = equipped_items.get(equip_slot, {})
+	if not replaced_item.is_empty() and not inventory.add_item(replaced_item):
+		inventory.add_item(removed_item)
+		result["message"] = "기존 장비를 둘 공간이 없어 교체할 수 없다."
+		return result
+
+	equipped_items[equip_slot] = _merge_item_data(item_data, removed_item)
+	_recalculate_carry_limit()
+	result["ok"] = true
+	result["replaced_item"] = replaced_item
+	return result
 
 
 func _apply_job_modifiers(job_id: String) -> int:
@@ -173,3 +219,20 @@ func _lookup_trait_data(trait_id: String) -> Variant:
 func _report_validation_error(message: String) -> void:
 	if _report_validation_errors:
 		push_error(message)
+
+
+func _recalculate_carry_limit() -> void:
+	var total_bonus := 0
+	for item_variant in equipped_items.values():
+		if typeof(item_variant) != TYPE_DICTIONARY:
+			continue
+		total_bonus += int((item_variant as Dictionary).get("carry_limit_bonus", 0))
+
+	inventory.carry_limit = base_carry_limit + total_bonus
+
+
+func _merge_item_data(primary: Dictionary, fallback: Dictionary) -> Dictionary:
+	var merged := fallback.duplicate(true)
+	for key in primary.keys():
+		merged[key] = primary[key]
+	return merged

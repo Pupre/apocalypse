@@ -395,6 +395,11 @@
                 "bulk": 1
               },
               {
+                "id": "small_backpack",
+                "name": "작은 배낭",
+                "bulk": 2
+              },
+              {
                 "id": "packing_tape",
                 "name": "포장 테이프",
                 "bulk": 1

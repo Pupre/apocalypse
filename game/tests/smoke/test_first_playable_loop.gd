@@ -506,12 +506,20 @@ func _inventory_labels(container: VBoxContainer) -> Array[String]:
 		return labels
 
 	for child in container.get_children():
+		var button := child as Button
+		if button != null:
+			labels.append(button.text)
+			continue
 		var label := child as Label
 		if label != null:
 			labels.append(label.text)
 			continue
 		if child is Container:
 			for nested_child in child.get_children():
+				var nested_button := nested_child as Button
+				if nested_button != null:
+					labels.append(nested_button.text)
+					break
 				var nested_label := nested_child as Label
 				if nested_label != null:
 					labels.append(nested_label.text)

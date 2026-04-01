@@ -13,6 +13,11 @@ var _action_buttons: VBoxContainer = null
 var _minimap: Control = null
 var _inventory_title_label: Label = null
 var _inventory_items: VBoxContainer = null
+var _item_sheet: Control = null
+var _item_sheet_title: Label = null
+var _item_sheet_description: Label = null
+var _item_sheet_effect: Label = null
+var _item_sheet_actions: HBoxContainer = null
 var _director_connected := false
 
 
@@ -64,6 +69,7 @@ func _refresh_view() -> void:
 	_refresh_action_buttons()
 	_refresh_minimap()
 	_refresh_inventory()
+	_refresh_item_sheet()
 
 
 func _refresh_action_buttons() -> void:
@@ -105,6 +111,11 @@ func _cache_nodes() -> void:
 	_minimap = get_node_or_null("Panel/Layout/Sidebar/MinimapPanel/VBox/MapNodes") as Control
 	_inventory_title_label = get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/TitleLabel") as Label
 	_inventory_items = get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/InventoryItems") as VBoxContainer
+	_item_sheet = get_node_or_null("ItemSheet") as Control
+	_item_sheet_title = get_node_or_null("ItemSheet/VBox/ItemNameLabel") as Label
+	_item_sheet_description = get_node_or_null("ItemSheet/VBox/ItemDescriptionLabel") as Label
+	_item_sheet_effect = get_node_or_null("ItemSheet/VBox/ItemEffectLabel") as Label
+	_item_sheet_actions = get_node_or_null("ItemSheet/VBox/ActionButtons") as HBoxContainer
 
 
 func _clear_children(container: Node) -> void:
@@ -165,22 +176,53 @@ func _refresh_inventory() -> void:
 
 		var row := row_variant as Dictionary
 		var label_text := String(row.get("label", ""))
-		var drop_action_id := String(row.get("drop_action_id", ""))
-		if drop_action_id.is_empty():
+		var action_id := String(row.get("action_id", ""))
+		if action_id.is_empty():
 			var label := Label.new()
 			label.text = label_text
 			_inventory_items.add_child(label)
 			continue
 
-		var row_box := HBoxContainer.new()
-		row_box.add_theme_constant_override("separation", 8)
-		var row_label := Label.new()
-		row_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		row_label.text = label_text
-		row_box.add_child(row_label)
+		var item_button := Button.new()
+		item_button.text = label_text
+		item_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		item_button.pressed.connect(Callable(self, "_on_action_pressed").bind(action_id))
+		_inventory_items.add_child(item_button)
 
-		var drop_button := Button.new()
-		drop_button.text = "버린다"
-		drop_button.pressed.connect(Callable(self, "_on_action_pressed").bind(drop_action_id))
-		row_box.add_child(drop_button)
-		_inventory_items.add_child(row_box)
+
+func _refresh_item_sheet() -> void:
+	if _item_sheet == null:
+		return
+
+	if _director == null or not _director.has_method("get_selected_inventory_sheet"):
+		_item_sheet.visible = false
+		return
+
+	var sheet: Dictionary = _director.get_selected_inventory_sheet()
+	if not bool(sheet.get("visible", false)):
+		_item_sheet.visible = false
+		return
+
+	_item_sheet.visible = true
+	if _item_sheet_title != null:
+		_item_sheet_title.text = String(sheet.get("title", "아이템"))
+	if _item_sheet_description != null:
+		_item_sheet_description.text = String(sheet.get("description", ""))
+	if _item_sheet_effect != null:
+		_item_sheet_effect.text = String(sheet.get("effect_text", ""))
+
+	if _item_sheet_actions != null:
+		_clear_children(_item_sheet_actions)
+		for action_variant in sheet.get("actions", []):
+			if typeof(action_variant) != TYPE_DICTIONARY:
+				continue
+
+			var action := action_variant as Dictionary
+			var action_id := String(action.get("id", ""))
+			if action_id.is_empty():
+				continue
+
+			var button := Button.new()
+			button.text = String(action.get("label", action_id))
+			button.pressed.connect(Callable(self, "_on_action_pressed").bind(action_id))
+			_item_sheet_actions.add_child(button)

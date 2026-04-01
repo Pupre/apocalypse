@@ -94,3 +94,31 @@ text = "소지품"
 
 [node name="InventoryItems" type="VBoxContainer" parent="Panel/Layout/Sidebar/InventoryPanel/VBox"]
 theme_override_constants/separation = 6
+
+[node name="ItemSheet" type="PanelContainer" parent="."]
+visible = false
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 88.0
+offset_top = -220.0
+offset_right = -88.0
+offset_bottom = -24.0
+
+[node name="VBox" type="VBoxContainer" parent="ItemSheet"]
+theme_override_constants/separation = 10
+
+[node name="ItemNameLabel" type="Label" parent="ItemSheet/VBox"]
+text = "아이템"
+
+[node name="ItemDescriptionLabel" type="Label" parent="ItemSheet/VBox"]
+autowrap_mode = 3
+text = ""
+
+[node name="ItemEffectLabel" type="Label" parent="ItemSheet/VBox"]
+autowrap_mode = 3
+text = ""
+
+[node name="ActionButtons" type="HBoxContainer" parent="ItemSheet/VBox"]
+theme_override_constants/separation = 8

@@ -9,11 +9,13 @@ var _run_state = null
 var _building_data: Dictionary = {}
 var _event_data: Dictionary = {}
 var _event_state: Dictionary = _create_initial_event_state()
+var _selected_inventory_item_id := ""
 
 
 func configure(run_state, building_id: String) -> void:
 	_run_state = run_state
 	_building_data = _get_building_data(building_id)
+	_selected_inventory_item_id = ""
 	if _building_data.is_empty():
 		_event_data = {}
 		_event_state = _create_initial_event_state()
@@ -100,28 +102,9 @@ func get_feedback_message() -> String:
 
 
 func get_inventory_entries() -> Array[String]:
-	if _run_state == null or _run_state.inventory == null:
-		return ["소지품 없음"]
-
-	var counts := {}
-	var order: Array[String] = []
-	for item_variant in _run_state.inventory.items:
-		if typeof(item_variant) != TYPE_DICTIONARY:
-			continue
-
-		var item := item_variant as Dictionary
-		var label := String(item.get("name", item.get("id", "아이템")))
-		if not counts.has(label):
-			counts[label] = 0
-			order.append(label)
-		counts[label] = int(counts[label]) + 1
-
-	if order.is_empty():
-		return ["소지품 없음"]
-
 	var entries: Array[String] = []
-	for label in order:
-		entries.append("%s x%d" % [label, int(counts[label])])
+	for row in get_inventory_rows():
+		entries.append(String(row.get("label", "")))
 	return entries
 
 
@@ -134,11 +117,10 @@ func get_inventory_title() -> String:
 
 func get_inventory_rows() -> Array[Dictionary]:
 	if _run_state == null or _run_state.inventory == null:
-		return [{"label": "소지품 없음", "drop_action_id": ""}]
+		return [{"label": "소지품 없음", "action_id": ""}]
 
 	var rows: Array[Dictionary] = []
 	var counts := {}
-	var names := {}
 	var order: Array[String] = []
 	for item_variant in _run_state.inventory.items:
 		if typeof(item_variant) != TYPE_DICTIONARY:
@@ -150,20 +132,37 @@ func get_inventory_rows() -> Array[Dictionary]:
 			continue
 		if not counts.has(item_id):
 			counts[item_id] = 0
-			names[item_id] = String(item.get("name", item_id))
 			order.append(item_id)
 		counts[item_id] = int(counts[item_id]) + 1
 
 	if order.is_empty():
-		return [{"label": "소지품 없음", "drop_action_id": ""}]
+		return [{"label": "소지품 없음", "action_id": ""}]
 
 	for item_id in order:
+		var item_data := _item_definition(item_id)
 		rows.append({
-			"label": "%s x%d" % [String(names.get(item_id, item_id)), int(counts[item_id])],
-			"drop_action_id": "drop_%s" % item_id,
+			"label": "%s x%d" % [_item_name(item_data, item_id), int(counts[item_id])],
+			"action_id": "inspect_inventory_%s" % item_id,
 		})
 
 	return rows
+
+
+func get_selected_inventory_sheet() -> Dictionary:
+	if _selected_inventory_item_id.is_empty() or not _inventory_has_item(_selected_inventory_item_id):
+		return {"visible": false}
+
+	var item_data := _item_definition(_selected_inventory_item_id)
+	if item_data.is_empty():
+		return {"visible": false}
+
+	return {
+		"visible": true,
+		"title": _item_name(item_data, _selected_inventory_item_id),
+		"description": String(item_data.get("description", "")),
+		"effect_text": _item_effect_text(item_data),
+		"actions": _inventory_sheet_actions(item_data, _selected_inventory_item_id),
+	}
 
 
 func get_map_snapshot() -> Dictionary:
@@ -252,13 +251,55 @@ func get_map_snapshot() -> Dictionary:
 
 
 func apply_action(action_id: String) -> bool:
-	if action_id.begins_with("drop_"):
-		var item_id := action_id.trim_prefix("drop_")
+	if action_id.begins_with("inspect_inventory_"):
+		var inspect_item_id := action_id.trim_prefix("inspect_inventory_")
+		if not _inventory_has_item(inspect_item_id):
+			return false
+		_selected_inventory_item_id = inspect_item_id
+		state_changed.emit()
+		return true
+
+	if action_id == "close_inventory_sheet":
+		_selected_inventory_item_id = ""
+		state_changed.emit()
+		return true
+
+	if action_id.begins_with("drop_inventory_"):
+		var drop_item_id := action_id.trim_prefix("drop_inventory_")
 		if _run_state == null or _run_state.inventory == null:
 			return false
-		if not _run_state.inventory.remove_first_item_by_id(item_id):
+		var dropped_item: Dictionary = _run_state.inventory.take_first_item_by_id(drop_item_id)
+		if dropped_item.is_empty():
 			return false
-		_event_state["last_feedback_message"] = "%s 버렸다." % _inventory_item_name(item_id)
+		_selected_inventory_item_id = ""
+		_event_state["last_feedback_message"] = "%s 버렸다." % _item_name(dropped_item, drop_item_id)
+		state_changed.emit()
+		return true
+
+	if action_id.begins_with("consume_inventory_"):
+		var consume_item_id := action_id.trim_prefix("consume_inventory_")
+		var consume_item_data: Dictionary = _item_definition(consume_item_id)
+		if consume_item_data.is_empty() or _run_state == null or not _run_state.has_method("consume_inventory_item"):
+			return false
+		if not _run_state.consume_inventory_item(consume_item_id, consume_item_data):
+			return false
+		_selected_inventory_item_id = ""
+		_event_state["last_feedback_message"] = "%s 먹었다." % _item_name(consume_item_data, consume_item_id)
+		state_changed.emit()
+		return true
+
+	if action_id.begins_with("equip_inventory_"):
+		var equip_item_id := action_id.trim_prefix("equip_inventory_")
+		var equip_item_data: Dictionary = _item_definition(equip_item_id)
+		if equip_item_data.is_empty() or _run_state == null or not _run_state.has_method("equip_inventory_item"):
+			return false
+		var equip_result: Dictionary = _run_state.equip_inventory_item(equip_item_id, equip_item_data)
+		if not bool(equip_result.get("ok", false)):
+			_event_state["last_feedback_message"] = String(equip_result.get("message", "장착하지 못했다."))
+			state_changed.emit()
+			return true
+		_selected_inventory_item_id = ""
+		_event_state["last_feedback_message"] = "%s 장착했다." % _item_name(equip_item_data, equip_item_id)
 		state_changed.emit()
 		return true
 
@@ -336,17 +377,81 @@ func _string_ids(values) -> Array[String]:
 
 
 func _inventory_item_name(item_id: String) -> String:
+	return _item_name(_item_definition(item_id), item_id)
+
+
+func _inventory_has_item(item_id: String) -> bool:
 	if _run_state == null or _run_state.inventory == null:
-		return item_id
+		return false
 
 	for item_variant in _run_state.inventory.items:
 		if typeof(item_variant) != TYPE_DICTIONARY:
 			continue
-		var item := item_variant as Dictionary
-		if String(item.get("id", "")) == item_id:
-			return String(item.get("name", item_id))
+		if String((item_variant as Dictionary).get("id", "")) == item_id:
+			return true
+	return false
 
-	return item_id
+
+func _item_definition(item_id: String) -> Dictionary:
+	if item_id.is_empty():
+		return {}
+
+	if ContentLibrary != null and ContentLibrary.has_method("get_item"):
+		var item_data: Variant = ContentLibrary.get_item(item_id)
+		if typeof(item_data) == TYPE_DICTIONARY and not (item_data as Dictionary).is_empty():
+			return item_data
+
+	if _run_state != null and _run_state.inventory != null:
+		for item_variant in _run_state.inventory.items:
+			if typeof(item_variant) != TYPE_DICTIONARY:
+				continue
+			var item := item_variant as Dictionary
+			if String(item.get("id", "")) == item_id:
+				return item
+
+	return {}
+
+
+func _item_name(item_data: Dictionary, fallback_id: String) -> String:
+	return String(item_data.get("name", fallback_id if not fallback_id.is_empty() else "아이템"))
+
+
+func _item_effect_text(item_data: Dictionary) -> String:
+	var parts: Array[String] = []
+	var hunger_restore := int(item_data.get("hunger_restore", 0))
+	if hunger_restore > 0:
+		parts.append("포만감 +%d" % hunger_restore)
+	var carry_limit_bonus := int(item_data.get("carry_limit_bonus", 0))
+	if carry_limit_bonus > 0:
+		parts.append("소지 한도 +%d" % carry_limit_bonus)
+	var equip_slot := String(item_data.get("equip_slot", ""))
+	if not equip_slot.is_empty():
+		parts.append("장착 슬롯: %s" % equip_slot)
+
+	return "효과 없음" if parts.is_empty() else " / ".join(parts)
+
+
+func _inventory_sheet_actions(item_data: Dictionary, item_id: String) -> Array[Dictionary]:
+	var actions: Array[Dictionary] = []
+	if int(item_data.get("hunger_restore", 0)) > 0:
+		actions.append({
+			"id": "consume_inventory_%s" % item_id,
+			"label": "먹는다",
+		})
+	if not String(item_data.get("equip_slot", "")).is_empty():
+		actions.append({
+			"id": "equip_inventory_%s" % item_id,
+			"label": "장착한다",
+		})
+	actions.append({
+		"id": "drop_inventory_%s" % item_id,
+		"label": "버린다",
+	})
+	actions.append({
+		"id": "close_inventory_sheet",
+		"label": "닫기",
+	})
+	return actions
 
 
 func _sorted_edge_id(from_zone_id: String, to_zone_id: String) -> String:

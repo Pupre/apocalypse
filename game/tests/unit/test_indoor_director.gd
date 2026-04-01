@@ -85,6 +85,17 @@ func _run_test() -> void:
 		["back_hall|food_aisle", "back_hall|staff_corridor_gate", "food_aisle|mart_entrance"],
 		"The back area should not reveal hidden checkout links until the player actually travels through them."
 	)
+	assert_true(director.apply_action("search_back_hall_supplies"), "Director should allow searching the back area for supplies.")
+	assert_true(director.apply_action("take_back_hall_small_backpack_2"), "Director should allow taking the backpack as discovered loot.")
+	assert_true(director.apply_action("inspect_inventory_small_backpack"), "Director should allow selecting an inventory item for inspection.")
+	var selected_item_sheet: Dictionary = director.get_selected_inventory_sheet()
+	assert_eq(String(selected_item_sheet.get("title", "")), "작은 배낭", "Director should expose the selected item title for the bottom sheet.")
+	assert_true(
+		_action_ids(selected_item_sheet.get("actions", [])).has("equip_inventory_small_backpack"),
+		"Equippable inventory items should expose an equip action in the item sheet."
+	)
+	assert_true(director.apply_action("equip_inventory_small_backpack"), "Director should allow equipping the selected backpack.")
+	assert_eq(director.get_inventory_title(), "소지품 (0/12)", "Equipping the backpack should increase the carry limit in the inventory title.")
 
 	assert_true(director.apply_action("move_staff_corridor_gate"), "Director should allow moving to the staff door from the back area.")
 	assert_eq(
@@ -116,6 +127,15 @@ func _edge_ids(snapshot: Dictionary) -> Array[String]:
 		if not ids.has(edge_id):
 			ids.append(edge_id)
 	ids.sort()
+	return ids
+
+
+func _action_ids(actions) -> Array[String]:
+	var ids: Array[String] = []
+	for action_variant in actions:
+		if typeof(action_variant) != TYPE_DICTIONARY:
+			continue
+		ids.append(String((action_variant as Dictionary).get("id", "")))
 	return ids
 
 

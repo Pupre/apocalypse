@@ -25,8 +25,12 @@ func add_item(item: Dictionary) -> bool:
 
 
 func remove_first_item_by_id(item_id: String) -> bool:
+	return not take_first_item_by_id(item_id).is_empty()
+
+
+func take_first_item_by_id(item_id: String) -> Dictionary:
 	if item_id.is_empty():
-		return false
+		return {}
 
 	for index in range(items.size()):
 		var item := items[index]
@@ -34,6 +38,6 @@ func remove_first_item_by_id(item_id: String) -> bool:
 			continue
 
 		items.remove_at(index)
-		return true
+		return item
 
-	return false
+	return {}
