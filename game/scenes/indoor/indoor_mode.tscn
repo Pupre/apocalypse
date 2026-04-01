@@ -41,25 +41,13 @@ text = "실내"
 size_flags_horizontal = 3
 text = "위치: 확인 중"
 
-[node name="ExitButton" type="Button" parent="Panel/VBox/Header"]
-text = "건물 밖으로"
-
 [node name="SummaryLabel" type="Label" parent="Panel/VBox"]
 text = "방 안을 살펴 단서를 찾아본다."
 autowrap_mode = 3
 
-[node name="SleepPreviewLabel" type="Label" parent="Panel/VBox"]
-text = "수면 예상: 확인 불가"
-
 [node name="ResultLabel" type="Label" parent="Panel/VBox"]
 text = ""
 autowrap_mode = 3
-
-[node name="ClueHeadingLabel" type="Label" parent="Panel/VBox"]
-text = "단서"
-
-[node name="ClueList" type="VBoxContainer" parent="Panel/VBox"]
-theme_override_constants/separation = 6
 
 [node name="ActionHeadingLabel" type="Label" parent="Panel/VBox"]
 text = "행동"

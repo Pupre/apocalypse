@@ -60,10 +60,9 @@ func _run_test() -> void:
 	indoor_mode.exit_requested.connect(Callable(self, "_on_exit_requested"))
 
 	var exit_button := indoor_mode.get_node_or_null("Panel/VBox/Header/ExitButton") as Button
-	if not assert_true(exit_button != null, "Indoor mode should expose an ExitButton."):
+	if not assert_true(exit_button == null, "Indoor mode should no longer expose a global ExitButton."):
 		indoor_mode.free()
 		return
-	assert_eq(exit_button.text, "건물 밖으로", "Indoor mode should label the exit action as 건물 밖으로.")
 
 	var location_label := indoor_mode.get_node_or_null("Panel/VBox/Header/LocationLabel") as Label
 	if not assert_true(location_label != null, "Indoor mode should expose a LocationLabel."):
@@ -75,10 +74,39 @@ func _run_test() -> void:
 		"Indoor mode should show the mart entry zone label after configure."
 	)
 
+	var summary_label := indoor_mode.get_node_or_null("Panel/VBox/SummaryLabel") as Label
+	if not assert_true(summary_label != null, "Indoor mode should expose a current-zone SummaryLabel."):
+		indoor_mode.free()
+		return
+	assert_eq(
+		summary_label.text,
+		"깨진 자동문과 쓰러진 장바구니가 보인다.",
+		"Indoor mode should show the current zone summary instead of the building summary."
+	)
+
+	var sleep_preview_label := indoor_mode.get_node_or_null("Panel/VBox/SleepPreviewLabel") as Label
+	if not assert_true(sleep_preview_label == null, "Indoor mode should hide sleep preview from the main reading surface."):
+		indoor_mode.free()
+		return
+
+	var clue_list := indoor_mode.get_node_or_null("Panel/VBox/ClueList") as VBoxContainer
+	if not assert_true(clue_list == null, "Indoor mode should hide the persistent clue list from the main reading surface."):
+		indoor_mode.free()
+		return
+
 	var backdrop := indoor_mode.get_node_or_null("Backdrop") as ColorRect
 	if not assert_true(backdrop != null, "Indoor mode should expose a Backdrop node for the reading surface."):
 		indoor_mode.free()
 		return
+
+	var action_buttons := indoor_mode.get_node_or_null("Panel/VBox/ActionButtons") as VBoxContainer
+	if not assert_true(action_buttons != null, "Indoor mode should expose action buttons."):
+		indoor_mode.free()
+		return
+	assert_true(
+		_find_button_by_text(action_buttons, "건물 밖으로 나간다") != null,
+		"Indoor mode should expose leaving the building as a contextual action at the entrance."
+	)
 
 	var director := indoor_mode.get_node_or_null("Director")
 	if not assert_true(director != null and director.has_method("apply_action"), "Indoor mode should expose its Director node."):
@@ -94,8 +122,31 @@ func _run_test() -> void:
 		"위치: 계산대",
 		"Indoor mode should refresh the location label after the director changes zone."
 	)
+	assert_eq(
+		summary_label.text,
+		"계산대 뒤쪽에는 창고로 이어지는 문이 있다.",
+		"Indoor mode should update the summary for the current zone after moving."
+	)
+	assert_true(
+		_find_button_by_text(action_buttons, "건물 밖으로 나간다") == null,
+		"Indoor mode should hide the leave-building action away from the entrance."
+	)
 
-	exit_button.emit_signal("pressed")
+	assert_true(
+		director.apply_action("move_mart_entrance"),
+		"Director should allow moving back to the mart entrance."
+	)
+	assert_true(
+		_find_button_by_text(action_buttons, "건물 밖으로 나간다") != null,
+		"Indoor mode should restore the contextual leave-building action when back at the entrance."
+	)
+
+	var exit_action_button := _find_button_by_text(action_buttons, "건물 밖으로 나간다")
+	if not assert_true(exit_action_button != null, "Indoor mode should surface a clickable leave-building action."):
+		indoor_mode.free()
+		return
+
+	exit_action_button.emit_signal("pressed")
 	assert_eq(_exit_requested_count, 1, "Pressing ExitButton should emit exit_requested exactly once.")
 
 	indoor_mode.free()
@@ -104,6 +155,18 @@ func _run_test() -> void:
 
 func _on_exit_requested() -> void:
 	_exit_requested_count += 1
+
+
+func _find_button_by_text(container: VBoxContainer, expected_text: String) -> Button:
+	if container == null:
+		return null
+
+	for child in container.get_children():
+		var button := child as Button
+		if button != null and button.text == expected_text:
+			return button
+
+	return null
 
 
 func get_job(job_id: String) -> Dictionary:

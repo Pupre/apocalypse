@@ -202,6 +202,18 @@ func _run_test() -> void:
 		return
 	assert_eq(location_label.text, "위치: 정문 진입부", "Indoor mode should begin at the mart entrance zone.")
 
+	var summary_label := indoor_mode.get_node_or_null("Panel/VBox/SummaryLabel") as Label
+	if not assert_true(summary_label != null, "Indoor mode should expose a current-zone summary label."):
+		bootstrap.free()
+		return
+	assert_eq(summary_label.text, "깨진 자동문과 쓰러진 장바구니가 보인다.", "Indoor mode should describe the current entrance zone.")
+
+	var clue_list := indoor_mode.get_node_or_null("Panel/VBox/ClueList") as VBoxContainer
+	assert_true(clue_list == null, "Indoor mode should not expose a persistent clue list in the main layout.")
+
+	var sleep_preview_label := indoor_mode.get_node_or_null("Panel/VBox/SleepPreviewLabel") as Label
+	assert_true(sleep_preview_label == null, "Indoor mode should not expose sleep preview in the main layout.")
+
 	var action_buttons := indoor_mode.get_node_or_null("Panel/VBox/ActionButtons") as VBoxContainer
 	if not assert_true(action_buttons != null, "Indoor action buttons should be mounted in the UI tree."):
 		bootstrap.free()
@@ -209,6 +221,10 @@ func _run_test() -> void:
 	if not assert_true(action_buttons.get_child_count() > 0, "The indoor UI should expose at least one action button."):
 		bootstrap.free()
 		return
+	assert_true(
+		_buttons_include_text(action_buttons, "건물 밖으로 나간다"),
+		"The entrance zone should expose leaving the building as a contextual action."
+	)
 
 	var move_checkout_button := _find_button_by_text(action_buttons, "계산대로 이동한다")
 	if not assert_true(move_checkout_button != null, "Indoor mode should expose a movement action into checkout."):
@@ -228,10 +244,15 @@ func _run_test() -> void:
 	):
 		bootstrap.free()
 		return
+	assert_eq(summary_label.text, "계산대 뒤쪽에는 창고로 이어지는 문이 있다.", "Indoor mode should update the summary for the checkout zone.")
 
 	assert_true(
 		_buttons_include_text(action_buttons, "조용히 서랍을 연다"),
 		"Checkout should expose its local search action."
+	)
+	assert_true(
+		not _buttons_include_text(action_buttons, "건물 밖으로 나간다"),
+		"Leaving the building should not stay visible away from the entrance."
 	)
 
 	var checkout_search_button := _find_button_by_text(action_buttons, "조용히 서랍을 연다")
@@ -260,12 +281,29 @@ func _run_test() -> void:
 	assert_eq(hud_clock_label.text, "1일차 11:00", "The checkout search should advance shared time.")
 	assert_true(result_label.text.find("30분 동안 수색했다.") != -1, "Indoor feedback should describe the spent time.")
 
-	var exit_button := indoor_mode.get_node_or_null("Panel/VBox/Header/ExitButton") as Button
-	if not assert_true(exit_button != null, "Indoor mode should expose an ExitButton for returning outside."):
+	var return_to_entrance_button := _find_button_by_text(action_buttons, "정문 진입부로 이동한다")
+	if not assert_true(return_to_entrance_button != null, "Checkout should allow returning to the entrance zone."):
 		bootstrap.free()
 		return
 
-	exit_button.emit_signal("pressed")
+	return_to_entrance_button.emit_signal("pressed")
+	if not await _wait_until(
+		Callable(self, "_label_text_is").bind(location_label, "위치: 정문 진입부"),
+		"Timed out waiting for the indoor location to return to the entrance."
+	):
+		bootstrap.free()
+		return
+	assert_true(
+		_buttons_include_text(action_buttons, "건물 밖으로 나간다"),
+		"The entrance zone should restore the contextual leave-building action."
+	)
+
+	var exit_action_button := _find_button_by_text(action_buttons, "건물 밖으로 나간다")
+	if not assert_true(exit_action_button != null, "Indoor mode should expose a leave-building action at the entrance."):
+		bootstrap.free()
+		return
+
+	exit_action_button.emit_signal("pressed")
 	if not await _await_transition_completion(
 		run_shell,
 		hud_title_label,
@@ -278,7 +316,7 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
-	assert_eq(run_shell.get_current_mode_name(), "outdoor", "Pressing ExitButton should return the run shell to outdoor mode.")
+	assert_eq(run_shell.get_current_mode_name(), "outdoor", "Pressing the entrance leave action should return the run shell to outdoor mode.")
 	assert_eq(hud_title_label.text, "외부 생존 정보", "Returning outside should restore the outdoor HUD presentation.")
 	assert_eq(fade_rect.color.a, 0.0, "The transition layer should end transparent after leaving the building.")
 

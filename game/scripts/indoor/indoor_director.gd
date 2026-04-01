@@ -56,12 +56,32 @@ func get_current_zone_label() -> String:
 	return current_zone_id
 
 
-func get_visible_clues() -> Array[Dictionary]:
-	return _resolver.get_visible_clues(_event_data, _event_state)
+func get_current_zone_summary() -> String:
+	var current_zone_id := get_current_zone_id()
+	if current_zone_id.is_empty() or _event_data.is_empty():
+		return get_event_summary()
+
+	var current_zone := _resolver.get_zone(_event_data, current_zone_id)
+	if current_zone.is_empty():
+		return get_event_summary()
+
+	var zone_summary := String(current_zone.get("summary", ""))
+	if not zone_summary.is_empty():
+		return zone_summary
+
+	return get_event_summary()
 
 
 func get_actions() -> Array[Dictionary]:
-	return _resolver.get_actions(_event_data, _event_state)
+	var actions := _resolver.get_actions(_event_data, _event_state)
+	if _is_at_entry_zone():
+		actions.append({
+			"id": "exit_building",
+			"label": "건물 밖으로 나간다",
+			"type": "exit",
+		})
+
+	return actions
 
 
 func get_sleep_preview() -> Dictionary:
@@ -73,6 +93,9 @@ func get_feedback_message() -> String:
 
 
 func apply_action(action_id: String) -> bool:
+	if action_id == "exit_building":
+		return true
+
 	if not _resolver.apply_action(_run_state, _event_data, _event_state, action_id):
 		return false
 
@@ -101,3 +124,7 @@ func _create_initial_event_state(current_zone_id: String = "") -> Dictionary:
 		"zone_flags": {},
 		"noise": 0,
 	}
+
+
+func _is_at_entry_zone() -> bool:
+	return get_current_zone_id() == _resolver.get_entry_zone_id(_event_data)
