@@ -73,7 +73,7 @@ func get_current_zone_summary() -> String:
 
 
 func get_actions() -> Array[Dictionary]:
-	var actions := _format_action_labels(_resolver.get_actions(_event_data, _event_state))
+	var actions := _format_action_labels(_resolver.get_actions(_event_data, _event_state, _run_state))
 	if _is_at_entry_zone():
 		actions.append({
 			"id": "exit_building",
@@ -142,6 +142,7 @@ func get_map_snapshot() -> Dictionary:
 		_append_unique(visible_zone_ids, String(connected_zone_id_variant))
 
 	var nodes: Array[Dictionary] = []
+	var current_floor_id := String(current_zone.get("floor_id", ""))
 	for zone_id in visible_zone_ids:
 		var zone := _resolver.get_zone(_event_data, zone_id)
 		if zone.is_empty():
@@ -157,6 +158,7 @@ func get_map_snapshot() -> Dictionary:
 			"id": zone_id,
 			"label": _map_label_for_zone(zone, state),
 			"state": state,
+			"floor_id": String(zone.get("floor_id", "")),
 			"map_position": zone.get("map_position", [0, 0]),
 		})
 
@@ -201,6 +203,8 @@ func get_map_snapshot() -> Dictionary:
 		})
 
 	return {
+		"current_zone_id": current_zone_id,
+		"current_floor_id": current_floor_id,
 		"nodes": nodes,
 		"edges": edges,
 	}
@@ -234,6 +238,7 @@ func _create_initial_event_state(current_zone_id: String = "") -> Dictionary:
 		"current_zone_id": current_zone_id,
 		"visited_zone_ids": visited_zone_ids,
 		"traversed_edge_ids": PackedStringArray(),
+		"zone_found_loot": {},
 		"revealed_clue_ids": PackedStringArray(),
 		"spent_action_ids": PackedStringArray(),
 		"zone_flags": {},

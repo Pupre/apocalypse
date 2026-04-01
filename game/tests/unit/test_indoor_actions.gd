@@ -87,6 +87,7 @@ func _run_test() -> void:
 	var actions: Array = resolver.get_actions(event_data, event_state)
 	assert_true(_action_ids(actions).has("move_checkout"), "Entrance should expose movement into checkout.")
 	assert_true(_action_ids(actions).has("move_food_aisle"), "Entrance should expose movement into food aisle.")
+	assert_true(_action_ids(actions).has("search_mart_entrance"), "Entrance should expose its own search action.")
 	assert_true(not _action_ids(actions).has("rest"), "Entrance should not expose the removed flat rest action.")
 	assert_true(not _action_ids(actions).has("search_counter"), "Entrance should not expose checkout-only search actions.")
 
@@ -112,7 +113,7 @@ func _run_test() -> void:
 	assert_eq(run_state.inventory.total_bulk(), 0, "Moving zones should not add loot on its own.")
 
 	actions = resolver.get_actions(event_data, event_state)
-	assert_true(_action_ids(actions).has("search_checkout_drawer"), "Checkout should expose its local drawer search after entering the zone.")
+	assert_true(_action_ids(actions).has("search_checkout_counter"), "Checkout should expose its local search after entering the zone.")
 	assert_true(not _action_ids(actions).has("rest"), "Checkout should not expose the removed flat rest action.")
 
 	assert_true(
@@ -139,21 +140,18 @@ func _run_test() -> void:
 
 	var checkout_actions: Array = resolver.get_actions(event_data, checkout_event_state)
 	assert_true(
-		_action_ids(checkout_actions).has("search_checkout_drawer"),
-		"Checkout should expose its local drawer search option."
+		_action_ids(checkout_actions).has("search_checkout_counter"),
+		"Checkout should expose its local search option."
 	)
 	assert_true(
 		_action_ids(checkout_actions).has("move_staff_corridor_gate"),
 		"Checkout should expose movement toward the staff gate."
 	)
-	assert_true(
-		not _action_ids(checkout_actions).has("force_staff_corridor_gate"),
-		"Checkout gate forcing should stay gated until the drawer flag is set."
-	)
 
 	var hall_state := {
 		"current_zone_id": "back_hall",
 		"visited_zone_ids": PackedStringArray(["mart_entrance", "food_aisle", "back_hall"]),
+		"traversed_edge_ids": PackedStringArray(["food_aisle|mart_entrance", "back_hall|food_aisle"]),
 		"revealed_clue_ids": PackedStringArray(),
 		"spent_action_ids": PackedStringArray(),
 		"zone_flags": {},
@@ -161,6 +159,10 @@ func _run_test() -> void:
 	}
 
 	var hall_actions: Array = resolver.get_actions(event_data, hall_state)
+	assert_true(
+		_action_ids(hall_actions).has("search_back_hall_supplies"),
+		"Back hall should expose a supply search action."
+	)
 	assert_true(
 		_action_ids(hall_actions).has("wait_and_listen"),
 		"Back hall should expose a human-encounter-ready wait and listen option."
@@ -172,87 +174,178 @@ func _run_test() -> void:
 
 	var before_checkout_clock_minute_of_day: int = checkout_run_state.clock.minute_of_day
 	assert_true(
-		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "search_checkout_drawer"),
-		"Checkout drawer search should resolve through the indoor resolver."
+		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "search_checkout_counter"),
+		"Checkout search should resolve through the indoor resolver."
 	)
 	assert_eq(
 		checkout_run_state.clock.minute_of_day,
 		before_checkout_clock_minute_of_day + ACTIVE_SEARCH_MINUTES,
-		"Checkout drawer search should spend its minute cost."
+		"Checkout search should spend its minute cost."
 	)
 	assert_true(
 		_string_values(checkout_event_state.get("revealed_clue_ids", [])).has("staff_key_board_hint"),
-		"Searching the checkout drawer should reveal the staff key board clue."
+		"Searching the checkout should reveal the staff key board clue."
 	)
 	var checkout_zone_flags: Dictionary = checkout_event_state.get("zone_flags", {})
 	assert_true(
-		checkout_zone_flags.has("checkout_drawer_opened"),
-		"Searching the checkout drawer should set its zone flag."
+		checkout_zone_flags.has("checkout_counter_searched"),
+		"Searching the checkout should set its zone flag."
+	)
+	assert_eq(
+		checkout_run_state.inventory.total_bulk(),
+		0,
+		"Searching the checkout should only reveal loot, not add it immediately."
+	)
+	assert_true(
+		String(checkout_event_state.get("last_feedback_message", "")).find("발견") != -1,
+		"Searching the checkout should report discovered loot."
+	)
+	assert_true(
+		not _action_ids(resolver.get_actions(event_data, checkout_event_state)).has("search_checkout_counter"),
+		"Checkout search should be consumed after use."
+	)
+	checkout_actions = resolver.get_actions(event_data, checkout_event_state)
+	assert_true(
+		_action_ids(checkout_actions).has("take_checkout_lighter_0"),
+		"Searching the checkout should reveal a take action for the lighter."
+	)
+	assert_true(
+		_action_ids(checkout_actions).has("take_checkout_energy_bar_1"),
+		"Searching the checkout should reveal a take action for the snack."
+	)
+	assert_true(
+		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "take_checkout_lighter_0"),
+		"Revealed checkout loot should be collectible with a separate action."
 	)
 	assert_eq(
 		checkout_run_state.inventory.total_bulk(),
 		1,
-		"Searching the checkout drawer should add one loot item."
+		"Picking up a revealed item should add it to inventory."
 	)
 	assert_true(
-		not _action_ids(resolver.get_actions(event_data, checkout_event_state)).has("search_checkout_drawer"),
-		"Checkout drawer search should be consumed after use."
+		not _action_ids(resolver.get_actions(event_data, checkout_event_state)).has("take_checkout_lighter_0"),
+		"Collected loot should disappear from the revealed action list."
 	)
 
-	checkout_actions = resolver.get_actions(event_data, checkout_event_state)
-	assert_true(
-		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "move_staff_corridor_gate"),
-		"Checkout flow should allow movement into the staff gate zone."
-	)
-	assert_eq(
-		String(checkout_event_state.get("current_zone_id", "")),
-		"staff_corridor_gate",
-		"Moving after the checkout search should change the current zone."
-	)
+	var toolless_gate_run_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, self)
+	if not assert_true(toolless_gate_run_state != null, "RunState should build for locked gate tests."):
+		return
 
-	checkout_actions = resolver.get_actions(event_data, checkout_event_state)
+	var toolless_gate_state := {
+		"current_zone_id": "staff_corridor_gate",
+		"visited_zone_ids": PackedStringArray(["mart_entrance", "food_aisle", "back_hall", "staff_corridor_gate"]),
+		"traversed_edge_ids": PackedStringArray(["food_aisle|mart_entrance", "back_hall|food_aisle", "back_hall|staff_corridor_gate"]),
+		"revealed_clue_ids": PackedStringArray(),
+		"spent_action_ids": PackedStringArray(),
+		"zone_flags": {},
+		"noise": 0,
+	}
+
+	checkout_actions = resolver.get_actions(event_data, toolless_gate_state, toolless_gate_run_state)
 	assert_true(
 		_action_ids(checkout_actions).has("force_staff_corridor_gate"),
-		"Staff gate zone should expose the force option after the drawer flag is set."
+		"Staff gate zone should keep the force option visible even without the tool."
+	)
+	assert_true(
+		bool(_action_by_id(checkout_actions, "force_staff_corridor_gate").get("locked", false)),
+		"The force option should be marked as locked until the player finds a tool."
 	)
 	assert_true(
 		_action_ids(checkout_actions).has("move_stair_landing"),
 		"The second-floor landing should remain visible as a locked route before the gate is forced."
 	)
-	var blocked_attempt_clock_minute_of_day: int = checkout_run_state.clock.minute_of_day
+	var blocked_force_clock_minute_of_day: int = toolless_gate_run_state.clock.minute_of_day
 	assert_true(
-		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "move_stair_landing"),
+		resolver.apply_action(toolless_gate_run_state, event_data, toolless_gate_state, "force_staff_corridor_gate"),
+		"Trying to force the staff gate without a tool should resolve with feedback."
+	)
+	assert_eq(
+		toolless_gate_run_state.clock.minute_of_day,
+		blocked_force_clock_minute_of_day,
+		"Trying to force the gate without a tool should not spend time."
+	)
+	assert_true(
+		String(toolless_gate_state.get("last_feedback_message", "")).find("공구") != -1,
+		"Trying to force the gate without a tool should explain the missing tool."
+	)
+	var blocked_attempt_clock_minute_of_day: int = toolless_gate_run_state.clock.minute_of_day
+	assert_true(
+		resolver.apply_action(toolless_gate_run_state, event_data, toolless_gate_state, "move_stair_landing"),
 		"Trying the locked second-floor route should still resolve with feedback."
 	)
 	assert_eq(
-		String(checkout_event_state.get("current_zone_id", "")),
+		String(toolless_gate_state.get("current_zone_id", "")),
 		"staff_corridor_gate",
 		"Trying the locked second-floor route should not change the current zone."
 	)
 	assert_eq(
-		checkout_run_state.clock.minute_of_day,
+		toolless_gate_run_state.clock.minute_of_day,
 		blocked_attempt_clock_minute_of_day,
 		"Trying a locked route should not spend travel time."
 	)
 	assert_true(
-		String(checkout_event_state.get("last_feedback_message", "")).find("잠겨") != -1,
+		String(toolless_gate_state.get("last_feedback_message", "")).find("잠겨") != -1,
 		"Trying a locked route should explain that the door is locked."
 	)
 
+	var gate_run_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, self)
+	if not assert_true(gate_run_state != null, "RunState should build for tooled gate tests."):
+		return
+
+	var gate_event_state := {
+		"current_zone_id": "back_hall",
+		"visited_zone_ids": PackedStringArray(["mart_entrance", "food_aisle", "back_hall"]),
+		"traversed_edge_ids": PackedStringArray(["food_aisle|mart_entrance", "back_hall|food_aisle"]),
+		"revealed_clue_ids": PackedStringArray(),
+		"spent_action_ids": PackedStringArray(),
+		"zone_flags": {},
+		"noise": 0,
+	}
 	assert_true(
-		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "force_staff_corridor_gate"),
+		resolver.apply_action(gate_run_state, event_data, gate_event_state, "search_back_hall_supplies"),
+		"Back hall search should reveal supply loot."
+	)
+	assert_true(
+		_action_ids(resolver.get_actions(event_data, gate_event_state, gate_run_state)).has("take_back_hall_screwdriver_0"),
+		"Back hall search should reveal a take action for the screwdriver."
+	)
+	assert_true(
+		resolver.apply_action(gate_run_state, event_data, gate_event_state, "take_back_hall_screwdriver_0"),
+		"The player should be able to pick up the screwdriver after finding it."
+	)
+	assert_true(
+		resolver.apply_action(gate_run_state, event_data, gate_event_state, "move_staff_corridor_gate"),
+		"Back hall progression should still allow moving into the staff gate zone."
+	)
+
+	checkout_actions = resolver.get_actions(event_data, gate_event_state, gate_run_state)
+	assert_true(
+		not bool(_action_by_id(checkout_actions, "force_staff_corridor_gate").get("locked", false)),
+		"Finding the screwdriver should unlock the force-gate action."
+	)
+
+	assert_true(
+		resolver.apply_action(gate_run_state, event_data, gate_event_state, "force_staff_corridor_gate"),
 		"Checkout gate forcing should resolve through the same resolver path."
 	)
 	assert_true(
-		checkout_zone_flags.has("staff_gate_forced"),
+		bool((gate_event_state.get("zone_flags", {}) as Dictionary).has("staff_gate_forced")),
 		"Forcing the staff gate should set its zone flag."
 	)
 	assert_eq(
-		int(checkout_event_state.get("noise", 0)),
+		int(gate_event_state.get("noise", 0)),
 		2,
 		"Forcing the staff gate should add its noise cost."
 	)
-	checkout_actions = resolver.get_actions(event_data, checkout_event_state)
+	checkout_actions = resolver.get_actions(event_data, gate_event_state, gate_run_state)
 	assert_true(
 		_action_ids(checkout_actions).has("move_stair_landing"),
 		"Forcing the staff gate should unlock movement into the second-floor landing."
@@ -263,15 +356,15 @@ func _run_test() -> void:
 	)
 
 	assert_true(
-		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "move_stair_landing"),
+		resolver.apply_action(gate_run_state, event_data, gate_event_state, "move_stair_landing"),
 		"Staff gate flow should allow moving into the second-floor landing."
 	)
 	assert_eq(
-		String(checkout_event_state.get("current_zone_id", "")),
+		String(gate_event_state.get("current_zone_id", "")),
 		"stair_landing",
 		"Moving after forcing the gate should enter the second-floor landing."
 	)
-	var landing_actions: Array = resolver.get_actions(event_data, checkout_event_state)
+	var landing_actions: Array = resolver.get_actions(event_data, gate_event_state, gate_run_state)
 	assert_true(
 		_action_ids(landing_actions).has("move_break_room"),
 		"Second-floor landing should expose movement into the break room."
@@ -286,10 +379,10 @@ func _run_test() -> void:
 	)
 
 	assert_true(
-		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "move_warehouse"),
+		resolver.apply_action(gate_run_state, event_data, gate_event_state, "move_warehouse"),
 		"Second-floor landing should allow moving into the warehouse."
 	)
-	var warehouse_actions: Array = resolver.get_actions(event_data, checkout_event_state)
+	var warehouse_actions: Array = resolver.get_actions(event_data, gate_event_state, gate_run_state)
 	assert_true(
 		_action_ids(warehouse_actions).has("move_locked_storage"),
 		"Locked storage should stay visible as a locked route until the office yields the storage key."
@@ -298,57 +391,57 @@ func _run_test() -> void:
 		bool(_action_by_id(warehouse_actions, "move_locked_storage").get("locked", false)),
 		"Locked storage should be marked as locked before the office yields the storage key."
 	)
-	var blocked_storage_clock_minute_of_day: int = checkout_run_state.clock.minute_of_day
+	var blocked_storage_clock_minute_of_day: int = gate_run_state.clock.minute_of_day
 	assert_true(
-		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "move_locked_storage"),
+		resolver.apply_action(gate_run_state, event_data, gate_event_state, "move_locked_storage"),
 		"Trying the locked storage route should resolve with blocked feedback."
 	)
 	assert_eq(
-		String(checkout_event_state.get("current_zone_id", "")),
+		String(gate_event_state.get("current_zone_id", "")),
 		"warehouse",
 		"Trying the locked storage route should leave the player in the warehouse."
 	)
 	assert_eq(
-		checkout_run_state.clock.minute_of_day,
+		gate_run_state.clock.minute_of_day,
 		blocked_storage_clock_minute_of_day,
 		"Trying the locked storage route should not spend travel time."
 	)
 	assert_true(
-		String(checkout_event_state.get("last_feedback_message", "")).find("잠겨") != -1,
+		String(gate_event_state.get("last_feedback_message", "")).find("잠겨") != -1,
 		"Trying the locked storage route should explain that the way is locked."
 	)
 
 	assert_true(
-		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "move_stair_landing"),
+		resolver.apply_action(gate_run_state, event_data, gate_event_state, "move_stair_landing"),
 		"Warehouse should allow returning to the second-floor landing."
 	)
 	assert_true(
-		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "move_office"),
+		resolver.apply_action(gate_run_state, event_data, gate_event_state, "move_office"),
 		"Second-floor landing should allow moving into the office."
 	)
-	var office_actions: Array = resolver.get_actions(event_data, checkout_event_state)
+	var office_actions: Array = resolver.get_actions(event_data, gate_event_state, gate_run_state)
 	assert_true(
 		_action_ids(office_actions).has("search_office_drawer"),
 		"Office should expose a drawer search that can unlock the deeper storage room."
 	)
 	assert_true(
-		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "search_office_drawer"),
+		resolver.apply_action(gate_run_state, event_data, gate_event_state, "search_office_drawer"),
 		"Office drawer search should resolve through the indoor resolver."
 	)
 	assert_true(
-		checkout_zone_flags.has("storage_key_found"),
+		bool((gate_event_state.get("zone_flags", {}) as Dictionary).has("storage_key_found")),
 		"Office drawer search should set the storage-key progression flag."
 	)
 
 	assert_true(
-		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "move_stair_landing"),
+		resolver.apply_action(gate_run_state, event_data, gate_event_state, "move_stair_landing"),
 		"Office should allow returning to the second-floor landing."
 	)
 	assert_true(
-		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "move_warehouse"),
+		resolver.apply_action(gate_run_state, event_data, gate_event_state, "move_warehouse"),
 		"Second-floor landing should allow returning to the warehouse."
 	)
-	warehouse_actions = resolver.get_actions(event_data, checkout_event_state)
+	warehouse_actions = resolver.get_actions(event_data, gate_event_state, gate_run_state)
 	assert_true(
 		_action_ids(warehouse_actions).has("move_locked_storage"),
 		"Finding the office key should unlock warehouse access to the locked storage."
@@ -401,16 +494,25 @@ func _run_test() -> void:
 		"noise": 0,
 	}
 	assert_true(
-		resolver.apply_action(full_run_state, event_data, overflow_event_state, "search_checkout_drawer"),
-		"Overflow tests should still resolve the action."
+		resolver.apply_action(full_run_state, event_data, overflow_event_state, "search_checkout_counter"),
+		"Overflow tests should still resolve the search action."
 	)
 	assert_eq(
 		full_run_state.inventory.total_bulk(),
 		full_run_state.inventory.carry_limit,
-		"Loot should stay out of the inventory when it cannot fit."
+		"Searching should not auto-loot even when inventory is full."
 	)
 	assert_true(
-		String(overflow_event_state.get("last_feedback_message", "")).find("통조림 콩") != -1,
+		resolver.apply_action(full_run_state, event_data, overflow_event_state, "take_checkout_lighter_0"),
+		"Overflow tests should still resolve the take action."
+	)
+	assert_eq(
+		full_run_state.inventory.total_bulk(),
+		full_run_state.inventory.carry_limit,
+		"Taking loot should fail to add the item when the inventory is already full."
+	)
+	assert_true(
+		String(overflow_event_state.get("last_feedback_message", "")).find("라이터") != -1,
 		"Overflowing loot should leave feedback that names the blocked item."
 	)
 

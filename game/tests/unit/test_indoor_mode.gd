@@ -176,7 +176,7 @@ func _run_test() -> void:
 		"Indoor mode should advance and display time after moving between zones."
 	)
 	assert_true(
-		_find_button_by_text(action_buttons, "조용히 서랍을 연다 (30분)") != null,
+		_find_button_by_text(action_buttons, "계산대를 탐색한다 (30분)") != null,
 		"Indoor mode should show time cost on local zone actions."
 	)
 	assert_eq(
@@ -190,8 +190,8 @@ func _run_test() -> void:
 	)
 
 	assert_true(
-		director.apply_action("search_checkout_drawer"),
-		"Director should resolve the checkout drawer search within the checkout zone."
+		director.apply_action("search_checkout_counter"),
+		"Director should resolve the checkout search within the checkout zone."
 	)
 	await process_frame
 	assert_true(
@@ -199,13 +199,27 @@ func _run_test() -> void:
 		"Indoor summary should stay tied to the current zone after searching."
 	)
 	assert_true(
-		result_label.text.find("통조림 콩") != -1,
-		"Indoor result feedback should mention the item the player just looted."
+		result_label.text.find("발견") != -1 and result_label.text.find("라이터") != -1,
+		"Indoor result feedback should mention the items the player just found."
 	)
 	assert_eq(
 		_inventory_labels(inventory_items),
-		["통조림 콩 x1"],
-		"Indoor inventory should list newly looted items."
+		["소지품 없음"],
+		"Searching should not add loot to inventory until the player picks an item."
+	)
+	assert_true(
+		_find_button_by_text(action_buttons, "라이터 챙긴다") != null,
+		"Searching should reveal follow-up actions for each discovered item."
+	)
+	assert_true(
+		director.apply_action("take_checkout_lighter_0"),
+		"Director should allow picking up a discovered item with a separate action."
+	)
+	await process_frame
+	assert_eq(
+		_inventory_labels(inventory_items),
+		["라이터 x1"],
+		"Picking up a discovered item should update the indoor inventory list."
 	)
 
 	assert_true(

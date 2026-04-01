@@ -35,8 +35,8 @@ func _run_test() -> void:
 	assert_eq(String(entrance_zone.get("floor_id", "")), "floor_1", "Entry zone should expose its floor id.")
 	assert_eq(
 		_sorted_strings(entrance_zone.get("event_ids", [])),
-		PackedStringArray(),
-		"Entry zone should expose an explicit event id list even when empty."
+		PackedStringArray(["entrance_search_event"]),
+		"Entry zone should expose its local search event id."
 	)
 	assert_eq(
 		_sorted_strings(entrance_zone.get("connected_zone_ids", [])),
@@ -71,8 +71,8 @@ func _run_test() -> void:
 	var zone_aware_actions: Array = resolver.get_actions(event_data, event_state)
 	assert_eq(
 		_sorted_action_ids(zone_aware_actions),
-		PackedStringArray(["move_checkout", "move_food_aisle"]),
-		"Zone-aware action queries should only expose entrance-valid actions at the mart entrance."
+		PackedStringArray(["move_checkout", "move_food_aisle", "search_mart_entrance"]),
+		"Zone-aware action queries should expose the entrance search alongside the entrance-valid movement actions."
 	)
 
 	var run_state := FakeRunState.new()
@@ -98,8 +98,8 @@ func _run_test() -> void:
 		"Checkout should still expose the return path through zone-aware get_actions."
 	)
 	assert_true(
-		_action_ids(zone_aware_actions).has("search_checkout_drawer"),
-		"Checkout should expose its local drawer search only after entering the checkout zone."
+		_action_ids(zone_aware_actions).has("search_checkout_counter"),
+		"Checkout should expose its local search only after entering the checkout zone."
 	)
 
 	var staff_gate_zone: Dictionary = resolver.get_zone(event_data, "staff_corridor_gate")
@@ -117,6 +117,14 @@ func _run_test() -> void:
 		"spent_action_ids": PackedStringArray(),
 	}
 	var staff_gate_actions: Array = resolver.get_actions(event_data, staff_gate_state)
+	assert_true(
+		_action_ids(staff_gate_actions).has("force_staff_corridor_gate"),
+		"Staff gate should keep the force action visible before the player finds a tool."
+	)
+	assert_true(
+		_action_by_id(staff_gate_actions, "force_staff_corridor_gate").get("locked", false),
+		"Staff gate forcing should be marked locked until a tool is available."
+	)
 	assert_true(
 		_action_ids(staff_gate_actions).has("move_stair_landing"),
 		"Second-floor movement should stay visible even before the staff gate opens."

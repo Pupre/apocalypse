@@ -92,13 +92,15 @@ func get_visible_clues(event_data: Dictionary, event_state: Dictionary) -> Array
 	return visible_clues
 
 
-func get_actions(event_data: Dictionary, event_state: Dictionary = {}) -> Array[Dictionary]:
+func get_actions(event_data: Dictionary, event_state: Dictionary = {}, run_state = null) -> Array[Dictionary]:
 	var actions: Array[Dictionary] = []
 	if _has_zone_state(event_data, event_state):
-		actions.append_array(get_move_actions(event_data, event_state))
+		actions.append_array(_get_take_loot_actions(event_state, run_state))
 
 	actions.append_array(_get_flat_actions(event_data, event_state))
-	actions.append_array(_get_zone_actions(event_data, event_state))
+	actions.append_array(_get_zone_actions(event_data, event_state, run_state))
+	if _has_zone_state(event_data, event_state):
+		actions.append_array(get_move_actions(event_data, event_state))
 
 	return actions
 
@@ -111,7 +113,11 @@ func get_sleep_preview(run_state) -> Dictionary:
 
 
 func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, action_id: String) -> bool:
-	var action := _get_action(event_data, event_state, action_id)
+	var take_action := _get_take_loot_action(event_state, action_id, run_state)
+	if not take_action.is_empty():
+		return _apply_take_loot_action(run_state, event_state, take_action)
+
+	var action := _get_action(event_data, event_state, action_id, run_state)
 	if action.is_empty():
 		var move_action := _get_move_action(event_data, event_state, action_id)
 		if not move_action.is_empty():
@@ -119,6 +125,10 @@ func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, ac
 
 	if action.is_empty():
 		return false
+	if bool(action.get("locked", false)):
+		var blocked_feedback := String(action.get("blocked_feedback", ""))
+		event_state["last_feedback_message"] = blocked_feedback if not blocked_feedback.is_empty() else "지금은 그 행동을 할 수 없다."
+		return true
 
 	if _action_consumes_on_use(action) and _is_action_spent(event_state, action_id):
 		return false
@@ -132,33 +142,45 @@ func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, ac
 			if sleep_minutes > 0 and run_state.has_method("advance_sleep_time"):
 				run_state.advance_sleep_time(sleep_minutes)
 
-		var loot_messages: Array[String] = []
-		var collected_loot_labels: Array[String] = []
-		for loot_variant in action.get("loot", []):
-			if typeof(loot_variant) != TYPE_DICTIONARY or run_state == null:
-				continue
+		if action.has("discover_loot"):
+			var discovered_loot := _dictionary_loot_array(action.get("discover_loot", []))
+			_append_zone_found_loot(event_state, String(event_state.get("current_zone_id", "")), discovered_loot)
+			var discovered_labels := _loot_labels(discovered_loot)
+			if not discovered_labels.is_empty():
+				var discovered_message := "%s 발견했다." % ", ".join(discovered_labels)
+				if minute_cost > 0:
+					discovered_message += " %d분 동안 탐색했다." % minute_cost
+				event_state["last_feedback_message"] = discovered_message
+			elif minute_cost > 0:
+				event_state["last_feedback_message"] = "%d분 동안 탐색했지만 챙길 만한 건 없었다." % minute_cost
+		else:
+			var loot_messages: Array[String] = []
+			var collected_loot_labels: Array[String] = []
+			for loot_variant in action.get("loot", []):
+				if typeof(loot_variant) != TYPE_DICTIONARY or run_state == null:
+					continue
 
-			var loot := loot_variant as Dictionary
-			if run_state.inventory.add_item(loot):
-				collected_loot_labels.append(_loot_label(loot))
-			else:
-				loot_messages.append("가방이 가득 차서 %s 챙기지 못했다." % _loot_label(loot))
+				var loot := loot_variant as Dictionary
+				if run_state.inventory.add_item(loot):
+					collected_loot_labels.append(_loot_label(loot))
+				else:
+					loot_messages.append("가방이 가득 차서 %s 챙기지 못했다." % _loot_label(loot))
 
-		if not loot_messages.is_empty():
-			var feedback_message := ""
-			for message in loot_messages:
-				if not feedback_message.is_empty():
-					feedback_message += " "
-				feedback_message += message
-			event_state["last_feedback_message"] = feedback_message
-		elif not collected_loot_labels.is_empty():
-			var collected_message := "%s 챙겼다." % ", ".join(collected_loot_labels)
-			if minute_cost > 0:
-				collected_message += " %d분 동안 수색했다." % minute_cost
-			event_state["last_feedback_message"] = collected_message
-		elif minute_cost > 0:
-			event_state["last_feedback_message"] = "%d분 동안 수색했다." % minute_cost
-		elif int(action.get("sleep_minutes", 0)) > 0:
+			if not loot_messages.is_empty():
+				var feedback_message := ""
+				for message in loot_messages:
+					if not feedback_message.is_empty():
+						feedback_message += " "
+					feedback_message += message
+				event_state["last_feedback_message"] = feedback_message
+			elif not collected_loot_labels.is_empty():
+				var collected_message := "%s 챙겼다." % ", ".join(collected_loot_labels)
+				if minute_cost > 0:
+					collected_message += " %d분 동안 수색했다." % minute_cost
+				event_state["last_feedback_message"] = collected_message
+			elif minute_cost > 0:
+				event_state["last_feedback_message"] = "%d분 동안 수색했다." % minute_cost
+		if int(action.get("sleep_minutes", 0)) > 0 and not action.has("discover_loot"):
 			event_state["last_feedback_message"] = "%d분 동안 휴식했다." % int(action.get("sleep_minutes", 0))
 
 	_apply_action_outcomes(event_state, action)
@@ -194,7 +216,7 @@ func _get_flat_actions(event_data: Dictionary, event_state: Dictionary) -> Array
 	return actions
 
 
-func _get_zone_actions(event_data: Dictionary, event_state: Dictionary) -> Array[Dictionary]:
+func _get_zone_actions(event_data: Dictionary, event_state: Dictionary, run_state = null) -> Array[Dictionary]:
 	var current_zone_id := String(event_state.get("current_zone_id", ""))
 	if current_zone_id.is_empty():
 		return []
@@ -208,12 +230,16 @@ func _get_zone_actions(event_data: Dictionary, event_state: Dictionary) -> Array
 			var option := option_variant as Dictionary
 			var action := _normalize_zone_option(event, option)
 			var action_id := String(action.get("id", ""))
-			if action.is_empty() or not _option_is_available(action, event_state):
+			if action.is_empty():
+				continue
+			var is_available := _option_is_available(action, event_state, run_state)
+			if not is_available and not bool(action.get("show_when_locked", true)):
 				continue
 
 			if _action_consumes_on_use(action) and _is_action_spent(event_state, action_id):
 				continue
 
+			action["locked"] = not is_available
 			actions.append(action)
 
 	return actions
@@ -257,7 +283,7 @@ func _apply_move_action(run_state, event_data: Dictionary, event_state: Dictiona
 	return true
 
 
-func _get_action(event_data: Dictionary, event_state: Dictionary, action_id: String) -> Dictionary:
+func _get_action(event_data: Dictionary, event_state: Dictionary, action_id: String, run_state = null) -> Dictionary:
 	for action_variant in _get_flat_actions(event_data, event_state):
 		if typeof(action_variant) != TYPE_DICTIONARY:
 			continue
@@ -266,7 +292,7 @@ func _get_action(event_data: Dictionary, event_state: Dictionary, action_id: Str
 		if String(action.get("id", "")) == action_id:
 			return action
 
-	for action_variant in _get_zone_actions(event_data, event_state):
+	for action_variant in _get_zone_actions(event_data, event_state, run_state):
 		if typeof(action_variant) != TYPE_DICTIONARY:
 			continue
 
@@ -311,6 +337,8 @@ func _normalize_zone_option(event: Dictionary, option: Dictionary) -> Dictionary
 	var action := option.duplicate(true)
 	action["zone_id"] = String(event.get("zone_id", ""))
 	action["event_id"] = String(event.get("id", ""))
+	action["blocked_feedback"] = String(option.get("blocked_feedback", ""))
+	action["show_when_locked"] = bool(option.get("show_when_locked", true))
 
 	var costs: Dictionary = option.get("costs", {})
 	if typeof(costs) == TYPE_DICTIONARY:
@@ -323,6 +351,8 @@ func _normalize_zone_option(event: Dictionary, option: Dictionary) -> Dictionary
 	if typeof(outcomes) == TYPE_DICTIONARY:
 		if outcomes.has("loot"):
 			action["loot"] = outcomes.get("loot", [])
+		if outcomes.has("discover_loot"):
+			action["discover_loot"] = outcomes.get("discover_loot", [])
 		if outcomes.has("reveal_clue_ids"):
 			action["reveal_clue_ids"] = _string_id_array(outcomes.get("reveal_clue_ids", []))
 		if outcomes.has("set_flags"):
@@ -335,12 +365,12 @@ func _normalize_zone_option(event: Dictionary, option: Dictionary) -> Dictionary
 	return action
 
 
-func _option_is_available(action: Dictionary, event_state: Dictionary) -> bool:
+func _option_is_available(action: Dictionary, event_state: Dictionary, run_state = null) -> bool:
 	var requirements: Dictionary = action.get("requirements", {})
 	if typeof(requirements) != TYPE_DICTIONARY or requirements.is_empty():
 		return true
 
-	return _requirements_are_met(requirements, event_state)
+	return _requirements_are_met(requirements, event_state, run_state)
 
 
 func _zone_is_accessible(zone: Dictionary, event_state: Dictionary) -> bool:
@@ -351,7 +381,7 @@ func _zone_is_accessible(zone: Dictionary, event_state: Dictionary) -> bool:
 	return _requirements_are_met(requirements, event_state)
 
 
-func _requirements_are_met(requirements: Dictionary, event_state: Dictionary) -> bool:
+func _requirements_are_met(requirements: Dictionary, event_state: Dictionary, run_state = null) -> bool:
 	if not _requirements_contain_ids(requirements.get("required_flag_ids", []), event_state.get("zone_flags", {})):
 		return false
 
@@ -359,6 +389,9 @@ func _requirements_are_met(requirements: Dictionary, event_state: Dictionary) ->
 		return false
 
 	if not _requirements_contain_ids(requirements.get("required_unlocked_zone_ids", []), event_state.get("unlocked_zone_ids", [])):
+		return false
+
+	if not _inventory_contains_ids(run_state, requirements.get("required_item_ids", [])):
 		return false
 
 	return true
@@ -377,6 +410,26 @@ func _requirements_contain_ids(required_ids, source_values) -> bool:
 		if not source_lookup.has(required_id):
 			return false
 
+	return true
+
+
+func _inventory_contains_ids(run_state, required_item_ids) -> bool:
+	var required := _string_id_array(required_item_ids)
+	if required.is_empty():
+		return true
+	if run_state == null or run_state.inventory == null:
+		return false
+
+	var inventory_lookup := {}
+	for item_variant in run_state.inventory.items:
+		if typeof(item_variant) != TYPE_DICTIONARY:
+			continue
+		var item := item_variant as Dictionary
+		inventory_lookup[String(item.get("id", ""))] = true
+
+	for required_id in required:
+		if not inventory_lookup.has(required_id):
+			return false
 	return true
 
 
@@ -410,11 +463,113 @@ func _zone_flags(event_state: Dictionary) -> Dictionary:
 	return {}
 
 
+func _get_take_loot_actions(event_state: Dictionary, run_state = null) -> Array[Dictionary]:
+	var current_zone_id := String(event_state.get("current_zone_id", ""))
+	if current_zone_id.is_empty():
+		return []
+
+	var found_loot := _get_zone_found_loot(event_state, current_zone_id)
+	var actions: Array[Dictionary] = []
+	for loot_index in range(found_loot.size()):
+		var loot := found_loot[loot_index]
+		var loot_id := String(loot.get("id", "loot"))
+		var loot_label := _loot_label(loot)
+		var can_add: bool = run_state != null and run_state.inventory != null and run_state.inventory.can_add(loot)
+		actions.append({
+			"id": "take_%s_%s_%d" % [current_zone_id, loot_id, loot_index],
+			"type": "take_loot",
+			"label": "%s 챙긴다" % loot_label,
+			"zone_id": current_zone_id,
+			"loot_index": loot_index,
+			"loot": loot,
+			"locked": not can_add,
+			"blocked_feedback": "가방이 가득 차서 %s 챙기지 못한다." % loot_label,
+		})
+
+	return actions
+
+
+func _get_take_loot_action(event_state: Dictionary, action_id: String, run_state = null) -> Dictionary:
+	for action in _get_take_loot_actions(event_state, run_state):
+		if String(action.get("id", "")) == action_id:
+			return action
+	return {}
+
+
+func _apply_take_loot_action(run_state, event_state: Dictionary, action: Dictionary) -> bool:
+	if run_state == null or run_state.inventory == null:
+		return false
+	if bool(action.get("locked", false)):
+		event_state["last_feedback_message"] = String(action.get("blocked_feedback", "가방이 가득 차서 더 챙길 수 없다."))
+		return true
+
+	var zone_id := String(action.get("zone_id", ""))
+	var loot_index := int(action.get("loot_index", -1))
+	var found_loot := _get_zone_found_loot(event_state, zone_id)
+	if loot_index < 0 or loot_index >= found_loot.size():
+		return false
+
+	var loot := found_loot[loot_index]
+	if not run_state.inventory.add_item(loot):
+		event_state["last_feedback_message"] = "가방이 가득 차서 %s 챙기지 못한다." % _loot_label(loot)
+		return true
+
+	found_loot.remove_at(loot_index)
+	_set_zone_found_loot(event_state, zone_id, found_loot)
+	event_state["last_feedback_message"] = "%s 챙겼다." % _loot_label(loot)
+	return true
+
+
+func _get_zone_found_loot(event_state: Dictionary, zone_id: String) -> Array[Dictionary]:
+	var all_found_loot: Dictionary = event_state.get("zone_found_loot", {})
+	if typeof(all_found_loot) != TYPE_DICTIONARY:
+		return []
+	return _dictionary_loot_array(all_found_loot.get(zone_id, []))
+
+
+func _append_zone_found_loot(event_state: Dictionary, zone_id: String, discovered_loot: Array[Dictionary]) -> void:
+	if zone_id.is_empty():
+		return
+
+	var all_found_loot: Dictionary = event_state.get("zone_found_loot", {})
+	if typeof(all_found_loot) != TYPE_DICTIONARY:
+		all_found_loot = {}
+
+	var existing_loot := _dictionary_loot_array(all_found_loot.get(zone_id, []))
+	for loot in discovered_loot:
+		existing_loot.append(loot.duplicate(true))
+	all_found_loot[zone_id] = existing_loot
+	event_state["zone_found_loot"] = all_found_loot
+
+
+func _set_zone_found_loot(event_state: Dictionary, zone_id: String, found_loot: Array[Dictionary]) -> void:
+	var all_found_loot: Dictionary = event_state.get("zone_found_loot", {})
+	if typeof(all_found_loot) != TYPE_DICTIONARY:
+		all_found_loot = {}
+	all_found_loot[zone_id] = found_loot
+	event_state["zone_found_loot"] = all_found_loot
+
+
 func _string_id_array(values) -> Array[String]:
 	var result: Array[String] = []
 	for value in values:
 		result.append(String(value))
 	return result
+
+
+func _dictionary_loot_array(values) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for value in values:
+		if typeof(value) == TYPE_DICTIONARY:
+			result.append((value as Dictionary).duplicate(true))
+	return result
+
+
+func _loot_labels(loots: Array[Dictionary]) -> Array[String]:
+	var labels: Array[String] = []
+	for loot in loots:
+		labels.append(_loot_label(loot))
+	return labels
 
 
 func _sorted_edge_id(from_zone_id: String, to_zone_id: String) -> String:

@@ -192,12 +192,12 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
-	var search_button := _find_button_by_text(action_buttons, "조용히 서랍을 연다 (30분)")
-	if not assert_true(search_button != null, "Checkout should expose the drawer search after moving there."):
+	var search_button := _find_button_by_text(action_buttons, "계산대를 탐색한다 (30분)")
+	if not assert_true(search_button != null, "Checkout should expose the search action after moving there."):
 		bootstrap.free()
 		return
-
-	var expected_feedback := "30분 동안 수색했다."
+	
+	var expected_feedback := "발견했다."
 	search_button.emit_signal("pressed")
 	if not await _wait_until(
 		Callable(self, "_is_indoor_action_applied").bind(
@@ -205,9 +205,10 @@ func _run_test() -> void:
 			hud_clock_label,
 			result_label,
 			action_buttons,
+			0,
 			"1일차 09:00",
 			expected_feedback,
-			2
+			4
 		),
 		"Timed out waiting for the indoor action result to settle."
 	):
@@ -217,8 +218,12 @@ func _run_test() -> void:
 	assert_eq(hud_clock_label.text, "1일차 09:00", "Moving into checkout and then searching should advance the HUD clock.")
 	assert_true(result_label.text.find(expected_feedback) != -1, "Pressing the indoor action should refresh the result feedback.")
 	assert_true(
-		_find_button_by_text(action_buttons, "조용히 서랍을 연다 (30분)") == null,
+		_find_button_by_text(action_buttons, "계산대를 탐색한다 (30분)") == null,
 		"The one-shot search action should be removed after use."
+	)
+	assert_true(
+		_find_button_by_text(action_buttons, "라이터 챙긴다") != null,
+		"Searching should reveal take actions in the creator flow as well."
 	)
 
 	bootstrap.free()
@@ -258,6 +263,7 @@ func _is_indoor_action_applied(
 	hud_clock_label: Label,
 	result_label: Label,
 	action_buttons: VBoxContainer,
+	expected_inventory_bulk: int,
 	expected_clock_text: String,
 	expected_feedback_substring: String,
 	expected_action_count: int
@@ -266,7 +272,7 @@ func _is_indoor_action_applied(
 		return false
 
 	return (
-		run_shell.run_state.inventory.total_bulk() == 1
+		run_shell.run_state.inventory.total_bulk() == expected_inventory_bulk
 		and hud_clock_label.text == expected_clock_text
 		and result_label.text.find(expected_feedback_substring) != -1
 		and action_buttons.get_child_count() == expected_action_count

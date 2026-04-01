@@ -274,7 +274,7 @@ func _run_test() -> void:
 	assert_eq(summary_label.text, "계산대 뒤쪽에는 직원 출입문이 있다.", "Indoor mode should update the summary for the checkout zone.")
 
 	assert_true(
-		_buttons_include_text(action_buttons, "조용히 서랍을 연다 (30분)"),
+		_buttons_include_text(action_buttons, "계산대를 탐색한다 (30분)"),
 		"Checkout should expose its local search action."
 	)
 	assert_eq(_map_labels(minimap_nodes), ["?", "계산대", "정문 진입부"], "Indoor minimap should keep visited zones visible after moving.")
@@ -283,12 +283,40 @@ func _run_test() -> void:
 		"Leaving the building should not stay visible away from the entrance."
 	)
 
-	var checkout_search_button := _find_button_by_text(action_buttons, "조용히 서랍을 연다 (30분)")
+	var checkout_search_button := _find_button_by_text(action_buttons, "계산대를 탐색한다 (30분)")
 	if not assert_true(checkout_search_button != null, "Checkout search action should be selectable."):
 		bootstrap.free()
 		return
 
 	checkout_search_button.emit_signal("pressed")
+	if not await _wait_until(
+			Callable(self, "_is_indoor_action_applied").bind(
+				run_shell,
+				hud_clock_label,
+				result_label,
+				action_buttons,
+				0,
+				"1일차 11:00",
+				"발견했다.",
+				4
+			),
+			"Timed out waiting for the checkout search to apply."
+	):
+		bootstrap.free()
+		return
+
+	assert_eq(run_shell.run_state.inventory.total_bulk(), 0, "Searching should not add loot to inventory until the player picks an item.")
+	assert_eq(hud_clock_label.text, "1일차 11:00", "The checkout search should advance shared time.")
+	assert_true(result_label.text.find("30분 동안 탐색했다.") != -1, "Indoor feedback should describe the spent time.")
+	assert_true(result_label.text.find("라이터") != -1, "Indoor feedback should mention a discovered item.")
+	assert_eq(_inventory_labels(inventory_items), ["소지품 없음"], "Indoor inventory should stay empty until the player chooses loot.")
+
+	var take_lighter_button := _find_button_by_text(action_buttons, "라이터 챙긴다")
+	if not assert_true(take_lighter_button != null, "Searching checkout should reveal a take action for the lighter."):
+		bootstrap.free()
+		return
+
+	take_lighter_button.emit_signal("pressed")
 	if not await _wait_until(
 		Callable(self, "_is_indoor_action_applied").bind(
 			run_shell,
@@ -297,19 +325,16 @@ func _run_test() -> void:
 			action_buttons,
 			1,
 			"1일차 11:00",
-			"30분 동안 수색했다.",
-			2
+			"라이터 챙겼다.",
+			3
 		),
-		"Timed out waiting for the checkout search to apply."
+		"Timed out waiting for the take-loot action to apply."
 	):
 		bootstrap.free()
 		return
 
-	assert_eq(run_shell.run_state.inventory.total_bulk(), 1, "The first indoor action should add loot to inventory.")
-	assert_eq(hud_clock_label.text, "1일차 11:00", "The checkout search should advance shared time.")
-	assert_true(result_label.text.find("30분 동안 수색했다.") != -1, "Indoor feedback should describe the spent time.")
-	assert_true(result_label.text.find("통조림 콩") != -1, "Indoor feedback should mention the looted item.")
-	assert_eq(_inventory_labels(inventory_items), ["통조림 콩 x1"], "Indoor inventory should list the newly looted item.")
+	assert_eq(run_shell.run_state.inventory.total_bulk(), 1, "Picking a revealed item should add it to inventory.")
+	assert_eq(_inventory_labels(inventory_items), ["라이터 x1"], "Indoor inventory should list the picked item.")
 
 	var return_to_entrance_button := _find_button_by_text(action_buttons, "정문 진입부로 이동한다 (10분)")
 	if not assert_true(return_to_entrance_button != null, "Checkout should allow returning to the entrance zone."):
