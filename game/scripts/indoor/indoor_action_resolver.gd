@@ -188,7 +188,11 @@ func _get_zone_actions(event_data: Dictionary, event_state: Dictionary) -> Array
 
 			var option := option_variant as Dictionary
 			var action := _normalize_zone_option(event, option)
+			var action_id := String(action.get("id", ""))
 			if action.is_empty() or not _option_is_available(action, event_state):
+				continue
+
+			if _action_consumes_on_use(action) and _is_action_spent(event_state, action_id):
 				continue
 
 			actions.append(action)
@@ -278,14 +282,14 @@ func _normalize_zone_option(event: Dictionary, option: Dictionary) -> Dictionary
 	action["zone_id"] = String(event.get("zone_id", ""))
 	action["event_id"] = String(event.get("id", ""))
 
-	var costs := option.get("costs", {})
+	var costs: Dictionary = option.get("costs", {})
 	if typeof(costs) == TYPE_DICTIONARY:
 		action["minute_cost"] = int(costs.get("minutes", action.get("minute_cost", 0)))
 		action["noise_cost"] = int(costs.get("noise", action.get("noise_cost", 0)))
 		if costs.has("sleep_minutes"):
 			action["sleep_minutes"] = int(costs.get("sleep_minutes", 0))
 
-	var outcomes := option.get("outcomes", {})
+	var outcomes: Dictionary = option.get("outcomes", {})
 	if typeof(outcomes) == TYPE_DICTIONARY:
 		if outcomes.has("loot"):
 			action["loot"] = outcomes.get("loot", [])
@@ -302,7 +306,7 @@ func _normalize_zone_option(event: Dictionary, option: Dictionary) -> Dictionary
 
 
 func _option_is_available(action: Dictionary, event_state: Dictionary) -> bool:
-	var requirements := action.get("requirements", {})
+	var requirements: Dictionary = action.get("requirements", {})
 	if typeof(requirements) != TYPE_DICTIONARY or requirements.is_empty():
 		return true
 
@@ -354,7 +358,7 @@ func _apply_action_outcomes(event_state: Dictionary, action: Dictionary) -> void
 
 
 func _zone_flags(event_state: Dictionary) -> Dictionary:
-	var zone_flags := event_state.get("zone_flags", {})
+	var zone_flags: Dictionary = event_state.get("zone_flags", {})
 	if typeof(zone_flags) == TYPE_DICTIONARY:
 		return zone_flags
 

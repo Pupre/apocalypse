@@ -52,12 +52,13 @@ func _run_test() -> void:
 		"Mart indoor data should expose a staff gate event in the top-level events collection."
 	)
 
-	var checkout_zone_definition := resolver_script.new().get_zone(event_data, "checkout")
+	var resolver = indoor_action_resolver_script.new()
+	var checkout_zone_definition: Dictionary = resolver.get_zone(event_data, "checkout")
 	assert_true(
 		_string_values(checkout_zone_definition.get("event_ids", [])).has("checkout_drawer_event"),
 		"Checkout should point at the checkout drawer event by id."
 	)
-	var staff_gate_zone_definition := resolver_script.new().get_zone(event_data, "staff_corridor_gate")
+	var staff_gate_zone_definition: Dictionary = resolver.get_zone(event_data, "staff_corridor_gate")
 	assert_true(
 		_string_values(staff_gate_zone_definition.get("event_ids", [])).has("staff_gate_event"),
 		"Staff gate should point at the staff gate event by id."
@@ -71,7 +72,6 @@ func _run_test() -> void:
 	if not assert_true(run_state != null, "RunState should build for indoor action tests."):
 		return
 
-	var resolver = indoor_action_resolver_script.new()
 	var event_state := {
 		"revealed_clue_ids": PackedStringArray(),
 	}
@@ -202,8 +202,19 @@ func _run_test() -> void:
 
 	checkout_actions = resolver.get_actions(event_data, checkout_event_state)
 	assert_true(
+		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "move_staff_corridor_gate"),
+		"Checkout flow should allow movement into the staff gate zone."
+	)
+	assert_eq(
+		String(checkout_event_state.get("current_zone_id", "")),
+		"staff_corridor_gate",
+		"Moving after the checkout search should change the current zone."
+	)
+
+	checkout_actions = resolver.get_actions(event_data, checkout_event_state)
+	assert_true(
 		_action_ids(checkout_actions).has("force_staff_corridor_gate"),
-		"Checkout should expose the staff gate force option after the drawer flag is set."
+		"Staff gate zone should expose the force option after the drawer flag is set."
 	)
 
 	assert_true(
@@ -273,6 +284,17 @@ func _string_values(values) -> PackedStringArray:
 		result.append(String(value))
 
 	return PackedStringArray(result)
+
+
+func _action_ids(actions: Array) -> Array[String]:
+	var result: Array[String] = []
+	for action_variant in actions:
+		if typeof(action_variant) != TYPE_DICTIONARY:
+			continue
+
+		result.append(String((action_variant as Dictionary).get("id", "")))
+
+	return result
 
 
 func get_job(job_id: String) -> Dictionary:
