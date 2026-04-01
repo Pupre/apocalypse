@@ -27,7 +27,7 @@
         "staff_corridor_gate"
       ],
       "event_ids": [
-        "search_counter"
+        "checkout_drawer_event"
       ],
       "first_visit_cost": 30,
       "revisit_cost": 10
@@ -52,7 +52,9 @@
       "connected_zone_ids": [
         "checkout"
       ],
-      "event_ids": [],
+      "event_ids": [
+        "staff_gate_event"
+      ],
       "first_visit_cost": 30,
       "revisit_cost": 10
     }
@@ -67,6 +69,92 @@
       "id": "stock_room",
       "text": "계산대 뒤로 돌아가면 반쯤 닫힌 창고 문이 보인다.",
       "visible": false
+    },
+    {
+      "id": "staff_key_board_hint",
+      "text": "서랍 안쪽에서 직원용 열쇠 보드의 흔적이 스쳐 지나간다.",
+      "visible": false
+    },
+    {
+      "id": "muffled_breath_hint",
+      "text": "문 너머에서 숨죽인 인기척이 아주 희미하게 들린다.",
+      "visible": false
+    }
+  ],
+  "events": [
+    {
+      "id": "checkout_drawer_event",
+      "zone_id": "checkout",
+      "type": "search",
+      "hint_text": "서랍은 닫혀 있는데 급히 뜯은 흔적은 없다.",
+      "options": [
+        {
+          "id": "search_checkout_drawer",
+          "label": "조용히 서랍을 연다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "loot": [
+              {
+                "id": "canned_beans",
+                "name": "통조림 콩",
+                "bulk": 1
+              }
+            ],
+            "reveal_clue_ids": [
+              "staff_key_board_hint"
+            ],
+            "set_flags": [
+              "checkout_drawer_opened"
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "staff_gate_event",
+      "zone_id": "staff_corridor_gate",
+      "type": "gate",
+      "hint_text": "문 손잡이 아래만 유독 닳아 있다.",
+      "options": [
+        {
+          "id": "inspect_staff_corridor_gate",
+          "label": "귀를 대본다",
+          "requirements": {},
+          "costs": {
+            "minutes": 10,
+            "noise": 0
+          },
+          "outcomes": {
+            "reveal_clue_ids": [
+              "muffled_breath_hint"
+            ]
+          }
+        },
+        {
+          "id": "force_staff_corridor_gate",
+          "label": "공구로 비집는다",
+          "requirements": {
+            "required_flag_ids": [
+              "checkout_drawer_opened"
+            ]
+          },
+          "costs": {
+            "minutes": 30,
+            "noise": 2
+          },
+          "outcomes": {
+            "set_flags": [
+              "staff_gate_forced"
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
     }
   ],
   "actions": [

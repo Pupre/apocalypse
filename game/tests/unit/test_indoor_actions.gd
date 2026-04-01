@@ -43,6 +43,26 @@ func _run_test() -> void:
 	if event_data.is_empty():
 		return
 
+	assert_true(
+		_action_ids(event_data.get("events", [])).has("checkout_drawer_event"),
+		"Mart indoor data should expose a top-level events collection for zone-local actions."
+	)
+	assert_true(
+		_action_ids(event_data.get("events", [])).has("staff_gate_event"),
+		"Mart indoor data should expose a staff gate event in the top-level events collection."
+	)
+
+	var checkout_zone_definition := resolver_script.new().get_zone(event_data, "checkout")
+	assert_true(
+		_string_values(checkout_zone_definition.get("event_ids", [])).has("checkout_drawer_event"),
+		"Checkout should point at the checkout drawer event by id."
+	)
+	var staff_gate_zone_definition := resolver_script.new().get_zone(event_data, "staff_corridor_gate")
+	assert_true(
+		_string_values(staff_gate_zone_definition.get("event_ids", [])).has("staff_gate_event"),
+		"Staff gate should point at the staff gate event by id."
+	)
+
 	var run_state = run_state_script.from_survivor_config({
 		"job_id": "courier",
 		"trait_ids": PackedStringArray(["athlete"]),
@@ -120,6 +140,86 @@ func _run_test() -> void:
 	assert_eq(actions.size(), 1, "Repeatable rest should remain available after use.")
 	assert_eq(String(actions[0].get("id", "")), "rest", "Rest should remain in the action list after use.")
 
+	var checkout_run_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, self)
+	if not assert_true(checkout_run_state != null, "RunState should build for checkout option tests."):
+		return
+
+	var checkout_event_state := {
+		"current_zone_id": "checkout",
+		"visited_zone_ids": PackedStringArray(["mart_entrance", "checkout"]),
+		"revealed_clue_ids": PackedStringArray(),
+		"spent_action_ids": PackedStringArray(),
+		"zone_flags": {},
+		"noise": 0,
+	}
+
+	var checkout_actions: Array = resolver.get_actions(event_data, checkout_event_state)
+	assert_true(
+		_action_ids(checkout_actions).has("search_checkout_drawer"),
+		"Checkout should expose its local drawer search option."
+	)
+	assert_true(
+		_action_ids(checkout_actions).has("move_staff_corridor_gate"),
+		"Checkout should expose movement toward the staff gate."
+	)
+	assert_true(
+		not _action_ids(checkout_actions).has("force_staff_corridor_gate"),
+		"Checkout gate forcing should stay gated until the drawer flag is set."
+	)
+
+	var before_checkout_clock_minute_of_day: int = checkout_run_state.clock.minute_of_day
+	assert_true(
+		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "search_checkout_drawer"),
+		"Checkout drawer search should resolve through the indoor resolver."
+	)
+	assert_eq(
+		checkout_run_state.clock.minute_of_day,
+		before_checkout_clock_minute_of_day + ACTIVE_SEARCH_MINUTES,
+		"Checkout drawer search should spend its minute cost."
+	)
+	assert_true(
+		_string_values(checkout_event_state.get("revealed_clue_ids", [])).has("staff_key_board_hint"),
+		"Searching the checkout drawer should reveal the staff key board clue."
+	)
+	var checkout_zone_flags: Dictionary = checkout_event_state.get("zone_flags", {})
+	assert_true(
+		checkout_zone_flags.has("checkout_drawer_opened"),
+		"Searching the checkout drawer should set its zone flag."
+	)
+	assert_eq(
+		checkout_run_state.inventory.total_bulk(),
+		1,
+		"Searching the checkout drawer should add one loot item."
+	)
+	assert_true(
+		not _action_ids(resolver.get_actions(event_data, checkout_event_state)).has("search_checkout_drawer"),
+		"Checkout drawer search should be consumed after use."
+	)
+
+	checkout_actions = resolver.get_actions(event_data, checkout_event_state)
+	assert_true(
+		_action_ids(checkout_actions).has("force_staff_corridor_gate"),
+		"Checkout should expose the staff gate force option after the drawer flag is set."
+	)
+
+	assert_true(
+		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "force_staff_corridor_gate"),
+		"Checkout gate forcing should resolve through the same resolver path."
+	)
+	assert_true(
+		checkout_zone_flags.has("staff_gate_forced"),
+		"Forcing the staff gate should set its zone flag."
+	)
+	assert_eq(
+		int(checkout_event_state.get("noise", 0)),
+		2,
+		"Forcing the staff gate should add its noise cost."
+	)
+
 	var full_run_state = run_state_script.from_survivor_config({
 		"job_id": "courier",
 		"trait_ids": PackedStringArray(["athlete"]),
@@ -165,6 +265,14 @@ func _load_json(path: String) -> Dictionary:
 		return {}
 
 	return json.data
+
+
+func _string_values(values) -> PackedStringArray:
+	var result: Array[String] = []
+	for value in values:
+		result.append(String(value))
+
+	return PackedStringArray(result)
 
 
 func get_job(job_id: String) -> Dictionary:
