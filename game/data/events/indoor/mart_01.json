@@ -43,7 +43,7 @@
       "summary": "빈 선반 사이로 통조림 몇 개가 남아 있다.",
       "connected_zone_ids": [
         "mart_entrance",
-        "back_hall"
+        "household_goods"
       ],
       "event_ids": [
         "food_aisle_search_event"
@@ -53,19 +53,35 @@
       "revisit_cost": 10
     },
     {
+      "id": "household_goods",
+      "floor_id": "floor_1",
+      "label": "생활용품 코너",
+      "summary": "건전지와 공구, 가방 같은 물건이 어지럽게 남아 있다.",
+      "connected_zone_ids": [
+        "food_aisle",
+        "back_hall"
+      ],
+      "event_ids": [
+        "household_goods_search_event"
+      ],
+      "map_position": [1, 2],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
       "id": "back_hall",
       "floor_id": "floor_1",
       "label": "매장 뒤편",
       "summary": "쓰러진 음료 상자와 끌린 자국이 직원 출입문 앞에서 멈춘다.",
       "connected_zone_ids": [
-        "food_aisle",
+        "household_goods",
         "staff_corridor_gate"
       ],
       "event_ids": [
         "back_hall_supply_event",
         "drag_marks_event"
       ],
-      "map_position": [1, 2],
+      "map_position": [2, 2],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -326,6 +342,48 @@
       ]
     },
     {
+      "id": "household_goods_search_event",
+      "zone_id": "household_goods",
+      "type": "search",
+      "hint_text": "무너지지 않은 선반 쪽엔 가방과 생활용품이 아직 정리된 채 남아 있다.",
+      "options": [
+        {
+          "id": "search_household_goods",
+          "label": "생활용품 코너를 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "small_backpack",
+                "name": "작은 배낭",
+                "bulk": 2
+              },
+              {
+                "id": "running_shoes",
+                "name": "운동화",
+                "bulk": 1
+              },
+              {
+                "id": "work_gloves",
+                "name": "작업 장갑",
+                "bulk": 1
+              },
+              {
+                "id": "packing_tape",
+                "name": "포장 테이프",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
       "id": "staff_gate_event",
       "zone_id": "staff_corridor_gate",
       "type": "gate",
@@ -393,11 +451,6 @@
                 "id": "bottled_water",
                 "name": "생수",
                 "bulk": 1
-              },
-              {
-                "id": "small_backpack",
-                "name": "작은 배낭",
-                "bulk": 2
               },
               {
                 "id": "packing_tape",

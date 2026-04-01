@@ -104,6 +104,35 @@
   - 영향
     - 읽기 피로가 줄고, 선택지 해석 오류 가능성이 낮아진다.
 
+- 변경한 파일
+  - `game/data/events/indoor/mart_01.json`
+  - `game/data/items.json`
+  - `game/scripts/run/inventory_model.gd`
+  - `game/scripts/run/run_state.gd`
+  - `game/scripts/outdoor/outdoor_controller.gd`
+  - `game/scripts/indoor/indoor_action_resolver.gd`
+  - `game/scripts/indoor/indoor_director.gd`
+  - `game/tests/unit/test_content_library.gd`
+  - `game/tests/unit/test_run_models.gd`
+  - `game/tests/unit/test_outdoor_controller.gd`
+  - `game/tests/unit/test_indoor_zone_graph.gd`
+  - `game/tests/unit/test_indoor_director.gd`
+  - `game/tests/unit/test_indoor_actions.gd`
+  - 무엇을 바꿨는지
+    - `생활용품 코너`를 추가하고, `식품 진열대 -> 생활용품 코너 -> 매장 뒤편` 동선을 만들었다.
+    - `운동화`, `작업 장갑`을 추가하고, 장착 효과를 이동속도/피로 보정과 연결했다.
+    - 소지 한도는 `carry_limit`까진 정상, 그 이후 `max_bulk()`까진 추가 획득 가능하도록 바꿨다.
+    - 대신 소프트 한도 초과 시 실외 이동속도가 감소하도록 `RunState.get_outdoor_move_speed()`를 추가했다.
+    - 발견 루팅 액션은 배열 인덱스 대신 `loot_uid` 기반 고유 ID를 쓰도록 바꿨다.
+  - 왜 바꿨는지
+    - 마트가 실제 매장처럼 느껴지려면 음식 말고도 공구/장비 쪽 판단이 필요하다.
+    - 소지 제한은 무조건 차단보다, 욕심낼 수는 있지만 대가를 치르는 쪽이 생존게임 감각에 더 맞는다.
+    - 인덱스 기반 액션 ID는 아이템 하나만 집어도 다음 액션이 흔들려 이후 확장 시 같은 실수를 반복하게 만든다.
+  - 영향
+    - 실내 루팅이 `음식 찾기`에서 `장비 선택 + 짐 관리`까지 확장됐다.
+    - 외부 이동과 인벤토리가 처음으로 직접 연결됐다.
+    - 테스트도 배열 위치보다 의미 있는 액션 존재를 보게 되어 더 견고해졌다.
+
 ## 기대 효과
 
 - 마트가 단순 이벤트 카드 묶음이 아니라 실제 파밍 장소처럼 느껴진다.
@@ -125,10 +154,11 @@
   - `XDG_DATA_HOME=/tmp/codex-godot-home Godot --headless --path ... -s res://tests/unit/test_survivor_creator.gd`
 - 결과
   - 위 테스트 모두 통과했다.
+  - 추가로 `test_content_library`, `test_run_models`, `test_outdoor_controller`까지 포함한 확장 세트도 통과했다.
 
 ## 남은 리스크
 
-- 아직 `가방 초과 시 이동속도 저하` 같은 소프트 제한은 없다.
+- 소프트 한도 초과 페널티는 들어갔지만, 실제 데스크톱 플레이 체감 기준 수치 튜닝은 아직 남아 있다.
 - 모바일 기준 UI 밀도는 아직 높아서, 추후 하단 패널/탭 구조로 다시 다듬어야 한다.
 - `잠긴 길은 보이고 도구 행동은 숨긴다`는 원칙은 잡혔지만, 앞으로 열쇠/도구 종류가 늘면 UI 규칙을 더 일반화해야 한다.
-- 장착 아이템은 현재 `작은 배낭` 한 종류만 실효성이 있고, 다른 장비 슬롯 효과는 아직 비어 있다.
+- 장착 아이템은 `작은 배낭`, `운동화`, `작업 장갑`까지 늘었지만, 장비 종류 대비 효과 축은 아직 적다.

@@ -63,7 +63,11 @@ func move_player(direction: Vector2, seconds_elapsed: float) -> void:
 	if run_state == null or direction == Vector2.ZERO or seconds_elapsed <= 0.0:
 		return
 
-	_player_position += direction.normalized() * run_state.move_speed * seconds_elapsed
+	var effective_move_speed: float = float(run_state.move_speed)
+	if run_state.has_method("get_outdoor_move_speed"):
+		effective_move_speed = float(run_state.get_outdoor_move_speed())
+
+	_player_position += direction.normalized() * effective_move_speed * seconds_elapsed
 	_sync_view()
 	state_changed.emit()
 

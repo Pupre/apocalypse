@@ -331,6 +331,7 @@ func _create_initial_event_state(current_zone_id: String = "") -> Dictionary:
 		"visited_zone_ids": visited_zone_ids,
 		"traversed_edge_ids": PackedStringArray(),
 		"zone_found_loot": {},
+		"next_loot_uid": 0,
 		"revealed_clue_ids": PackedStringArray(),
 		"spent_action_ids": PackedStringArray(),
 		"zone_flags": {},

@@ -61,6 +61,14 @@ func _run_test() -> void:
 		"Entry zone should expose move actions for each adjacent zone."
 	)
 
+	var household_zone: Dictionary = resolver.get_zone(event_data, "household_goods")
+	assert_true(not household_zone.is_empty(), "Household goods zone should exist in the mart graph.")
+	assert_eq(String(household_zone.get("label", "")), "생활용품 코너", "Household zone should expose its readable label.")
+	assert_true(
+		_sorted_strings(household_zone.get("connected_zone_ids", [])).has("back_hall"),
+		"Household goods should connect the food aisle route to the back hall."
+	)
+
 	var event_state := {
 		"current_zone_id": entry_zone_id,
 		"visited_zone_ids": PackedStringArray([entry_zone_id]),
@@ -100,6 +108,19 @@ func _run_test() -> void:
 	assert_true(
 		_action_ids(zone_aware_actions).has("search_checkout_counter"),
 		"Checkout should expose its local search only after entering the checkout zone."
+	)
+
+	var food_state := {
+		"current_zone_id": "food_aisle",
+		"visited_zone_ids": PackedStringArray(["mart_entrance", "food_aisle"]),
+		"zone_flags": {},
+		"revealed_clue_ids": PackedStringArray(),
+		"spent_action_ids": PackedStringArray(),
+	}
+	var food_actions: Array = resolver.get_actions(event_data, food_state)
+	assert_true(
+		_action_ids(food_actions).has("move_household_goods"),
+		"Food aisle should expose movement into the new household goods zone."
 	)
 
 	var staff_gate_zone: Dictionary = resolver.get_zone(event_data, "staff_corridor_gate")

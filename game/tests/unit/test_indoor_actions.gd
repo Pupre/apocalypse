@@ -205,16 +205,18 @@ func _run_test() -> void:
 		"Checkout search should be consumed after use."
 	)
 	checkout_actions = resolver.get_actions(event_data, checkout_event_state)
+	var take_checkout_lighter_action_id := _action_id_by_prefix(checkout_actions, "take_checkout_lighter_")
+	var take_checkout_energy_bar_action_id := _action_id_by_prefix(checkout_actions, "take_checkout_energy_bar_")
 	assert_true(
-		_action_ids(checkout_actions).has("take_checkout_lighter_0"),
+		not take_checkout_lighter_action_id.is_empty(),
 		"Searching the checkout should reveal a take action for the lighter."
 	)
 	assert_true(
-		_action_ids(checkout_actions).has("take_checkout_energy_bar_1"),
+		not take_checkout_energy_bar_action_id.is_empty(),
 		"Searching the checkout should reveal a take action for the snack."
 	)
 	assert_true(
-		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "take_checkout_lighter_0"),
+		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, take_checkout_lighter_action_id),
 		"Revealed checkout loot should be collectible with a separate action."
 	)
 	assert_eq(
@@ -223,7 +225,7 @@ func _run_test() -> void:
 		"Picking up a revealed item should add it to inventory."
 	)
 	assert_true(
-		not _action_ids(resolver.get_actions(event_data, checkout_event_state)).has("take_checkout_lighter_0"),
+		_action_id_by_prefix(resolver.get_actions(event_data, checkout_event_state), "take_checkout_lighter_").is_empty(),
 		"Collected loot should disappear from the revealed action list."
 	)
 
@@ -306,11 +308,16 @@ func _run_test() -> void:
 		"Back hall search should reveal supply loot."
 	)
 	assert_true(
-		_action_ids(resolver.get_actions(event_data, gate_event_state, gate_run_state)).has("take_back_hall_screwdriver_0"),
+		not _action_id_by_prefix(resolver.get_actions(event_data, gate_event_state, gate_run_state), "take_back_hall_screwdriver_").is_empty(),
 		"Back hall search should reveal a take action for the screwdriver."
 	)
 	assert_true(
-		resolver.apply_action(gate_run_state, event_data, gate_event_state, "take_back_hall_screwdriver_0"),
+		resolver.apply_action(
+			gate_run_state,
+			event_data,
+			gate_event_state,
+			_action_id_by_prefix(resolver.get_actions(event_data, gate_event_state, gate_run_state), "take_back_hall_screwdriver_")
+		),
 		"The player should be able to pick up the screwdriver after finding it."
 	)
 	assert_true(
@@ -435,12 +442,13 @@ func _run_test() -> void:
 		"Searching the office should not auto-loot the storage key."
 	)
 	office_actions = resolver.get_actions(event_data, gate_event_state, gate_run_state)
+	var take_office_storage_key_action_id := _action_id_by_prefix(office_actions, "take_office_storage_key_")
 	assert_true(
-		_action_ids(office_actions).has("take_office_storage_key_0"),
+		not take_office_storage_key_action_id.is_empty(),
 		"Office search should reveal a separate take action for the storage key."
 	)
 	assert_true(
-		resolver.apply_action(gate_run_state, event_data, gate_event_state, "take_office_storage_key_0"),
+		resolver.apply_action(gate_run_state, event_data, gate_event_state, take_office_storage_key_action_id),
 		"The storage key should need to be picked up explicitly."
 	)
 	assert_eq(
@@ -519,17 +527,26 @@ func _run_test() -> void:
 		"Searching should not auto-loot even when inventory is full."
 	)
 	assert_true(
-		resolver.apply_action(full_run_state, event_data, overflow_event_state, "take_checkout_lighter_0"),
+		resolver.apply_action(
+			full_run_state,
+			event_data,
+			overflow_event_state,
+			_action_id_by_prefix(resolver.get_actions(event_data, overflow_event_state), "take_checkout_lighter_")
+		),
 		"Overflow tests should still resolve the take action."
 	)
 	assert_eq(
 		full_run_state.inventory.total_bulk(),
-		full_run_state.inventory.carry_limit,
-		"Taking loot should fail to add the item when the inventory is already full."
+		full_run_state.inventory.carry_limit + 1,
+		"Taking loot should still work one step past the soft carry limit."
 	)
 	assert_true(
 		String(overflow_event_state.get("last_feedback_message", "")).find("라이터") != -1,
-		"Overflowing loot should leave feedback that names the blocked item."
+		"Overflow loot feedback should still name the picked-up item."
+	)
+	assert_true(
+		full_run_state.get_outdoor_move_speed() < full_run_state.move_speed,
+		"Going past the soft carry limit should reduce outdoor movement speed."
 	)
 
 	pass_test("INDOOR_ACTIONS_OK")
@@ -578,6 +595,16 @@ func _action_by_id(actions: Array, expected_id: String) -> Dictionary:
 		if String(action.get("id", "")) == expected_id:
 			return action
 	return {}
+
+
+func _action_id_by_prefix(actions: Array, expected_prefix: String) -> String:
+	for action_variant in actions:
+		if typeof(action_variant) != TYPE_DICTIONARY:
+			continue
+		var action_id := String((action_variant as Dictionary).get("id", ""))
+		if action_id.begins_with(expected_prefix):
+			return action_id
+	return ""
 
 
 func _action_ids(actions: Array) -> Array[String]:

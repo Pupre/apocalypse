@@ -75,18 +75,18 @@ func _run_test() -> void:
 	assert_true(director.apply_action("move_food_aisle"), "Director should allow moving into the food aisle.")
 	assert_eq(
 		_edge_ids(director.get_map_snapshot()),
-		["back_hall|food_aisle", "food_aisle|mart_entrance"],
-		"After moving through the food aisle, the minimap should preserve the traveled path and only expose the aisle's current exits."
+		["food_aisle|household_goods", "food_aisle|mart_entrance"],
+		"After moving through the food aisle, the minimap should preserve the traveled path and expose the household-goods route."
 	)
 
-	assert_true(director.apply_action("move_back_hall"), "Director should allow moving into the back area.")
+	assert_true(director.apply_action("move_household_goods"), "Director should allow moving into the household goods zone.")
 	assert_eq(
 		_edge_ids(director.get_map_snapshot()),
-		["back_hall|food_aisle", "back_hall|staff_corridor_gate", "food_aisle|mart_entrance"],
-		"The back area should not reveal hidden checkout links until the player actually travels through them."
+		["back_hall|household_goods", "food_aisle|household_goods", "food_aisle|mart_entrance"],
+		"The household goods zone should sit between the food aisle and the back area."
 	)
-	assert_true(director.apply_action("search_back_hall_supplies"), "Director should allow searching the back area for supplies.")
-	assert_true(director.apply_action("take_back_hall_small_backpack_2"), "Director should allow taking the backpack as discovered loot.")
+	assert_true(director.apply_action("search_household_goods"), "Director should allow searching the household goods zone.")
+	assert_true(director.apply_action("take_household_goods_small_backpack_0"), "Director should allow taking the backpack as discovered loot.")
 	assert_true(director.apply_action("inspect_inventory_small_backpack"), "Director should allow selecting an inventory item for inspection.")
 	var selected_item_sheet: Dictionary = director.get_selected_inventory_sheet()
 	assert_eq(String(selected_item_sheet.get("title", "")), "작은 배낭", "Director should expose the selected item title for the bottom sheet.")
@@ -96,11 +96,21 @@ func _run_test() -> void:
 	)
 	assert_true(director.apply_action("equip_inventory_small_backpack"), "Director should allow equipping the selected backpack.")
 	assert_eq(director.get_inventory_title(), "소지품 (0/12)", "Equipping the backpack should increase the carry limit in the inventory title.")
+	assert_true(director.apply_action("take_household_goods_running_shoes_1"), "Director should allow taking the shoes from household goods.")
+	assert_true(director.apply_action("inspect_inventory_running_shoes"), "Director should allow selecting the shoes for inspection.")
+	selected_item_sheet = director.get_selected_inventory_sheet()
+	assert_true(
+		_action_ids(selected_item_sheet.get("actions", [])).has("equip_inventory_running_shoes"),
+		"Movement gear should expose an equip action in the item sheet."
+	)
+	assert_true(director.apply_action("equip_inventory_running_shoes"), "Director should allow equipping shoes.")
+	assert_true(run_state.move_speed > 230.0, "Equipping shoes should increase the survivor move speed stat.")
 
+	assert_true(director.apply_action("move_back_hall"), "Director should allow moving from household goods into the back area.")
 	assert_true(director.apply_action("move_staff_corridor_gate"), "Director should allow moving to the staff door from the back area.")
 	assert_eq(
 		_edge_ids(director.get_map_snapshot()),
-		["back_hall|food_aisle", "back_hall|staff_corridor_gate", "checkout|staff_corridor_gate", "food_aisle|mart_entrance", "staff_corridor_gate|stair_landing"],
+		["back_hall|household_goods", "back_hall|staff_corridor_gate", "checkout|staff_corridor_gate", "food_aisle|household_goods", "food_aisle|mart_entrance", "staff_corridor_gate|stair_landing"],
 		"At the staff door, the minimap should only add routes that can be seen directly from the current position."
 	)
 

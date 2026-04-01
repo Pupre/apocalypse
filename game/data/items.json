@@ -93,7 +93,18 @@
     "name": "작업 장갑",
     "bulk": 1,
     "description": "거친 물건을 옮길 때 손을 보호해 주는 장갑이다.",
-    "category": "utility"
+    "category": "equipment",
+    "equip_slot": "hands",
+    "fatigue_gain_bonus": -0.1
+  },
+  {
+    "id": "running_shoes",
+    "name": "운동화",
+    "bulk": 1,
+    "description": "밑창이 살아 있는 운동화다. 오래 걷거나 뛸 때 훨씬 편하다.",
+    "category": "equipment",
+    "equip_slot": "feet",
+    "move_speed_bonus": 24
   },
   {
     "id": "small_backpack",

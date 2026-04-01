@@ -10,6 +10,8 @@ const BASE_FATIGUE_GAIN_MULTIPLIER := 1.0
 const FATIGUE_GAIN_PER_MINUTE := 1.0 / 30.0
 const HUNGER_GAIN_PER_MINUTE := 1.0 / 60.0
 const BASE_CARRY_LIMIT := 8
+const MIN_OVERLOADED_MOVE_MULTIPLIER := 0.45
+const OVERFLOW_MOVE_PENALTY_PER_BULK := 0.12
 
 var clock = TIME_CLOCK_SCRIPT.new()
 var fatigue_model = FATIGUE_MODEL_SCRIPT.new()
@@ -23,6 +25,8 @@ var exposure: float = 100.0
 var move_speed: float = BASE_MOVE_SPEED
 var fatigue_gain_multiplier: float = BASE_FATIGUE_GAIN_MULTIPLIER
 var base_carry_limit: int = BASE_CARRY_LIMIT
+var _base_move_speed: float = BASE_MOVE_SPEED
+var _base_fatigue_gain_multiplier: float = BASE_FATIGUE_GAIN_MULTIPLIER
 var _content_source = null
 var _report_validation_errors := true
 
@@ -66,6 +70,8 @@ func is_dead() -> bool:
 func _apply_survivor_config(config: Dictionary) -> void:
 	survivor_config = config.duplicate(true)
 	equipped_items = {}
+	move_speed = BASE_MOVE_SPEED
+	fatigue_gain_multiplier = BASE_FATIGUE_GAIN_MULTIPLIER
 
 	var carry_limit_bonus := 0
 	carry_limit_bonus += _apply_job_modifiers(String(survivor_config.get("job_id", "")))
@@ -73,8 +79,10 @@ func _apply_survivor_config(config: Dictionary) -> void:
 	for trait_id_variant in survivor_config.get("trait_ids", []):
 		carry_limit_bonus += _apply_trait_modifiers(String(trait_id_variant))
 
+	_base_move_speed = move_speed
+	_base_fatigue_gain_multiplier = fatigue_gain_multiplier
 	base_carry_limit = BASE_CARRY_LIMIT + carry_limit_bonus
-	_recalculate_carry_limit()
+	_recalculate_derived_stats()
 
 
 func consume_inventory_item(item_id: String, item_data: Dictionary) -> bool:
@@ -113,10 +121,22 @@ func equip_inventory_item(item_id: String, item_data: Dictionary) -> Dictionary:
 		return result
 
 	equipped_items[equip_slot] = _merge_item_data(item_data, removed_item)
-	_recalculate_carry_limit()
+	_recalculate_derived_stats()
 	result["ok"] = true
 	result["replaced_item"] = replaced_item
 	return result
+
+
+func get_outdoor_move_speed() -> float:
+	var overflow_bulk: int = inventory.overflow_bulk()
+	if overflow_bulk <= 0:
+		return move_speed
+
+	var multiplier := float(max(
+		MIN_OVERLOADED_MOVE_MULTIPLIER,
+		1.0 - (float(overflow_bulk) * OVERFLOW_MOVE_PENALTY_PER_BULK)
+	))
+	return move_speed * multiplier
 
 
 func _apply_job_modifiers(job_id: String) -> int:
@@ -221,14 +241,21 @@ func _report_validation_error(message: String) -> void:
 		push_error(message)
 
 
-func _recalculate_carry_limit() -> void:
-	var total_bonus := 0
+func _recalculate_derived_stats() -> void:
+	var carry_bonus := 0
+	var move_speed_bonus := 0.0
+	var fatigue_gain_bonus := 0.0
 	for item_variant in equipped_items.values():
 		if typeof(item_variant) != TYPE_DICTIONARY:
 			continue
-		total_bonus += int((item_variant as Dictionary).get("carry_limit_bonus", 0))
+		var item := item_variant as Dictionary
+		carry_bonus += int(item.get("carry_limit_bonus", 0))
+		move_speed_bonus += float(item.get("move_speed_bonus", 0.0))
+		fatigue_gain_bonus += float(item.get("fatigue_gain_bonus", 0.0))
 
-	inventory.carry_limit = base_carry_limit + total_bonus
+	inventory.carry_limit = base_carry_limit + carry_bonus
+	move_speed = _base_move_speed + move_speed_bonus
+	fatigue_gain_multiplier = _base_fatigue_gain_multiplier + fatigue_gain_bonus
 
 
 func _merge_item_data(primary: Dictionary, fallback: Dictionary) -> Dictionary:

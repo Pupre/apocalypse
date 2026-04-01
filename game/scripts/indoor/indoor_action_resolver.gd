@@ -474,10 +474,11 @@ func _get_take_loot_actions(event_state: Dictionary, run_state = null) -> Array[
 	for loot_index in range(found_loot.size()):
 		var loot := found_loot[loot_index]
 		var loot_id := String(loot.get("id", "loot"))
+		var loot_uid := int(loot.get("loot_uid", loot_index))
 		var loot_label := _loot_label(loot)
 		var can_add: bool = run_state != null and run_state.inventory != null and run_state.inventory.can_add(loot)
 		actions.append({
-			"id": "take_%s_%s_%d" % [current_zone_id, loot_id, loot_index],
+			"id": "take_%s_%s_%d" % [current_zone_id, loot_id, loot_uid],
 			"type": "take_loot",
 			"label": "%s 챙긴다" % loot_label,
 			"zone_id": current_zone_id,
@@ -538,7 +539,10 @@ func _append_zone_found_loot(event_state: Dictionary, zone_id: String, discovere
 
 	var existing_loot := _dictionary_loot_array(all_found_loot.get(zone_id, []))
 	for loot in discovered_loot:
-		existing_loot.append(loot.duplicate(true))
+		var loot_entry := loot.duplicate(true)
+		if int(loot_entry.get("loot_uid", -1)) < 0:
+			loot_entry["loot_uid"] = _consume_loot_uid(event_state)
+		existing_loot.append(loot_entry)
 	all_found_loot[zone_id] = existing_loot
 	event_state["zone_found_loot"] = all_found_loot
 
@@ -549,6 +553,12 @@ func _set_zone_found_loot(event_state: Dictionary, zone_id: String, found_loot: 
 		all_found_loot = {}
 	all_found_loot[zone_id] = found_loot
 	event_state["zone_found_loot"] = all_found_loot
+
+
+func _consume_loot_uid(event_state: Dictionary) -> int:
+	var next_loot_uid := int(event_state.get("next_loot_uid", 0))
+	event_state["next_loot_uid"] = next_loot_uid + 1
+	return next_loot_uid
 
 
 func _string_id_array(values) -> Array[String]:

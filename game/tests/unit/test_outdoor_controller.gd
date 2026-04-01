@@ -113,6 +113,24 @@ func _run_test() -> void:
 	assert_eq(_building_entered_count, 1, "Trying to enter from nearby should emit building_entered.")
 	assert_eq(_entered_building_id, "mart_01", "The emitted building id should match the entry target.")
 
+	var overloaded_run_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, self)
+	if not assert_true(overloaded_run_state != null, "RunState should build for overload movement tests."):
+		outdoor_mode.free()
+		return
+	for index in range(12):
+		assert_true(overloaded_run_state.inventory.add_item({"id": "weight_%d" % index, "bulk": 1}), "Overload movement tests should be able to fill the inventory.")
+
+	outdoor_mode.bind_run_state(overloaded_run_state, "mart_01", Vector2(0.0, 0.0))
+	outdoor_mode.move_player(Vector2.RIGHT, 1.0)
+	assert_true(
+		outdoor_mode.get_player_position().x < overloaded_run_state.move_speed,
+		"Outdoor movement should slow down when the player is carrying more than the soft limit."
+	)
+
 	outdoor_mode.free()
 	pass_test("OUTDOOR_CONTROLLER_OK")
 

@@ -103,6 +103,32 @@ func _run_test() -> void:
 	assert_eq(state.inventory.total_bulk(), 0, "Removing an item should reduce the carried bulk.")
 	assert_true(not state.inventory.remove_first_item_by_id("missing_item"), "Removing a missing item id should fail cleanly.")
 
+	assert_true(state.inventory.add_item({"id": "running_shoes", "name": "운동화", "bulk": 1}), "Inventory should hold an equippable speed item.")
+	var equipped_shoes: Dictionary = state.equip_inventory_item("running_shoes", {
+		"id": "running_shoes",
+		"name": "운동화",
+		"equip_slot": "feet",
+		"move_speed_bonus": 24
+	})
+	assert_true(bool(equipped_shoes.get("ok", false)), "RunState should allow equipping movement gear.")
+	assert_eq(int(state.move_speed), 254, "Equipping shoes should increase move speed.")
+
+	assert_true(state.inventory.add_item({"id": "small_backpack", "name": "작은 배낭", "bulk": 2}), "Inventory should hold an equippable backpack.")
+	var equipped_backpack: Dictionary = state.equip_inventory_item("small_backpack", {
+		"id": "small_backpack",
+		"name": "작은 배낭",
+		"equip_slot": "back",
+		"carry_limit_bonus": 4
+	})
+	assert_true(bool(equipped_backpack.get("ok", false)), "RunState should allow equipping a backpack.")
+	assert_eq(state.inventory.carry_limit, 12, "Equipping a backpack should increase the soft carry limit.")
+
+	for index in range(13):
+		assert_true(state.inventory.add_item({"id": "weight_%d" % index, "bulk": 1}), "Inventory should allow a few items beyond the soft limit for overload testing.")
+
+	assert_true(state.inventory.total_bulk() > state.inventory.carry_limit, "Overflow test should exceed the soft carry limit.")
+	assert_true(state.get_outdoor_move_speed() < state.move_speed, "Exceeding the soft carry limit should reduce outdoor move speed.")
+
 	var bad_trait_state = run_state_script.from_survivor_config({
 		"job_id": "courier",
 		"trait_ids": PackedStringArray(["athlete", "missing_trait"]),
