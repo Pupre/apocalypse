@@ -23,17 +23,21 @@ func set_mode_presentation(mode_name: String) -> void:
 		return
 
 	if mode_name == "indoor":
-		_panel.offset_left = 24.0
+		_panel.anchor_left = 1.0
+		_panel.anchor_right = 1.0
+		_panel.offset_left = -272.0
 		_panel.offset_top = 20.0
-		_panel.offset_right = 272.0
+		_panel.offset_right = -24.0
 		_panel.offset_bottom = 156.0
 		_panel.modulate = Color(1, 1, 1, 0.9)
 		_title_label.text = INDOOR_TITLE
 		return
 
-	_panel.offset_left = 16.0
+	_panel.anchor_left = 1.0
+	_panel.anchor_right = 1.0
+	_panel.offset_left = -336.0
 	_panel.offset_top = 16.0
-	_panel.offset_right = 336.0
+	_panel.offset_right = -16.0
 	_panel.offset_bottom = 180.0
 	_panel.modulate = Color(1, 1, 1, 1.0)
 	_title_label.text = OUTDOOR_TITLE
