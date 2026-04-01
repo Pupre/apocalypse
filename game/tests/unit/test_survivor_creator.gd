@@ -169,9 +169,31 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 	assert_true(action_buttons.get_child_count() >= 1, "Mart indoor mode should expose at least one indoor action.")
+	assert_true(
+		_find_button_by_text(action_buttons, "계산대를 수색한다 (30분)") == null,
+		"The mart entrance should not expose checkout-only search actions."
+	)
 
-	var search_button := _find_button_by_text(action_buttons, "계산대를 수색한다 (30분)")
-	if not assert_true(search_button != null, "Mart indoor mode should expose the timed counter-search action."):
+	var move_checkout_button := _find_button_by_text(action_buttons, "계산대로 이동한다 (30분)")
+	if not assert_true(move_checkout_button != null, "The mart entrance should expose movement into the checkout zone."):
+		bootstrap.free()
+		return
+
+	var location_label := indoor_mode.get_node_or_null("Panel/VBox/Header/LocationLabel") as Label
+	if not assert_true(location_label != null, "Indoor mode should expose a location label in the creator flow."):
+		bootstrap.free()
+		return
+
+	move_checkout_button.emit_signal("pressed")
+	if not await _wait_until(
+		Callable(self, "_label_text_is").bind(location_label, "위치: 계산대"),
+		"Timed out waiting for the creator flow to move into checkout."
+	):
+		bootstrap.free()
+		return
+
+	var search_button := _find_button_by_text(action_buttons, "조용히 서랍을 연다 (30분)")
+	if not assert_true(search_button != null, "Checkout should expose the drawer search after moving there."):
 		bootstrap.free()
 		return
 
@@ -183,19 +205,19 @@ func _run_test() -> void:
 			hud_clock_label,
 			result_label,
 			action_buttons,
-			"1일차 08:30",
+			"1일차 09:00",
 			expected_feedback,
-			4
+			3
 		),
 		"Timed out waiting for the indoor action result to settle."
 	):
 		bootstrap.free()
 		return
 
-	assert_eq(hud_clock_label.text, "1일차 08:30", "Pressing the indoor action should advance the HUD clock.")
+	assert_eq(hud_clock_label.text, "1일차 09:00", "Moving into checkout and then searching should advance the HUD clock.")
 	assert_true(result_label.text.find(expected_feedback) != -1, "Pressing the indoor action should refresh the result feedback.")
 	assert_true(
-		_find_button_by_text(action_buttons, "계산대를 수색한다 (30분)") == null,
+		_find_button_by_text(action_buttons, "조용히 서랍을 연다 (30분)") == null,
 		"The one-shot search action should be removed after use."
 	)
 
@@ -261,6 +283,10 @@ func _find_button_by_text(container: VBoxContainer, expected_text: String) -> Bu
 			return button
 
 	return null
+
+
+func _label_text_is(label: Label, expected_text: String) -> bool:
+	return label != null and label.text == expected_text
 
 
 func _has_transition_completed(run_shell: Node, expected_mode_name: String) -> bool:

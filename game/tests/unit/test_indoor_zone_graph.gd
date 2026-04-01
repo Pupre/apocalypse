@@ -71,8 +71,8 @@ func _run_test() -> void:
 	var zone_aware_actions: Array = resolver.get_actions(event_data, event_state)
 	assert_eq(
 		_sorted_action_ids(zone_aware_actions),
-		PackedStringArray(["move_checkout", "move_food_aisle", "rest", "search_counter"]),
-		"Zone-aware action queries should include both movement and flat indoor actions."
+		PackedStringArray(["move_checkout", "move_food_aisle", "rest"]),
+		"Zone-aware action queries should only expose entrance-valid actions at the mart entrance."
 	)
 
 	var run_state := FakeRunState.new()
@@ -96,6 +96,10 @@ func _run_test() -> void:
 	assert_true(
 		_action_ids(zone_aware_actions).has("move_mart_entrance"),
 		"Checkout should still expose the return path through zone-aware get_actions."
+	)
+	assert_true(
+		_action_ids(zone_aware_actions).has("search_checkout_drawer"),
+		"Checkout should expose its local drawer search only after entering the checkout zone."
 	)
 
 	pass_test("INDOOR_ZONE_GRAPH_OK")

@@ -204,22 +204,6 @@
   ],
   "actions": [
     {
-      "id": "search_counter",
-      "label": "계산대를 수색한다",
-      "consume_on_use": true,
-      "minute_cost": 30,
-      "reveal_clue_ids": [
-        "stock_room"
-      ],
-      "loot": [
-        {
-          "id": "canned_beans",
-          "name": "통조림 콩",
-          "bulk": 1
-        }
-      ]
-    },
-    {
       "id": "rest",
       "label": "한 시간 쉰다",
       "sleep_minutes": 60,

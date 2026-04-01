@@ -73,49 +73,58 @@ func _run_test() -> void:
 		return
 
 	var event_state := {
+		"current_zone_id": "mart_entrance",
+		"visited_zone_ids": PackedStringArray(["mart_entrance"]),
 		"revealed_clue_ids": PackedStringArray(),
+		"spent_action_ids": PackedStringArray(),
+		"zone_flags": {},
+		"noise": 0,
 	}
 
 	var visible_clues: Array = resolver.get_visible_clues(event_data, event_state)
 	assert_eq(visible_clues.size(), 1, "Mart clues should start with one visible clue.")
 
 	var actions: Array = resolver.get_actions(event_data, event_state)
-	assert_eq(actions.size(), 2, "Mart indoor actions should start with the active search and rest actions.")
+	assert_true(_action_ids(actions).has("move_checkout"), "Entrance should expose movement into checkout.")
+	assert_true(_action_ids(actions).has("move_food_aisle"), "Entrance should expose movement into food aisle.")
+	assert_true(_action_ids(actions).has("rest"), "Entrance should keep the repeatable rest action.")
+	assert_true(not _action_ids(actions).has("search_counter"), "Entrance should not expose checkout-only search actions.")
 
 	var before_clock_minute_of_day: int = run_state.clock.minute_of_day
 	var before_fatigue: float = run_state.fatigue
-	var action_applied: bool = resolver.apply_action(run_state, event_data, event_state, "search_counter")
-	assert_true(action_applied, "Indoor action resolver should apply the search_counter action.")
+	var action_applied: bool = resolver.apply_action(run_state, event_data, event_state, "move_checkout")
+	assert_true(action_applied, "Indoor action resolver should allow moving into the checkout zone.")
 	assert_eq(
 		run_state.clock.minute_of_day,
 		before_clock_minute_of_day + ACTIVE_SEARCH_MINUTES,
-		"Searching the counter should spend active minutes."
+		"Moving into checkout should spend the connected zone's first-visit cost."
 	)
 	assert_true(run_state.fatigue > before_fatigue, "Searching the counter should add fatigue through active time.")
 	assert_eq(
 		int(roundf(run_state.fatigue * 100.0)),
 		int(roundf((before_fatigue + EXPECTED_SEARCH_FATIGUE_GAIN) * 100.0)),
-		"Active search time should use the run state's active-time fatigue model."
+		"Movement time should use the run state's active-time fatigue model."
 	)
+	assert_eq(String(event_state.get("current_zone_id", "")), "checkout", "Moving should update the current zone to checkout.")
 
 	visible_clues = resolver.get_visible_clues(event_data, event_state)
-	assert_eq(visible_clues.size(), 2, "Searching the counter should reveal the hidden clue.")
-	assert_eq(run_state.inventory.total_bulk(), 1, "Searching the counter should add one loot item.")
+	assert_eq(visible_clues.size(), 1, "Moving zones should not reveal hidden clues on its own.")
+	assert_eq(run_state.inventory.total_bulk(), 0, "Moving zones should not add loot on its own.")
 
 	actions = resolver.get_actions(event_data, event_state)
-	assert_eq(actions.size(), 1, "Search actions should be spent after use.")
-	assert_eq(String(actions[0].get("id", "")), "rest", "Only the rest action should remain after searching the counter.")
+	assert_true(_action_ids(actions).has("search_checkout_drawer"), "Checkout should expose its local drawer search after entering the zone.")
+	assert_true(_action_ids(actions).has("rest"), "Repeatable rest should still be available after moving.")
 
 	assert_true(
-		not resolver.apply_action(run_state, event_data, event_state, "search_counter"),
-		"Spent indoor actions should not be reusable."
+		not resolver.apply_action(run_state, event_data, {"revealed_clue_ids": PackedStringArray()}, "search_counter"),
+		"Global checkout search should no longer resolve from a location-less state."
 	)
 
 	var before_rest_clock_minute_of_day: int = run_state.clock.minute_of_day
 	var before_rest_fatigue: float = run_state.fatigue
 	assert_true(
 		resolver.apply_action(run_state, event_data, event_state, "rest"),
-		"Repeatable rest actions should still be usable after searching."
+		"Repeatable rest actions should still be usable after moving."
 	)
 	assert_eq(
 		run_state.clock.minute_of_day,
@@ -137,8 +146,9 @@ func _run_test() -> void:
 		"Repeatable rest should keep advancing the clock."
 	)
 	actions = resolver.get_actions(event_data, event_state)
-	assert_eq(actions.size(), 1, "Repeatable rest should remain available after use.")
-	assert_eq(String(actions[0].get("id", "")), "rest", "Rest should remain in the action list after use.")
+	assert_true(_action_ids(actions).has("rest"), "Repeatable rest should remain available after use.")
+	assert_true(_action_ids(actions).has("search_checkout_drawer"), "Zone-local checkout search should still remain available until used.")
+	assert_true(_action_ids(actions).has("move_mart_entrance"), "Checkout should still expose the return move after resting.")
 
 	var checkout_run_state = run_state_script.from_survivor_config({
 		"job_id": "courier",
@@ -285,10 +295,15 @@ func _run_test() -> void:
 		assert_true(full_run_state.inventory.add_item({"id": "filler_%d" % index, "bulk": 1}), "Inventory filler should fit before testing overflow feedback.")
 
 	var overflow_event_state := {
+		"current_zone_id": "checkout",
+		"visited_zone_ids": PackedStringArray(["mart_entrance", "checkout"]),
 		"revealed_clue_ids": PackedStringArray(),
+		"spent_action_ids": PackedStringArray(),
+		"zone_flags": {},
+		"noise": 0,
 	}
 	assert_true(
-		resolver.apply_action(full_run_state, event_data, overflow_event_state, "search_counter"),
+		resolver.apply_action(full_run_state, event_data, overflow_event_state, "search_checkout_drawer"),
 		"Overflow tests should still resolve the action."
 	)
 	assert_eq(

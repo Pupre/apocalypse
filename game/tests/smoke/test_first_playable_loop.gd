@@ -281,7 +281,7 @@ func _run_test() -> void:
 			1,
 			"1일차 11:00",
 			"30분 동안 수색했다.",
-			4
+			3
 		),
 		"Timed out waiting for the checkout search to apply."
 	):
