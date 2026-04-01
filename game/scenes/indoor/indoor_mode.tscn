@@ -37,6 +37,10 @@ theme_override_constants/separation = 12
 size_flags_horizontal = 3
 text = "실내"
 
+[node name="LocationLabel" type="Label" parent="Panel/VBox/Header"]
+size_flags_horizontal = 3
+text = "위치: 확인 중"
+
 [node name="ExitButton" type="Button" parent="Panel/VBox/Header"]
 text = "건물 밖으로"
 

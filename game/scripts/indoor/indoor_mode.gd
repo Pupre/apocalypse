@@ -5,6 +5,7 @@ signal exit_requested
 
 var _director: Node = null
 var _title_label: Label = null
+var _location_label: Label = null
 var _summary_label: Label = null
 var _sleep_preview_label: Label = null
 var _result_label: Label = null
@@ -47,6 +48,9 @@ func _refresh_view() -> void:
 
 	if _title_label != null and _director.has_method("get_event_title"):
 		_title_label.text = _director.get_event_title()
+
+	if _location_label != null:
+		_update_location_label()
 
 	if _summary_label != null and _director.has_method("get_event_summary"):
 		var summary: String = String(_director.get_event_summary())
@@ -115,6 +119,7 @@ func _sleep_preview_text(preview: Dictionary) -> String:
 func _cache_nodes() -> void:
 	_director = get_node_or_null("Director")
 	_title_label = get_node_or_null("Panel/VBox/Header/TitleLabel") as Label
+	_location_label = get_node_or_null("Panel/VBox/Header/LocationLabel") as Label
 	_summary_label = get_node_or_null("Panel/VBox/SummaryLabel") as Label
 	_sleep_preview_label = get_node_or_null("Panel/VBox/SleepPreviewLabel") as Label
 	_result_label = get_node_or_null("Panel/VBox/ResultLabel") as Label
@@ -126,3 +131,15 @@ func _cache_nodes() -> void:
 func _clear_children(container: Node) -> void:
 	for child in container.get_children():
 		child.queue_free()
+
+
+func _update_location_label() -> void:
+	if _location_label == null:
+		return
+
+	if _director == null or not _director.has_method("get_current_zone_label"):
+		_location_label.text = "위치: 확인 중"
+		return
+
+	var zone_label := String(_director.get_current_zone_label())
+	_location_label.text = "위치: %s" % (zone_label if not zone_label.is_empty() else "확인 중")
