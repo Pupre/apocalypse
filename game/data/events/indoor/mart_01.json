@@ -333,6 +333,7 @@
         {
           "id": "force_staff_corridor_gate",
           "label": "직원 출입문을 공구로 비집는다",
+          "show_when_locked": false,
           "requirements": {
             "required_item_ids": [
               "screwdriver"

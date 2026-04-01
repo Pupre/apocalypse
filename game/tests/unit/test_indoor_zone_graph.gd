@@ -118,12 +118,8 @@ func _run_test() -> void:
 	}
 	var staff_gate_actions: Array = resolver.get_actions(event_data, staff_gate_state)
 	assert_true(
-		_action_ids(staff_gate_actions).has("force_staff_corridor_gate"),
-		"Staff gate should keep the force action visible before the player finds a tool."
-	)
-	assert_true(
-		_action_by_id(staff_gate_actions, "force_staff_corridor_gate").get("locked", false),
-		"Staff gate forcing should be marked locked until a tool is available."
+		not _action_ids(staff_gate_actions).has("force_staff_corridor_gate"),
+		"Staff gate should hide the force action until the player actually has a tool."
 	)
 	assert_true(
 		_action_ids(staff_gate_actions).has("move_stair_landing"),

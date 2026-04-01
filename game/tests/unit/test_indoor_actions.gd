@@ -247,12 +247,8 @@ func _run_test() -> void:
 
 	checkout_actions = resolver.get_actions(event_data, toolless_gate_state, toolless_gate_run_state)
 	assert_true(
-		_action_ids(checkout_actions).has("force_staff_corridor_gate"),
-		"Staff gate zone should keep the force option visible even without the tool."
-	)
-	assert_true(
-		bool(_action_by_id(checkout_actions, "force_staff_corridor_gate").get("locked", false)),
-		"The force option should be marked as locked until the player finds a tool."
+		not _action_ids(checkout_actions).has("force_staff_corridor_gate"),
+		"Staff gate zone should hide the force option until the player finds the tool."
 	)
 	assert_true(
 		_action_ids(checkout_actions).has("move_stair_landing"),
@@ -260,17 +256,13 @@ func _run_test() -> void:
 	)
 	var blocked_force_clock_minute_of_day: int = toolless_gate_run_state.clock.minute_of_day
 	assert_true(
-		resolver.apply_action(toolless_gate_run_state, event_data, toolless_gate_state, "force_staff_corridor_gate"),
-		"Trying to force the staff gate without a tool should resolve with feedback."
+		not resolver.apply_action(toolless_gate_run_state, event_data, toolless_gate_state, "force_staff_corridor_gate"),
+		"Trying to use the hidden force action id directly should fail while the player lacks the tool."
 	)
 	assert_eq(
 		toolless_gate_run_state.clock.minute_of_day,
 		blocked_force_clock_minute_of_day,
-		"Trying to force the gate without a tool should not spend time."
-	)
-	assert_true(
-		String(toolless_gate_state.get("last_feedback_message", "")).find("공구") != -1,
-		"Trying to force the gate without a tool should explain the missing tool."
+		"Failing to invoke the hidden force action should not spend time."
 	)
 	var blocked_attempt_clock_minute_of_day: int = toolless_gate_run_state.clock.minute_of_day
 	assert_true(
