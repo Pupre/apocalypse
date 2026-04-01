@@ -1,7 +1,7 @@
 ## Session Snapshot
 
 - Goal: 실내 마트 프로토타입의 정합성을 보정하고 파밍 흐름을 생존게임답게 수정
-- Current status: 실내 파밍은 `탐색 -> 발견 -> 선택 획득`으로 전환 완료, `잠긴 길 노출 / 도구 행동 숨김` 규칙까지 반영 완료
+- Current status: 실내 파밍은 `탐색 -> 발견 -> 선택 획득`으로 전환 완료, `잠긴 길 노출 / 도구 행동 숨김` 규칙과 `버리기 가능한 인벤토리 사이드바`까지 반영 완료
 - Last updated: 2026-04-01
 - Primary repos: apocalypse
 - Active branches: playtest-mart-indoor-content
@@ -16,9 +16,9 @@
 
 ## Next Actions
 
-- [ ] `버리기` 액션과 소지 제한 UI/행동 흐름 설계하기
 - [ ] 생활용품 코너와 식품 진열대 쪽 루팅 풀을 더 풍부하게 늘리기
 - [ ] `잠긴 길은 노출, 아이템 요구 행동은 숨김` 규칙을 다른 실내 구역에도 일반화하기
+- [ ] 소지 한도 초과 시 이동속도 저하 같은 소프트 제한을 외부 시스템과 연결할지 결정하기
 
 ## Progress Checklist
 
@@ -38,10 +38,13 @@
 - 현재 규칙:
   - `2층으로 올라간다`, `보관실로 이동한다` 같은 공간 경로는 잠겨도 보여준다
   - `직원 출입문을 공구로 비집는다` 같은 도구 요구 행동은 아이템 없으면 숨긴다
+  - 사이드바 소지품은 각 행에서 바로 `버린다`를 눌러 비울 수 있다
 - 다음 작업 시작 전 확인할 것:
   - `game/data/events/indoor/mart_01.json`
   - `game/scripts/indoor/indoor_action_resolver.gd`
   - `game/scripts/indoor/indoor_minimap.gd`
+  - `game/scripts/indoor/indoor_director.gd`
+  - `game/scripts/indoor/indoor_mode.gd`
 
 ## Verification Status
 
@@ -56,4 +59,4 @@
 - Results:
   - 위 테스트 전부 통과
 - Pending verification:
-  - 실제 데스크톱 플레이로 용어/행동 밀도 체감 재확인
+  - 실제 데스크톱 플레이로 루팅 풀 체감과 `버린다` 버튼 밀도 재확인

@@ -22,3 +22,18 @@ func add_item(item: Dictionary) -> bool:
 
 	items.append(item.duplicate(true))
 	return true
+
+
+func remove_first_item_by_id(item_id: String) -> bool:
+	if item_id.is_empty():
+		return false
+
+	for index in range(items.size()):
+		var item := items[index]
+		if String(item.get("id", "")) != item_id:
+			continue
+
+		items.remove_at(index)
+		return true
+
+	return false

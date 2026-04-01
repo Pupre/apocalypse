@@ -145,6 +145,15 @@ func _run_test() -> void:
 	if not assert_true(inventory_items != null, "Indoor mode should expose an inventory list container."):
 		indoor_mode.free()
 		return
+	var inventory_title_label := indoor_mode.get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/TitleLabel") as Label
+	if not assert_true(inventory_title_label != null, "Indoor mode should expose an inventory title label."):
+		indoor_mode.free()
+		return
+	assert_eq(
+		inventory_title_label.text,
+		"소지품 (0/8)",
+		"Indoor mode should show the current carry usage in the inventory title."
+	)
 	assert_eq(
 		_inventory_labels(inventory_items),
 		["소지품 없음"],
@@ -221,6 +230,31 @@ func _run_test() -> void:
 		["라이터 x1"],
 		"Picking up a discovered item should update the indoor inventory list."
 	)
+	assert_eq(
+		inventory_title_label.text,
+		"소지품 (1/8)",
+		"Indoor mode should refresh the carry usage after looting an item."
+	)
+	var drop_button := _find_inventory_button_by_text(inventory_items, "버린다")
+	if not assert_true(drop_button != null, "Indoor inventory rows should expose a drop button for carried items."):
+		indoor_mode.free()
+		return
+	drop_button.emit_signal("pressed")
+	await process_frame
+	assert_eq(
+		_inventory_labels(inventory_items),
+		["소지품 없음"],
+		"Pressing the inventory drop button should remove the carried item from the sidebar."
+	)
+	assert_eq(
+		inventory_title_label.text,
+		"소지품 (0/8)",
+		"Dropping an item should free carry space in the inventory title."
+	)
+	assert_true(
+		result_label.text.find("버렸다") != -1,
+		"Dropping an item should leave readable feedback."
+	)
 
 	assert_true(
 		director.apply_action("move_mart_entrance"),
@@ -264,6 +298,24 @@ func _find_button_by_text(container: VBoxContainer, expected_text: String) -> Bu
 	return null
 
 
+func _find_inventory_button_by_text(container: VBoxContainer, expected_text: String) -> Button:
+	if container == null:
+		return null
+
+	for child in container.get_children():
+		if child is Button:
+			var direct_button := child as Button
+			if direct_button != null and direct_button.text == expected_text:
+				return direct_button
+		if child is Container:
+			for nested_child in child.get_children():
+				var button := nested_child as Button
+				if button != null and button.text == expected_text:
+					return button
+
+	return null
+
+
 func _map_labels(container: Control) -> Array[String]:
 	var labels: Array[String] = []
 	if container == null:
@@ -287,6 +339,13 @@ func _inventory_labels(container: VBoxContainer) -> Array[String]:
 		var label := child as Label
 		if label != null:
 			labels.append(label.text)
+			continue
+		if child is Container:
+			for nested_child in child.get_children():
+				var nested_label := nested_child as Label
+				if nested_label != null:
+					labels.append(nested_label.text)
+					break
 
 	return labels
 

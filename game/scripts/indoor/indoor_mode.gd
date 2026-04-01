@@ -11,6 +11,7 @@ var _summary_label: Label = null
 var _result_label: Label = null
 var _action_buttons: VBoxContainer = null
 var _minimap: Control = null
+var _inventory_title_label: Label = null
 var _inventory_items: VBoxContainer = null
 var _director_connected := false
 
@@ -102,6 +103,7 @@ func _cache_nodes() -> void:
 	_result_label = get_node_or_null("Panel/Layout/MainColumn/ResultLabel") as Label
 	_action_buttons = get_node_or_null("Panel/Layout/MainColumn/ActionButtons") as VBoxContainer
 	_minimap = get_node_or_null("Panel/Layout/Sidebar/MinimapPanel/VBox/MapNodes") as Control
+	_inventory_title_label = get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/TitleLabel") as Label
 	_inventory_items = get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/InventoryItems") as VBoxContainer
 
 
@@ -148,10 +150,37 @@ func _refresh_inventory() -> void:
 		return
 
 	_clear_children(_inventory_items)
-	if _director == null or not _director.has_method("get_inventory_entries"):
+	if _inventory_title_label != null:
+		if _director != null and _director.has_method("get_inventory_title"):
+			_inventory_title_label.text = String(_director.get_inventory_title())
+		else:
+			_inventory_title_label.text = "소지품"
+
+	if _director == null or not _director.has_method("get_inventory_rows"):
 		return
 
-	for entry in _director.get_inventory_entries():
-		var label := Label.new()
-		label.text = String(entry)
-		_inventory_items.add_child(label)
+	for row_variant in _director.get_inventory_rows():
+		if typeof(row_variant) != TYPE_DICTIONARY:
+			continue
+
+		var row := row_variant as Dictionary
+		var label_text := String(row.get("label", ""))
+		var drop_action_id := String(row.get("drop_action_id", ""))
+		if drop_action_id.is_empty():
+			var label := Label.new()
+			label.text = label_text
+			_inventory_items.add_child(label)
+			continue
+
+		var row_box := HBoxContainer.new()
+		row_box.add_theme_constant_override("separation", 8)
+		var row_label := Label.new()
+		row_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		row_label.text = label_text
+		row_box.add_child(row_label)
+
+		var drop_button := Button.new()
+		drop_button.text = "버린다"
+		drop_button.pressed.connect(Callable(self, "_on_action_pressed").bind(drop_action_id))
+		row_box.add_child(drop_button)
+		_inventory_items.add_child(row_box)

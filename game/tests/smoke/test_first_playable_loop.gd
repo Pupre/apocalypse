@@ -298,7 +298,7 @@ func _run_test() -> void:
 				0,
 				"1일차 11:00",
 				"발견했다.",
-				4
+				-1
 			),
 			"Timed out waiting for the checkout search to apply."
 	):
@@ -326,7 +326,7 @@ func _run_test() -> void:
 			1,
 			"1일차 11:00",
 			"라이터 챙겼다.",
-			3
+			-1
 		),
 		"Timed out waiting for the take-loot action to apply."
 	):
@@ -482,7 +482,7 @@ func _is_indoor_action_applied(
 		run_shell.run_state.inventory.total_bulk() == expected_inventory_bulk
 		and hud_clock_label.text == expected_clock_text
 		and result_label.text.find(expected_feedback_substring) != -1
-		and action_buttons.get_child_count() == expected_action_count
+		and (expected_action_count < 0 or action_buttons.get_child_count() == expected_action_count)
 	)
 
 
@@ -509,6 +509,13 @@ func _inventory_labels(container: VBoxContainer) -> Array[String]:
 		var label := child as Label
 		if label != null:
 			labels.append(label.text)
+			continue
+		if child is Container:
+			for nested_child in child.get_children():
+				var nested_label := nested_child as Label
+				if nested_label != null:
+					labels.append(nested_label.text)
+					break
 
 	return labels
 

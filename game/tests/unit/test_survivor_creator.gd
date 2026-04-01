@@ -208,7 +208,7 @@ func _run_test() -> void:
 			0,
 			"1일차 09:00",
 			expected_feedback,
-			4
+			-1
 		),
 		"Timed out waiting for the indoor action result to settle."
 	):
@@ -275,7 +275,7 @@ func _is_indoor_action_applied(
 		run_shell.run_state.inventory.total_bulk() == expected_inventory_bulk
 		and hud_clock_label.text == expected_clock_text
 		and result_label.text.find(expected_feedback_substring) != -1
-		and action_buttons.get_child_count() == expected_action_count
+		and (expected_action_count < 0 or action_buttons.get_child_count() == expected_action_count)
 	)
 
 

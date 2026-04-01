@@ -99,6 +99,9 @@ func _run_test() -> void:
 	var added: bool = state.inventory.add_item(canned_beans)
 	assert_true(added, "Inventory should accept a small loot item.")
 	assert_eq(state.inventory.total_bulk(), 1, "Inventory bulk should reflect the added item.")
+	assert_true(state.inventory.remove_first_item_by_id("canned_beans"), "Inventory should let the caller remove an item by id.")
+	assert_eq(state.inventory.total_bulk(), 0, "Removing an item should reduce the carried bulk.")
+	assert_true(not state.inventory.remove_first_item_by_id("missing_item"), "Removing a missing item id should fail cleanly.")
 
 	var bad_trait_state = run_state_script.from_survivor_config({
 		"job_id": "courier",

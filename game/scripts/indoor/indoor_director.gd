@@ -125,6 +125,47 @@ func get_inventory_entries() -> Array[String]:
 	return entries
 
 
+func get_inventory_title() -> String:
+	if _run_state == null or _run_state.inventory == null:
+		return "소지품 (0/0)"
+
+	return "소지품 (%d/%d)" % [_run_state.inventory.total_bulk(), _run_state.inventory.carry_limit]
+
+
+func get_inventory_rows() -> Array[Dictionary]:
+	if _run_state == null or _run_state.inventory == null:
+		return [{"label": "소지품 없음", "drop_action_id": ""}]
+
+	var rows: Array[Dictionary] = []
+	var counts := {}
+	var names := {}
+	var order: Array[String] = []
+	for item_variant in _run_state.inventory.items:
+		if typeof(item_variant) != TYPE_DICTIONARY:
+			continue
+
+		var item := item_variant as Dictionary
+		var item_id := String(item.get("id", ""))
+		if item_id.is_empty():
+			continue
+		if not counts.has(item_id):
+			counts[item_id] = 0
+			names[item_id] = String(item.get("name", item_id))
+			order.append(item_id)
+		counts[item_id] = int(counts[item_id]) + 1
+
+	if order.is_empty():
+		return [{"label": "소지품 없음", "drop_action_id": ""}]
+
+	for item_id in order:
+		rows.append({
+			"label": "%s x%d" % [String(names.get(item_id, item_id)), int(counts[item_id])],
+			"drop_action_id": "drop_%s" % item_id,
+		})
+
+	return rows
+
+
 func get_map_snapshot() -> Dictionary:
 	var current_zone_id := get_current_zone_id()
 	if current_zone_id.is_empty() or _event_data.is_empty():
@@ -211,6 +252,16 @@ func get_map_snapshot() -> Dictionary:
 
 
 func apply_action(action_id: String) -> bool:
+	if action_id.begins_with("drop_"):
+		var item_id := action_id.trim_prefix("drop_")
+		if _run_state == null or _run_state.inventory == null:
+			return false
+		if not _run_state.inventory.remove_first_item_by_id(item_id):
+			return false
+		_event_state["last_feedback_message"] = "%s 버렸다." % _inventory_item_name(item_id)
+		state_changed.emit()
+		return true
+
 	if action_id == "exit_building":
 		return true
 
@@ -282,6 +333,20 @@ func _string_ids(values) -> Array[String]:
 	for value in values:
 		ids.append(String(value))
 	return ids
+
+
+func _inventory_item_name(item_id: String) -> String:
+	if _run_state == null or _run_state.inventory == null:
+		return item_id
+
+	for item_variant in _run_state.inventory.items:
+		if typeof(item_variant) != TYPE_DICTIONARY:
+			continue
+		var item := item_variant as Dictionary
+		if String(item.get("id", "")) == item_id:
+			return String(item.get("name", item_id))
+
+	return item_id
 
 
 func _sorted_edge_id(from_zone_id: String, to_zone_id: String) -> String:

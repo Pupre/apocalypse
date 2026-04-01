@@ -260,6 +260,11 @@
                 "id": "energy_bar",
                 "name": "에너지바",
                 "bulk": 1
+              },
+              {
+                "id": "spare_batteries",
+                "name": "건전지",
+                "bulk": 1
               }
             ],
             "reveal_clue_ids": [
@@ -302,6 +307,16 @@
               {
                 "id": "bottled_water",
                 "name": "생수",
+                "bulk": 1
+              },
+              {
+                "id": "canned_tuna",
+                "name": "참치 통조림",
+                "bulk": 1
+              },
+              {
+                "id": "crackers",
+                "name": "크래커",
                 "bulk": 1
               }
             ],
@@ -378,6 +393,11 @@
                 "id": "bottled_water",
                 "name": "생수",
                 "bulk": 1
+              },
+              {
+                "id": "packing_tape",
+                "name": "포장 테이프",
+                "bulk": 1
               }
             ],
             "consume_on_use": true
@@ -427,6 +447,11 @@
               {
                 "id": "instant_noodles",
                 "name": "컵라면",
+                "bulk": 1
+              },
+              {
+                "id": "crackers",
+                "name": "크래커",
                 "bulk": 1
               }
             ],
@@ -487,6 +512,16 @@
               {
                 "id": "bottled_water",
                 "name": "생수",
+                "bulk": 1
+              },
+              {
+                "id": "canned_beans",
+                "name": "통조림 콩",
+                "bulk": 1
+              },
+              {
+                "id": "work_gloves",
+                "name": "작업 장갑",
                 "bulk": 1
               }
             ],
