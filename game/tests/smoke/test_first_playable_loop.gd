@@ -202,6 +202,12 @@ func _run_test() -> void:
 		return
 	assert_eq(location_label.text, "위치: 정문 진입부", "Indoor mode should begin at the mart entrance zone.")
 
+	var indoor_time_label := indoor_mode.get_node_or_null("Panel/VBox/Header/TimeLabel") as Label
+	if not assert_true(indoor_time_label != null, "Indoor mode should expose a visible time label."):
+		bootstrap.free()
+		return
+	assert_eq(indoor_time_label.text, "시각: 1일차 10:00", "Indoor mode should carry the shared clock into the indoor UI.")
+
 	var summary_label := indoor_mode.get_node_or_null("Panel/VBox/SummaryLabel") as Label
 	if not assert_true(summary_label != null, "Indoor mode should expose a current-zone summary label."):
 		bootstrap.free()
@@ -222,11 +228,15 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 	assert_true(
+		_buttons_include_text(action_buttons, "계산대로 이동한다 (30분)"),
+		"The entrance zone should show move actions with their time cost."
+	)
+	assert_true(
 		_buttons_include_text(action_buttons, "건물 밖으로 나간다"),
 		"The entrance zone should expose leaving the building as a contextual action."
 	)
 
-	var move_checkout_button := _find_button_by_text(action_buttons, "계산대로 이동한다")
+	var move_checkout_button := _find_button_by_text(action_buttons, "계산대로 이동한다 (30분)")
 	if not assert_true(move_checkout_button != null, "Indoor mode should expose a movement action into checkout."):
 		bootstrap.free()
 		return
@@ -244,10 +254,11 @@ func _run_test() -> void:
 	):
 		bootstrap.free()
 		return
+	assert_eq(indoor_time_label.text, "시각: 1일차 10:30", "Indoor mode should update the visible time after moving.")
 	assert_eq(summary_label.text, "계산대 뒤쪽에는 창고로 이어지는 문이 있다.", "Indoor mode should update the summary for the checkout zone.")
 
 	assert_true(
-		_buttons_include_text(action_buttons, "조용히 서랍을 연다"),
+		_buttons_include_text(action_buttons, "조용히 서랍을 연다 (30분)"),
 		"Checkout should expose its local search action."
 	)
 	assert_true(
@@ -255,7 +266,7 @@ func _run_test() -> void:
 		"Leaving the building should not stay visible away from the entrance."
 	)
 
-	var checkout_search_button := _find_button_by_text(action_buttons, "조용히 서랍을 연다")
+	var checkout_search_button := _find_button_by_text(action_buttons, "조용히 서랍을 연다 (30분)")
 	if not assert_true(checkout_search_button != null, "Checkout search action should be selectable."):
 		bootstrap.free()
 		return
@@ -281,7 +292,7 @@ func _run_test() -> void:
 	assert_eq(hud_clock_label.text, "1일차 11:00", "The checkout search should advance shared time.")
 	assert_true(result_label.text.find("30분 동안 수색했다.") != -1, "Indoor feedback should describe the spent time.")
 
-	var return_to_entrance_button := _find_button_by_text(action_buttons, "정문 진입부로 이동한다")
+	var return_to_entrance_button := _find_button_by_text(action_buttons, "정문 진입부로 이동한다 (10분)")
 	if not assert_true(return_to_entrance_button != null, "Checkout should allow returning to the entrance zone."):
 		bootstrap.free()
 		return
@@ -293,6 +304,7 @@ func _run_test() -> void:
 	):
 		bootstrap.free()
 		return
+	assert_eq(indoor_time_label.text, "시각: 1일차 11:10", "Indoor mode should keep the visible time in sync after returning to the entrance.")
 	assert_true(
 		_buttons_include_text(action_buttons, "건물 밖으로 나간다"),
 		"The entrance zone should restore the contextual leave-building action."

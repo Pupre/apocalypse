@@ -74,6 +74,16 @@ func _run_test() -> void:
 		"Indoor mode should show the mart entry zone label after configure."
 	)
 
+	var time_label := indoor_mode.get_node_or_null("Panel/VBox/Header/TimeLabel") as Label
+	if not assert_true(time_label != null, "Indoor mode should expose a TimeLabel for the shared clock."):
+		indoor_mode.free()
+		return
+	assert_eq(
+		time_label.text,
+		"시각: 1일차 08:00",
+		"Indoor mode should show the shared run clock after configure."
+	)
+
 	var summary_label := indoor_mode.get_node_or_null("Panel/VBox/SummaryLabel") as Label
 	if not assert_true(summary_label != null, "Indoor mode should expose a current-zone SummaryLabel."):
 		indoor_mode.free()
@@ -104,6 +114,10 @@ func _run_test() -> void:
 		indoor_mode.free()
 		return
 	assert_true(
+		_find_button_by_text(action_buttons, "계산대로 이동한다 (30분)") != null,
+		"Indoor mode should show travel time in movement actions."
+	)
+	assert_true(
 		_find_button_by_text(action_buttons, "건물 밖으로 나간다") != null,
 		"Indoor mode should expose leaving the building as a contextual action at the entrance."
 	)
@@ -127,6 +141,15 @@ func _run_test() -> void:
 		"계산대 뒤쪽에는 창고로 이어지는 문이 있다.",
 		"Indoor mode should update the summary for the current zone after moving."
 	)
+	assert_eq(
+		time_label.text,
+		"시각: 1일차 08:30",
+		"Indoor mode should advance and display time after moving between zones."
+	)
+	assert_true(
+		_find_button_by_text(action_buttons, "조용히 서랍을 연다 (30분)") != null,
+		"Indoor mode should show time cost on local zone actions."
+	)
 	assert_true(
 		_find_button_by_text(action_buttons, "건물 밖으로 나간다") == null,
 		"Indoor mode should hide the leave-building action away from the entrance."
@@ -135,6 +158,11 @@ func _run_test() -> void:
 	assert_true(
 		director.apply_action("move_mart_entrance"),
 		"Director should allow moving back to the mart entrance."
+	)
+	assert_eq(
+		time_label.text,
+		"시각: 1일차 08:40",
+		"Indoor mode should update the visible time after revisiting a known zone."
 	)
 	assert_true(
 		_find_button_by_text(action_buttons, "건물 밖으로 나간다") != null,

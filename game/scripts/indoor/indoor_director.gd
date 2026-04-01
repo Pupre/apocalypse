@@ -73,7 +73,7 @@ func get_current_zone_summary() -> String:
 
 
 func get_actions() -> Array[Dictionary]:
-	var actions := _resolver.get_actions(_event_data, _event_state)
+	var actions := _format_action_labels(_resolver.get_actions(_event_data, _event_state))
 	if _is_at_entry_zone():
 		actions.append({
 			"id": "exit_building",
@@ -82,6 +82,13 @@ func get_actions() -> Array[Dictionary]:
 		})
 
 	return actions
+
+
+func get_clock_label() -> String:
+	if _run_state == null or _run_state.clock == null or not _run_state.clock.has_method("get_clock_label"):
+		return ""
+
+	return String(_run_state.clock.get_clock_label())
 
 
 func get_sleep_preview() -> Dictionary:
@@ -128,3 +135,21 @@ func _create_initial_event_state(current_zone_id: String = "") -> Dictionary:
 
 func _is_at_entry_zone() -> bool:
 	return get_current_zone_id() == _resolver.get_entry_zone_id(_event_data)
+
+
+func _format_action_labels(actions: Array[Dictionary]) -> Array[Dictionary]:
+	var formatted_actions: Array[Dictionary] = []
+	for action in actions:
+		var formatted := action.duplicate(true)
+		formatted["label"] = _format_action_label(formatted)
+		formatted_actions.append(formatted)
+	return formatted_actions
+
+
+func _format_action_label(action: Dictionary) -> String:
+	var base_label := String(action.get("label", action.get("id", "")))
+	var time_cost_minutes := int(action.get("minute_cost", action.get("sleep_minutes", 0)))
+	if time_cost_minutes <= 0:
+		return base_label
+
+	return "%s (%d분)" % [base_label, time_cost_minutes]

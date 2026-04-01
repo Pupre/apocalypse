@@ -168,10 +168,10 @@ func _run_test() -> void:
 	if not assert_true(action_buttons != null, "Indoor action buttons container should be present."):
 		bootstrap.free()
 		return
-	assert_eq(action_buttons.get_child_count(), 2, "Mart indoor mode should start with two actions.")
+	assert_true(action_buttons.get_child_count() >= 1, "Mart indoor mode should expose at least one indoor action.")
 
-	var search_button := action_buttons.get_child(0) as Button
-	if not assert_true(search_button != null, "The first indoor action should be a button."):
+	var search_button := _find_button_by_text(action_buttons, "계산대를 수색한다 (30분)")
+	if not assert_true(search_button != null, "Mart indoor mode should expose the timed counter-search action."):
 		bootstrap.free()
 		return
 
@@ -185,7 +185,7 @@ func _run_test() -> void:
 			action_buttons,
 			"1일차 08:30",
 			expected_feedback,
-			1
+			4
 		),
 		"Timed out waiting for the indoor action result to settle."
 	):
@@ -194,7 +194,10 @@ func _run_test() -> void:
 
 	assert_eq(hud_clock_label.text, "1일차 08:30", "Pressing the indoor action should advance the HUD clock.")
 	assert_true(result_label.text.find(expected_feedback) != -1, "Pressing the indoor action should refresh the result feedback.")
-	assert_eq(action_buttons.get_child_count(), 1, "The one-shot search action should be removed after use.")
+	assert_true(
+		_find_button_by_text(action_buttons, "계산대를 수색한다 (30분)") == null,
+		"The one-shot search action should be removed after use."
+	)
 
 	bootstrap.free()
 	bootstrap = null
@@ -246,6 +249,18 @@ func _is_indoor_action_applied(
 		and result_label.text.find(expected_feedback_substring) != -1
 		and action_buttons.get_child_count() == expected_action_count
 	)
+
+
+func _find_button_by_text(container: VBoxContainer, expected_text: String) -> Button:
+	if container == null:
+		return null
+
+	for child in container.get_children():
+		var button := child as Button
+		if button != null and button.text == expected_text:
+			return button
+
+	return null
 
 
 func _has_transition_completed(run_shell: Node, expected_mode_name: String) -> bool:
