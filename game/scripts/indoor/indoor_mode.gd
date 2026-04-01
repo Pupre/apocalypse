@@ -1,6 +1,7 @@
 extends Control
 
 signal state_changed
+signal exit_requested
 
 var _director: Node = null
 var _title_label: Label = null
@@ -9,6 +10,7 @@ var _sleep_preview_label: Label = null
 var _result_label: Label = null
 var _clue_list: VBoxContainer = null
 var _action_buttons: VBoxContainer = null
+var _exit_button: Button = null
 var _director_connected := false
 
 
@@ -22,6 +24,8 @@ func configure(run_state, building_id: String = "mart_01") -> void:
 func _ready() -> void:
 	_cache_nodes()
 	_bind_director()
+	if _exit_button != null and not _exit_button.pressed.is_connected(Callable(self, "_on_exit_pressed")):
+		_exit_button.pressed.connect(Callable(self, "_on_exit_pressed"))
 
 
 func _bind_director() -> void:
@@ -97,6 +101,10 @@ func _on_action_pressed(action_id: String) -> void:
 		_director.apply_action(action_id)
 
 
+func _on_exit_pressed() -> void:
+	exit_requested.emit()
+
+
 func _sleep_preview_text(preview: Dictionary) -> String:
 	if preview.is_empty():
 		return "수면 예상: 확인 불가"
@@ -106,12 +114,13 @@ func _sleep_preview_text(preview: Dictionary) -> String:
 
 func _cache_nodes() -> void:
 	_director = get_node_or_null("Director")
-	_title_label = get_node_or_null("Panel/VBox/TitleLabel") as Label
+	_title_label = get_node_or_null("Panel/VBox/Header/TitleLabel") as Label
 	_summary_label = get_node_or_null("Panel/VBox/SummaryLabel") as Label
 	_sleep_preview_label = get_node_or_null("Panel/VBox/SleepPreviewLabel") as Label
 	_result_label = get_node_or_null("Panel/VBox/ResultLabel") as Label
 	_clue_list = get_node_or_null("Panel/VBox/ClueList") as VBoxContainer
 	_action_buttons = get_node_or_null("Panel/VBox/ActionButtons") as VBoxContainer
+	_exit_button = get_node_or_null("Panel/VBox/Header/ExitButton") as Button
 
 
 func _clear_children(container: Node) -> void:

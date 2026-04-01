@@ -32,11 +32,11 @@ func _ready() -> void:
 	_sync_view()
 
 
-func bind_run_state(value, building_id: String = DEFAULT_BUILDING_ID) -> void:
+func bind_run_state(value, building_id: String = DEFAULT_BUILDING_ID, player_position = null) -> void:
 	run_state = value
 	_building_id = building_id
 	_seconds_buffer = 0.0
-	_player_position = DEFAULT_PLAYER_POSITION
+	_player_position = player_position if typeof(player_position) == TYPE_VECTOR2 else DEFAULT_PLAYER_POSITION
 	_cache_nodes()
 	_refresh_building_position()
 	_sync_view()
@@ -74,6 +74,10 @@ func try_enter_building(building_id: String) -> bool:
 
 	building_entered.emit(building_id)
 	return true
+
+
+func get_player_position() -> Vector2:
+	return _player_position
 
 
 func _process(delta: float) -> void:
