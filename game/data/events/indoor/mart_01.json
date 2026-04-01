@@ -6,32 +6,53 @@
   "zones": [
     {
       "id": "mart_entrance",
+      "floor_id": "floor_1",
       "label": "정문 진입부",
       "summary": "깨진 자동문과 쓰러진 장바구니가 보인다.",
       "connected_zone_ids": [
         "checkout",
         "food_aisle"
       ],
+      "event_ids": [],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
     {
       "id": "checkout",
+      "floor_id": "floor_1",
       "label": "계산대",
       "summary": "계산대 뒤쪽에는 창고로 이어지는 문이 있다.",
       "connected_zone_ids": [
-        "mart_entrance"
+        "mart_entrance",
+        "staff_corridor_gate"
+      ],
+      "event_ids": [
+        "search_counter"
       ],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
     {
       "id": "food_aisle",
+      "floor_id": "floor_1",
       "label": "식품 진열대",
       "summary": "빈 선반 사이로 통조림 몇 개가 남아 있다.",
       "connected_zone_ids": [
         "mart_entrance"
       ],
+      "event_ids": [],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "staff_corridor_gate",
+      "floor_id": "floor_1",
+      "label": "직원 통로 입구",
+      "summary": "계산대 뒤쪽 철문 너머로 창고 복도가 이어진다.",
+      "connected_zone_ids": [
+        "checkout"
+      ],
+      "event_ids": [],
       "first_visit_cost": 30,
       "revisit_cost": 10
     }

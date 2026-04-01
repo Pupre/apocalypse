@@ -83,14 +83,10 @@ func get_visible_clues(event_data: Dictionary, event_state: Dictionary) -> Array
 
 func get_actions(event_data: Dictionary, event_state: Dictionary = {}) -> Array[Dictionary]:
 	var actions: Array[Dictionary] = []
-	var spent_action_ids := _string_id_array(event_state.get("spent_action_ids", []))
+	if _has_zone_state(event_data, event_state):
+		actions.append_array(get_move_actions(event_data, event_state))
 
-	for action_variant in event_data.get("actions", []):
-		if typeof(action_variant) == TYPE_DICTIONARY:
-			var action := action_variant as Dictionary
-			var action_id := String(action.get("id", ""))
-			if not _action_consumes_on_use(action) or not spent_action_ids.has(action_id):
-				actions.append(action)
+	actions.append_array(_get_flat_actions(event_data, event_state))
 
 	return actions
 
@@ -104,6 +100,11 @@ func get_sleep_preview(run_state) -> Dictionary:
 
 func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, action_id: String) -> bool:
 	var action := _get_action(event_data, action_id)
+	if action.is_empty():
+		var move_action := _get_move_action(event_data, event_state, action_id)
+		if not move_action.is_empty():
+			return _apply_move_action(run_state, event_data, event_state, move_action)
+
 	if action.is_empty():
 		return false
 
@@ -155,6 +156,49 @@ func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, ac
 	return true
 
 
+func _get_flat_actions(event_data: Dictionary, event_state: Dictionary) -> Array[Dictionary]:
+	var actions: Array[Dictionary] = []
+	var spent_action_ids := _string_id_array(event_state.get("spent_action_ids", []))
+
+	for action_variant in event_data.get("actions", []):
+		if typeof(action_variant) != TYPE_DICTIONARY:
+			continue
+
+		var action := action_variant as Dictionary
+		var action_id := String(action.get("id", ""))
+		if not _action_consumes_on_use(action) or not spent_action_ids.has(action_id):
+			actions.append(action)
+
+	return actions
+
+
+func _get_move_action(event_data: Dictionary, event_state: Dictionary, action_id: String) -> Dictionary:
+	for action in get_move_actions(event_data, event_state):
+		if String(action.get("id", "")) == action_id:
+			return action
+
+	return {}
+
+
+func _apply_move_action(run_state, event_data: Dictionary, event_state: Dictionary, action: Dictionary) -> bool:
+	var target_zone_id := String(action.get("target_zone_id", ""))
+	var target_zone := get_zone(event_data, target_zone_id)
+	if target_zone.is_empty():
+		return false
+
+	var minute_cost := int(action.get("minute_cost", 0))
+	if minute_cost > 0 and run_state != null and run_state.has_method("advance_minutes"):
+		run_state.advance_minutes(minute_cost)
+
+	event_state["current_zone_id"] = target_zone_id
+	var visited_zone_ids := _string_id_array(event_state.get("visited_zone_ids", []))
+	if not visited_zone_ids.has(target_zone_id):
+		visited_zone_ids.append(target_zone_id)
+	event_state["visited_zone_ids"] = visited_zone_ids
+	event_state["last_feedback_message"] = "%s로 이동했다." % String(target_zone.get("label", target_zone_id))
+	return true
+
+
 func _get_action(event_data: Dictionary, action_id: String) -> Dictionary:
 	for action_variant in event_data.get("actions", []):
 		if typeof(action_variant) != TYPE_DICTIONARY:
@@ -165,6 +209,14 @@ func _get_action(event_data: Dictionary, action_id: String) -> Dictionary:
 			return action
 
 	return {}
+
+
+func _has_zone_state(event_data: Dictionary, event_state: Dictionary) -> bool:
+	var current_zone_id := String(event_state.get("current_zone_id", ""))
+	if current_zone_id.is_empty():
+		return false
+
+	return not get_zone(event_data, current_zone_id).is_empty()
 
 
 func _string_id_array(values) -> Array[String]:
