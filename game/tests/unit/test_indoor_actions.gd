@@ -216,8 +216,27 @@ func _run_test() -> void:
 		"Staff gate zone should expose the force option after the drawer flag is set."
 	)
 	assert_true(
-		not _action_ids(checkout_actions).has("move_stair_landing"),
-		"The second-floor landing should stay hidden until the staff gate is forced."
+		_action_ids(checkout_actions).has("move_stair_landing"),
+		"The second-floor landing should remain visible as a locked route before the gate is forced."
+	)
+	var blocked_attempt_clock_minute_of_day: int = checkout_run_state.clock.minute_of_day
+	assert_true(
+		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "move_stair_landing"),
+		"Trying the locked second-floor route should still resolve with feedback."
+	)
+	assert_eq(
+		String(checkout_event_state.get("current_zone_id", "")),
+		"staff_corridor_gate",
+		"Trying the locked second-floor route should not change the current zone."
+	)
+	assert_eq(
+		checkout_run_state.clock.minute_of_day,
+		blocked_attempt_clock_minute_of_day,
+		"Trying a locked route should not spend travel time."
+	)
+	assert_true(
+		String(checkout_event_state.get("last_feedback_message", "")).find("잠겨") != -1,
+		"Trying a locked route should explain that the door is locked."
 	)
 
 	assert_true(
@@ -237,6 +256,10 @@ func _run_test() -> void:
 	assert_true(
 		_action_ids(checkout_actions).has("move_stair_landing"),
 		"Forcing the staff gate should unlock movement into the second-floor landing."
+	)
+	assert_true(
+		not bool(_action_by_id(checkout_actions, "move_stair_landing").get("locked", false)),
+		"The second-floor route should no longer be marked as locked after the gate is forced."
 	)
 
 	assert_true(
@@ -268,8 +291,31 @@ func _run_test() -> void:
 	)
 	var warehouse_actions: Array = resolver.get_actions(event_data, checkout_event_state)
 	assert_true(
-		not _action_ids(warehouse_actions).has("move_locked_storage"),
-		"Locked storage should stay gated until the office yields the storage key."
+		_action_ids(warehouse_actions).has("move_locked_storage"),
+		"Locked storage should stay visible as a locked route until the office yields the storage key."
+	)
+	assert_true(
+		bool(_action_by_id(warehouse_actions, "move_locked_storage").get("locked", false)),
+		"Locked storage should be marked as locked before the office yields the storage key."
+	)
+	var blocked_storage_clock_minute_of_day: int = checkout_run_state.clock.minute_of_day
+	assert_true(
+		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "move_locked_storage"),
+		"Trying the locked storage route should resolve with blocked feedback."
+	)
+	assert_eq(
+		String(checkout_event_state.get("current_zone_id", "")),
+		"warehouse",
+		"Trying the locked storage route should leave the player in the warehouse."
+	)
+	assert_eq(
+		checkout_run_state.clock.minute_of_day,
+		blocked_storage_clock_minute_of_day,
+		"Trying the locked storage route should not spend travel time."
+	)
+	assert_true(
+		String(checkout_event_state.get("last_feedback_message", "")).find("잠겨") != -1,
+		"Trying the locked storage route should explain that the way is locked."
 	)
 
 	assert_true(
@@ -306,6 +352,10 @@ func _run_test() -> void:
 	assert_true(
 		_action_ids(warehouse_actions).has("move_locked_storage"),
 		"Finding the office key should unlock warehouse access to the locked storage."
+	)
+	assert_true(
+		not bool(_action_by_id(warehouse_actions, "move_locked_storage").get("locked", false)),
+		"Locked storage should no longer be marked as locked after the office search."
 	)
 
 	var hall_run_state = run_state_script.from_survivor_config({
@@ -400,6 +450,16 @@ func _clue_ids(clues: Array) -> Array[String]:
 		result.append(String((clue_variant as Dictionary).get("id", "")))
 
 	return result
+
+
+func _action_by_id(actions: Array, expected_id: String) -> Dictionary:
+	for action_variant in actions:
+		if typeof(action_variant) != TYPE_DICTIONARY:
+			continue
+		var action := action_variant as Dictionary
+		if String(action.get("id", "")) == expected_id:
+			return action
+	return {}
 
 
 func _action_ids(actions: Array) -> Array[String]:

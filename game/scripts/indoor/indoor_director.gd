@@ -241,6 +241,9 @@ func _format_action_labels(actions: Array[Dictionary]) -> Array[Dictionary]:
 
 func _format_action_label(action: Dictionary) -> String:
 	var base_label := String(action.get("label", action.get("id", "")))
+	if bool(action.get("locked", false)):
+		return "%s (잠김)" % base_label
+
 	var time_cost_minutes := int(action.get("minute_cost", action.get("sleep_minutes", 0)))
 	if time_cost_minutes <= 0:
 		return base_label

@@ -118,8 +118,12 @@ func _run_test() -> void:
 	}
 	var staff_gate_actions: Array = resolver.get_actions(event_data, staff_gate_state)
 	assert_true(
-		not _action_ids(staff_gate_actions).has("move_stair_landing"),
-		"Second-floor movement should stay hidden until the staff gate is forced open."
+		_action_ids(staff_gate_actions).has("move_stair_landing"),
+		"Second-floor movement should stay visible even before the staff gate opens."
+	)
+	assert_true(
+		_action_by_id(staff_gate_actions, "move_stair_landing").get("locked", false),
+		"The visible second-floor move should be marked as locked before the gate is forced."
 	)
 
 	staff_gate_state["zone_flags"] = {"staff_gate_forced": true}
@@ -127,6 +131,10 @@ func _run_test() -> void:
 	assert_true(
 		_action_ids(staff_gate_actions).has("move_stair_landing"),
 		"Forcing the staff gate should unlock movement to the second-floor landing."
+	)
+	assert_true(
+		not bool(_action_by_id(staff_gate_actions, "move_stair_landing").get("locked", false)),
+		"The second-floor move should no longer be locked after the gate is forced open."
 	)
 
 	var stair_landing_zone: Dictionary = resolver.get_zone(event_data, "stair_landing")
@@ -141,6 +149,16 @@ func _action_ids(actions: Array) -> Array[String]:
 	for action in actions:
 		ids.append(String(action.get("id", "")))
 	return ids
+
+
+func _action_by_id(actions: Array, expected_id: String) -> Dictionary:
+	for action_variant in actions:
+		if typeof(action_variant) != TYPE_DICTIONARY:
+			continue
+		var action := action_variant as Dictionary
+		if String(action.get("id", "")) == expected_id:
+			return action
+	return {}
 
 
 func _sorted_action_ids(actions: Array) -> PackedStringArray:

@@ -60,16 +60,17 @@ func get_move_actions(event_data: Dictionary, event_state: Dictionary) -> Array[
 		var connected_zone := get_zone(event_data, connected_zone_id)
 		if connected_zone.is_empty():
 			continue
-		if not _zone_is_accessible(connected_zone, event_state):
-			continue
+		var is_accessible := _zone_is_accessible(connected_zone, event_state)
 
 		var minute_cost := int(connected_zone.get("revisit_cost", 10)) if visited_zone_ids.has(connected_zone_id) else int(connected_zone.get("first_visit_cost", 30))
 		actions.append({
 			"id": "move_%s" % connected_zone_id,
 			"type": "move",
-			"label": "%s로 이동한다" % String(connected_zone.get("label", connected_zone_id)),
+			"label": String(connected_zone.get("move_label", "%s로 이동한다" % String(connected_zone.get("label", connected_zone_id)))),
 			"target_zone_id": connected_zone_id,
 			"minute_cost": minute_cost,
+			"locked": not is_accessible,
+			"blocked_feedback": String(connected_zone.get("blocked_feedback", "")),
 		})
 
 	return actions
@@ -231,6 +232,10 @@ func _apply_move_action(run_state, event_data: Dictionary, event_state: Dictiona
 	var target_zone := get_zone(event_data, target_zone_id)
 	if target_zone.is_empty():
 		return false
+	if bool(action.get("locked", false)):
+		var blocked_feedback := String(action.get("blocked_feedback", ""))
+		event_state["last_feedback_message"] = blocked_feedback if not blocked_feedback.is_empty() else "%s 쪽으로 가는 길이 잠겨 있어 열리지 않는다." % String(target_zone.get("label", target_zone_id))
+		return true
 
 	var minute_cost := int(action.get("minute_cost", 0))
 	if minute_cost > 0 and run_state != null and run_state.has_method("advance_minutes"):
