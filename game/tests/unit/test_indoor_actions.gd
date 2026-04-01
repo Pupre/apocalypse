@@ -424,13 +424,37 @@ func _run_test() -> void:
 		_action_ids(office_actions).has("search_office_drawer"),
 		"Office should expose a drawer search that can unlock the deeper storage room."
 	)
+	assert_eq(
+		String(_action_by_id(office_actions, "move_stair_landing").get("label", "")),
+		"2층 입구로 이동한다",
+		"Returning from the office should use a neutral move label instead of the one-way upstairs wording."
+	)
 	assert_true(
 		resolver.apply_action(gate_run_state, event_data, gate_event_state, "search_office_drawer"),
 		"Office drawer search should resolve through the indoor resolver."
 	)
 	assert_true(
-		bool((gate_event_state.get("zone_flags", {}) as Dictionary).has("storage_key_found")),
-		"Office drawer search should set the storage-key progression flag."
+		String(gate_event_state.get("last_feedback_message", "")).find("보관실 열쇠") != -1,
+		"Office drawer search should report discovering the storage key."
+	)
+	assert_eq(
+		gate_run_state.inventory.total_bulk(),
+		1,
+		"Searching the office should not auto-loot the storage key."
+	)
+	office_actions = resolver.get_actions(event_data, gate_event_state, gate_run_state)
+	assert_true(
+		_action_ids(office_actions).has("take_office_storage_key_0"),
+		"Office search should reveal a separate take action for the storage key."
+	)
+	assert_true(
+		resolver.apply_action(gate_run_state, event_data, gate_event_state, "take_office_storage_key_0"),
+		"The storage key should need to be picked up explicitly."
+	)
+	assert_eq(
+		gate_run_state.inventory.total_bulk(),
+		2,
+		"Picking up the storage key should add it to the player's inventory."
 	)
 
 	assert_true(
@@ -444,7 +468,7 @@ func _run_test() -> void:
 	warehouse_actions = resolver.get_actions(event_data, gate_event_state, gate_run_state)
 	assert_true(
 		_action_ids(warehouse_actions).has("move_locked_storage"),
-		"Finding the office key should unlock warehouse access to the locked storage."
+		"Picking up the office key should unlock warehouse access to the locked storage."
 	)
 	assert_true(
 		not bool(_action_by_id(warehouse_actions, "move_locked_storage").get("locked", false)),

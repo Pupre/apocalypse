@@ -152,7 +152,7 @@ func get_map_snapshot() -> Dictionary:
 		if zone_id == current_zone_id:
 			state = "current"
 		elif not visited_zone_ids.has(zone_id):
-			state = "adjacent_unknown" if _resolver.is_zone_accessible(_event_data, _event_state, zone_id) else "locked"
+			state = "adjacent_unknown" if _resolver.is_zone_accessible(_event_data, _event_state, zone_id, _run_state) else "locked"
 
 		nodes.append({
 			"id": zone_id,
@@ -199,7 +199,7 @@ func get_map_snapshot() -> Dictionary:
 		edges.append({
 			"from": current_zone_id,
 			"to": connected_zone_id,
-			"locked": not _resolver.is_zone_accessible(_event_data, _event_state, connected_zone_id),
+			"locked": not _resolver.is_zone_accessible(_event_data, _event_state, connected_zone_id, _run_state),
 		})
 
 	return {

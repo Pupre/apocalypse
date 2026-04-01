@@ -40,15 +40,15 @@ func get_zone(event_data: Dictionary, zone_id: String) -> Dictionary:
 	return {}
 
 
-func is_zone_accessible(event_data: Dictionary, event_state: Dictionary, zone_id: String) -> bool:
+func is_zone_accessible(event_data: Dictionary, event_state: Dictionary, zone_id: String, run_state = null) -> bool:
 	var zone := get_zone(event_data, zone_id)
 	if zone.is_empty():
 		return false
 
-	return _zone_is_accessible(zone, event_state)
+	return _zone_is_accessible(zone, event_state, run_state)
 
 
-func get_move_actions(event_data: Dictionary, event_state: Dictionary) -> Array[Dictionary]:
+func get_move_actions(event_data: Dictionary, event_state: Dictionary, run_state = null) -> Array[Dictionary]:
 	var zone := get_zone(event_data, String(event_state.get("current_zone_id", "")))
 	if zone.is_empty():
 		return []
@@ -60,13 +60,14 @@ func get_move_actions(event_data: Dictionary, event_state: Dictionary) -> Array[
 		var connected_zone := get_zone(event_data, connected_zone_id)
 		if connected_zone.is_empty():
 			continue
-		var is_accessible := _zone_is_accessible(connected_zone, event_state)
+		var is_accessible := _zone_is_accessible(connected_zone, event_state, run_state)
+		var move_label := _resolve_move_label(zone, connected_zone)
 
 		var minute_cost := int(connected_zone.get("revisit_cost", 10)) if visited_zone_ids.has(connected_zone_id) else int(connected_zone.get("first_visit_cost", 30))
 		actions.append({
 			"id": "move_%s" % connected_zone_id,
 			"type": "move",
-			"label": String(connected_zone.get("move_label", "%s로 이동한다" % String(connected_zone.get("label", connected_zone_id)))),
+			"label": move_label,
 			"target_zone_id": connected_zone_id,
 			"minute_cost": minute_cost,
 			"locked": not is_accessible,
@@ -100,7 +101,7 @@ func get_actions(event_data: Dictionary, event_state: Dictionary = {}, run_state
 	actions.append_array(_get_flat_actions(event_data, event_state))
 	actions.append_array(_get_zone_actions(event_data, event_state, run_state))
 	if _has_zone_state(event_data, event_state):
-		actions.append_array(get_move_actions(event_data, event_state))
+		actions.append_array(get_move_actions(event_data, event_state, run_state))
 
 	return actions
 
@@ -373,12 +374,12 @@ func _option_is_available(action: Dictionary, event_state: Dictionary, run_state
 	return _requirements_are_met(requirements, event_state, run_state)
 
 
-func _zone_is_accessible(zone: Dictionary, event_state: Dictionary) -> bool:
+func _zone_is_accessible(zone: Dictionary, event_state: Dictionary, run_state = null) -> bool:
 	var requirements: Dictionary = zone.get("access_requirements", {})
 	if typeof(requirements) != TYPE_DICTIONARY or requirements.is_empty():
 		return true
 
-	return _requirements_are_met(requirements, event_state)
+	return _requirements_are_met(requirements, event_state, run_state)
 
 
 func _requirements_are_met(requirements: Dictionary, event_state: Dictionary, run_state = null) -> bool:
@@ -576,6 +577,27 @@ func _sorted_edge_id(from_zone_id: String, to_zone_id: String) -> String:
 	if from_zone_id.is_empty() or to_zone_id.is_empty():
 		return ""
 	return "%s|%s" % [from_zone_id, to_zone_id] if from_zone_id < to_zone_id else "%s|%s" % [to_zone_id, from_zone_id]
+
+
+func _resolve_move_label(current_zone: Dictionary, target_zone: Dictionary) -> String:
+	var default_label := "%s로 이동한다" % String(target_zone.get("label", target_zone.get("id", "")))
+	var preferred_label := String(target_zone.get("move_label", ""))
+	if preferred_label.is_empty():
+		return default_label
+
+	var current_floor_index := _floor_index(String(current_zone.get("floor_id", "")))
+	var target_floor_index := _floor_index(String(target_zone.get("floor_id", "")))
+	if target_floor_index > current_floor_index:
+		return preferred_label
+
+	return default_label
+
+
+func _floor_index(floor_id: String) -> int:
+	var parts := floor_id.split("_")
+	if parts.size() >= 2 and String(parts[1]).is_valid_int():
+		return int(parts[1])
+	return 0
 
 
 func _loot_label(loot: Dictionary) -> String:
