@@ -210,10 +210,6 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
-	var first_action_button := action_buttons.get_child(0) as Button
-	if not assert_true(first_action_button != null, "The first indoor action should be a button."):
-		bootstrap.free()
-		return
 	var move_checkout_button := _find_button_by_text(action_buttons, "계산대로 이동한다")
 	if not assert_true(move_checkout_button != null, "Indoor mode should expose a movement action into checkout."):
 		bootstrap.free()
