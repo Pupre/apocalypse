@@ -102,6 +102,37 @@ func _run_test() -> void:
 		"Checkout should expose its local drawer search only after entering the checkout zone."
 	)
 
+	var staff_gate_zone: Dictionary = resolver.get_zone(event_data, "staff_corridor_gate")
+	assert_true(not staff_gate_zone.is_empty(), "Staff gate zone should exist in the mart graph.")
+	assert_true(
+		_sorted_strings(staff_gate_zone.get("connected_zone_ids", [])).has("stair_landing"),
+		"Staff gate should connect to the second-floor landing in the raw graph."
+	)
+
+	var staff_gate_state := {
+		"current_zone_id": "staff_corridor_gate",
+		"visited_zone_ids": PackedStringArray(["mart_entrance", "checkout", "staff_corridor_gate"]),
+		"zone_flags": {},
+		"revealed_clue_ids": PackedStringArray(),
+		"spent_action_ids": PackedStringArray(),
+	}
+	var staff_gate_actions: Array = resolver.get_actions(event_data, staff_gate_state)
+	assert_true(
+		not _action_ids(staff_gate_actions).has("move_stair_landing"),
+		"Second-floor movement should stay hidden until the staff gate is forced open."
+	)
+
+	staff_gate_state["zone_flags"] = {"staff_gate_forced": true}
+	staff_gate_actions = resolver.get_actions(event_data, staff_gate_state)
+	assert_true(
+		_action_ids(staff_gate_actions).has("move_stair_landing"),
+		"Forcing the staff gate should unlock movement to the second-floor landing."
+	)
+
+	var stair_landing_zone: Dictionary = resolver.get_zone(event_data, "stair_landing")
+	assert_true(not stair_landing_zone.is_empty(), "The second-floor landing should exist.")
+	assert_eq(String(stair_landing_zone.get("floor_id", "")), "floor_2", "The second-floor landing should belong to floor 2.")
+
 	pass_test("INDOOR_ZONE_GRAPH_OK")
 
 

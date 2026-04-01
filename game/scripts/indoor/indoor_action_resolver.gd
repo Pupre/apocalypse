@@ -52,6 +52,8 @@ func get_move_actions(event_data: Dictionary, event_state: Dictionary) -> Array[
 		var connected_zone := get_zone(event_data, connected_zone_id)
 		if connected_zone.is_empty():
 			continue
+		if not _zone_is_accessible(connected_zone, event_state):
+			continue
 
 		var minute_cost := int(connected_zone.get("revisit_cost", 10)) if visited_zone_ids.has(connected_zone_id) else int(connected_zone.get("first_visit_cost", 30))
 		actions.append({
@@ -310,10 +312,25 @@ func _option_is_available(action: Dictionary, event_state: Dictionary) -> bool:
 	if typeof(requirements) != TYPE_DICTIONARY or requirements.is_empty():
 		return true
 
+	return _requirements_are_met(requirements, event_state)
+
+
+func _zone_is_accessible(zone: Dictionary, event_state: Dictionary) -> bool:
+	var requirements: Dictionary = zone.get("access_requirements", {})
+	if typeof(requirements) != TYPE_DICTIONARY or requirements.is_empty():
+		return true
+
+	return _requirements_are_met(requirements, event_state)
+
+
+func _requirements_are_met(requirements: Dictionary, event_state: Dictionary) -> bool:
 	if not _requirements_contain_ids(requirements.get("required_flag_ids", []), event_state.get("zone_flags", {})):
 		return false
 
 	if not _requirements_contain_ids(requirements.get("required_clue_ids", []), event_state.get("revealed_clue_ids", [])):
+		return false
+
+	if not _requirements_contain_ids(requirements.get("required_unlocked_zone_ids", []), event_state.get("unlocked_zone_ids", [])):
 		return false
 
 	return true

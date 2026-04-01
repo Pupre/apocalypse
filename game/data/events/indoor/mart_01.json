@@ -67,13 +67,96 @@
       "summary": "계산대 뒤쪽 철문 너머로 창고 복도가 이어진다.",
       "connected_zone_ids": [
         "checkout",
-        "back_hall"
+        "back_hall",
+        "stair_landing"
       ],
       "event_ids": [
         "staff_gate_event"
       ],
       "first_visit_cost": 30,
       "revisit_cost": 10
+    },
+    {
+      "id": "stair_landing",
+      "floor_id": "floor_2",
+      "label": "계단참",
+      "summary": "먼지 위로 최근에 찍힌 발자국이 계단 위쪽에서 멈춰 있다.",
+      "connected_zone_ids": [
+        "staff_corridor_gate",
+        "break_room",
+        "office",
+        "warehouse"
+      ],
+      "event_ids": [],
+      "first_visit_cost": 30,
+      "revisit_cost": 10,
+      "access_requirements": {
+        "required_flag_ids": [
+          "staff_gate_forced"
+        ]
+      }
+    },
+    {
+      "id": "break_room",
+      "floor_id": "floor_2",
+      "label": "직원 휴게실",
+      "summary": "식은 컵라면 용기와 접히지 않은 담요가 아직 그대로 남아 있다.",
+      "connected_zone_ids": [
+        "stair_landing"
+      ],
+      "event_ids": [
+        "break_room_supplies_event"
+      ],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "office",
+      "floor_id": "floor_2",
+      "label": "사무실",
+      "summary": "뒤집힌 서류철과 열린 서랍 사이로 금속 열쇠 하나가 눈에 밟힌다.",
+      "connected_zone_ids": [
+        "stair_landing"
+      ],
+      "event_ids": [
+        "office_drawer_event"
+      ],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "warehouse",
+      "floor_id": "floor_2",
+      "label": "창고",
+      "summary": "뜯긴 박스 사이로 아직 손대지 않은 묶음이 더 안쪽에 남아 있다.",
+      "connected_zone_ids": [
+        "stair_landing",
+        "locked_storage"
+      ],
+      "event_ids": [
+        "warehouse_crate_event"
+      ],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "locked_storage",
+      "floor_id": "floor_2",
+      "label": "잠긴 보관실",
+      "summary": "금속 걸쇠가 풀린 철문 너머로 봉인된 상자와 공구함이 보인다.",
+      "connected_zone_ids": [
+        "warehouse"
+      ],
+      "event_ids": [
+        "locked_storage_cache_event"
+      ],
+      "first_visit_cost": 30,
+      "revisit_cost": 10,
+      "access_requirements": {
+        "required_flag_ids": [
+          "storage_key_found"
+        ]
+      }
     }
   ],
   "clues": [
@@ -100,6 +183,16 @@
     {
       "id": "recent_human_presence_hint",
       "text": "누군가 최근까지 뒤쪽 통로를 서성였던 것 같은 기척이 남아 있다.",
+      "visible": false
+    },
+    {
+      "id": "warm_blanket_hint",
+      "text": "담요의 온기가 완전히 빠지지 않았다. 누군가 오래전 일은 아니다.",
+      "visible": false
+    },
+    {
+      "id": "storage_key_missing_hint",
+      "text": "사무실 서랍 안쪽 메모에는 보관실 열쇠를 따로 숨겨둔다고 적혀 있다.",
       "visible": false
     }
   ],
@@ -195,6 +288,116 @@
           "outcomes": {
             "reveal_clue_ids": [
               "recent_human_presence_hint"
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "break_room_supplies_event",
+      "zone_id": "break_room",
+      "type": "search",
+      "hint_text": "식은 컵라면 용기 옆으로 열리지 않은 사물함 하나가 남아 있다.",
+      "options": [
+        {
+          "id": "search_break_room_locker",
+          "label": "휴게실 사물함을 뒤진다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "loot": [
+              {
+                "id": "instant_noodles",
+                "name": "컵라면",
+                "bulk": 1
+              }
+            ],
+            "reveal_clue_ids": [
+              "warm_blanket_hint"
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "office_drawer_event",
+      "zone_id": "office",
+      "type": "search",
+      "hint_text": "사무실 책상 서랍 하나만 급하게 열린 채 멈춰 있다.",
+      "options": [
+        {
+          "id": "search_office_drawer",
+          "label": "사무실 서랍을 뒤진다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "reveal_clue_ids": [
+              "storage_key_missing_hint"
+            ],
+            "set_flags": [
+              "storage_key_found"
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "warehouse_crate_event",
+      "zone_id": "warehouse",
+      "type": "search",
+      "hint_text": "안쪽 박스 더미 하나는 아직 개봉되지 않았다.",
+      "options": [
+        {
+          "id": "search_warehouse_crate",
+          "label": "안쪽 상자를 연다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "loot": [
+              {
+                "id": "bottled_water",
+                "name": "생수",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "locked_storage_cache_event",
+      "zone_id": "locked_storage",
+      "type": "search",
+      "hint_text": "봉인된 상자 안에 아직 포장도 뜯지 않은 물자가 남아 있다.",
+      "options": [
+        {
+          "id": "search_locked_storage_cache",
+          "label": "보관실 상자를 연다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "loot": [
+              {
+                "id": "filter_cartridge",
+                "name": "방호 필터",
+                "bulk": 1
+              }
             ],
             "consume_on_use": true
           }

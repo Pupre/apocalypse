@@ -245,6 +245,10 @@ func _run_test() -> void:
 		_action_ids(checkout_actions).has("force_staff_corridor_gate"),
 		"Staff gate zone should expose the force option after the drawer flag is set."
 	)
+	assert_true(
+		not _action_ids(checkout_actions).has("move_stair_landing"),
+		"The second-floor landing should stay hidden until the staff gate is forced."
+	)
 
 	assert_true(
 		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "force_staff_corridor_gate"),
@@ -258,6 +262,80 @@ func _run_test() -> void:
 		int(checkout_event_state.get("noise", 0)),
 		2,
 		"Forcing the staff gate should add its noise cost."
+	)
+	checkout_actions = resolver.get_actions(event_data, checkout_event_state)
+	assert_true(
+		_action_ids(checkout_actions).has("move_stair_landing"),
+		"Forcing the staff gate should unlock movement into the second-floor landing."
+	)
+
+	assert_true(
+		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "move_stair_landing"),
+		"Staff gate flow should allow moving into the second-floor landing."
+	)
+	assert_eq(
+		String(checkout_event_state.get("current_zone_id", "")),
+		"stair_landing",
+		"Moving after forcing the gate should enter the second-floor landing."
+	)
+	var landing_actions: Array = resolver.get_actions(event_data, checkout_event_state)
+	assert_true(
+		_action_ids(landing_actions).has("move_break_room"),
+		"Second-floor landing should expose movement into the break room."
+	)
+	assert_true(
+		_action_ids(landing_actions).has("move_office"),
+		"Second-floor landing should expose movement into the office."
+	)
+	assert_true(
+		_action_ids(landing_actions).has("move_warehouse"),
+		"Second-floor landing should expose movement into the warehouse."
+	)
+
+	assert_true(
+		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "move_warehouse"),
+		"Second-floor landing should allow moving into the warehouse."
+	)
+	var warehouse_actions: Array = resolver.get_actions(event_data, checkout_event_state)
+	assert_true(
+		not _action_ids(warehouse_actions).has("move_locked_storage"),
+		"Locked storage should stay gated until the office yields the storage key."
+	)
+
+	assert_true(
+		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "move_stair_landing"),
+		"Warehouse should allow returning to the second-floor landing."
+	)
+	assert_true(
+		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "move_office"),
+		"Second-floor landing should allow moving into the office."
+	)
+	var office_actions: Array = resolver.get_actions(event_data, checkout_event_state)
+	assert_true(
+		_action_ids(office_actions).has("search_office_drawer"),
+		"Office should expose a drawer search that can unlock the deeper storage room."
+	)
+	assert_true(
+		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "search_office_drawer"),
+		"Office drawer search should resolve through the indoor resolver."
+	)
+	assert_true(
+		checkout_zone_flags.has("storage_key_found"),
+		"Office drawer search should set the storage-key progression flag."
+	)
+
+	assert_true(
+		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "move_stair_landing"),
+		"Office should allow returning to the second-floor landing."
+	)
+	assert_true(
+		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "move_warehouse"),
+		"Second-floor landing should allow returning to the warehouse."
+	)
+	warehouse_actions = resolver.get_actions(event_data, checkout_event_state)
+	assert_true(
+		_action_ids(warehouse_actions).has("move_locked_storage"),
+		"Finding the office key should unlock warehouse access to the locked storage."
 	)
 
 	var hall_run_state = run_state_script.from_survivor_config({
