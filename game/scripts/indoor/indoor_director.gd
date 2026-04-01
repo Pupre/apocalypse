@@ -166,25 +166,39 @@ func get_map_snapshot() -> Dictionary:
 
 	var seen_edges := {}
 	var edges: Array[Dictionary] = []
-	for zone_id in visible_zone_ids:
-		var zone := _resolver.get_zone(_event_data, zone_id)
-		if zone.is_empty():
+	for traversed_edge_id in _string_ids(_event_state.get("traversed_edge_ids", [])):
+		var edge_parts := traversed_edge_id.split("|")
+		if edge_parts.size() != 2:
 			continue
 
-		for connected_zone_id_variant in zone.get("connected_zone_ids", []):
-			var connected_zone_id := String(connected_zone_id_variant)
-			if not visibility_lookup.has(connected_zone_id):
-				continue
+		var from_id := String(edge_parts[0])
+		var to_id := String(edge_parts[1])
+		if not visibility_lookup.has(from_id) or not visibility_lookup.has(to_id):
+			continue
+		if seen_edges.has(traversed_edge_id):
+			continue
+		seen_edges[traversed_edge_id] = true
+		edges.append({
+			"from": from_id,
+			"to": to_id,
+			"locked": false,
+		})
 
-			var edge_key := "%s|%s" % [zone_id, connected_zone_id] if zone_id < connected_zone_id else "%s|%s" % [connected_zone_id, zone_id]
-			if seen_edges.has(edge_key):
-				continue
-			seen_edges[edge_key] = true
-			edges.append({
-				"from": zone_id,
-				"to": connected_zone_id,
-				"locked": not _resolver.is_zone_accessible(_event_data, _event_state, connected_zone_id) and zone_id == current_zone_id,
-			})
+	var current_zone_connections: Array = current_zone.get("connected_zone_ids", [])
+	for connected_zone_id_variant in current_zone_connections:
+		var connected_zone_id := String(connected_zone_id_variant)
+		if not visibility_lookup.has(connected_zone_id):
+			continue
+
+		var edge_key := _sorted_edge_id(current_zone_id, connected_zone_id)
+		if seen_edges.has(edge_key):
+			continue
+		seen_edges[edge_key] = true
+		edges.append({
+			"from": current_zone_id,
+			"to": connected_zone_id,
+			"locked": not _resolver.is_zone_accessible(_event_data, _event_state, connected_zone_id),
+		})
 
 	return {
 		"nodes": nodes,
@@ -219,6 +233,7 @@ func _create_initial_event_state(current_zone_id: String = "") -> Dictionary:
 	return {
 		"current_zone_id": current_zone_id,
 		"visited_zone_ids": visited_zone_ids,
+		"traversed_edge_ids": PackedStringArray(),
 		"revealed_clue_ids": PackedStringArray(),
 		"spent_action_ids": PackedStringArray(),
 		"zone_flags": {},
@@ -262,6 +277,12 @@ func _string_ids(values) -> Array[String]:
 	for value in values:
 		ids.append(String(value))
 	return ids
+
+
+func _sorted_edge_id(from_zone_id: String, to_zone_id: String) -> String:
+	if from_zone_id.is_empty() or to_zone_id.is_empty():
+		return ""
+	return "%s|%s" % [from_zone_id, to_zone_id] if from_zone_id < to_zone_id else "%s|%s" % [to_zone_id, from_zone_id]
 
 
 func _map_label_for_zone(zone: Dictionary, state: String) -> String:

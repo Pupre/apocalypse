@@ -1,7 +1,7 @@
 {
   "id": "mart_01",
   "name": "동네 마트",
-  "summary": "진열대는 반쯤 비어 있지만, 계산대와 뒷방에는 아직 쓸 만한 물건이 남아 있다.",
+  "summary": "진열대는 반쯤 비어 있지만, 계산대와 매장 뒤편에는 아직 쓸 만한 물건이 남아 있다.",
   "entry_zone_id": "mart_entrance",
   "zones": [
     {
@@ -22,7 +22,7 @@
       "id": "checkout",
       "floor_id": "floor_1",
       "label": "계산대",
-      "summary": "계산대 뒤쪽에는 창고로 이어지는 문이 있다.",
+      "summary": "계산대 뒤쪽에는 직원 출입문이 있다.",
       "connected_zone_ids": [
         "mart_entrance",
         "staff_corridor_gate"
@@ -51,8 +51,8 @@
     {
       "id": "back_hall",
       "floor_id": "floor_1",
-      "label": "음료/후면 통로",
-      "summary": "바닥에 난 끌린 자국이 안쪽에서 멈춘다.",
+      "label": "매장 뒤편",
+      "summary": "쓰러진 음료 상자와 끌린 자국이 직원 구역 앞에서 멈춘다.",
       "connected_zone_ids": [
         "food_aisle",
         "staff_corridor_gate"
@@ -67,8 +67,8 @@
     {
       "id": "staff_corridor_gate",
       "floor_id": "floor_1",
-      "label": "직원 통로 입구",
-      "summary": "계산대 뒤쪽 철문 너머로 위층 계단이 보이지만, 문은 잠겨 있다.",
+      "label": "직원 출입문",
+      "summary": "직원 출입문 너머로 2층으로 올라가는 계단이 보이지만, 문은 잠겨 있다.",
       "connected_zone_ids": [
         "checkout",
         "back_hall",
@@ -84,10 +84,10 @@
     {
       "id": "stair_landing",
       "floor_id": "floor_2",
-      "label": "2층 계단참",
+      "label": "2층 입구",
       "move_label": "2층으로 올라간다",
       "blocked_feedback": "위층으로 올라가는 철문이 잠겨 있어 열리지 않는다.",
-      "summary": "먼지 위로 최근에 찍힌 발자국이 계단 위쪽에서 멈춰 있다.",
+      "summary": "먼지 위로 최근에 찍힌 발자국이 2층 안쪽에서 멈춰 있다.",
       "connected_zone_ids": [
         "staff_corridor_gate",
         "break_room",

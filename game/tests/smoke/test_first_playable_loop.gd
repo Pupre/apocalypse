@@ -271,7 +271,7 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 	assert_eq(indoor_time_label.text, "시각: 1일차 10:30", "Indoor mode should update the visible time after moving.")
-	assert_eq(summary_label.text, "계산대 뒤쪽에는 창고로 이어지는 문이 있다.", "Indoor mode should update the summary for the checkout zone.")
+	assert_eq(summary_label.text, "계산대 뒤쪽에는 직원 출입문이 있다.", "Indoor mode should update the summary for the checkout zone.")
 
 	assert_true(
 		_buttons_include_text(action_buttons, "조용히 서랍을 연다 (30분)"),

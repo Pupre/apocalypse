@@ -228,6 +228,7 @@ func _get_move_action(event_data: Dictionary, event_state: Dictionary, action_id
 
 
 func _apply_move_action(run_state, event_data: Dictionary, event_state: Dictionary, action: Dictionary) -> bool:
+	var origin_zone_id := String(event_state.get("current_zone_id", ""))
 	var target_zone_id := String(action.get("target_zone_id", ""))
 	var target_zone := get_zone(event_data, target_zone_id)
 	if target_zone.is_empty():
@@ -240,6 +241,12 @@ func _apply_move_action(run_state, event_data: Dictionary, event_state: Dictiona
 	var minute_cost := int(action.get("minute_cost", 0))
 	if minute_cost > 0 and run_state != null and run_state.has_method("advance_minutes"):
 		run_state.advance_minutes(minute_cost)
+
+	var traversed_edge_ids := _string_id_array(event_state.get("traversed_edge_ids", []))
+	var traversed_edge_id := _sorted_edge_id(origin_zone_id, target_zone_id)
+	if not traversed_edge_id.is_empty() and not traversed_edge_ids.has(traversed_edge_id):
+		traversed_edge_ids.append(traversed_edge_id)
+	event_state["traversed_edge_ids"] = traversed_edge_ids
 
 	event_state["current_zone_id"] = target_zone_id
 	var visited_zone_ids := _string_id_array(event_state.get("visited_zone_ids", []))
@@ -408,6 +415,12 @@ func _string_id_array(values) -> Array[String]:
 	for value in values:
 		result.append(String(value))
 	return result
+
+
+func _sorted_edge_id(from_zone_id: String, to_zone_id: String) -> String:
+	if from_zone_id.is_empty() or to_zone_id.is_empty():
+		return ""
+	return "%s|%s" % [from_zone_id, to_zone_id] if from_zone_id < to_zone_id else "%s|%s" % [to_zone_id, from_zone_id]
 
 
 func _loot_label(loot: Dictionary) -> String:

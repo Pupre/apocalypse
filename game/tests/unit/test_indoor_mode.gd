@@ -167,7 +167,7 @@ func _run_test() -> void:
 	)
 	assert_eq(
 		summary_label.text,
-		"계산대 뒤쪽에는 창고로 이어지는 문이 있다.",
+		"계산대 뒤쪽에는 직원 출입문이 있다.",
 		"Indoor mode should update the summary for the current zone after moving."
 	)
 	assert_eq(
