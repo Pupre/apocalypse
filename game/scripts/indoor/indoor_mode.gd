@@ -10,6 +10,8 @@ var _time_label: Label = null
 var _summary_label: Label = null
 var _result_label: Label = null
 var _action_buttons: VBoxContainer = null
+var _minimap: Control = null
+var _inventory_items: VBoxContainer = null
 var _director_connected := false
 
 
@@ -59,6 +61,8 @@ func _refresh_view() -> void:
 		_result_label.text = String(_director.get_feedback_message())
 
 	_refresh_action_buttons()
+	_refresh_minimap()
+	_refresh_inventory()
 
 
 func _refresh_action_buttons() -> void:
@@ -91,12 +95,14 @@ func _on_action_pressed(action_id: String) -> void:
 
 func _cache_nodes() -> void:
 	_director = get_node_or_null("Director")
-	_title_label = get_node_or_null("Panel/VBox/Header/TitleLabel") as Label
-	_location_label = get_node_or_null("Panel/VBox/Header/LocationLabel") as Label
-	_time_label = get_node_or_null("Panel/VBox/Header/TimeLabel") as Label
-	_summary_label = get_node_or_null("Panel/VBox/SummaryLabel") as Label
-	_result_label = get_node_or_null("Panel/VBox/ResultLabel") as Label
-	_action_buttons = get_node_or_null("Panel/VBox/ActionButtons") as VBoxContainer
+	_title_label = get_node_or_null("Panel/Layout/MainColumn/Header/TitleLabel") as Label
+	_location_label = get_node_or_null("Panel/Layout/MainColumn/Header/LocationLabel") as Label
+	_time_label = get_node_or_null("Panel/Layout/MainColumn/Header/TimeLabel") as Label
+	_summary_label = get_node_or_null("Panel/Layout/MainColumn/SummaryLabel") as Label
+	_result_label = get_node_or_null("Panel/Layout/MainColumn/ResultLabel") as Label
+	_action_buttons = get_node_or_null("Panel/Layout/MainColumn/ActionButtons") as VBoxContainer
+	_minimap = get_node_or_null("Panel/Layout/Sidebar/MinimapPanel/VBox/MapNodes") as Control
+	_inventory_items = get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/InventoryItems") as VBoxContainer
 
 
 func _clear_children(container: Node) -> void:
@@ -127,3 +133,25 @@ func _update_time_label() -> void:
 
 	var clock_label := String(_director.get_clock_label())
 	_time_label.text = "시각: %s" % (clock_label if not clock_label.is_empty() else "확인 중")
+
+
+func _refresh_minimap() -> void:
+	if _minimap == null or _director == null or not _director.has_method("get_map_snapshot"):
+		return
+
+	if _minimap.has_method("set_snapshot"):
+		_minimap.set_snapshot(_director.get_map_snapshot())
+
+
+func _refresh_inventory() -> void:
+	if _inventory_items == null:
+		return
+
+	_clear_children(_inventory_items)
+	if _director == null or not _director.has_method("get_inventory_entries"):
+		return
+
+	for entry in _director.get_inventory_entries():
+		var label := Label.new()
+		label.text = String(entry)
+		_inventory_items.add_child(label)

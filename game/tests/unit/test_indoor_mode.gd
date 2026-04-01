@@ -59,12 +59,12 @@ func _run_test() -> void:
 
 	indoor_mode.exit_requested.connect(Callable(self, "_on_exit_requested"))
 
-	var exit_button := indoor_mode.get_node_or_null("Panel/VBox/Header/ExitButton") as Button
+	var exit_button := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/Header/ExitButton") as Button
 	if not assert_true(exit_button == null, "Indoor mode should no longer expose a global ExitButton."):
 		indoor_mode.free()
 		return
 
-	var location_label := indoor_mode.get_node_or_null("Panel/VBox/Header/LocationLabel") as Label
+	var location_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/Header/LocationLabel") as Label
 	if not assert_true(location_label != null, "Indoor mode should expose a LocationLabel."):
 		indoor_mode.free()
 		return
@@ -74,7 +74,7 @@ func _run_test() -> void:
 		"Indoor mode should show the mart entry zone label after configure."
 	)
 
-	var time_label := indoor_mode.get_node_or_null("Panel/VBox/Header/TimeLabel") as Label
+	var time_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/Header/TimeLabel") as Label
 	if not assert_true(time_label != null, "Indoor mode should expose a TimeLabel for the shared clock."):
 		indoor_mode.free()
 		return
@@ -84,7 +84,7 @@ func _run_test() -> void:
 		"Indoor mode should show the shared run clock after configure."
 	)
 
-	var summary_label := indoor_mode.get_node_or_null("Panel/VBox/SummaryLabel") as Label
+	var summary_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/SummaryLabel") as Label
 	if not assert_true(summary_label != null, "Indoor mode should expose a current-zone SummaryLabel."):
 		indoor_mode.free()
 		return
@@ -94,12 +94,12 @@ func _run_test() -> void:
 		"Indoor mode should show the current zone summary instead of the building summary."
 	)
 
-	var sleep_preview_label := indoor_mode.get_node_or_null("Panel/VBox/SleepPreviewLabel") as Label
+	var sleep_preview_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/SleepPreviewLabel") as Label
 	if not assert_true(sleep_preview_label == null, "Indoor mode should hide sleep preview from the main reading surface."):
 		indoor_mode.free()
 		return
 
-	var clue_list := indoor_mode.get_node_or_null("Panel/VBox/ClueList") as VBoxContainer
+	var clue_list := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ClueList") as VBoxContainer
 	if not assert_true(clue_list == null, "Indoor mode should hide the persistent clue list from the main reading surface."):
 		indoor_mode.free()
 		return
@@ -109,7 +109,12 @@ func _run_test() -> void:
 		indoor_mode.free()
 		return
 
-	var action_buttons := indoor_mode.get_node_or_null("Panel/VBox/ActionButtons") as VBoxContainer
+	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ResultLabel") as Label
+	if not assert_true(result_label != null, "Indoor mode should expose a ResultLabel."):
+		indoor_mode.free()
+		return
+
+	var action_buttons := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ActionButtons") as VBoxContainer
 	if not assert_true(action_buttons != null, "Indoor mode should expose action buttons."):
 		indoor_mode.free()
 		return
@@ -120,6 +125,30 @@ func _run_test() -> void:
 	assert_true(
 		_find_button_by_text(action_buttons, "건물 밖으로 나간다") != null,
 		"Indoor mode should expose leaving the building as a contextual action at the entrance."
+	)
+	assert_true(
+		_find_button_by_text(action_buttons, "한 시간 쉰다 (60분)") == null,
+		"Indoor mode should not expose the removed flat rest action."
+	)
+
+	var minimap_nodes := indoor_mode.get_node_or_null("Panel/Layout/Sidebar/MinimapPanel/VBox/MapNodes") as Control
+	if not assert_true(minimap_nodes != null, "Indoor mode should expose a minimap node container."):
+		indoor_mode.free()
+		return
+	assert_eq(
+		_map_labels(minimap_nodes),
+		["?", "?", "정문 진입부"],
+		"Indoor mode should only reveal the current zone and directly connected unknown zones on the minimap."
+	)
+
+	var inventory_items := indoor_mode.get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/InventoryItems") as VBoxContainer
+	if not assert_true(inventory_items != null, "Indoor mode should expose an inventory list container."):
+		indoor_mode.free()
+		return
+	assert_eq(
+		_inventory_labels(inventory_items),
+		["소지품 없음"],
+		"Indoor mode should show an empty inventory placeholder before the player loots anything."
 	)
 
 	var director := indoor_mode.get_node_or_null("Director")
@@ -150,9 +179,33 @@ func _run_test() -> void:
 		_find_button_by_text(action_buttons, "조용히 서랍을 연다 (30분)") != null,
 		"Indoor mode should show time cost on local zone actions."
 	)
+	assert_eq(
+		_map_labels(minimap_nodes),
+		["?", "계산대", "정문 진입부"],
+		"Indoor mode should keep visited zones visible and only reveal newly adjacent unknown zones."
+	)
 	assert_true(
 		_find_button_by_text(action_buttons, "건물 밖으로 나간다") == null,
 		"Indoor mode should hide the leave-building action away from the entrance."
+	)
+
+	assert_true(
+		director.apply_action("search_checkout_drawer"),
+		"Director should resolve the checkout drawer search within the checkout zone."
+	)
+	await process_frame
+	assert_true(
+		summary_label.text.find("계산대") != -1,
+		"Indoor summary should stay tied to the current zone after searching."
+	)
+	assert_true(
+		result_label.text.find("통조림 콩") != -1,
+		"Indoor result feedback should mention the item the player just looted."
+	)
+	assert_eq(
+		_inventory_labels(inventory_items),
+		["통조림 콩 x1"],
+		"Indoor inventory should list newly looted items."
 	)
 
 	assert_true(
@@ -161,7 +214,7 @@ func _run_test() -> void:
 	)
 	assert_eq(
 		time_label.text,
-		"시각: 1일차 08:40",
+		"시각: 1일차 09:10",
 		"Indoor mode should update the visible time after revisiting a known zone."
 	)
 	assert_true(
@@ -195,6 +248,33 @@ func _find_button_by_text(container: VBoxContainer, expected_text: String) -> Bu
 			return button
 
 	return null
+
+
+func _map_labels(container: Control) -> Array[String]:
+	var labels: Array[String] = []
+	if container == null:
+		return labels
+
+	for child in container.get_children():
+		var label := child as Label
+		if label != null:
+			labels.append(label.text)
+
+	labels.sort()
+	return labels
+
+
+func _inventory_labels(container: VBoxContainer) -> Array[String]:
+	var labels: Array[String] = []
+	if container == null:
+		return labels
+
+	for child in container.get_children():
+		var label := child as Label
+		if label != null:
+			labels.append(label.text)
+
+	return labels
 
 
 func get_job(job_id: String) -> Dictionary:

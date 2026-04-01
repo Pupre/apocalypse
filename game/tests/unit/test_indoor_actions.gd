@@ -87,7 +87,7 @@ func _run_test() -> void:
 	var actions: Array = resolver.get_actions(event_data, event_state)
 	assert_true(_action_ids(actions).has("move_checkout"), "Entrance should expose movement into checkout.")
 	assert_true(_action_ids(actions).has("move_food_aisle"), "Entrance should expose movement into food aisle.")
-	assert_true(_action_ids(actions).has("rest"), "Entrance should keep the repeatable rest action.")
+	assert_true(not _action_ids(actions).has("rest"), "Entrance should not expose the removed flat rest action.")
 	assert_true(not _action_ids(actions).has("search_counter"), "Entrance should not expose checkout-only search actions.")
 
 	var before_clock_minute_of_day: int = run_state.clock.minute_of_day
@@ -113,42 +113,12 @@ func _run_test() -> void:
 
 	actions = resolver.get_actions(event_data, event_state)
 	assert_true(_action_ids(actions).has("search_checkout_drawer"), "Checkout should expose its local drawer search after entering the zone.")
-	assert_true(_action_ids(actions).has("rest"), "Repeatable rest should still be available after moving.")
+	assert_true(not _action_ids(actions).has("rest"), "Checkout should not expose the removed flat rest action.")
 
 	assert_true(
 		not resolver.apply_action(run_state, event_data, {"revealed_clue_ids": PackedStringArray()}, "search_counter"),
 		"Global checkout search should no longer resolve from a location-less state."
 	)
-
-	var before_rest_clock_minute_of_day: int = run_state.clock.minute_of_day
-	var before_rest_fatigue: float = run_state.fatigue
-	assert_true(
-		resolver.apply_action(run_state, event_data, event_state, "rest"),
-		"Repeatable rest actions should still be usable after moving."
-	)
-	assert_eq(
-		run_state.clock.minute_of_day,
-		before_rest_clock_minute_of_day + 60,
-		"Rest should use sleep minutes and advance the clock."
-	)
-	assert_eq(
-		run_state.fatigue,
-		before_rest_fatigue,
-		"Rest should not add active-time fatigue."
-	)
-	assert_true(
-		resolver.apply_action(run_state, event_data, event_state, "rest"),
-		"Repeatable rest actions should stay usable after being used once."
-	)
-	assert_eq(
-		run_state.clock.minute_of_day,
-		before_rest_clock_minute_of_day + 120,
-		"Repeatable rest should keep advancing the clock."
-	)
-	actions = resolver.get_actions(event_data, event_state)
-	assert_true(_action_ids(actions).has("rest"), "Repeatable rest should remain available after use.")
-	assert_true(_action_ids(actions).has("search_checkout_drawer"), "Zone-local checkout search should still remain available until used.")
-	assert_true(_action_ids(actions).has("move_mart_entrance"), "Checkout should still expose the return move after resting.")
 
 	var checkout_run_state = run_state_script.from_survivor_config({
 		"job_id": "courier",

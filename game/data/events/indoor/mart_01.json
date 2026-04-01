@@ -14,6 +14,7 @@
         "food_aisle"
       ],
       "event_ids": [],
+      "map_position": [0, 1],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -29,6 +30,7 @@
       "event_ids": [
         "checkout_drawer_event"
       ],
+      "map_position": [1, 1],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -42,6 +44,7 @@
         "back_hall"
       ],
       "event_ids": [],
+      "map_position": [0, 2],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -57,6 +60,7 @@
       "event_ids": [
         "drag_marks_event"
       ],
+      "map_position": [1, 2],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -73,6 +77,7 @@
       "event_ids": [
         "staff_gate_event"
       ],
+      "map_position": [2, 1],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -88,6 +93,7 @@
         "warehouse"
       ],
       "event_ids": [],
+      "map_position": [3, 1],
       "first_visit_cost": 30,
       "revisit_cost": 10,
       "access_requirements": {
@@ -107,6 +113,7 @@
       "event_ids": [
         "break_room_supplies_event"
       ],
+      "map_position": [4, 0],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -121,6 +128,7 @@
       "event_ids": [
         "office_drawer_event"
       ],
+      "map_position": [4, 1],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -136,6 +144,7 @@
       "event_ids": [
         "warehouse_crate_event"
       ],
+      "map_position": [4, 2],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -150,6 +159,7 @@
       "event_ids": [
         "locked_storage_cache_event"
       ],
+      "map_position": [5, 2],
       "first_visit_cost": 30,
       "revisit_cost": 10,
       "access_requirements": {
@@ -405,13 +415,5 @@
       ]
     }
   ],
-  "actions": [
-    {
-      "id": "rest",
-      "label": "한 시간 쉰다",
-      "sleep_minutes": 60,
-      "reveal_clue_ids": [],
-      "loot": []
-    }
-  ]
+  "actions": []
 }

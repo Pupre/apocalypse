@@ -1,7 +1,8 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/indoor/indoor_mode.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/indoor/indoor_director.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/indoor/indoor_minimap.gd" id="3"]
 
 [node name="IndoorMode" type="Control"]
 anchors_preset = 15
@@ -27,35 +28,69 @@ offset_top = 48.0
 offset_right = -64.0
 offset_bottom = -48.0
 
-[node name="VBox" type="VBoxContainer" parent="Panel"]
+[node name="Layout" type="HBoxContainer" parent="Panel"]
 theme_override_constants/separation = 10
 
-[node name="Header" type="HBoxContainer" parent="Panel/VBox"]
+[node name="MainColumn" type="VBoxContainer" parent="Panel/Layout"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="Header" type="HBoxContainer" parent="Panel/Layout/MainColumn"]
 theme_override_constants/separation = 12
 
-[node name="TitleLabel" type="Label" parent="Panel/VBox/Header"]
+[node name="TitleLabel" type="Label" parent="Panel/Layout/MainColumn/Header"]
 size_flags_horizontal = 3
 text = "실내"
 
-[node name="LocationLabel" type="Label" parent="Panel/VBox/Header"]
+[node name="LocationLabel" type="Label" parent="Panel/Layout/MainColumn/Header"]
 size_flags_horizontal = 3
 text = "위치: 확인 중"
 
-[node name="TimeLabel" type="Label" parent="Panel/VBox/Header"]
+[node name="TimeLabel" type="Label" parent="Panel/Layout/MainColumn/Header"]
 size_flags_horizontal = 3
 horizontal_alignment = 2
 text = "시각: 확인 중"
 
-[node name="SummaryLabel" type="Label" parent="Panel/VBox"]
+[node name="SummaryLabel" type="Label" parent="Panel/Layout/MainColumn"]
 text = "방 안을 살펴 단서를 찾아본다."
 autowrap_mode = 3
 
-[node name="ResultLabel" type="Label" parent="Panel/VBox"]
+[node name="ResultLabel" type="Label" parent="Panel/Layout/MainColumn"]
 text = ""
 autowrap_mode = 3
 
-[node name="ActionHeadingLabel" type="Label" parent="Panel/VBox"]
+[node name="ActionHeadingLabel" type="Label" parent="Panel/Layout/MainColumn"]
 text = "행동"
 
-[node name="ActionButtons" type="VBoxContainer" parent="Panel/VBox"]
+[node name="ActionButtons" type="VBoxContainer" parent="Panel/Layout/MainColumn"]
 theme_override_constants/separation = 8
+
+[node name="Sidebar" type="VBoxContainer" parent="Panel/Layout"]
+custom_minimum_size = Vector2(320, 0)
+theme_override_constants/separation = 12
+
+[node name="MinimapPanel" type="PanelContainer" parent="Panel/Layout/Sidebar"]
+size_flags_vertical = 3
+
+[node name="VBox" type="VBoxContainer" parent="Panel/Layout/Sidebar/MinimapPanel"]
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="Panel/Layout/Sidebar/MinimapPanel/VBox"]
+text = "구조도"
+
+[node name="MapNodes" type="Control" parent="Panel/Layout/Sidebar/MinimapPanel/VBox"]
+custom_minimum_size = Vector2(280, 220)
+size_flags_vertical = 3
+script = ExtResource("3")
+
+[node name="InventoryPanel" type="PanelContainer" parent="Panel/Layout/Sidebar"]
+custom_minimum_size = Vector2(0, 180)
+
+[node name="VBox" type="VBoxContainer" parent="Panel/Layout/Sidebar/InventoryPanel"]
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="Panel/Layout/Sidebar/InventoryPanel/VBox"]
+text = "소지품"
+
+[node name="InventoryItems" type="VBoxContainer" parent="Panel/Layout/Sidebar/InventoryPanel/VBox"]
+theme_override_constants/separation = 6

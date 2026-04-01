@@ -71,7 +71,7 @@ func _run_test() -> void:
 	var zone_aware_actions: Array = resolver.get_actions(event_data, event_state)
 	assert_eq(
 		_sorted_action_ids(zone_aware_actions),
-		PackedStringArray(["move_checkout", "move_food_aisle", "rest"]),
+		PackedStringArray(["move_checkout", "move_food_aisle"]),
 		"Zone-aware action queries should only expose entrance-valid actions at the mart entrance."
 	)
 

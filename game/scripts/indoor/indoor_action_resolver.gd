@@ -40,6 +40,14 @@ func get_zone(event_data: Dictionary, zone_id: String) -> Dictionary:
 	return {}
 
 
+func is_zone_accessible(event_data: Dictionary, event_state: Dictionary, zone_id: String) -> bool:
+	var zone := get_zone(event_data, zone_id)
+	if zone.is_empty():
+		return false
+
+	return _zone_is_accessible(zone, event_state)
+
+
 func get_move_actions(event_data: Dictionary, event_state: Dictionary) -> Array[Dictionary]:
 	var zone := get_zone(event_data, String(event_state.get("current_zone_id", "")))
 	if zone.is_empty():
@@ -124,12 +132,15 @@ func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, ac
 				run_state.advance_sleep_time(sleep_minutes)
 
 		var loot_messages: Array[String] = []
+		var collected_loot_labels: Array[String] = []
 		for loot_variant in action.get("loot", []):
 			if typeof(loot_variant) != TYPE_DICTIONARY or run_state == null:
 				continue
 
 			var loot := loot_variant as Dictionary
-			if not run_state.inventory.add_item(loot):
+			if run_state.inventory.add_item(loot):
+				collected_loot_labels.append(_loot_label(loot))
+			else:
 				loot_messages.append("가방이 가득 차서 %s 챙기지 못했다." % _loot_label(loot))
 
 		if not loot_messages.is_empty():
@@ -139,6 +150,11 @@ func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, ac
 					feedback_message += " "
 				feedback_message += message
 			event_state["last_feedback_message"] = feedback_message
+		elif not collected_loot_labels.is_empty():
+			var collected_message := "%s 챙겼다." % ", ".join(collected_loot_labels)
+			if minute_cost > 0:
+				collected_message += " %d분 동안 수색했다." % minute_cost
+			event_state["last_feedback_message"] = collected_message
 		elif minute_cost > 0:
 			event_state["last_feedback_message"] = "%d분 동안 수색했다." % minute_cost
 		elif int(action.get("sleep_minutes", 0)) > 0:
