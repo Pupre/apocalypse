@@ -42,12 +42,16 @@ func _run_test() -> void:
 
 	var transition_layer := run_shell.get_node_or_null("TransitionLayer")
 	var mode_host := run_shell.get_node_or_null("ModeHost")
+	var hud := run_shell.get_node_or_null("HUD")
 	var outdoor_mode := run_shell.get_node_or_null("ModeHost/OutdoorMode")
 	var content_library := root.get_node_or_null("ContentLibrary")
 	if not assert_true(transition_layer != null, "Run shell should include a transition layer."):
 		run_shell.free()
 		return
 	if not assert_true(mode_host != null, "Run shell should include a mode host."):
+		run_shell.free()
+		return
+	if not assert_true(hud != null, "Run shell should include a HUD."):
 		run_shell.free()
 		return
 	if not assert_true(outdoor_mode != null, "Run shell should start in outdoor mode."):
@@ -62,6 +66,7 @@ func _run_test() -> void:
 	):
 		run_shell.free()
 		return
+	assert_true(hud.get_index() > mode_host.get_index(), "HUD should render above the mode host so indoor panels do not hide it.")
 
 	transition_layer.set_duration_for_tests(0.1)
 

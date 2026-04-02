@@ -22,6 +22,7 @@ This repository is docs-first during pre-production.
 - [Core Gameplay Design](specs/core-gameplay-design.md)
 - [Godot Technical Architecture](specs/godot-technical-architecture.md)
 - [Mart Indoor Content Design](specs/mart-indoor-content-design.md)
+- [Indoor UI Restructure Design](specs/indoor-ui-restructure-design.md)
 - [Mode Transition Presentation Design](specs/mode-transition-presentation-design.md)
 - [Outdoor Visual Refresh Design](specs/outdoor-visual-refresh-design.md)
 - [Survival Stats First Pass Design](specs/survival-stats-first-pass-design.md)
