@@ -165,6 +165,25 @@ func get_inventory_rows() -> Array[Dictionary]:
 	return rows
 
 
+func get_equipped_rows() -> Array[String]:
+	if _run_state == null:
+		var empty_rows: Array[String] = ["장착중인 장비 없음"]
+		return empty_rows
+
+	var slot_order := ["back", "body", "feet", "hands"]
+	var rows: Array[String] = []
+	for slot_id in slot_order:
+		var equipped_item: Dictionary = _run_state.equipped_items.get(slot_id, {})
+		if equipped_item.is_empty():
+			continue
+		rows.append("%s: %s" % [_slot_label(slot_id), _item_name(equipped_item, slot_id)])
+
+	if rows.is_empty():
+		var fallback_rows: Array[String] = ["장착중인 장비 없음"]
+		return fallback_rows
+	return rows
+
+
 func get_selected_inventory_sheet() -> Dictionary:
 	if _selected_inventory_item_id.is_empty() or not _inventory_has_item(_selected_inventory_item_id):
 		return {"visible": false}
@@ -316,7 +335,14 @@ func apply_action(action_id: String) -> bool:
 			state_changed.emit()
 			return true
 		_selected_inventory_item_id = ""
-		_event_state["last_feedback_message"] = "%s 장착했다." % _item_name(equip_item_data, equip_item_id)
+		var replaced_item: Dictionary = equip_result.get("replaced_item", {})
+		if replaced_item.is_empty():
+			_event_state["last_feedback_message"] = "%s 장착했다." % _item_name(equip_item_data, equip_item_id)
+		else:
+			_event_state["last_feedback_message"] = "%s 장착했다. %s는 가방에 넣었다." % [
+				_item_name(equip_item_data, equip_item_id),
+				_item_name(replaced_item, String(replaced_item.get("id", "")))
+			]
 		state_changed.emit()
 		return true
 

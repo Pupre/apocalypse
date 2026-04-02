@@ -474,6 +474,15 @@ func _run_test() -> void:
 		not bool(_action_by_id(warehouse_actions, "move_locked_storage").get("locked", false)),
 		"Locked storage should no longer be marked as locked after the office search."
 	)
+	assert_true(
+		resolver.apply_action(gate_run_state, event_data, gate_event_state, "move_locked_storage"),
+		"After taking the key, the player should be able to actually enter the locked storage."
+	)
+	assert_eq(
+		String(gate_event_state.get("current_zone_id", "")),
+		"locked_storage",
+		"Entering the storage route after taking the key should move the player into the storage room."
+	)
 
 	var hall_run_state = run_state_script.from_survivor_config({
 		"job_id": "courier",

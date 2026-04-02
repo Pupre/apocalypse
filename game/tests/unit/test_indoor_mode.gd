@@ -141,8 +141,12 @@ func _run_test() -> void:
 		"Indoor mode should only reveal the current zone and directly connected unknown zones on the minimap."
 	)
 
-	var inventory_items := indoor_mode.get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/InventoryItems") as VBoxContainer
+	var inventory_items := indoor_mode.get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/InventoryScroll/InventoryItems") as VBoxContainer
 	if not assert_true(inventory_items != null, "Indoor mode should expose an inventory list container."):
+		indoor_mode.free()
+		return
+	var inventory_scroll := indoor_mode.get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/InventoryScroll") as ScrollContainer
+	if not assert_true(inventory_scroll != null, "Indoor mode should mount the inventory list inside a ScrollContainer."):
 		indoor_mode.free()
 		return
 	var inventory_title_label := indoor_mode.get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/TitleLabel") as Label
@@ -151,6 +155,10 @@ func _run_test() -> void:
 		return
 	var inventory_status_label := indoor_mode.get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/StatusLabel") as Label
 	if not assert_true(inventory_status_label != null, "Indoor mode should expose an inventory status label."):
+		indoor_mode.free()
+		return
+	var equipped_items := indoor_mode.get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/EquippedItems") as VBoxContainer
+	if not assert_true(equipped_items != null, "Indoor mode should expose a mounted equipment list."):
 		indoor_mode.free()
 		return
 	assert_eq(
@@ -167,6 +175,11 @@ func _run_test() -> void:
 		_inventory_labels(inventory_items),
 		["소지품 없음"],
 		"Indoor mode should show an empty inventory placeholder before the player loots anything."
+	)
+	assert_eq(
+		_inventory_labels(equipped_items),
+		["장착중인 장비 없음"],
+		"Indoor mode should show an empty equipped-items placeholder before any equipment is worn."
 	)
 	var item_sheet := indoor_mode.get_node_or_null("ItemSheet") as Control
 	if not assert_true(item_sheet != null, "Indoor mode should expose a bottom item sheet."):
@@ -294,6 +307,40 @@ func _run_test() -> void:
 	)
 	assert_true(not item_sheet.visible, "Resolving an item-sheet action should close the bottom sheet.")
 
+	var move_entrance_button := _find_button_by_text(action_buttons, "정문 진입부로 이동한다 (10분)")
+	if not assert_true(move_entrance_button != null, "Indoor mode should expose a return action back to the entrance."):
+		indoor_mode.free()
+		return
+	move_entrance_button.emit_signal("pressed")
+	await process_frame
+	var move_food_aisle_button := _find_button_by_text(action_buttons, "식품 진열대로 이동한다 (30분)")
+	if not assert_true(move_food_aisle_button != null, "Indoor mode should expose movement from the entrance into the food aisle."):
+		indoor_mode.free()
+		return
+	move_food_aisle_button.emit_signal("pressed")
+	await process_frame
+	var move_household_goods_button := _find_button_by_text(action_buttons, "생활용품 코너로 이동한다 (30분)")
+	if not assert_true(move_household_goods_button != null, "Indoor mode should expose movement from the food aisle into household goods."):
+		indoor_mode.free()
+		return
+	move_household_goods_button.emit_signal("pressed")
+	await process_frame
+	assert_true(director.apply_action("search_household_goods"), "Director should allow searching household goods.")
+	var take_household_backpack_button := _find_button_by_prefix(action_buttons, "작은 배낭 챙긴다")
+	if not assert_true(take_household_backpack_button != null, "Household goods should reveal a backpack to take."):
+		indoor_mode.free()
+		return
+	take_household_backpack_button.emit_signal("pressed")
+	await process_frame
+	assert_true(director.apply_action("inspect_inventory_small_backpack"), "Indoor mode should allow selecting the backpack for inspection.")
+	assert_true(director.apply_action("equip_inventory_small_backpack"), "Indoor mode should allow equipping the backpack from the item sheet.")
+	await process_frame
+	assert_eq(
+		_inventory_labels(equipped_items),
+		["등: 작은 배낭"],
+		"Equipping an item should surface it in the equipped-items list."
+	)
+
 	var lighter_button := _find_button_by_text(inventory_items, "라이터 x1")
 	if not assert_true(lighter_button != null, "Remaining carried items should stay selectable after eating another item."):
 		indoor_mode.free()
@@ -313,7 +360,7 @@ func _run_test() -> void:
 	)
 	assert_eq(
 		inventory_title_label.text,
-		"소지품 (0/8)",
+		"소지품 (0/12)",
 		"Dropping the remaining item should free all carry space."
 	)
 	assert_true(
@@ -322,13 +369,17 @@ func _run_test() -> void:
 	)
 
 	assert_true(
+		director.apply_action("move_food_aisle"),
+		"Director should allow moving back into the food aisle from household goods."
+	)
+	assert_true(
 		director.apply_action("move_mart_entrance"),
-		"Director should allow moving back to the mart entrance."
+		"Director should allow moving back to the mart entrance from the food aisle."
 	)
 	assert_eq(
 		time_label.text,
-		"시각: 1일차 09:10",
-		"Indoor mode should update the visible time after revisiting a known zone."
+		"시각: 1일차 11:00",
+		"Indoor mode should update the visible time after walking back through known zones."
 	)
 	assert_true(
 		_find_button_by_text(action_buttons, "건물 밖으로 나간다") != null,
@@ -358,6 +409,18 @@ func _find_button_by_text(container: VBoxContainer, expected_text: String) -> Bu
 	for child in container.get_children():
 		var button := child as Button
 		if button != null and button.text == expected_text:
+			return button
+
+	return null
+
+
+func _find_button_by_prefix(container: VBoxContainer, expected_prefix: String) -> Button:
+	if container == null:
+		return null
+
+	for child in container.get_children():
+		var button := child as Button
+		if button != null and button.text.begins_with(expected_prefix):
 			return button
 
 	return null

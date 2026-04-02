@@ -120,7 +120,7 @@ func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, ac
 
 	var action := _get_action(event_data, event_state, action_id, run_state)
 	if action.is_empty():
-		var move_action := _get_move_action(event_data, event_state, action_id)
+		var move_action := _get_move_action(event_data, event_state, action_id, run_state)
 		if not move_action.is_empty():
 			return _apply_move_action(run_state, event_data, event_state, move_action)
 
@@ -246,8 +246,8 @@ func _get_zone_actions(event_data: Dictionary, event_state: Dictionary, run_stat
 	return actions
 
 
-func _get_move_action(event_data: Dictionary, event_state: Dictionary, action_id: String) -> Dictionary:
-	for action in get_move_actions(event_data, event_state):
+func _get_move_action(event_data: Dictionary, event_state: Dictionary, action_id: String, run_state = null) -> Dictionary:
+	for action in get_move_actions(event_data, event_state, run_state):
 		if String(action.get("id", "")) == action_id:
 			return action
 

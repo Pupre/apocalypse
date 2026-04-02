@@ -96,7 +96,21 @@ text = "소지품"
 autowrap_mode = 3
 text = ""
 
-[node name="InventoryItems" type="VBoxContainer" parent="Panel/Layout/Sidebar/InventoryPanel/VBox"]
+[node name="EquippedHeadingLabel" type="Label" parent="Panel/Layout/Sidebar/InventoryPanel/VBox"]
+text = "장착중"
+
+[node name="EquippedItems" type="VBoxContainer" parent="Panel/Layout/Sidebar/InventoryPanel/VBox"]
+theme_override_constants/separation = 4
+
+[node name="InventoryHeadingLabel" type="Label" parent="Panel/Layout/Sidebar/InventoryPanel/VBox"]
+text = "소지품"
+
+[node name="InventoryScroll" type="ScrollContainer" parent="Panel/Layout/Sidebar/InventoryPanel/VBox"]
+custom_minimum_size = Vector2(0, 140)
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="InventoryItems" type="VBoxContainer" parent="Panel/Layout/Sidebar/InventoryPanel/VBox/InventoryScroll"]
 theme_override_constants/separation = 6
 
 [node name="ItemSheet" type="PanelContainer" parent="."]

@@ -246,7 +246,7 @@ func _run_test() -> void:
 		return
 	assert_eq(_map_labels(minimap_nodes), ["?", "?", "정문 진입부"], "Indoor minimap should start with the current zone and adjacent unknown rooms only.")
 
-	var inventory_items := indoor_mode.get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/InventoryItems") as VBoxContainer
+	var inventory_items := indoor_mode.get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/InventoryScroll/InventoryItems") as VBoxContainer
 	if not assert_true(inventory_items != null, "Indoor mode should expose an inventory item list."):
 		bootstrap.free()
 		return

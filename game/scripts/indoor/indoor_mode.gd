@@ -13,6 +13,7 @@ var _action_buttons: VBoxContainer = null
 var _minimap: Control = null
 var _inventory_title_label: Label = null
 var _inventory_status_label: Label = null
+var _equipped_items: VBoxContainer = null
 var _inventory_items: VBoxContainer = null
 var _item_sheet: Control = null
 var _item_sheet_title: Label = null
@@ -112,7 +113,8 @@ func _cache_nodes() -> void:
 	_minimap = get_node_or_null("Panel/Layout/Sidebar/MinimapPanel/VBox/MapNodes") as Control
 	_inventory_title_label = get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/TitleLabel") as Label
 	_inventory_status_label = get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/StatusLabel") as Label
-	_inventory_items = get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/InventoryItems") as VBoxContainer
+	_equipped_items = get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/EquippedItems") as VBoxContainer
+	_inventory_items = get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/InventoryScroll/InventoryItems") as VBoxContainer
 	_item_sheet = get_node_or_null("ItemSheet") as Control
 	_item_sheet_title = get_node_or_null("ItemSheet/VBox/ItemNameLabel") as Label
 	_item_sheet_description = get_node_or_null("ItemSheet/VBox/ItemDescriptionLabel") as Label
@@ -175,6 +177,7 @@ func _refresh_inventory() -> void:
 			_inventory_status_label.text = ""
 
 	if _director == null or not _director.has_method("get_inventory_rows"):
+		_refresh_equipped_items()
 		return
 
 	for row_variant in _director.get_inventory_rows():
@@ -195,6 +198,22 @@ func _refresh_inventory() -> void:
 		item_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		item_button.pressed.connect(Callable(self, "_on_action_pressed").bind(action_id))
 		_inventory_items.add_child(item_button)
+
+	_refresh_equipped_items()
+
+
+func _refresh_equipped_items() -> void:
+	if _equipped_items == null:
+		return
+
+	_clear_children(_equipped_items)
+	if _director == null or not _director.has_method("get_equipped_rows"):
+		return
+
+	for row_text in _director.get_equipped_rows():
+		var label := Label.new()
+		label.text = String(row_text)
+		_equipped_items.add_child(label)
 
 
 func _refresh_item_sheet() -> void:
