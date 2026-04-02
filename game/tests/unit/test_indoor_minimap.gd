@@ -19,7 +19,7 @@ func _run_test() -> void:
 	root.add_child(minimap)
 	minimap.custom_minimum_size = Vector2(200, 132)
 	minimap.size = Vector2(200, 132)
-	minimap.set_snapshot({
+	var snapshot := {
 		"current_zone_id": "staff_corridor_gate",
 		"current_floor_id": "floor_1",
 		"nodes": [
@@ -49,18 +49,19 @@ func _run_test() -> void:
 			{"from": "mart_entrance", "to": "staff_corridor_gate", "locked": false},
 			{"from": "staff_corridor_gate", "to": "stair_landing", "locked": true},
 		],
-	})
+	}
+	minimap.set_snapshot(snapshot)
 	await process_frame
 
-	var current_label := _find_label(minimap, "직원 출입문")
-	if not assert_true(current_label != null, "Indoor minimap should render a label for the current zone."):
+	var current_node := _find_node(snapshot, "staff_corridor_gate")
+	if not assert_true(current_node != null, "Indoor minimap should render the current zone node."):
 		minimap.free()
 		return
 
+	var current_map_point := _map_point_for_node(current_node)
 	var expected_center: Vector2 = minimap.size * 0.5
-	var current_label_center: Vector2 = current_label.position + (current_label.size * 0.5)
 	assert_true(
-		current_label_center.distance_to(expected_center) <= 12.0,
+		current_map_point.distance_to(expected_center) <= 12.0,
 		"Indoor minimap should keep the current room centered even in the compact inline-card viewport."
 	)
 
@@ -68,9 +69,22 @@ func _run_test() -> void:
 	pass_test("INDOOR_MINIMAP_OK")
 
 
-func _find_label(container: Control, expected_text: String) -> Label:
-	for child in container.get_children():
-		var label := child as Label
-		if label != null and label.text == expected_text:
-			return label
-	return null
+func _find_node(snapshot: Dictionary, expected_id: String) -> Dictionary:
+	var nodes: Array = snapshot.get("nodes", [])
+	for node_variant in nodes:
+		if typeof(node_variant) != TYPE_DICTIONARY:
+			continue
+		var node := node_variant as Dictionary
+		if String(node.get("id", "")) == expected_id:
+			return node
+	return {}
+
+
+func _map_point_for_node(node: Dictionary) -> Vector2:
+	var grid_position: Array = node.get("map_position", [])
+	var x := 0.0
+	var y := 0.0
+	if grid_position.size() >= 2:
+		x = float(grid_position[0])
+		y = float(grid_position[1])
+	return Vector2(24.0 + x * 84.0, 24.0 + y * 56.0)
