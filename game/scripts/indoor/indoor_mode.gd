@@ -18,10 +18,10 @@ const ACTION_ICON_PATHS := {
 	"exit": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/home.png",
 }
 const SURVIVAL_CHIP_ICON_PATHS := {
-	"hunger": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/warning.png",
-	"thirst": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/information.png",
-	"health": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/cross.png",
-	"fatigue": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/star.png",
+	"hunger": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/question.png",
+	"thirst": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/basket.png",
+	"health": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/home.png",
+	"fatigue": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/locked.png",
 }
 
 var _director: Node = null
