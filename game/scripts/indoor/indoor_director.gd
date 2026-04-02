@@ -3,13 +3,6 @@ extends Node
 signal state_changed
 
 const ACTION_RESOLVER_SCRIPT := preload("res://scripts/indoor/indoor_action_resolver.gd")
-const SURVIVAL_CHIP_ICON_PATHS := {
-	"hunger": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/question.png",
-	"thirst": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/basket.png",
-	"health": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/home.png",
-	"fatigue": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/locked.png",
-}
-
 var _resolver := ACTION_RESOLVER_SCRIPT.new()
 var _run_state = null
 var _building_data: Dictionary = {}
@@ -110,7 +103,9 @@ func get_survival_chip_rows() -> Array[Dictionary]:
 			_run_state.get_hunger_stage(),
 			float(_run_state.hunger),
 			"0이 되면 체력이 계속 감소한다",
-			"음식으로 회복"
+			"음식으로 회복",
+			"hunger",
+			"%s / %s · %s" % [str(_run_state.hunger), str(_run_state.MAX_SURVIVAL_VALUE), _run_state.get_hunger_stage()]
 		),
 		_create_survival_chip_row(
 			"thirst",
@@ -118,7 +113,9 @@ func get_survival_chip_rows() -> Array[Dictionary]:
 			_run_state.get_thirst_stage(),
 			float(_run_state.thirst),
 			"허기보다 더 빠르게 바닥난다",
-			"물과 음료로 회복"
+			"물과 음료로 회복",
+			"thirst",
+			"%s / %s · %s" % [str(_run_state.thirst), str(_run_state.MAX_SURVIVAL_VALUE), _run_state.get_thirst_stage()]
 		),
 		_create_survival_chip_row(
 			"health",
@@ -126,7 +123,9 @@ func get_survival_chip_rows() -> Array[Dictionary]:
 			_run_state.get_health_stage(),
 			float(_run_state.health),
 			"부상과 위기로 줄어든다",
-			"의약품으로 회복"
+			"의약품으로 회복",
+			"health",
+			"%s / %s · %s" % [str(_run_state.health), str(_run_state.MAX_SURVIVAL_VALUE), _run_state.get_health_stage()]
 		),
 		_create_survival_chip_row(
 			"fatigue",
@@ -134,7 +133,9 @@ func get_survival_chip_rows() -> Array[Dictionary]:
 			_run_state.get_fatigue_stage(),
 			float(_run_state.fatigue),
 			"시간과 행동으로 쌓인다",
-			"휴식과 취침으로 회복"
+			"휴식과 취침으로 회복",
+			"fatigue",
+			"%s · %s" % [str(_run_state.fatigue), _run_state.get_fatigue_stage()]
 		),
 	]
 
@@ -153,7 +154,9 @@ func _create_survival_chip_row(
 	stage: String,
 	value: float,
 	rule_text: String,
-	recovery_text: String
+	recovery_text: String,
+	icon_id: String,
+	detail_value_text: String
 ) -> Dictionary:
 	return {
 		"id": chip_id,
@@ -161,12 +164,8 @@ func _create_survival_chip_row(
 		"stage": stage,
 		"value": value,
 		"display_value_text": stage,
-		"detail_value_text": "%d / %d · %s" % [
-			int(round(value)),
-			int(_run_state.MAX_SURVIVAL_VALUE),
-			stage,
-		],
-		"icon_path": String(SURVIVAL_CHIP_ICON_PATHS.get(chip_id, "")),
+		"detail_value_text": detail_value_text,
+		"icon_id": icon_id,
 		"rule_text": rule_text,
 		"recovery_text": recovery_text,
 	}

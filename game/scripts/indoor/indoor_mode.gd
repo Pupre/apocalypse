@@ -17,6 +17,12 @@ const ACTION_ICON_PATHS := {
 	"locked": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/locked.png",
 	"exit": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/home.png",
 }
+const SURVIVAL_CHIP_ICON_PATHS := {
+	"hunger": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/question.png",
+	"thirst": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/basket.png",
+	"health": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/home.png",
+	"fatigue": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/locked.png",
+}
 
 var _director: Node = null
 var _title_label: Label = null
@@ -158,7 +164,7 @@ func _refresh_stat_chips() -> void:
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.name = chip_id
-		button.icon = _load_icon(String(chip.get("icon_path", "")))
+		button.icon = _load_icon(String(SURVIVAL_CHIP_ICON_PATHS.get(String(chip.get("icon_id", "")), "")))
 		button.text = String(chip.get("display_value_text", chip.get("stage", "")))
 		button.tooltip_text = "%s: %s" % [String(chip.get("label", "")), String(chip.get("stage", ""))]
 		button.pressed.connect(Callable(self, "_on_stat_chip_pressed").bind(chip_id))
@@ -496,6 +502,11 @@ func _on_action_pressed(action_id: String) -> void:
 
 
 func _on_stat_chip_pressed(chip_id: String) -> void:
+	if _bag_sheet != null and _bag_sheet.visible:
+		_close_bag_sheet()
+	if _minimap_overlay != null and _minimap_overlay.visible:
+		_minimap_overlay.visible = false
+		_clear_stat_detail_selection()
 	_selected_chip_id = chip_id
 	_refresh_stat_detail_sheet()
 

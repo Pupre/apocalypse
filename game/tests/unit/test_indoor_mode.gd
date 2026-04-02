@@ -156,6 +156,7 @@ func _run_test() -> void:
 		if not assert_true(chip != null, "Indoor mode should name each survival chip after its stat id."):
 			indoor_mode.free()
 			return
+		assert_true(String(chip_row.get("icon_id", "")).is_empty() == false, "Indoor mode should expose an icon_id for each survival chip.")
 		assert_eq(
 			chip.text,
 			String(chip_row.get("display_value_text", "")),
@@ -225,13 +226,18 @@ func _run_test() -> void:
 	await process_frame
 	assert_true(bag_sheet.visible, "Indoor mode should open the bag sheet from the top bar.")
 	assert_true(not stat_detail_sheet.visible, "Opening the bag should close the stat detail sheet.")
-	bag_button.emit_signal("pressed")
-	await process_frame
-	assert_true(not bag_sheet.visible, "Indoor mode should close the bag sheet when the button is pressed again.")
-	assert_true(not stat_detail_sheet.visible, "Closing the bag should keep the stat detail sheet cleared.")
 
 	target_chip_button = _find_descendant_by_name_and_type(stat_chip_row, "health", "Button") as Button
 	if not assert_true(target_chip_button != null, "Indoor mode should keep the health chip button available after closing the bag."):
+		indoor_mode.free()
+		return
+	target_chip_button.emit_signal("pressed")
+	await process_frame
+	assert_true(not bag_sheet.visible, "Pressing a stat chip while the bag is open should close the bag sheet.")
+	assert_true(stat_detail_sheet.visible, "Pressing a stat chip while the bag is open should reopen the stat detail sheet.")
+
+	target_chip_button = _find_descendant_by_name_and_type(stat_chip_row, "health", "Button") as Button
+	if not assert_true(target_chip_button != null, "Indoor mode should keep the health chip button available after reopening the detail sheet."):
 		indoor_mode.free()
 		return
 	target_chip_button.emit_signal("pressed")
