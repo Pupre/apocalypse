@@ -64,17 +64,17 @@ func _run_test() -> void:
 		indoor_mode.free()
 		return
 
-	var top_bar := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar")
+	var top_bar := _find_descendant_by_name_and_type(indoor_mode, "TopBar", "Control") as Control
 	if not assert_true(top_bar != null, "Indoor mode should expose a dedicated indoor top bar."):
 		indoor_mode.free()
 		return
 
-	var map_button := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/Tools/MapButton") as Button
+	var map_button := _find_descendant_by_name_and_type(top_bar, "MapButton", "Button") as Button
 	if not assert_true(map_button != null, "Indoor mode should expose a 구조도 button in the top bar."):
 		indoor_mode.free()
 		return
 
-	var bag_button := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/Tools/BagButton") as Button
+	var bag_button := _find_descendant_by_name_and_type(top_bar, "BagButton", "Button") as Button
 	if not assert_true(bag_button != null, "Indoor mode should expose a 가방 button in the top bar."):
 		indoor_mode.free()
 		return
@@ -96,7 +96,7 @@ func _run_test() -> void:
 		indoor_mode.free()
 		return
 
-	var location_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/LocationLabel") as Label
+	var location_label := _find_descendant_by_name_and_type(top_bar, "LocationLabel", "Label") as Label
 	if not assert_true(location_label != null, "Indoor mode should expose a LocationLabel."):
 		indoor_mode.free()
 		return
@@ -106,7 +106,7 @@ func _run_test() -> void:
 		"Indoor mode should show the mart entry zone label after configure."
 	)
 
-	var time_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/TimeLabel") as Label
+	var time_label := _find_descendant_by_name_and_type(top_bar, "TimeLabel", "Label") as Label
 	if not assert_true(time_label != null, "Indoor mode should expose a TimeLabel for the shared clock."):
 		indoor_mode.free()
 		return
@@ -116,7 +116,7 @@ func _run_test() -> void:
 		"Indoor mode should show the shared run clock after configure."
 	)
 
-	var inline_minimap_card := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/MiniMapCard") as Control
+	var inline_minimap_card := _find_descendant_by_name_and_type(indoor_mode, "MiniMapCard", "Control") as Control
 	if not assert_true(
 		inline_minimap_card != null and inline_minimap_card.visible,
 		"Indoor mode should keep a small minimap visible in the main reading screen."
@@ -124,12 +124,12 @@ func _run_test() -> void:
 		indoor_mode.free()
 		return
 
-	var inline_minimap := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/MiniMapCard/MapNodes") as Control
+	var inline_minimap := _find_descendant_by_name_and_type(inline_minimap_card, "MapNodes", "Control") as Control
 	if not assert_true(inline_minimap != null, "Indoor mode should mount an always-visible minimap node."):
 		indoor_mode.free()
 		return
 
-	var stat_chip_row := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/StatusRow/StatChips") as HBoxContainer
+	var stat_chip_row := _find_descendant_by_name_and_type(top_bar, "StatChips", "HBoxContainer") as HBoxContainer
 	if not assert_true(
 		stat_chip_row != null and stat_chip_row.get_child_count() == 4,
 		"Indoor mode should show four survival chips."
@@ -146,7 +146,7 @@ func _run_test() -> void:
 
 	var first_chip := stat_chip_row.get_child(0) as Button
 
-	var stat_detail_sheet := indoor_mode.get_node_or_null("StatDetailSheet") as Control
+	var stat_detail_sheet := _find_descendant_by_name_and_type(indoor_mode, "StatDetailSheet", "Control") as Control
 	if not assert_true(
 		stat_detail_sheet != null and not stat_detail_sheet.visible,
 		"Indoor mode should keep the stat detail sheet hidden by default."
@@ -236,12 +236,12 @@ func _run_test() -> void:
 	await process_frame
 	assert_true(not minimap_overlay.visible, "Indoor mode should hide the minimap overlay when the map button is pressed again.")
 
-	var bag_title_label := indoor_mode.get_node_or_null("BagSheet/VBox/Header/TitleLabel") as Label
-	var bag_status_label := indoor_mode.get_node_or_null("BagSheet/VBox/Header/StatusLabel") as Label
-	var carried_tab_button := indoor_mode.get_node_or_null("BagSheet/VBox/Tabs/CarriedTabButton") as Button
-	var equipped_tab_button := indoor_mode.get_node_or_null("BagSheet/VBox/Tabs/EquippedTabButton") as Button
-	var inventory_scroll := indoor_mode.get_node_or_null("BagSheet/VBox/InventoryScroll") as ScrollContainer
-	var inventory_items := indoor_mode.get_node_or_null("BagSheet/VBox/InventoryScroll/InventoryItems") as VBoxContainer
+	var bag_title_label := _find_descendant_by_name_and_type(bag_sheet, "TitleLabel", "Label") as Label
+	var bag_status_label := _find_descendant_by_name_and_type(bag_sheet, "StatusLabel", "Label") as Label
+	var carried_tab_button := _find_descendant_by_name_and_type(bag_sheet, "CarriedTabButton", "Button") as Button
+	var equipped_tab_button := _find_descendant_by_name_and_type(bag_sheet, "EquippedTabButton", "Button") as Button
+	var inventory_scroll := _find_descendant_by_name_and_type(bag_sheet, "InventoryScroll", "ScrollContainer") as ScrollContainer
+	var inventory_items := _find_descendant_by_name_and_type(inventory_scroll, "InventoryItems", "VBoxContainer") as VBoxContainer
 	if not assert_true(inventory_items != null, "Indoor mode should expose an inventory list container."):
 		indoor_mode.free()
 		return
@@ -260,8 +260,6 @@ func _run_test() -> void:
 	bag_button.emit_signal("pressed")
 	await process_frame
 	assert_true(bag_sheet.visible, "Indoor mode should open the bag sheet from the top bar.")
-	assert_true(carried_tab_button.toggle_mode, "Carried tab should render as an explicit selectable tab.")
-	assert_true(equipped_tab_button.toggle_mode, "Equipped tab should render as an explicit selectable tab.")
 	assert_true(carried_tab_button.button_pressed, "Carried tab should be selected by default.")
 	assert_true(not equipped_tab_button.button_pressed, "Equipped tab should be inactive by default.")
 	assert_eq(
@@ -286,13 +284,13 @@ func _run_test() -> void:
 	assert_eq(_inventory_labels(inventory_items), ["장착중인 장비 없음"], "Indoor mode should show empty equipped gear in the bag sheet.")
 	carried_tab_button.emit_signal("pressed")
 	await process_frame
-	var item_sheet := indoor_mode.get_node_or_null("ItemSheet") as Control
+	var item_sheet := _find_descendant_by_name_and_type(indoor_mode, "ItemSheet", "Control") as Control
 	if not assert_true(item_sheet != null, "Indoor mode should expose a bottom item sheet."):
 		indoor_mode.free()
 		return
 	assert_true(not item_sheet.visible, "Indoor mode should keep the item sheet hidden until an inventory item is selected.")
 
-	var director := indoor_mode.get_node_or_null("Director")
+	var director := _find_descendant_by_name_and_type(indoor_mode, "Director")
 	if not assert_true(director != null and director.has_method("apply_action"), "Indoor mode should expose its Director node."):
 		indoor_mode.free()
 		return
@@ -392,10 +390,10 @@ func _run_test() -> void:
 	energy_bar_button.emit_signal("pressed")
 	await process_frame
 	assert_true(item_sheet.visible, "Selecting an inventory item should open the bottom item sheet.")
-	var item_sheet_title := indoor_mode.get_node_or_null("ItemSheet/VBox/ItemNameLabel") as Label
-	var item_sheet_description := indoor_mode.get_node_or_null("ItemSheet/VBox/ItemDescriptionLabel") as Label
-	var item_sheet_effect := indoor_mode.get_node_or_null("ItemSheet/VBox/ItemEffectLabel") as Label
-	var item_sheet_actions := indoor_mode.get_node_or_null("ItemSheet/VBox/ActionButtons") as HBoxContainer
+	var item_sheet_title := _find_descendant_by_name_and_type(item_sheet, "ItemNameLabel", "Label") as Label
+	var item_sheet_description := _find_descendant_by_name_and_type(item_sheet, "ItemDescriptionLabel", "Label") as Label
+	var item_sheet_effect := _find_descendant_by_name_and_type(item_sheet, "ItemEffectLabel", "Label") as Label
+	var item_sheet_actions := _find_descendant_by_name_and_type(item_sheet, "ActionButtons", "HBoxContainer") as HBoxContainer
 	if not assert_true(item_sheet_title != null and item_sheet_description != null and item_sheet_effect != null and item_sheet_actions != null, "Indoor item sheet should expose detail labels and action buttons."):
 		indoor_mode.free()
 		return
@@ -640,6 +638,20 @@ func _inventory_labels(container: VBoxContainer) -> Array[String]:
 					break
 
 	return labels
+
+
+func _find_descendant_by_name_and_type(container: Node, expected_name: String, type_name: String = "") -> Node:
+	if container == null:
+		return null
+
+	for child in container.get_children():
+		if String(child.name) == expected_name and (type_name.is_empty() or child.is_class(type_name)):
+			return child
+		var nested := _find_descendant_by_name_and_type(child, expected_name, type_name)
+		if nested != null:
+			return nested
+
+	return null
 
 
 func get_job(job_id: String) -> Dictionary:

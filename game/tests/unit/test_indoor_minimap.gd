@@ -57,8 +57,10 @@ func _run_test() -> void:
 		minimap.free()
 		return
 
+	var expected_center: Vector2 = minimap.size * 0.5
+	var current_label_center: Vector2 = current_label.position + (current_label.size * 0.5)
 	assert_true(
-		absf((current_label.position.x + current_label.size.x * 0.5) - 100.0) <= 12.0 and absf((current_label.position.y + current_label.size.y * 0.5) - 66.0) <= 12.0,
+		current_label_center.distance_to(expected_center) <= 12.0,
 		"Indoor minimap should keep the current room centered even in the compact inline-card viewport."
 	)
 
