@@ -54,11 +54,11 @@ func _run_test() -> void:
 	await process_frame
 
 	var current_node := _find_node(snapshot, "staff_corridor_gate")
-	if not assert_true(current_node != null, "Indoor minimap should render the current zone node."):
+	if not assert_true(not current_node.is_empty(), "Indoor minimap should render the current zone node."):
 		minimap.free()
 		return
 
-	var current_map_point := _map_point_for_node(current_node)
+	var current_map_point: Vector2 = minimap._raw_point_for_node(current_node)
 	var expected_center: Vector2 = minimap.size * 0.5
 	assert_true(
 		current_map_point.distance_to(expected_center) <= 12.0,
@@ -79,12 +79,3 @@ func _find_node(snapshot: Dictionary, expected_id: String) -> Dictionary:
 			return node
 	return {}
 
-
-func _map_point_for_node(node: Dictionary) -> Vector2:
-	var grid_position: Array = node.get("map_position", [])
-	var x := 0.0
-	var y := 0.0
-	if grid_position.size() >= 2:
-		x = float(grid_position[0])
-		y = float(grid_position[1])
-	return Vector2(24.0 + x * 84.0, 24.0 + y * 56.0)
