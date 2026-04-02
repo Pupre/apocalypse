@@ -93,6 +93,18 @@ func get_clock_label() -> String:
 	return String(_run_state.clock.get_clock_label())
 
 
+func get_survival_chip_rows() -> Array[Dictionary]:
+	if _run_state == null:
+		return []
+
+	return [
+		{"id": "hunger", "label": "허기", "value": _run_state.get_hunger_stage()},
+		{"id": "thirst", "label": "갈증", "value": _run_state.get_thirst_stage()},
+		{"id": "health", "label": "체력", "value": _run_state.get_health_stage()},
+		{"id": "fatigue", "label": "피로", "value": _run_state.get_fatigue_stage()},
+	]
+
+
 func get_sleep_preview() -> Dictionary:
 	return _resolver.get_sleep_preview(_run_state)
 

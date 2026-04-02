@@ -14,7 +14,7 @@ script = ExtResource("1")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.08, 0.08, 0.08, 0.92)
+color = Color(0.08, 0.08, 0.08, 0.94)
 
 [node name="Director" type="Node" parent="."]
 script = ExtResource("2")
@@ -23,94 +23,142 @@ script = ExtResource("2")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 64.0
-offset_top = 48.0
-offset_right = -64.0
-offset_bottom = -48.0
+offset_left = 48.0
+offset_top = 36.0
+offset_right = -48.0
+offset_bottom = -36.0
 
-[node name="Layout" type="HBoxContainer" parent="Panel"]
-theme_override_constants/separation = 10
-
-[node name="MainColumn" type="VBoxContainer" parent="Panel/Layout"]
-size_flags_horizontal = 3
-theme_override_constants/separation = 10
-
-[node name="Header" type="HBoxContainer" parent="Panel/Layout/MainColumn"]
+[node name="Layout" type="VBoxContainer" parent="Panel"]
 theme_override_constants/separation = 12
 
-[node name="TitleLabel" type="Label" parent="Panel/Layout/MainColumn/Header"]
-size_flags_horizontal = 3
+[node name="MainColumn" type="VBoxContainer" parent="Panel/Layout"]
+theme_override_constants/separation = 12
+
+[node name="TopBar" type="HBoxContainer" parent="Panel/Layout/MainColumn"]
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="Panel/Layout/MainColumn/TopBar"]
+size_flags_horizontal = 1
 text = "실내"
 
-[node name="LocationLabel" type="Label" parent="Panel/Layout/MainColumn/Header"]
+[node name="LocationLabel" type="Label" parent="Panel/Layout/MainColumn/TopBar"]
 size_flags_horizontal = 3
 text = "위치: 확인 중"
 
-[node name="TimeLabel" type="Label" parent="Panel/Layout/MainColumn/Header"]
-size_flags_horizontal = 3
-horizontal_alignment = 2
+[node name="TimeLabel" type="Label" parent="Panel/Layout/MainColumn/TopBar"]
+size_flags_horizontal = 1
 text = "시각: 확인 중"
 
-[node name="SummaryLabel" type="Label" parent="Panel/Layout/MainColumn"]
-text = "방 안을 살펴 단서를 찾아본다."
-autowrap_mode = 3
+[node name="StatChips" type="HBoxContainer" parent="Panel/Layout/MainColumn/TopBar"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
 
-[node name="ResultLabel" type="Label" parent="Panel/Layout/MainColumn"]
-text = ""
+[node name="Tools" type="HBoxContainer" parent="Panel/Layout/MainColumn/TopBar"]
+theme_override_constants/separation = 8
+
+[node name="MapButton" type="Button" parent="Panel/Layout/MainColumn/TopBar/Tools"]
+text = "구조도"
+
+[node name="BagButton" type="Button" parent="Panel/Layout/MainColumn/TopBar/Tools"]
+text = "가방"
+
+[node name="ReadingCard" type="PanelContainer" parent="Panel/Layout/MainColumn"]
+size_flags_vertical = 3
+
+[node name="VBox" type="VBoxContainer" parent="Panel/Layout/MainColumn/ReadingCard"]
+theme_override_constants/separation = 10
+
+[node name="SummaryLabel" type="Label" parent="Panel/Layout/MainColumn/ReadingCard/VBox"]
 autowrap_mode = 3
+text = "방 안을 살펴 단서를 찾아본다."
+
+[node name="ResultLabel" type="Label" parent="Panel/Layout/MainColumn/ReadingCard/VBox"]
+autowrap_mode = 3
+text = ""
 
 [node name="ActionHeadingLabel" type="Label" parent="Panel/Layout/MainColumn"]
 text = "행동"
 
 [node name="ActionButtons" type="VBoxContainer" parent="Panel/Layout/MainColumn"]
-theme_override_constants/separation = 12
-
-[node name="Sidebar" type="VBoxContainer" parent="Panel/Layout"]
-custom_minimum_size = Vector2(320, 0)
-theme_override_constants/separation = 12
-
-[node name="MinimapPanel" type="PanelContainer" parent="Panel/Layout/Sidebar"]
 size_flags_vertical = 3
+theme_override_constants/separation = 12
 
-[node name="VBox" type="VBoxContainer" parent="Panel/Layout/Sidebar/MinimapPanel"]
+[node name="MinimapOverlay" type="PanelContainer" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -180.0
+offset_right = 260.0
+offset_bottom = 180.0
+
+[node name="VBox" type="VBoxContainer" parent="MinimapOverlay"]
 theme_override_constants/separation = 8
 
-[node name="TitleLabel" type="Label" parent="Panel/Layout/Sidebar/MinimapPanel/VBox"]
+[node name="Header" type="HBoxContainer" parent="MinimapOverlay/VBox"]
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="MinimapOverlay/VBox/Header"]
+size_flags_horizontal = 3
 text = "구조도"
 
-[node name="MapNodes" type="Control" parent="Panel/Layout/Sidebar/MinimapPanel/VBox"]
-custom_minimum_size = Vector2(280, 220)
+[node name="CloseButton" type="Button" parent="MinimapOverlay/VBox/Header"]
+text = "닫기"
+
+[node name="MapNodes" type="Control" parent="MinimapOverlay/VBox"]
+custom_minimum_size = Vector2(440, 260)
 size_flags_vertical = 3
 script = ExtResource("3")
 
-[node name="InventoryPanel" type="PanelContainer" parent="Panel/Layout/Sidebar"]
-custom_minimum_size = Vector2(0, 180)
+[node name="BagSheet" type="PanelContainer" parent="."]
+visible = false
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 72.0
+offset_top = -320.0
+offset_right = -72.0
+offset_bottom = -24.0
 
-[node name="VBox" type="VBoxContainer" parent="Panel/Layout/Sidebar/InventoryPanel"]
+[node name="VBox" type="VBoxContainer" parent="BagSheet"]
 theme_override_constants/separation = 8
 
-[node name="TitleLabel" type="Label" parent="Panel/Layout/Sidebar/InventoryPanel/VBox"]
-text = "소지품"
+[node name="Header" type="HBoxContainer" parent="BagSheet/VBox"]
+theme_override_constants/separation = 8
 
-[node name="StatusLabel" type="Label" parent="Panel/Layout/Sidebar/InventoryPanel/VBox"]
-autowrap_mode = 3
+[node name="TitleLabel" type="Label" parent="BagSheet/VBox/Header"]
+size_flags_horizontal = 1
+text = "가방"
+
+[node name="StatusLabel" type="Label" parent="BagSheet/VBox/Header"]
+size_flags_horizontal = 3
+horizontal_alignment = 2
 text = ""
 
-[node name="EquippedHeadingLabel" type="Label" parent="Panel/Layout/Sidebar/InventoryPanel/VBox"]
-text = "장착중"
+[node name="CloseButton" type="Button" parent="BagSheet/VBox/Header"]
+text = "닫기"
 
-[node name="EquippedItems" type="VBoxContainer" parent="Panel/Layout/Sidebar/InventoryPanel/VBox"]
-theme_override_constants/separation = 4
+[node name="Tabs" type="HBoxContainer" parent="BagSheet/VBox"]
+theme_override_constants/separation = 8
 
-[node name="InventoryHeadingLabel" type="Label" parent="Panel/Layout/Sidebar/InventoryPanel/VBox"]
+[node name="CarriedTabButton" type="Button" parent="BagSheet/VBox/Tabs"]
+size_flags_horizontal = 3
 text = "소지품"
 
-[node name="InventoryScroll" type="ScrollContainer" parent="Panel/Layout/Sidebar/InventoryPanel/VBox"]
-custom_minimum_size = Vector2(0, 140)
+[node name="EquippedTabButton" type="Button" parent="BagSheet/VBox/Tabs"]
+size_flags_horizontal = 3
+text = "장착중"
+
+[node name="InventoryScroll" type="ScrollContainer" parent="BagSheet/VBox"]
+custom_minimum_size = Vector2(0, 160)
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="InventoryItems" type="VBoxContainer" parent="Panel/Layout/Sidebar/InventoryPanel/VBox/InventoryScroll"]
+[node name="InventoryItems" type="VBoxContainer" parent="BagSheet/VBox/InventoryScroll"]
 theme_override_constants/separation = 6
 
 [node name="ItemSheet" type="PanelContainer" parent="."]
@@ -119,9 +167,9 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 88.0
+offset_left = 104.0
 offset_top = -220.0
-offset_right = -88.0
+offset_right = -104.0
 offset_bottom = -24.0
 
 [node name="VBox" type="VBoxContainer" parent="ItemSheet"]

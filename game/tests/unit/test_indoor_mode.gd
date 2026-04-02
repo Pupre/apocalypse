@@ -96,7 +96,7 @@ func _run_test() -> void:
 		indoor_mode.free()
 		return
 
-	var location_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/Header/LocationLabel") as Label
+	var location_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/LocationLabel") as Label
 	if not assert_true(location_label != null, "Indoor mode should expose a LocationLabel."):
 		indoor_mode.free()
 		return
@@ -106,7 +106,7 @@ func _run_test() -> void:
 		"Indoor mode should show the mart entry zone label after configure."
 	)
 
-	var time_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/Header/TimeLabel") as Label
+	var time_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/TimeLabel") as Label
 	if not assert_true(time_label != null, "Indoor mode should expose a TimeLabel for the shared clock."):
 		indoor_mode.free()
 		return
@@ -116,7 +116,7 @@ func _run_test() -> void:
 		"Indoor mode should show the shared run clock after configure."
 	)
 
-	var summary_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/SummaryLabel") as Label
+	var summary_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/SummaryLabel") as Label
 	if not assert_true(summary_label != null, "Indoor mode should expose a current-zone SummaryLabel."):
 		indoor_mode.free()
 		return
@@ -141,7 +141,7 @@ func _run_test() -> void:
 		indoor_mode.free()
 		return
 
-	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ResultLabel") as Label
+	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/ResultLabel") as Label
 	if not assert_true(result_label != null, "Indoor mode should expose a ResultLabel."):
 		indoor_mode.free()
 		return
@@ -179,43 +179,53 @@ func _run_test() -> void:
 		"Indoor mode should not expose the removed flat rest action."
 	)
 
-	var minimap_nodes := indoor_mode.get_node_or_null("Panel/Layout/Sidebar/MinimapPanel/VBox/MapNodes") as Control
+	var minimap_nodes := indoor_mode.get_node_or_null("MinimapOverlay/VBox/MapNodes") as Control
 	if not assert_true(minimap_nodes != null, "Indoor mode should expose a minimap node container."):
 		indoor_mode.free()
 		return
+	map_button.emit_signal("pressed")
+	await process_frame
+	assert_true(minimap_overlay.visible, "Indoor mode should open the minimap overlay when the top-bar map button is pressed.")
 	assert_eq(
 		_map_labels(minimap_nodes),
 		["?", "?", "정문 진입부"],
 		"Indoor mode should only reveal the current zone and directly connected unknown zones on the minimap."
 	)
+	map_button.emit_signal("pressed")
+	await process_frame
+	assert_true(not minimap_overlay.visible, "Indoor mode should hide the minimap overlay when the map button is pressed again.")
 
-	var inventory_items := indoor_mode.get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/InventoryScroll/InventoryItems") as VBoxContainer
+	var bag_title_label := indoor_mode.get_node_or_null("BagSheet/VBox/Header/TitleLabel") as Label
+	var bag_status_label := indoor_mode.get_node_or_null("BagSheet/VBox/Header/StatusLabel") as Label
+	var carried_tab_button := indoor_mode.get_node_or_null("BagSheet/VBox/Tabs/CarriedTabButton") as Button
+	var equipped_tab_button := indoor_mode.get_node_or_null("BagSheet/VBox/Tabs/EquippedTabButton") as Button
+	var inventory_scroll := indoor_mode.get_node_or_null("BagSheet/VBox/InventoryScroll") as ScrollContainer
+	var inventory_items := indoor_mode.get_node_or_null("BagSheet/VBox/InventoryScroll/InventoryItems") as VBoxContainer
 	if not assert_true(inventory_items != null, "Indoor mode should expose an inventory list container."):
 		indoor_mode.free()
 		return
-	var inventory_scroll := indoor_mode.get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/InventoryScroll") as ScrollContainer
 	if not assert_true(inventory_scroll != null, "Indoor mode should mount the inventory list inside a ScrollContainer."):
 		indoor_mode.free()
 		return
-	var inventory_title_label := indoor_mode.get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/TitleLabel") as Label
-	if not assert_true(inventory_title_label != null, "Indoor mode should expose an inventory title label."):
+	if not assert_true(bag_title_label != null, "Indoor mode should expose a bag title label."):
 		indoor_mode.free()
 		return
-	var inventory_status_label := indoor_mode.get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/StatusLabel") as Label
-	if not assert_true(inventory_status_label != null, "Indoor mode should expose an inventory status label."):
+	if not assert_true(bag_status_label != null, "Indoor mode should expose a bag status label."):
 		indoor_mode.free()
 		return
-	var equipped_items := indoor_mode.get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/EquippedItems") as VBoxContainer
-	if not assert_true(equipped_items != null, "Indoor mode should expose a mounted equipment list."):
+	if not assert_true(carried_tab_button != null and equipped_tab_button != null, "Indoor mode should expose carried/equipped bag tabs."):
 		indoor_mode.free()
 		return
+	bag_button.emit_signal("pressed")
+	await process_frame
+	assert_true(bag_sheet.visible, "Indoor mode should open the bag sheet from the top bar.")
 	assert_eq(
-		inventory_title_label.text,
+		bag_title_label.text,
 		"소지품 (0/8)",
-		"Indoor mode should show the current carry usage in the inventory title."
+		"Indoor mode should show the current carry usage in the bag title."
 	)
 	assert_eq(
-		inventory_status_label.text,
+		bag_status_label.text,
 		"여유 있음",
 		"Indoor mode should show a calm carry-state message while the player is under the limit."
 	)
@@ -224,11 +234,11 @@ func _run_test() -> void:
 		["소지품 없음"],
 		"Indoor mode should show an empty inventory placeholder before the player loots anything."
 	)
-	assert_eq(
-		_inventory_labels(equipped_items),
-		["장착중인 장비 없음"],
-		"Indoor mode should show an empty equipped-items placeholder before any equipment is worn."
-	)
+	equipped_tab_button.emit_signal("pressed")
+	await process_frame
+	assert_eq(_inventory_labels(inventory_items), ["장착중인 장비 없음"], "Indoor mode should show empty equipped gear in the bag sheet.")
+	carried_tab_button.emit_signal("pressed")
+	await process_frame
 	var item_sheet := indoor_mode.get_node_or_null("ItemSheet") as Control
 	if not assert_true(item_sheet != null, "Indoor mode should expose a bottom item sheet."):
 		indoor_mode.free()
@@ -324,7 +334,7 @@ func _run_test() -> void:
 		"Picking up discovered items should update the indoor inventory list."
 	)
 	assert_eq(
-		inventory_title_label.text,
+		bag_title_label.text,
 		"소지품 (2/8)",
 		"Indoor mode should refresh the carry usage after looting items."
 	)
@@ -358,9 +368,9 @@ func _run_test() -> void:
 		"Eating a food item should remove it from the carried inventory list."
 	)
 	assert_eq(
-		inventory_title_label.text,
+		bag_title_label.text,
 		"소지품 (1/8)",
-		"Eating an item should free carry space in the inventory title."
+		"Eating an item should free carry space in the bag title."
 	)
 	assert_true(
 		result_label.text.find("먹었다") != -1,
@@ -396,11 +406,15 @@ func _run_test() -> void:
 	assert_true(director.apply_action("inspect_inventory_small_backpack"), "Indoor mode should allow selecting the backpack for inspection.")
 	assert_true(director.apply_action("equip_inventory_small_backpack"), "Indoor mode should allow equipping the backpack from the item sheet.")
 	await process_frame
+	equipped_tab_button.emit_signal("pressed")
+	await process_frame
 	assert_eq(
-		_inventory_labels(equipped_items),
+		_inventory_labels(inventory_items),
 		["등: 작은 배낭"],
-		"Equipping an item should surface it in the equipped-items list."
+		"Equipping an item should surface it in the equipped bag tab."
 	)
+	carried_tab_button.emit_signal("pressed")
+	await process_frame
 
 	var lighter_button := _find_button_by_text(inventory_items, "라이터 x1")
 	if not assert_true(lighter_button != null, "Remaining carried items should stay selectable after eating another item."):
@@ -420,7 +434,7 @@ func _run_test() -> void:
 		"Dropping the remaining utility item should empty the inventory list."
 	)
 	assert_eq(
-		inventory_title_label.text,
+		bag_title_label.text,
 		"소지품 (0/12)",
 		"Dropping the remaining item should free all carry space."
 	)

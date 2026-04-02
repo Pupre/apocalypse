@@ -22,13 +22,21 @@ var _director: Node = null
 var _title_label: Label = null
 var _location_label: Label = null
 var _time_label: Label = null
+var _stat_chips: HBoxContainer = null
 var _summary_label: Label = null
 var _result_label: Label = null
 var _action_buttons: VBoxContainer = null
+var _map_button: Button = null
+var _bag_button: Button = null
+var _minimap_overlay: Control = null
+var _minimap_close_button: Button = null
 var _minimap: Control = null
-var _inventory_title_label: Label = null
-var _inventory_status_label: Label = null
-var _equipped_items: VBoxContainer = null
+var _bag_sheet: Control = null
+var _bag_title_label: Label = null
+var _bag_status_label: Label = null
+var _bag_close_button: Button = null
+var _carried_tab_button: Button = null
+var _equipped_tab_button: Button = null
 var _inventory_items: VBoxContainer = null
 var _item_sheet: Control = null
 var _item_sheet_title: Label = null
@@ -36,11 +44,14 @@ var _item_sheet_description: Label = null
 var _item_sheet_effect: Label = null
 var _item_sheet_actions: HBoxContainer = null
 var _director_connected := false
+var _buttons_bound := false
 var _icon_cache: Dictionary = {}
+var _active_bag_tab := "carried"
 
 
 func configure(run_state, building_id: String = "mart_01") -> void:
 	_cache_nodes()
+	_bind_ui_buttons()
 	_bind_director()
 	if _director != null and _director.has_method("configure"):
 		_director.configure(run_state, building_id)
@@ -48,6 +59,7 @@ func configure(run_state, building_id: String = "mart_01") -> void:
 
 func _ready() -> void:
 	_cache_nodes()
+	_bind_ui_buttons()
 	_bind_director()
 
 
@@ -59,6 +71,26 @@ func _bind_director() -> void:
 	_director_connected = true
 
 
+func _bind_ui_buttons() -> void:
+	if _buttons_bound:
+		return
+
+	if _map_button != null and not _map_button.pressed.is_connected(Callable(self, "_on_map_button_pressed")):
+		_map_button.pressed.connect(Callable(self, "_on_map_button_pressed"))
+	if _bag_button != null and not _bag_button.pressed.is_connected(Callable(self, "_on_bag_button_pressed")):
+		_bag_button.pressed.connect(Callable(self, "_on_bag_button_pressed"))
+	if _minimap_close_button != null and not _minimap_close_button.pressed.is_connected(Callable(self, "_on_minimap_close_pressed")):
+		_minimap_close_button.pressed.connect(Callable(self, "_on_minimap_close_pressed"))
+	if _bag_close_button != null and not _bag_close_button.pressed.is_connected(Callable(self, "_on_bag_close_pressed")):
+		_bag_close_button.pressed.connect(Callable(self, "_on_bag_close_pressed"))
+	if _carried_tab_button != null and not _carried_tab_button.pressed.is_connected(Callable(self, "_on_carried_tab_pressed")):
+		_carried_tab_button.pressed.connect(Callable(self, "_on_carried_tab_pressed"))
+	if _equipped_tab_button != null and not _equipped_tab_button.pressed.is_connected(Callable(self, "_on_equipped_tab_pressed")):
+		_equipped_tab_button.pressed.connect(Callable(self, "_on_equipped_tab_pressed"))
+
+	_buttons_bound = true
+
+
 func _on_director_state_changed() -> void:
 	_refresh_view()
 	state_changed.emit()
@@ -68,26 +100,63 @@ func _refresh_view() -> void:
 	if _director == null:
 		return
 
+	_refresh_top_bar()
+	_refresh_reading_area()
+	_refresh_action_buttons()
+	_refresh_minimap()
+	_refresh_bag_sheet()
+	_refresh_item_sheet()
+
+
+func _refresh_top_bar() -> void:
 	if _title_label != null and _director.has_method("get_event_title"):
 		_title_label.text = _director.get_event_title()
 
 	if _location_label != null:
-		_update_location_label()
+		if _director.has_method("get_current_zone_label"):
+			var zone_label := String(_director.get_current_zone_label())
+			_location_label.text = "위치: %s" % (zone_label if not zone_label.is_empty() else "확인 중")
+		else:
+			_location_label.text = "위치: 확인 중"
 
 	if _time_label != null:
-		_update_time_label()
+		if _director.has_method("get_clock_label"):
+			var clock_label := String(_director.get_clock_label())
+			_time_label.text = "시각: %s" % (clock_label if not clock_label.is_empty() else "확인 중")
+		else:
+			_time_label.text = "시각: 확인 중"
 
+	_refresh_stat_chips()
+
+
+func _refresh_stat_chips() -> void:
+	if _stat_chips == null:
+		return
+
+	_clear_children(_stat_chips)
+	if _director == null or not _director.has_method("get_survival_chip_rows"):
+		return
+
+	for chip_variant in _director.get_survival_chip_rows():
+		if typeof(chip_variant) != TYPE_DICTIONARY:
+			continue
+
+		var chip := chip_variant as Dictionary
+		var panel := PanelContainer.new()
+		panel.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		var label := Label.new()
+		label.text = "%s: %s" % [String(chip.get("label", "")), String(chip.get("value", ""))]
+		panel.add_child(label)
+		_stat_chips.add_child(panel)
+
+
+func _refresh_reading_area() -> void:
 	if _summary_label != null and _director.has_method("get_current_zone_summary"):
-		var summary: String = String(_director.get_current_zone_summary())
+		var summary := String(_director.get_current_zone_summary())
 		_summary_label.text = summary if not summary.is_empty() else "방 안을 살펴 단서를 찾아본다."
 
 	if _result_label != null and _director.has_method("get_feedback_message"):
 		_result_label.text = String(_director.get_feedback_message())
-
-	_refresh_action_buttons()
-	_refresh_minimap()
-	_refresh_inventory()
-	_refresh_item_sheet()
 
 
 func _refresh_action_buttons() -> void:
@@ -95,7 +164,7 @@ func _refresh_action_buttons() -> void:
 		return
 
 	_clear_children(_action_buttons)
-	if not _director.has_method("get_actions"):
+	if _director == null or not _director.has_method("get_actions"):
 		return
 
 	var grouped_actions := _group_actions(_director.get_actions())
@@ -104,10 +173,17 @@ func _refresh_action_buttons() -> void:
 		if actions.is_empty():
 			continue
 
-		_action_buttons.add_child(_create_action_section_heading(String(ACTION_SECTION_TITLES.get(section_id, section_id))))
+		var section_panel := PanelContainer.new()
+		_action_buttons.add_child(section_panel)
+
 		var section_box := VBoxContainer.new()
 		section_box.add_theme_constant_override("separation", 6)
-		_action_buttons.add_child(section_box)
+		section_panel.add_child(section_box)
+
+		var heading := Label.new()
+		heading.text = String(ACTION_SECTION_TITLES.get(section_id, section_id))
+		heading.modulate = Color(0.88, 0.88, 0.88, 0.95)
+		section_box.add_child(heading)
 
 		for action in actions:
 			var action_id := String(action.get("id", ""))
@@ -151,22 +227,14 @@ func _section_for_action(action: Dictionary) -> String:
 	return "interaction"
 
 
-func _create_action_section_heading(text: String) -> Label:
-	var label := Label.new()
-	label.text = text
-	label.modulate = Color(0.86, 0.86, 0.86, 0.95)
-	return label
-
-
 func _create_action_button(action: Dictionary, section_id: String) -> Button:
 	var action_id := String(action.get("id", ""))
 	var button := Button.new()
 	button.text = String(action.get("label", action_id))
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	button.custom_minimum_size = Vector2(0, 40)
+	button.custom_minimum_size = Vector2(0, 46)
 	button.icon = _action_icon(action, section_id)
 	button.expand_icon = true
-	button.flat = false
 
 	match section_id:
 		"loot":
@@ -208,65 +276,6 @@ func _load_icon(path: String) -> Texture2D:
 	return texture
 
 
-func _on_action_pressed(action_id: String) -> void:
-	if action_id == "exit_building":
-		exit_requested.emit()
-		return
-
-	if _director != null and _director.has_method("apply_action"):
-		_director.apply_action(action_id)
-
-
-func _cache_nodes() -> void:
-	_director = get_node_or_null("Director")
-	_title_label = get_node_or_null("Panel/Layout/MainColumn/Header/TitleLabel") as Label
-	_location_label = get_node_or_null("Panel/Layout/MainColumn/Header/LocationLabel") as Label
-	_time_label = get_node_or_null("Panel/Layout/MainColumn/Header/TimeLabel") as Label
-	_summary_label = get_node_or_null("Panel/Layout/MainColumn/SummaryLabel") as Label
-	_result_label = get_node_or_null("Panel/Layout/MainColumn/ResultLabel") as Label
-	_action_buttons = get_node_or_null("Panel/Layout/MainColumn/ActionButtons") as VBoxContainer
-	_minimap = get_node_or_null("Panel/Layout/Sidebar/MinimapPanel/VBox/MapNodes") as Control
-	_inventory_title_label = get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/TitleLabel") as Label
-	_inventory_status_label = get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/StatusLabel") as Label
-	_equipped_items = get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/EquippedItems") as VBoxContainer
-	_inventory_items = get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/InventoryScroll/InventoryItems") as VBoxContainer
-	_item_sheet = get_node_or_null("ItemSheet") as Control
-	_item_sheet_title = get_node_or_null("ItemSheet/VBox/ItemNameLabel") as Label
-	_item_sheet_description = get_node_or_null("ItemSheet/VBox/ItemDescriptionLabel") as Label
-	_item_sheet_effect = get_node_or_null("ItemSheet/VBox/ItemEffectLabel") as Label
-	_item_sheet_actions = get_node_or_null("ItemSheet/VBox/ActionButtons") as HBoxContainer
-
-
-func _clear_children(container: Node) -> void:
-	for child in container.get_children():
-		container.remove_child(child)
-		child.queue_free()
-
-
-func _update_location_label() -> void:
-	if _location_label == null:
-		return
-
-	if _director == null or not _director.has_method("get_current_zone_label"):
-		_location_label.text = "위치: 확인 중"
-		return
-
-	var zone_label := String(_director.get_current_zone_label())
-	_location_label.text = "위치: %s" % (zone_label if not zone_label.is_empty() else "확인 중")
-
-
-func _update_time_label() -> void:
-	if _time_label == null:
-		return
-
-	if _director == null or not _director.has_method("get_clock_label"):
-		_time_label.text = "시각: 확인 중"
-		return
-
-	var clock_label := String(_director.get_clock_label())
-	_time_label.text = "시각: %s" % (clock_label if not clock_label.is_empty() else "확인 중")
-
-
 func _refresh_minimap() -> void:
 	if _minimap == null or _director == null or not _director.has_method("get_map_snapshot"):
 		return
@@ -275,24 +284,40 @@ func _refresh_minimap() -> void:
 		_minimap.set_snapshot(_director.get_map_snapshot())
 
 
-func _refresh_inventory() -> void:
+func _refresh_bag_sheet() -> void:
+	if _bag_title_label != null:
+		if _director != null and _director.has_method("get_inventory_title"):
+			_bag_title_label.text = String(_director.get_inventory_title())
+		else:
+			_bag_title_label.text = "가방"
+
+	if _bag_status_label != null:
+		if _director != null and _director.has_method("get_inventory_status_text"):
+			_bag_status_label.text = String(_director.get_inventory_status_text())
+		else:
+			_bag_status_label.text = ""
+
+	if _carried_tab_button != null:
+		_carried_tab_button.disabled = _active_bag_tab == "carried"
+	if _equipped_tab_button != null:
+		_equipped_tab_button.disabled = _active_bag_tab == "equipped"
+
 	if _inventory_items == null:
 		return
 
 	_clear_children(_inventory_items)
-	if _inventory_title_label != null:
-		if _director != null and _director.has_method("get_inventory_title"):
-			_inventory_title_label.text = String(_director.get_inventory_title())
-		else:
-			_inventory_title_label.text = "소지품"
-	if _inventory_status_label != null:
-		if _director != null and _director.has_method("get_inventory_status_text"):
-			_inventory_status_label.text = String(_director.get_inventory_status_text())
-		else:
-			_inventory_status_label.text = ""
+	if _director == null:
+		return
 
-	if _director == null or not _director.has_method("get_inventory_rows"):
-		_refresh_equipped_items()
+	if _active_bag_tab == "equipped":
+		if _director.has_method("get_equipped_rows"):
+			for row_text in _director.get_equipped_rows():
+				var label := Label.new()
+				label.text = String(row_text)
+				_inventory_items.add_child(label)
+		return
+
+	if not _director.has_method("get_inventory_rows"):
 		return
 
 	for row_variant in _director.get_inventory_rows():
@@ -314,25 +339,13 @@ func _refresh_inventory() -> void:
 		item_button.pressed.connect(Callable(self, "_on_action_pressed").bind(action_id))
 		_inventory_items.add_child(item_button)
 
-	_refresh_equipped_items()
-
-
-func _refresh_equipped_items() -> void:
-	if _equipped_items == null:
-		return
-
-	_clear_children(_equipped_items)
-	if _director == null or not _director.has_method("get_equipped_rows"):
-		return
-
-	for row_text in _director.get_equipped_rows():
-		var label := Label.new()
-		label.text = String(row_text)
-		_equipped_items.add_child(label)
-
 
 func _refresh_item_sheet() -> void:
 	if _item_sheet == null:
+		return
+
+	if _bag_sheet == null or not _bag_sheet.visible:
+		_item_sheet.visible = false
 		return
 
 	if _director == null or not _director.has_method("get_selected_inventory_sheet"):
@@ -367,3 +380,102 @@ func _refresh_item_sheet() -> void:
 			button.text = String(action.get("label", action_id))
 			button.pressed.connect(Callable(self, "_on_action_pressed").bind(action_id))
 			_item_sheet_actions.add_child(button)
+
+
+func _on_map_button_pressed() -> void:
+	if _minimap_overlay == null:
+		return
+	_minimap_overlay.visible = not _minimap_overlay.visible
+	if _minimap_overlay.visible:
+		_close_bag_sheet()
+
+
+func _on_bag_button_pressed() -> void:
+	if _bag_sheet == null:
+		return
+	_bag_sheet.visible = not _bag_sheet.visible
+	if _bag_sheet.visible:
+		if _minimap_overlay != null:
+			_minimap_overlay.visible = false
+	else:
+		_close_item_sheet_selection()
+	_refresh_bag_sheet()
+	_refresh_item_sheet()
+
+
+func _on_minimap_close_pressed() -> void:
+	if _minimap_overlay != null:
+		_minimap_overlay.visible = false
+
+
+func _on_bag_close_pressed() -> void:
+	_close_bag_sheet()
+
+
+func _on_carried_tab_pressed() -> void:
+	_active_bag_tab = "carried"
+	_close_item_sheet_selection()
+	_refresh_bag_sheet()
+
+
+func _on_equipped_tab_pressed() -> void:
+	_active_bag_tab = "equipped"
+	_close_item_sheet_selection()
+	_refresh_bag_sheet()
+
+
+func _close_bag_sheet() -> void:
+	if _bag_sheet != null:
+		_bag_sheet.visible = false
+	_close_item_sheet_selection()
+	_refresh_item_sheet()
+
+
+func _close_item_sheet_selection() -> void:
+	if _director != null and _director.has_method("apply_action"):
+		_director.apply_action("close_inventory_sheet")
+	elif _item_sheet != null:
+		_item_sheet.visible = false
+
+
+func _on_action_pressed(action_id: String) -> void:
+	if action_id == "exit_building":
+		exit_requested.emit()
+		return
+
+	if _director != null and _director.has_method("apply_action"):
+		_director.apply_action(action_id)
+
+
+func _cache_nodes() -> void:
+	_director = get_node_or_null("Director")
+	_title_label = get_node_or_null("Panel/Layout/MainColumn/TopBar/TitleLabel") as Label
+	_location_label = get_node_or_null("Panel/Layout/MainColumn/TopBar/LocationLabel") as Label
+	_time_label = get_node_or_null("Panel/Layout/MainColumn/TopBar/TimeLabel") as Label
+	_stat_chips = get_node_or_null("Panel/Layout/MainColumn/TopBar/StatChips") as HBoxContainer
+	_summary_label = get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/SummaryLabel") as Label
+	_result_label = get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/ResultLabel") as Label
+	_action_buttons = get_node_or_null("Panel/Layout/MainColumn/ActionButtons") as VBoxContainer
+	_map_button = get_node_or_null("Panel/Layout/MainColumn/TopBar/Tools/MapButton") as Button
+	_bag_button = get_node_or_null("Panel/Layout/MainColumn/TopBar/Tools/BagButton") as Button
+	_minimap_overlay = get_node_or_null("MinimapOverlay") as Control
+	_minimap_close_button = get_node_or_null("MinimapOverlay/VBox/Header/CloseButton") as Button
+	_minimap = get_node_or_null("MinimapOverlay/VBox/MapNodes") as Control
+	_bag_sheet = get_node_or_null("BagSheet") as Control
+	_bag_title_label = get_node_or_null("BagSheet/VBox/Header/TitleLabel") as Label
+	_bag_status_label = get_node_or_null("BagSheet/VBox/Header/StatusLabel") as Label
+	_bag_close_button = get_node_or_null("BagSheet/VBox/Header/CloseButton") as Button
+	_carried_tab_button = get_node_or_null("BagSheet/VBox/Tabs/CarriedTabButton") as Button
+	_equipped_tab_button = get_node_or_null("BagSheet/VBox/Tabs/EquippedTabButton") as Button
+	_inventory_items = get_node_or_null("BagSheet/VBox/InventoryScroll/InventoryItems") as VBoxContainer
+	_item_sheet = get_node_or_null("ItemSheet") as Control
+	_item_sheet_title = get_node_or_null("ItemSheet/VBox/ItemNameLabel") as Label
+	_item_sheet_description = get_node_or_null("ItemSheet/VBox/ItemDescriptionLabel") as Label
+	_item_sheet_effect = get_node_or_null("ItemSheet/VBox/ItemEffectLabel") as Label
+	_item_sheet_actions = get_node_or_null("ItemSheet/VBox/ActionButtons") as HBoxContainer
+
+
+func _clear_children(container: Node) -> void:
+	for child in container.get_children():
+		container.remove_child(child)
+		child.queue_free()
