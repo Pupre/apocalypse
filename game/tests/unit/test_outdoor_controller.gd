@@ -78,13 +78,13 @@ func _run_test() -> void:
 	assert_true(run_state.exposure < before_exposure, "Outdoor time should drain exposure.")
 
 	var ground := outdoor_mode.get_node_or_null("Ground") as Node2D
-	var player_sprite := outdoor_mode.get_node_or_null("PlayerSprite") as Sprite2D
+	var player_sprite := outdoor_mode.get_node_or_null("PlayerSprite") as Polygon2D
 	var building_markers := outdoor_mode.get_node_or_null("Buildings") as Node2D
 	var obstacles := outdoor_mode.get_node_or_null("Obstacles") as Node2D
 	if not assert_true(ground != null, "Outdoor mode should expose a ground host."):
 		outdoor_mode.free()
 		return
-	if not assert_true(player_sprite != null, "Outdoor mode should expose a player sprite."):
+	if not assert_true(player_sprite != null, "Outdoor mode should expose a player marker."):
 		outdoor_mode.free()
 		return
 	if not assert_true(building_markers != null, "Outdoor mode should expose a building marker host."):
@@ -94,7 +94,7 @@ func _run_test() -> void:
 		outdoor_mode.free()
 		return
 	assert_true(ground.get_child_count() > 0, "Outdoor ground should render at least one visual layer.")
-	assert_true(player_sprite.texture != null, "Outdoor player sprite should load a texture.")
+	assert_true(player_sprite.polygon.size() >= 3, "Outdoor player marker should render a visible polygon.")
 	assert_eq(building_markers.get_child_count(), 4, "Outdoor mode should render four building markers.")
 	assert_true(obstacles.get_child_count() > 0, "Outdoor mode should render at least one obstacle prop.")
 

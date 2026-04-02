@@ -40,3 +40,13 @@ The current goal is not final art polish. It is to make the outdoor layer read l
 - Outdoor playtests now read more like a real game, not just a systems prototype.
 - Third-party asset provenance is recorded in-repo.
 - The outdoor scene now has a clearer structure for future collision, chunking, and environment expansion work.
+
+## Follow-up Change
+
+After a live playtest, the borrowed neighborhood backdrop and external vehicle/character art were judged to be directionally wrong for the apocalypse tone. The active outdoor scene was therefore pulled back to neutral placeholders:
+
+- no borrowed backdrop in the live scene
+- no borrowed outdoor character sprite in the live scene
+- no borrowed vehicle sprites in the live scene
+
+The vendored CC0 files remain in the repository as reviewed references, but they are no longer active. The live outdoor scene now uses simple geometric placeholder visuals until user-provided art direction or reference images arrive.

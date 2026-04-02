@@ -9,9 +9,8 @@
 - Downloaded and verified outdoor CC0 asset packs from official sources
 - Added outdoor third-party asset manifest
 - Reworked outdoor scene structure toward `Ground / Buildings / Obstacles / PlayerSprite`
-- Replaced the player triangle with a survivor sprite
-- Added a lived-in neighborhood backdrop and vehicle props
-- Made the outdoor controller load textures at runtime for headless-test stability
+- Temporarily tested borrowed outdoor art, then removed it from the active scene after playtest feedback
+- Restored the live scene to neutral placeholder geometry while keeping the new scene structure
 
 ## Important Files
 
@@ -22,19 +21,19 @@
 
 ## Key Technical Notes
 
-- Outdoor PNGs are loaded at runtime instead of scene `ext_resource` import references.
-- This was necessary because headless Godot tests were failing on missing imported texture metadata.
 - The scene now expects the following visible nodes to exist:
   - `Ground`
   - `Buildings`
   - `Obstacles`
   - `PlayerSprite`
+- Vendored outdoor CC0 art is kept on disk and documented, but not currently used by the active scene.
+- This is intentional pending user-supplied visual direction.
 
 ## Remaining Follow-Ups
 
 - Replace more abstract building markers with richer building-specific visuals
 - Add real obstacle collision beyond the current simple blocked rectangles
-- Build the first proper tile-based neighborhood slice instead of relying mostly on the mockup backdrop
+- Apply user-approved outdoor references instead of generic borrowed CC0 art
 - Expand outdoor HUD readability once the external threat layer gets denser
 
 ## Verification

@@ -66,7 +66,7 @@ func _run_test() -> void:
 	transition_layer.set_duration_for_tests(0.1)
 
 	var fade_rect := transition_layer.get_node_or_null("FadeRect") as ColorRect
-	var player_sprite := outdoor_mode.get_node_or_null("PlayerSprite") as Sprite2D
+	var player_sprite := outdoor_mode.get_node_or_null("PlayerSprite") as Polygon2D
 	var mart_data: Dictionary = content_library.get_building("mart_01")
 	var mart_position_data: Dictionary = mart_data.get("outdoor_position", {})
 	var mart_position := Vector2(
@@ -76,7 +76,7 @@ func _run_test() -> void:
 	if not assert_true(fade_rect != null, "Transition layer should expose FadeRect."):
 		run_shell.free()
 		return
-	if not assert_true(player_sprite != null, "Outdoor player sprite should be present."):
+	if not assert_true(player_sprite != null, "Outdoor player marker should be present."):
 		run_shell.free()
 		return
 	outdoor_mode.move_player(Vector2.RIGHT, 1.5)

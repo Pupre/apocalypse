@@ -160,14 +160,14 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
-	var player_sprite := outdoor_mode.get_node_or_null("PlayerSprite") as Sprite2D
+	var player_sprite := outdoor_mode.get_node_or_null("PlayerSprite") as Polygon2D
 	var mart_data: Dictionary = content_library.get_building("mart_01")
 	var mart_position_data: Dictionary = mart_data.get("outdoor_position", {})
 	var mart_position := Vector2(
 		float(mart_position_data.get("x", 640.0)),
 		float(mart_position_data.get("y", 360.0))
 	)
-	if not assert_true(player_sprite != null, "Outdoor player sprite should be present."):
+	if not assert_true(player_sprite != null, "Outdoor player marker should be present."):
 		bootstrap.free()
 		return
 
@@ -389,8 +389,8 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
-	player_sprite = outdoor_mode.get_node_or_null("PlayerSprite") as Sprite2D
-	if not assert_true(player_sprite != null, "Outdoor mode should restore the player sprite after exit."):
+	player_sprite = outdoor_mode.get_node_or_null("PlayerSprite") as Polygon2D
+	if not assert_true(player_sprite != null, "Outdoor mode should restore the player marker after exit."):
 		bootstrap.free()
 		return
 	assert_true(

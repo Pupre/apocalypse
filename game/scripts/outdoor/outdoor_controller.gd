@@ -20,15 +20,10 @@ const BUILDING_LABELS := {
 	"clinic_01": "의원",
 	"office_01": "사무실",
 }
-const BACKDROP_TEXTURE_PATH := "res://assets/outdoor/third_party/opengameart/TopDownCityPack/Sprites/sMockup.png"
-const PLAYER_TEXTURE_PATH := "res://assets/outdoor/third_party/kenney/PNG/Survivor 1/survivor1_stand.png"
-const BLUE_CAR_TEXTURE_PATH := "res://assets/outdoor/third_party/opengameart/TopDownCityPack/Sprites/Vehicles/sBlueCar.png"
-const GREEN_PICKUP_TEXTURE_PATH := "res://assets/outdoor/third_party/opengameart/TopDownCityPack/Sprites/Vehicles/sGreenPickup.png"
 const OBSTACLE_RECTS := [
 	Rect2(462.0, 438.0, 48.0, 48.0),
 	Rect2(758.0, 446.0, 48.0, 48.0),
 ]
-static var _texture_cache: Dictionary = {}
 
 var run_state = null
 var exposure_model := EXPOSURE_MODEL_SCRIPT.new()
@@ -36,7 +31,7 @@ var _seconds_buffer := 0.0
 var _player_position := DEFAULT_PLAYER_POSITION
 var _building_rows: Array[Dictionary] = []
 var _building_positions: Dictionary = {}
-var _player_sprite: Sprite2D = null
+var _player_sprite: Polygon2D = null
 var _camera: Camera2D = null
 var _ground_host: Node2D = null
 var _building_host: Node2D = null
@@ -48,7 +43,6 @@ var _hint_label: Label = null
 
 func _ready() -> void:
 	_cache_nodes()
-	_apply_visual_assets()
 	_refresh_buildings()
 	_refresh_obstacles()
 	_sync_view()
@@ -59,7 +53,6 @@ func bind_run_state(value, building_id: String = DEFAULT_BUILDING_ID, player_pos
 	_seconds_buffer = 0.0
 	_player_position = player_position if typeof(player_position) == TYPE_VECTOR2 else DEFAULT_PLAYER_POSITION
 	_cache_nodes()
-	_apply_visual_assets()
 	_refresh_buildings()
 	_refresh_obstacles()
 	_sync_view()
@@ -194,9 +187,9 @@ func _refresh_obstacles() -> void:
 		return
 
 	for child in _obstacle_host.get_children():
-		var sprite := child as Sprite2D
-		if sprite != null:
-			sprite.modulate = Color(0.92, 0.92, 0.92, 1.0)
+		var obstacle := child as CanvasItem
+		if obstacle != null:
+			obstacle.modulate = Color(0.9, 0.9, 0.9, 1.0)
 
 
 func _sync_view() -> void:
@@ -228,29 +221,12 @@ func _sync_view() -> void:
 
 func _cache_nodes() -> void:
 	_ground_host = get_node_or_null("Ground") as Node2D
-	_player_sprite = get_node_or_null("PlayerSprite") as Sprite2D
+	_player_sprite = get_node_or_null("PlayerSprite") as Polygon2D
 	_camera = get_node_or_null("WorldCamera") as Camera2D
 	_building_host = get_node_or_null("Buildings") as Node2D
 	_obstacle_host = get_node_or_null("Obstacles") as Node2D
 	_exposure_label = get_node_or_null("CanvasLayer/StatusPanel/VBox/ExposureLabel") as Label
 	_hint_label = get_node_or_null("CanvasLayer/StatusPanel/VBox/HintLabel") as Label
-
-
-func _apply_visual_assets() -> void:
-	var backdrop := get_node_or_null("Ground/Backdrop") as Sprite2D
-	if backdrop != null:
-		backdrop.texture = _load_texture(BACKDROP_TEXTURE_PATH)
-
-	if _player_sprite != null:
-		_player_sprite.texture = _load_texture(PLAYER_TEXTURE_PATH)
-
-	var blue_car := get_node_or_null("Obstacles/BlueCar") as Sprite2D
-	if blue_car != null:
-		blue_car.texture = _load_texture(BLUE_CAR_TEXTURE_PATH)
-
-	var green_pickup := get_node_or_null("Obstacles/GreenPickup") as Sprite2D
-	if green_pickup != null:
-		green_pickup.texture = _load_texture(GREEN_PICKUP_TEXTURE_PATH)
 
 
 func _get_nearby_building_id() -> String:
@@ -313,17 +289,3 @@ func _constrain_player_position(target_position: Vector2) -> Vector2:
 		if obstacle_rect.has_point(clamped):
 			return _player_position
 	return clamped
-
-
-func _load_texture(resource_path: String) -> Texture2D:
-	if _texture_cache.has(resource_path):
-		return _texture_cache[resource_path] as Texture2D
-
-	var image := Image.new()
-	if image.load(ProjectSettings.globalize_path(resource_path)) != OK:
-		push_error("Failed to load outdoor texture: %s" % resource_path)
-		return null
-
-	var texture := ImageTexture.create_from_image(image)
-	_texture_cache[resource_path] = texture
-	return texture
