@@ -20,4 +20,5 @@ func _run_test() -> void:
 	assert_true(items.has("energy_bar"), "Prototype items should index consumables.")
 	assert_true(items.has("small_backpack"), "Prototype items should index equippable gear.")
 	assert_true(items.has("running_shoes"), "Prototype items should index movement gear.")
+	assert_true(items.has("utility_vest"), "Prototype items should index torso gear from the household goods area.")
 	pass_test("CONTENT_LIBRARY_OK")

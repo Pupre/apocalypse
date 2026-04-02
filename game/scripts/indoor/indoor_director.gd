@@ -115,6 +115,23 @@ func get_inventory_title() -> String:
 	return "소지품 (%d/%d)" % [_run_state.inventory.total_bulk(), _run_state.inventory.carry_limit]
 
 
+func get_inventory_status_text() -> String:
+	if _run_state == null or _run_state.inventory == null:
+		return ""
+
+	var total_bulk: int = _run_state.inventory.total_bulk()
+	var carry_limit: int = _run_state.inventory.carry_limit
+	if total_bulk < carry_limit:
+		return "여유 있음"
+	if total_bulk == carry_limit:
+		return "가방이 가득 찼다"
+	if not _run_state.has_method("get_outdoor_move_speed") or _run_state.move_speed <= 0.0:
+		return "과적"
+
+	var speed_ratio := float(_run_state.get_outdoor_move_speed()) / float(_run_state.move_speed)
+	return "과적: 실외 이동속도 %d%%" % int(round(speed_ratio * 100.0))
+
+
 func get_inventory_rows() -> Array[Dictionary]:
 	if _run_state == null or _run_state.inventory == null:
 		return [{"label": "소지품 없음", "action_id": ""}]
@@ -425,9 +442,15 @@ func _item_effect_text(item_data: Dictionary) -> String:
 	var carry_limit_bonus := int(item_data.get("carry_limit_bonus", 0))
 	if carry_limit_bonus > 0:
 		parts.append("소지 한도 +%d" % carry_limit_bonus)
+	var move_speed_bonus := int(item_data.get("move_speed_bonus", 0))
+	if move_speed_bonus > 0:
+		parts.append("이동속도 +%d" % move_speed_bonus)
+	var fatigue_gain_bonus := float(item_data.get("fatigue_gain_bonus", 0.0))
+	if fatigue_gain_bonus < 0.0:
+		parts.append("피로 누적 -%d%%" % int(round(abs(fatigue_gain_bonus) * 100.0)))
 	var equip_slot := String(item_data.get("equip_slot", ""))
 	if not equip_slot.is_empty():
-		parts.append("장착 슬롯: %s" % equip_slot)
+		parts.append("장착 슬롯: %s" % _slot_label(equip_slot))
 
 	return "효과 없음" if parts.is_empty() else " / ".join(parts)
 
@@ -469,3 +492,17 @@ func _map_label_for_zone(zone: Dictionary, state: String) -> String:
 			return "잠김"
 		_:
 			return "?"
+
+
+func _slot_label(slot_id: String) -> String:
+	match slot_id:
+		"back":
+			return "등"
+		"feet":
+			return "발"
+		"hands":
+			return "손"
+		"body":
+			return "몸"
+		_:
+			return slot_id

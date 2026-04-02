@@ -100,11 +100,25 @@ func _run_test() -> void:
 	assert_true(director.apply_action("inspect_inventory_running_shoes"), "Director should allow selecting the shoes for inspection.")
 	selected_item_sheet = director.get_selected_inventory_sheet()
 	assert_true(
+		String(selected_item_sheet.get("effect_text", "")).find("이동속도 +24") != -1,
+		"Shoes should surface their movement bonus in the item sheet effect text."
+	)
+	assert_true(
 		_action_ids(selected_item_sheet.get("actions", [])).has("equip_inventory_running_shoes"),
 		"Movement gear should expose an equip action in the item sheet."
 	)
 	assert_true(director.apply_action("equip_inventory_running_shoes"), "Director should allow equipping shoes.")
 	assert_true(run_state.move_speed > 230.0, "Equipping shoes should increase the survivor move speed stat.")
+	assert_true(director.apply_action("take_household_goods_utility_vest_4"), "Director should allow taking torso gear from household goods.")
+	assert_true(director.apply_action("inspect_inventory_utility_vest"), "Director should allow selecting the vest for inspection.")
+	selected_item_sheet = director.get_selected_inventory_sheet()
+	assert_true(
+		String(selected_item_sheet.get("effect_text", "")).find("소지 한도 +2") != -1,
+		"Torso storage gear should surface its carry bonus in the item sheet effect text."
+	)
+	assert_true(director.apply_action("equip_inventory_utility_vest"), "Director should allow equipping torso gear.")
+	assert_eq(director.get_inventory_title(), "소지품 (0/14)", "Equipping torso storage gear should stack with the backpack bonus.")
+	assert_eq(director.get_inventory_status_text(), "여유 있음", "Director should report a calm carry state before the player goes overweight.")
 
 	assert_true(director.apply_action("move_back_hall"), "Director should allow moving from household goods into the back area.")
 	assert_true(director.apply_action("move_staff_corridor_gate"), "Director should allow moving to the staff door from the back area.")

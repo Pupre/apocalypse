@@ -123,7 +123,17 @@ func _run_test() -> void:
 	assert_true(bool(equipped_backpack.get("ok", false)), "RunState should allow equipping a backpack.")
 	assert_eq(state.inventory.carry_limit, 12, "Equipping a backpack should increase the soft carry limit.")
 
-	for index in range(13):
+	assert_true(state.inventory.add_item({"id": "utility_vest", "name": "작업 조끼", "bulk": 2}), "Inventory should hold an equippable torso item.")
+	var equipped_vest: Dictionary = state.equip_inventory_item("utility_vest", {
+		"id": "utility_vest",
+		"name": "작업 조끼",
+		"equip_slot": "body",
+		"carry_limit_bonus": 2
+	})
+	assert_true(bool(equipped_vest.get("ok", false)), "RunState should allow equipping torso gear.")
+	assert_eq(state.inventory.carry_limit, 14, "Equipping torso storage gear should stack with the backpack carry bonus.")
+
+	for index in range(15):
 		assert_true(state.inventory.add_item({"id": "weight_%d" % index, "bulk": 1}), "Inventory should allow a few items beyond the soft limit for overload testing.")
 
 	assert_true(state.inventory.total_bulk() > state.inventory.carry_limit, "Overflow test should exceed the soft carry limit.")

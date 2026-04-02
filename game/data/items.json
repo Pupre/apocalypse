@@ -98,6 +98,15 @@
     "fatigue_gain_bonus": -0.1
   },
   {
+    "id": "utility_vest",
+    "name": "작업 조끼",
+    "bulk": 2,
+    "description": "주머니가 많은 작업 조끼다. 몸에 걸치면 자잘한 물건을 더 챙길 수 있다.",
+    "category": "equipment",
+    "equip_slot": "body",
+    "carry_limit_bonus": 2
+  },
+  {
     "id": "running_shoes",
     "name": "운동화",
     "bulk": 1,

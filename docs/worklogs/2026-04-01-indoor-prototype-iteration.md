@@ -133,6 +133,30 @@
     - 외부 이동과 인벤토리가 처음으로 직접 연결됐다.
     - 테스트도 배열 위치보다 의미 있는 액션 존재를 보게 되어 더 견고해졌다.
 
+- 변경한 파일
+  - `game/data/items.json`
+  - `game/data/events/indoor/mart_01.json`
+  - `game/scripts/indoor/indoor_director.gd`
+  - `game/scripts/indoor/indoor_mode.gd`
+  - `game/scenes/indoor/indoor_mode.tscn`
+  - `game/tests/unit/test_content_library.gd`
+  - `game/tests/unit/test_run_models.gd`
+  - `game/tests/unit/test_indoor_director.gd`
+  - `game/tests/unit/test_indoor_mode.gd`
+  - 무엇을 바꿨는지
+    - `작업 조끼`를 추가해 생활용품 코너가 진짜 장비 파밍 구역처럼 보이도록 확장했다.
+    - 생활용품 코너 탐색 시 `작은 배낭`, `운동화`, `작업 장갑`, `작업 조끼`, `건전지`까지 더 다양한 선택지가 나오게 했다.
+    - 아이템 패널의 효과 문구에 `이동속도`, `피로 누적`, `장착 슬롯`을 사람이 읽기 쉬운 표현으로 추가했다.
+    - 인벤토리 패널에 `StatusLabel`을 넣어 `여유 있음`, `가방이 가득 찼다`, `과적: 실외 이동속도 88%` 같은 상태를 바로 읽을 수 있게 했다.
+  - 왜 바꿨는지
+    - 사용자는 생활용품 코너가 단순한 공구 1~2개가 아니라, 실제 장비 선택 공간처럼 느껴지길 원했다.
+    - 과적 페널티가 시스템에는 있어도 화면에서 안 보이면, 플레이어는 왜 느려졌는지 이해하기 어렵다.
+    - 장착 아이템은 수치가 보여야 선택의 의미가 생기기 때문에, 효과 문구를 더 구체적으로 노출할 필요가 있었다.
+  - 영향
+    - 생활용품 코너가 음식 코너와 역할이 확실히 갈리는 공간이 됐다.
+    - 플레이어는 과적 여부를 UI만 보고 바로 파악할 수 있다.
+    - 향후 장비 슬롯을 더 늘려도 같은 효과 문법으로 확장할 수 있게 됐다.
+
 ## 기대 효과
 
 - 마트가 단순 이벤트 카드 묶음이 아니라 실제 파밍 장소처럼 느껴진다.
@@ -155,6 +179,7 @@
 - 결과
   - 위 테스트 모두 통과했다.
   - 추가로 `test_content_library`, `test_run_models`, `test_outdoor_controller`까지 포함한 확장 세트도 통과했다.
+  - 이번 묶음에서도 `test_content_library`, `test_run_models`, `test_outdoor_controller`, `test_indoor_zone_graph`, `test_indoor_director`, `test_indoor_actions`, `test_indoor_mode`, `test_indoor_minimap`, `test_survivor_creator`, `test_first_playable_loop`까지 모두 다시 통과했다.
 
 ## 남은 리스크
 
@@ -162,3 +187,4 @@
 - 모바일 기준 UI 밀도는 아직 높아서, 추후 하단 패널/탭 구조로 다시 다듬어야 한다.
 - `잠긴 길은 보이고 도구 행동은 숨긴다`는 원칙은 잡혔지만, 앞으로 열쇠/도구 종류가 늘면 UI 규칙을 더 일반화해야 한다.
 - 장착 아이템은 `작은 배낭`, `운동화`, `작업 장갑`까지 늘었지만, 장비 종류 대비 효과 축은 아직 적다.
+- 현재 과적 상태 문구는 인벤토리 패널 기준으로만 보인다. 외부 HUD에도 같은 상태를 보여줄지는 다음 단계에서 결정해야 한다.

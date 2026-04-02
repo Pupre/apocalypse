@@ -12,6 +12,7 @@ var _result_label: Label = null
 var _action_buttons: VBoxContainer = null
 var _minimap: Control = null
 var _inventory_title_label: Label = null
+var _inventory_status_label: Label = null
 var _inventory_items: VBoxContainer = null
 var _item_sheet: Control = null
 var _item_sheet_title: Label = null
@@ -110,6 +111,7 @@ func _cache_nodes() -> void:
 	_action_buttons = get_node_or_null("Panel/Layout/MainColumn/ActionButtons") as VBoxContainer
 	_minimap = get_node_or_null("Panel/Layout/Sidebar/MinimapPanel/VBox/MapNodes") as Control
 	_inventory_title_label = get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/TitleLabel") as Label
+	_inventory_status_label = get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/StatusLabel") as Label
 	_inventory_items = get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/InventoryItems") as VBoxContainer
 	_item_sheet = get_node_or_null("ItemSheet") as Control
 	_item_sheet_title = get_node_or_null("ItemSheet/VBox/ItemNameLabel") as Label
@@ -166,6 +168,11 @@ func _refresh_inventory() -> void:
 			_inventory_title_label.text = String(_director.get_inventory_title())
 		else:
 			_inventory_title_label.text = "소지품"
+	if _inventory_status_label != null:
+		if _director != null and _director.has_method("get_inventory_status_text"):
+			_inventory_status_label.text = String(_director.get_inventory_status_text())
+		else:
+			_inventory_status_label.text = ""
 
 	if _director == null or not _director.has_method("get_inventory_rows"):
 		return

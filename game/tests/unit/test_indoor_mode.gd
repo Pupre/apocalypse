@@ -149,10 +149,19 @@ func _run_test() -> void:
 	if not assert_true(inventory_title_label != null, "Indoor mode should expose an inventory title label."):
 		indoor_mode.free()
 		return
+	var inventory_status_label := indoor_mode.get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/StatusLabel") as Label
+	if not assert_true(inventory_status_label != null, "Indoor mode should expose an inventory status label."):
+		indoor_mode.free()
+		return
 	assert_eq(
 		inventory_title_label.text,
 		"소지품 (0/8)",
 		"Indoor mode should show the current carry usage in the inventory title."
+	)
+	assert_eq(
+		inventory_status_label.text,
+		"여유 있음",
+		"Indoor mode should show a calm carry-state message while the player is under the limit."
 	)
 	assert_eq(
 		_inventory_labels(inventory_items),

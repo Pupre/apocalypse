@@ -376,6 +376,16 @@
                 "id": "packing_tape",
                 "name": "포장 테이프",
                 "bulk": 1
+              },
+              {
+                "id": "utility_vest",
+                "name": "작업 조끼",
+                "bulk": 2
+              },
+              {
+                "id": "spare_batteries",
+                "name": "건전지",
+                "bulk": 1
               }
             ],
             "consume_on_use": true
