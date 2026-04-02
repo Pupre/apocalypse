@@ -373,16 +373,28 @@ func _run_test() -> void:
 		"여유 있음",
 		"Indoor mode should show a calm carry-state message while the player is under the limit."
 	)
+	assert_true(
+		_find_row_by_name(inventory_items, "InventoryEmptyRow") != null,
+		"Indoor mode should show a named empty carried row before the player loots anything."
+	)
 	assert_eq(
-		_inventory_labels(inventory_items),
-		["소지품 없음"],
+		_row_text(_find_row_by_name(inventory_items, "InventoryEmptyRow"), "EmptyLabel"),
+		"소지품 없음",
 		"Indoor mode should show an empty inventory placeholder before the player loots anything."
 	)
 	equipped_tab_button.emit_signal("pressed")
 	await process_frame
 	assert_true(equipped_tab_button.button_pressed, "Equipped tab should become the selected state when tapped.")
 	assert_true(not carried_tab_button.button_pressed, "Carried tab should leave the selected state when another tab is active.")
-	assert_eq(_inventory_labels(inventory_items), ["장착중인 장비 없음"], "Indoor mode should show empty equipped gear in the bag sheet.")
+	assert_true(
+		_find_row_by_name(inventory_items, "EquippedEmptyRow") != null,
+		"Indoor mode should show a named empty equipped row when nothing is worn."
+	)
+	assert_eq(
+		_row_text(_find_row_by_name(inventory_items, "EquippedEmptyRow"), "EmptyLabel"),
+		"장착중인 장비 없음",
+		"Indoor mode should show empty equipped gear in the bag sheet."
+	)
 	carried_tab_button.emit_signal("pressed")
 	await process_frame
 	var item_sheet := _find_descendant_by_name_and_type(indoor_mode, "ItemSheet", "Control") as Control
@@ -445,9 +457,13 @@ func _run_test() -> void:
 		result_label.text.find("발견") != -1 and result_label.text.find("라이터") != -1,
 		"Indoor result feedback should mention the items the player just found."
 	)
+	assert_true(
+		_find_row_by_name(inventory_items, "InventoryEmptyRow") != null,
+		"Searching should not add loot to inventory until the player picks an item."
+	)
 	assert_eq(
-		_inventory_labels(inventory_items),
-		["소지품 없음"],
+		_row_text(_find_row_by_name(inventory_items, "InventoryEmptyRow"), "EmptyLabel"),
+		"소지품 없음",
 		"Searching should not add loot to inventory until the player picks an item."
 	)
 	assert_true(
@@ -473,10 +489,31 @@ func _run_test() -> void:
 		return
 	take_energy_bar_button.emit_signal("pressed")
 	await process_frame
+	var carried_rows: Array[Dictionary] = director.get_inventory_rows()
+	assert_eq(carried_rows.size(), 2, "Picking up discovered items should update the indoor inventory payload.")
 	assert_eq(
-		_inventory_labels(inventory_items),
-		["라이터 x1", "에너지바 x1"],
-		"Picking up discovered items should update the indoor inventory list."
+		_row_text(
+			_find_row_by_name(inventory_items, String("InventoryRow_%s" % String(carried_rows[0].get("action_id", "")))),
+			"RowButton"
+		),
+		String(carried_rows[0].get("label", "")),
+		"Picking up discovered items should show the first carried row summary explicitly."
+	)
+	assert_eq(
+		_row_text(
+			_find_row_by_name(inventory_items, String("InventoryRow_%s" % String(carried_rows[0].get("action_id", "")))),
+			"DetailLabel"
+		),
+		"탭하여 상세 보기",
+		"Picking up discovered items should keep the carried-row detail cue explicit."
+	)
+	assert_eq(
+		_row_text(
+			_find_row_by_name(inventory_items, String("InventoryRow_%s" % String(carried_rows[1].get("action_id", "")))),
+			"RowButton"
+		),
+		String(carried_rows[1].get("label", "")),
+		"Picking up discovered items should show the second carried row summary explicitly."
 	)
 	assert_eq(
 		bag_title_label.text,
@@ -508,9 +545,18 @@ func _run_test() -> void:
 	eat_button.emit_signal("pressed")
 	await process_frame
 	assert_eq(
-		_inventory_labels(inventory_items),
-		["라이터 x1"],
-		"Eating a food item should remove it from the carried inventory list."
+		director.get_inventory_rows().size(),
+		1,
+		"Eating a food item should remove it from the carried inventory payload."
+	)
+	carried_rows = director.get_inventory_rows()
+	assert_eq(
+		_row_text(
+			_find_row_by_name(inventory_items, String("InventoryRow_%s" % String(carried_rows[0].get("action_id", "")))),
+			"RowButton"
+		),
+		String(carried_rows[0].get("label", "")),
+		"Eating a food item should keep the remaining carried row readable."
 	)
 	assert_eq(
 		bag_title_label.text,
@@ -553,13 +599,30 @@ func _run_test() -> void:
 	await process_frame
 	equipped_tab_button.emit_signal("pressed")
 	await process_frame
+	var equipped_rows: Array[Dictionary] = director.get_equipped_rows()
+	assert_eq(equipped_rows.size(), 1, "Equipping an item should surface one equipped state row.")
+	var equipped_row_name := "EquippedRow_%s" % String(equipped_rows[0].get("slot_id", ""))
+	var equipped_row := _find_row_by_name(inventory_items, equipped_row_name) as Control
+	if not assert_true(equipped_row != null, "Equipped rows should have a stable named root."):
+		indoor_mode.free()
+		return
 	assert_eq(
-		_inventory_labels(inventory_items),
-		["등에 작은 배낭"],
-		"Equipping an item should surface it as a readable state summary in the equipped bag tab."
+		_row_text(equipped_row, "SummaryLabel"),
+		String(equipped_rows[0].get("summary_text", "")),
+		"Equipping an item should surface the summary text in the equipped row."
+	)
+	assert_eq(
+		_row_text(equipped_row, "StateLabel"),
+		String(equipped_rows[0].get("state_text", "")),
+		"Equipping an item should surface the state text in the equipped row."
+	)
+	assert_eq(
+		_row_text(equipped_row, "DetailLabel"),
+		String(equipped_rows[0].get("detail_text", "")),
+		"Equipping an item should surface the detail text in the equipped row."
 	)
 	assert_true(
-		_find_button_by_text(inventory_items, "등에 작은 배낭") == null,
+		_find_descendant_by_name_and_type(equipped_row, "RowButton", "Button") == null,
 		"Equipped rows should read like summaries instead of interactive buttons."
 	)
 	carried_tab_button.emit_signal("pressed")
@@ -577,10 +640,14 @@ func _run_test() -> void:
 		return
 	drop_button.emit_signal("pressed")
 	await process_frame
+	assert_true(
+		_find_row_by_name(inventory_items, "InventoryEmptyRow") != null,
+		"Dropping the remaining utility item should restore the empty carried row payload."
+	)
 	assert_eq(
-		_inventory_labels(inventory_items),
-		["소지품 없음"],
-		"Dropping the remaining utility item should empty the inventory list."
+		_row_text(_find_row_by_name(inventory_items, "InventoryEmptyRow"), "EmptyLabel"),
+		"소지품 없음",
+		"Dropping the remaining utility item should restore the empty carried row."
 	)
 	assert_eq(
 		bag_title_label.text,
@@ -656,6 +723,32 @@ func _find_button_by_prefix(container: Node, expected_prefix: String) -> Button:
 	return null
 
 
+func _find_row_by_name(container: Node, expected_name: String) -> Control:
+	if container == null:
+		return null
+
+	for child in container.get_children():
+		var control := child as Control
+		if control != null and String(control.name) == expected_name:
+			return control
+		var nested := _find_row_by_name(child, expected_name)
+		if nested != null:
+			return nested
+
+	return null
+
+
+func _row_text(row: Node, child_name: String) -> String:
+	var child := _find_descendant_by_name_and_type(row, child_name)
+	if child == null:
+		return ""
+	if child is Label:
+		return (child as Label).text
+	if child is Button:
+		return (child as Button).text
+	return ""
+
+
 func _section_labels(container: Node) -> Array[String]:
 	var labels: Array[String] = []
 	if container == null:
@@ -714,39 +807,6 @@ func _map_labels(container: Control) -> Array[String]:
 
 	labels.sort()
 	return labels
-
-
-func _inventory_labels(container: VBoxContainer) -> Array[String]:
-	var labels: Array[String] = []
-	if container == null:
-		return labels
-
-	for child in container.get_children():
-		var text := _first_inventory_row_text(child)
-		if not text.is_empty():
-			labels.append(text)
-
-	return labels
-
-
-func _first_inventory_row_text(node: Node) -> String:
-	if node == null:
-		return ""
-
-	var button := node as Button
-	if button != null:
-		return button.text
-
-	var label := node as Label
-	if label != null:
-		return label.text
-
-	for child in node.get_children():
-		var nested_text := _first_inventory_row_text(child)
-		if not nested_text.is_empty():
-			return nested_text
-
-	return ""
 
 
 func _find_descendant_by_name_and_type(container: Node, expected_name: String, type_name: String = "") -> Node:

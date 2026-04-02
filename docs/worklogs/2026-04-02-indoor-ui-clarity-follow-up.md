@@ -58,8 +58,12 @@
     - 단위 테스트는 세그먼트 동작과 장착 행의 summary 텍스트를 검증하도록 바꿨다.
   - 왜 바꿨는지:
     - 사용자가 `소지품`은 눌러야 하는 목록, `장착중`은 현재 상태 요약이라는 차이를 즉시 읽을 수 있어야 하기 때문이다.
-  - 영향:
-    - 탭 선택 상태가 더 명시적으로 보이고, 장착 중인 장비는 목록 항목이 아니라 현재 상태 카드로 읽힌다.
+- 영향:
+  - 탭 선택 상태가 더 명시적으로 보이고, 장착 중인 장비는 목록 항목이 아니라 현재 상태 카드로 읽힌다.
+
+## 후속 수정 배경
+
+첫 1차 구현 뒤에 다시 읽어보니, 탭과 행이 동작은 맞아도 여전히 Godot 기본 테마에 많이 기대고 있었다. 그 결과 소지품/장착중의 차이는 기능상 존재하지만, 테스트 코드와 UI 코드가 모두 같은 텍스트 흐름에 의존하는 부분이 남았다. 이번 후속 수정에서는 이 의존을 줄이고, 행과 탭의 구조를 더 명시적으로 만들어 다음 세션에서 유지보수하기 쉽게 만드는 방향으로 바꾼다.
 
 ## 기대 효과
 
@@ -72,11 +76,17 @@
 - 실행한 명령:
   - `XDG_DATA_HOME=/tmp/codex-godot-home /home/muhyeon_shin/packages/.local-tools/godot/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64 --headless --path /home/muhyeon_shin/packages/apocalypse/game -s res://tests/unit/test_indoor_mode.gd`
   - `XDG_DATA_HOME=/tmp/codex-godot-home /home/muhyeon_shin/packages/.local-tools/godot/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64 --headless --path /home/muhyeon_shin/packages/apocalypse/game -s res://tests/smoke/test_first_playable_loop.gd`
+- `XDG_DATA_HOME=/tmp/codex-godot-home /home/muhyeon_shin/packages/.local-tools/godot/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64 --headless --path /home/muhyeon_shin/packages/apocalypse/game -s res://tests/unit/test_indoor_director.gd`
 - 결과:
   - `INDOOR_MODE_OK`
   - `FIRST_PLAYABLE_LOOP_OK`
+  - `INDOOR_DIRECTOR_OK`
 - 메모:
   - smoke 테스트는 실내 라벨/버튼 경로를 현재 셸 구조(`HeaderRow`, `ContextRow`, `StatusRow`)에 맞게 갱신한 뒤 통과했다.
+
+## 최종 결과
+
+이 후속 수정은 `소지품`과 `장착중`의 역할을 더 즉시 읽히게 만드는 데 초점을 맞췄고, 지금은 탭 구조, 명시적인 상태 행, 안정적인 행 이름, smoke 회귀까지 모두 정리된 상태다. 다음에 같은 화면을 손댈 때는 텍스트 기반을 더 보강하기보다, 새 아이콘이나 카드 간격 같은 표현만 추가하면 된다.
 
 ## 남은 리스크
 

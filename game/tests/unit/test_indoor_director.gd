@@ -96,10 +96,6 @@ func _run_test() -> void:
 	)
 	assert_true(director.apply_action("equip_inventory_small_backpack"), "Director should allow equipping the selected backpack.")
 	assert_eq(director.get_inventory_title(), "소지품 (0/12)", "Equipping the backpack should increase the carry limit in the inventory title.")
-	var equipped_rows: Array[Dictionary] = director.get_equipped_rows()
-	assert_eq(equipped_rows.size(), 1, "Equipping the backpack should surface one equipped summary row.")
-	assert_eq(String(equipped_rows[0].get("summary_text", "")), "등에 작은 배낭", "The equipped row should read like a current-state summary.")
-	assert_eq(String(equipped_rows[0].get("state_text", "")), "장착중", "The equipped row should label the current state clearly.")
 	assert_true(director.apply_action("take_household_goods_running_shoes_1"), "Director should allow taking the shoes from household goods.")
 	assert_true(director.apply_action("inspect_inventory_running_shoes"), "Director should allow selecting the shoes for inspection.")
 	selected_item_sheet = director.get_selected_inventory_sheet()
@@ -123,13 +119,6 @@ func _run_test() -> void:
 	assert_true(director.apply_action("equip_inventory_utility_vest"), "Director should allow equipping torso gear.")
 	assert_eq(director.get_inventory_title(), "소지품 (0/14)", "Equipping torso storage gear should stack with the backpack bonus.")
 	assert_eq(director.get_inventory_status_text(), "여유 있음", "Director should report a calm carry state before the player goes overweight.")
-	equipped_rows = director.get_equipped_rows()
-	assert_eq(equipped_rows.size(), 2, "Equipping multiple items should surface multiple state summary rows.")
-	assert_eq(
-		_equipped_row_summaries(equipped_rows),
-		["등에 작은 배낭", "몸통에 작업 조끼"],
-		"Equipped rows should stay ordered by slot and read as current-state summaries."
-	)
 
 	assert_true(director.apply_action("move_back_hall"), "Director should allow moving from household goods into the back area.")
 	assert_true(director.apply_action("move_staff_corridor_gate"), "Director should allow moving to the staff door from the back area.")
@@ -257,15 +246,6 @@ func _action_id_by_label_prefix(actions, expected_prefix: String) -> String:
 		if label.begins_with(expected_prefix):
 			return String(action.get("id", ""))
 	return ""
-
-
-func _equipped_row_summaries(rows: Array[Dictionary]) -> Array[String]:
-	var summaries: Array[String] = []
-	for row in rows:
-		summaries.append(String(row.get("summary_text", "")))
-	return summaries
-
-
 func get_job(job_id: String) -> Dictionary:
 	return _test_jobs.get(job_id, {})
 

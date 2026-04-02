@@ -254,7 +254,11 @@ func _run_test() -> void:
 	var bag_button := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/StatusRow/Tools/BagButton") as Button
 	var minimap_overlay := indoor_mode.get_node_or_null("MinimapOverlay") as Control
 	var minimap_nodes := indoor_mode.get_node_or_null("MinimapOverlay/VBox/MapNodes") as Control
+	var director := indoor_mode.get_node_or_null("Director") as Node
 	if not assert_true(map_button != null and bag_button != null, "Indoor mode should expose map and bag buttons in the top bar."):
+		bootstrap.free()
+		return
+	if not assert_true(director != null and director.has_method("get_equipped_rows"), "Indoor mode should expose the indoor director for payload checks."):
 		bootstrap.free()
 		return
 	if not assert_true(minimap_overlay != null, "Indoor mode should expose a minimap overlay."):
@@ -273,16 +277,24 @@ func _run_test() -> void:
 
 	var bag_sheet := indoor_mode.get_node_or_null("BagSheet") as Control
 	var inventory_items := indoor_mode.get_node_or_null("BagSheet/VBox/InventoryScroll/InventoryItems") as VBoxContainer
+	var carried_tab_button := _find_descendant_by_name_and_type(bag_sheet, "CarriedTabButton", "Button") as Button
+	var equipped_tab_button := _find_descendant_by_name_and_type(bag_sheet, "EquippedTabButton", "Button") as Button
 	if not assert_true(inventory_items != null, "Indoor mode should expose an inventory item list."):
 		bootstrap.free()
 		return
 	if not assert_true(bag_sheet != null, "Indoor mode should expose a bag sheet."):
 		bootstrap.free()
 		return
+	if not assert_true(carried_tab_button != null and equipped_tab_button != null, "Indoor mode should expose carried and equipped tabs in the bag sheet."):
+		bootstrap.free()
+		return
 	bag_button.emit_signal("pressed")
 	await process_frame
 	assert_true(bag_sheet.visible, "Indoor bag button should open the bag sheet.")
-	assert_eq(_inventory_labels(inventory_items), ["소지품 없음"], "Indoor inventory should start empty before any loot.")
+	assert_true(
+		_find_row_by_name(inventory_items, "InventoryEmptyRow") != null,
+		"Indoor inventory should start empty before any loot."
+	)
 	bag_button.emit_signal("pressed")
 	await process_frame
 	assert_true(not bag_sheet.visible, "Indoor bag button should close the bag sheet when pressed again.")
@@ -350,7 +362,10 @@ func _run_test() -> void:
 	assert_true(result_label.text.find("라이터") != -1, "Indoor feedback should mention a discovered item.")
 	bag_button.emit_signal("pressed")
 	await process_frame
-	assert_eq(_inventory_labels(inventory_items), ["소지품 없음"], "Indoor inventory should stay empty until the player chooses loot.")
+	assert_true(
+		_find_row_by_name(inventory_items, "InventoryEmptyRow") != null,
+		"Indoor inventory should stay empty until the player chooses loot."
+	)
 	bag_button.emit_signal("pressed")
 	await process_frame
 
@@ -379,16 +394,19 @@ func _run_test() -> void:
 	assert_eq(run_shell.run_state.inventory.total_bulk(), 1, "Picking a revealed item should add it to inventory.")
 	bag_button.emit_signal("pressed")
 	await process_frame
-	assert_eq(_inventory_labels(inventory_items), ["라이터 x1"], "Indoor inventory should list the picked item.")
+	assert_eq(
+		_row_text(_find_row_by_name(inventory_items, "InventoryRow_inspect_inventory_lighter"), "RowButton"),
+		"라이터 x1",
+		"Indoor inventory should list the picked item."
+	)
 	bag_button.emit_signal("pressed")
 	await process_frame
 
-	var return_to_entrance_button := _find_button_by_text(action_buttons, "정문 진입부로 이동한다 (10분)")
-	if not assert_true(return_to_entrance_button != null, "Checkout should allow returning to the entrance zone."):
+	var move_entrance_button := _find_button_by_text(action_buttons, "정문 진입부로 이동한다 (10분)")
+	if not assert_true(move_entrance_button != null, "Checkout should allow returning to the entrance zone."):
 		bootstrap.free()
 		return
-
-	return_to_entrance_button.emit_signal("pressed")
+	move_entrance_button.emit_signal("pressed")
 	if not await _wait_until(
 		Callable(self, "_label_text_is").bind(location_label, "위치: 정문 진입부"),
 		"Timed out waiting for the indoor location to return to the entrance."
@@ -396,6 +414,119 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 	assert_eq(indoor_time_label.text, "시각: 1일차 11:10", "Indoor mode should keep the visible time in sync after returning to the entrance.")
+
+	var move_food_aisle_button := _find_button_by_text(action_buttons, "식품 진열대로 이동한다 (30분)")
+	if not assert_true(move_food_aisle_button != null, "Entrance should allow moving into the food aisle."):
+		bootstrap.free()
+		return
+	move_food_aisle_button.emit_signal("pressed")
+	if not await _wait_until(
+		Callable(self, "_label_text_is").bind(location_label, "위치: 식품 진열대"),
+		"Timed out waiting for the indoor location to change to the food aisle."
+	):
+		bootstrap.free()
+		return
+
+	var move_household_goods_button := _find_button_by_text(action_buttons, "생활용품 코너로 이동한다 (30분)")
+	if not assert_true(move_household_goods_button != null, "Food aisle should allow moving into household goods."):
+		bootstrap.free()
+		return
+	move_household_goods_button.emit_signal("pressed")
+	if not await _wait_until(
+		Callable(self, "_label_text_is").bind(location_label, "위치: 생활용품 코너"),
+		"Timed out waiting for the indoor location to change to household goods."
+	):
+		bootstrap.free()
+		return
+
+	assert_true(director.apply_action("search_household_goods"), "Director should allow searching household goods.")
+	var take_household_backpack_button := _find_button_by_prefix(action_buttons, "작은 배낭 챙긴다")
+	if not assert_true(take_household_backpack_button != null, "Household goods should reveal a backpack to take."):
+		bootstrap.free()
+		return
+	take_household_backpack_button.emit_signal("pressed")
+	await process_frame
+	assert_true(director.apply_action("inspect_inventory_small_backpack"), "Indoor mode should allow selecting the backpack for inspection.")
+	assert_true(director.apply_action("equip_inventory_small_backpack"), "Indoor mode should allow equipping the backpack from the item sheet.")
+	await process_frame
+
+	if not bag_sheet.visible:
+		bag_button.emit_signal("pressed")
+		await process_frame
+
+	equipped_tab_button.emit_signal("pressed")
+	await process_frame
+	var equipped_rows: Array[Dictionary] = director.get_equipped_rows()
+	assert_eq(equipped_rows.size(), 1, "Equipping an item should surface one equipped row.")
+	var equipped_row_name := "EquippedRow_%s" % String(equipped_rows[0].get("slot_id", ""))
+	var equipped_row := _find_row_by_name(inventory_items, equipped_row_name) as Control
+	if not assert_true(equipped_row != null, "Equipped rows should use a stable named root."):
+		bootstrap.free()
+		return
+	assert_eq(
+		_row_text(equipped_row, "SummaryLabel"),
+		String(equipped_rows[0].get("summary_text", "")),
+		"Equipped rows should show the summary text explicitly."
+	)
+	assert_eq(
+		_row_text(equipped_row, "StateLabel"),
+		String(equipped_rows[0].get("state_text", "")),
+		"Equipped rows should show the state text explicitly."
+	)
+	assert_eq(
+		_row_text(equipped_row, "DetailLabel"),
+		String(equipped_rows[0].get("detail_text", "")),
+		"Equipped rows should show the detail text explicitly."
+	)
+	assert_true(
+		_find_descendant_by_name_and_type(equipped_row, "RowButton", "Button") == null,
+		"Equipped rows should remain read-only."
+	)
+
+	carried_tab_button.emit_signal("pressed")
+	await process_frame
+	var carried_rows: Array[Dictionary] = director.get_inventory_rows()
+	assert_eq(carried_rows.size(), 1, "Switching back to carried should keep the remaining loot visible.")
+	var carried_row_name := "InventoryRow_%s" % String(carried_rows[0].get("action_id", ""))
+	var carried_row := _find_row_by_name(inventory_items, carried_row_name) as Control
+	if not assert_true(carried_row != null, "Carried rows should use a stable named root."):
+		bootstrap.free()
+		return
+	assert_eq(
+		_row_text(carried_row, "RowButton"),
+		String(carried_rows[0].get("label", "")),
+		"Carried rows should show the item summary explicitly."
+	)
+	assert_eq(
+		_row_text(carried_row, "DetailLabel"),
+		"탭하여 상세 보기",
+		"Carried rows should keep the interaction cue explicit."
+	)
+
+	var move_food_aisle_back_button := _find_button_by_text(action_buttons, "식품 진열대로 이동한다 (10분)")
+	if not assert_true(move_food_aisle_back_button != null, "Household goods should allow moving back to the food aisle."):
+		bootstrap.free()
+		return
+	move_food_aisle_back_button.emit_signal("pressed")
+	if not await _wait_until(
+		Callable(self, "_label_text_is").bind(location_label, "위치: 식품 진열대"),
+		"Timed out waiting for the indoor location to return to the food aisle."
+	):
+		bootstrap.free()
+		return
+
+	var move_entrance_back_button := _find_button_by_text(action_buttons, "정문 진입부로 이동한다 (10분)")
+	if not assert_true(move_entrance_back_button != null, "Food aisle should allow returning to the entrance zone."):
+		bootstrap.free()
+		return
+	move_entrance_back_button.emit_signal("pressed")
+	if not await _wait_until(
+		Callable(self, "_label_text_is").bind(location_label, "위치: 정문 진입부"),
+		"Timed out waiting for the indoor location to return to the entrance."
+	):
+		bootstrap.free()
+		return
+	assert_eq(indoor_time_label.text, "시각: 1일차 13:00", "Indoor mode should keep the visible time in sync after returning to the entrance.")
 	assert_true(
 		_buttons_include_text(action_buttons, "건물 밖으로 나간다"),
 		"The entrance zone should restore the contextual leave-building action."
@@ -473,6 +604,61 @@ func _find_button_by_text(container: Node, text: String) -> Button:
 			return nested
 
 	return null
+
+
+func _find_button_by_prefix(container: Node, expected_prefix: String) -> Button:
+	if container == null:
+		return null
+
+	for child in container.get_children():
+		var button := child as Button
+		if button != null and button.text.begins_with(expected_prefix):
+			return button
+		var nested := _find_button_by_prefix(child, expected_prefix)
+		if nested != null:
+			return nested
+
+	return null
+
+
+func _find_descendant_by_name_and_type(container: Node, expected_name: String, type_name: String = "") -> Node:
+	if container == null:
+		return null
+
+	for child in container.get_children():
+		if String(child.name) == expected_name and (type_name.is_empty() or child.is_class(type_name)):
+			return child
+		var nested := _find_descendant_by_name_and_type(child, expected_name, type_name)
+		if nested != null:
+			return nested
+
+	return null
+
+
+func _find_row_by_name(container: Node, expected_name: String) -> Control:
+	if container == null:
+		return null
+
+	for child in container.get_children():
+		var control := child as Control
+		if control != null and String(control.name) == expected_name:
+			return control
+		var nested := _find_row_by_name(child, expected_name)
+		if nested != null:
+			return nested
+
+	return null
+
+
+func _row_text(row: Node, child_name: String) -> String:
+	var child := _find_descendant_by_name_and_type(row, child_name)
+	if child == null:
+		return ""
+	if child is Label:
+		return (child as Label).text
+	if child is Button:
+		return (child as Button).text
+	return ""
 
 
 func _buttons_include_text(container: Node, text: String) -> bool:
@@ -583,39 +769,6 @@ func _map_labels(container: Control) -> Array[String]:
 
 	labels.sort()
 	return labels
-
-
-func _inventory_labels(container: VBoxContainer) -> Array[String]:
-	var labels: Array[String] = []
-	if container == null:
-		return labels
-
-	for child in container.get_children():
-		var text := _first_inventory_row_text(child)
-		if not text.is_empty():
-			labels.append(text)
-
-	return labels
-
-
-func _first_inventory_row_text(node: Node) -> String:
-	if node == null:
-		return ""
-
-	var button := node as Button
-	if button != null:
-		return button.text
-
-	var label := node as Label
-	if label != null:
-		return label.text
-
-	for child in node.get_children():
-		var nested_text := _first_inventory_row_text(child)
-		if not nested_text.is_empty():
-			return nested_text
-
-	return ""
 
 
 func _is_transition_settled(
