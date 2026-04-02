@@ -3,6 +3,21 @@ extends Control
 signal state_changed
 signal exit_requested
 
+const ACTION_SECTION_ORDER := ["move", "interaction", "loot", "locked"]
+const ACTION_SECTION_TITLES := {
+	"move": "이동",
+	"interaction": "탐색 / 상호작용",
+	"loot": "발견한 물건",
+	"locked": "잠긴 길",
+}
+const ACTION_ICON_PATHS := {
+	"move": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/arrowRight.png",
+	"interaction": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/question.png",
+	"loot": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/basket.png",
+	"locked": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/locked.png",
+	"exit": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/home.png",
+}
+
 var _director: Node = null
 var _title_label: Label = null
 var _location_label: Label = null
@@ -21,6 +36,7 @@ var _item_sheet_description: Label = null
 var _item_sheet_effect: Label = null
 var _item_sheet_actions: HBoxContainer = null
 var _director_connected := false
+var _icon_cache: Dictionary = {}
 
 
 func configure(run_state, building_id: String = "mart_01") -> void:
@@ -82,15 +98,114 @@ func _refresh_action_buttons() -> void:
 	if not _director.has_method("get_actions"):
 		return
 
-	for action in _director.get_actions():
+	var grouped_actions := _group_actions(_director.get_actions())
+	for section_id in ACTION_SECTION_ORDER:
+		var actions = grouped_actions.get(section_id, [])
+		if actions.is_empty():
+			continue
+
+		_action_buttons.add_child(_create_action_section_heading(String(ACTION_SECTION_TITLES.get(section_id, section_id))))
+		var section_box := VBoxContainer.new()
+		section_box.add_theme_constant_override("separation", 6)
+		_action_buttons.add_child(section_box)
+
+		for action in actions:
+			var action_id := String(action.get("id", ""))
+			if action_id.is_empty():
+				continue
+
+			var button := _create_action_button(action as Dictionary, section_id)
+			button.pressed.connect(Callable(self, "_on_action_pressed").bind(action_id))
+			section_box.add_child(button)
+
+
+func _group_actions(actions: Array[Dictionary]) -> Dictionary:
+	var grouped := {
+		"move": [],
+		"interaction": [],
+		"loot": [],
+		"locked": [],
+	}
+
+	for action in actions:
 		var action_id := String(action.get("id", ""))
 		if action_id.is_empty():
 			continue
 
-		var button := Button.new()
-		button.text = String(action.get("label", action_id))
-		button.pressed.connect(Callable(self, "_on_action_pressed").bind(action_id))
-		_action_buttons.add_child(button)
+		var section_id := _section_for_action(action)
+		var bucket = grouped.get(section_id, [])
+		bucket.append(action)
+		grouped[section_id] = bucket
+
+	return grouped
+
+
+func _section_for_action(action: Dictionary) -> String:
+	var action_type := String(action.get("type", ""))
+	if bool(action.get("locked", false)) and action_type == "move":
+		return "locked"
+	if action_type == "take_loot":
+		return "loot"
+	if action_type == "move" or action_type == "exit":
+		return "move"
+	return "interaction"
+
+
+func _create_action_section_heading(text: String) -> Label:
+	var label := Label.new()
+	label.text = text
+	label.modulate = Color(0.86, 0.86, 0.86, 0.95)
+	return label
+
+
+func _create_action_button(action: Dictionary, section_id: String) -> Button:
+	var action_id := String(action.get("id", ""))
+	var button := Button.new()
+	button.text = String(action.get("label", action_id))
+	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	button.custom_minimum_size = Vector2(0, 40)
+	button.icon = _action_icon(action, section_id)
+	button.expand_icon = true
+	button.flat = false
+
+	match section_id:
+		"loot":
+			button.modulate = Color(0.92, 1.0, 0.92, 1.0)
+		"locked":
+			button.modulate = Color(0.72, 0.72, 0.72, 0.96)
+		"move":
+			button.modulate = Color(0.92, 0.96, 1.0, 1.0)
+		_:
+			button.modulate = Color(1.0, 1.0, 1.0, 1.0)
+
+	return button
+
+
+func _action_icon(action: Dictionary, section_id: String) -> Texture2D:
+	var action_type := String(action.get("type", ""))
+	if action_type == "exit":
+		return _load_icon(String(ACTION_ICON_PATHS.get("exit", "")))
+	return _load_icon(String(ACTION_ICON_PATHS.get(section_id, "")))
+
+
+func _load_icon(path: String) -> Texture2D:
+	if path.is_empty():
+		return null
+	if _icon_cache.has(path):
+		return _icon_cache[path] as Texture2D
+
+	var absolute_path := ProjectSettings.globalize_path(path)
+	if not FileAccess.file_exists(absolute_path):
+		return null
+
+	var image := Image.new()
+	var err := image.load(absolute_path)
+	if err != OK:
+		return null
+
+	var texture := ImageTexture.create_from_image(image)
+	_icon_cache[path] = texture
+	return texture
 
 
 func _on_action_pressed(action_id: String) -> void:

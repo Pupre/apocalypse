@@ -63,7 +63,7 @@ autowrap_mode = 3
 text = "행동"
 
 [node name="ActionButtons" type="VBoxContainer" parent="Panel/Layout/MainColumn"]
-theme_override_constants/separation = 8
+theme_override_constants/separation = 12
 
 [node name="Sidebar" type="VBoxContainer" parent="Panel/Layout"]
 custom_minimum_size = Vector2(320, 0)

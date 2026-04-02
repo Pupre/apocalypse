@@ -173,7 +173,8 @@ func _run_test() -> void:
 	if not assert_true(action_buttons != null, "Indoor action buttons container should be present."):
 		bootstrap.free()
 		return
-	assert_true(action_buttons.get_child_count() >= 1, "Mart indoor mode should expose at least one indoor action.")
+	assert_true(_count_buttons(action_buttons) >= 1, "Mart indoor mode should expose at least one indoor action.")
+	assert_true(_section_labels(action_buttons).has("이동"), "Indoor UI should expose a movement section in the creator flow.")
 	assert_true(
 		_find_button_by_text(action_buttons, "계산대를 수색한다 (30분)") == null,
 		"The mart entrance should not expose checkout-only search actions."
@@ -280,11 +281,11 @@ func _is_indoor_action_applied(
 		run_shell.run_state.inventory.total_bulk() == expected_inventory_bulk
 		and hud_clock_label.text == expected_clock_text
 		and result_label.text.find(expected_feedback_substring) != -1
-		and (expected_action_count < 0 or action_buttons.get_child_count() == expected_action_count)
+		and (expected_action_count < 0 or _count_buttons(action_buttons) == expected_action_count)
 	)
 
 
-func _find_button_by_text(container: VBoxContainer, expected_text: String) -> Button:
+func _find_button_by_text(container: Node, expected_text: String) -> Button:
 	if container == null:
 		return null
 
@@ -292,8 +293,39 @@ func _find_button_by_text(container: VBoxContainer, expected_text: String) -> Bu
 		var button := child as Button
 		if button != null and button.text == expected_text:
 			return button
+		var nested := _find_button_by_text(child, expected_text)
+		if nested != null:
+			return nested
 
 	return null
+
+
+func _count_buttons(container: Node) -> int:
+	if container == null:
+		return 0
+
+	var total := 0
+	for child in container.get_children():
+		if child is Button:
+			total += 1
+		total += _count_buttons(child)
+	return total
+
+
+func _section_labels(container: Node) -> Array[String]:
+	var labels: Array[String] = []
+	if container == null:
+		return labels
+
+	for child in container.get_children():
+		var label := child as Label
+		if label != null:
+			var text := label.text.strip_edges()
+			if not text.is_empty():
+				labels.append(text)
+		labels.append_array(_section_labels(child))
+
+	return labels
 
 
 func _label_text_is(label: Label, expected_text: String) -> bool:

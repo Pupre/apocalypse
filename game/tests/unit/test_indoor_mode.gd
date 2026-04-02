@@ -119,12 +119,28 @@ func _run_test() -> void:
 		indoor_mode.free()
 		return
 	assert_true(
+		_section_labels(action_buttons).has("이동"),
+		"Indoor mode should group movement actions under a dedicated section."
+	)
+	assert_true(
+		_section_labels(action_buttons).has("탐색 / 상호작용"),
+		"Indoor mode should group local interactions under a dedicated section."
+	)
+	assert_true(
 		_find_button_by_text(action_buttons, "계산대로 이동한다 (30분)") != null,
 		"Indoor mode should show travel time in movement actions."
 	)
 	assert_true(
+		_find_button_by_text(action_buttons, "계산대로 이동한다 (30분)").icon != null,
+		"Indoor mode should attach an icon to movement actions."
+	)
+	assert_true(
 		_find_button_by_text(action_buttons, "건물 밖으로 나간다") != null,
 		"Indoor mode should expose leaving the building as a contextual action at the entrance."
+	)
+	assert_true(
+		_find_button_by_text(action_buttons, "건물 밖으로 나간다").icon != null,
+		"Indoor mode should attach an icon to contextual exit actions."
 	)
 	assert_true(
 		_find_button_by_text(action_buttons, "한 시간 쉰다 (60분)") == null,
@@ -215,6 +231,10 @@ func _run_test() -> void:
 		_find_button_by_text(action_buttons, "계산대를 탐색한다 (30분)") != null,
 		"Indoor mode should show time cost on local zone actions."
 	)
+	assert_true(
+		_find_button_by_text(action_buttons, "계산대를 탐색한다 (30분)").icon != null,
+		"Indoor mode should attach an icon to interaction actions."
+	)
 	assert_eq(
 		_map_labels(minimap_nodes),
 		["?", "계산대", "정문 진입부"],
@@ -246,6 +266,14 @@ func _run_test() -> void:
 	assert_true(
 		_find_button_by_text(action_buttons, "라이터 챙긴다") != null,
 		"Searching should reveal follow-up actions for each discovered item."
+	)
+	assert_true(
+		_find_button_by_text(action_buttons, "라이터 챙긴다").icon != null,
+		"Indoor mode should attach an icon to discovered-loot actions."
+	)
+	assert_true(
+		_section_labels(action_buttons).has("발견한 물건"),
+		"Indoor mode should surface discovered loot in a dedicated section."
 	)
 	assert_true(
 		director.apply_action("take_checkout_lighter_0"),
@@ -402,7 +430,7 @@ func _on_exit_requested() -> void:
 	_exit_requested_count += 1
 
 
-func _find_button_by_text(container: VBoxContainer, expected_text: String) -> Button:
+func _find_button_by_text(container: Node, expected_text: String) -> Button:
 	if container == null:
 		return null
 
@@ -410,11 +438,14 @@ func _find_button_by_text(container: VBoxContainer, expected_text: String) -> Bu
 		var button := child as Button
 		if button != null and button.text == expected_text:
 			return button
+		var nested := _find_button_by_text(child, expected_text)
+		if nested != null:
+			return nested
 
 	return null
 
 
-func _find_button_by_prefix(container: VBoxContainer, expected_prefix: String) -> Button:
+func _find_button_by_prefix(container: Node, expected_prefix: String) -> Button:
 	if container == null:
 		return null
 
@@ -422,8 +453,27 @@ func _find_button_by_prefix(container: VBoxContainer, expected_prefix: String) -
 		var button := child as Button
 		if button != null and button.text.begins_with(expected_prefix):
 			return button
+		var nested := _find_button_by_prefix(child, expected_prefix)
+		if nested != null:
+			return nested
 
 	return null
+
+
+func _section_labels(container: Node) -> Array[String]:
+	var labels: Array[String] = []
+	if container == null:
+		return labels
+
+	for child in container.get_children():
+		var label := child as Label
+		if label != null:
+			var text := label.text.strip_edges()
+			if not text.is_empty():
+				labels.append(text)
+		labels.append_array(_section_labels(child))
+
+	return labels
 
 
 func _find_inventory_button_by_text(container: VBoxContainer, expected_text: String) -> Button:
