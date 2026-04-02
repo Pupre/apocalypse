@@ -3,6 +3,12 @@ extends Node
 signal state_changed
 
 const ACTION_RESOLVER_SCRIPT := preload("res://scripts/indoor/indoor_action_resolver.gd")
+const SURVIVAL_CHIP_ICON_PATHS := {
+	"hunger": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/question.png",
+	"thirst": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/basket.png",
+	"health": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/home.png",
+	"fatigue": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/locked.png",
+}
 var _resolver := ACTION_RESOLVER_SCRIPT.new()
 var _run_state = null
 var _building_data: Dictionary = {}
@@ -146,6 +152,10 @@ func get_survival_chip_detail(chip_id: String) -> Dictionary:
 			return chip
 
 	return {}
+
+
+func get_survival_chip_icon_path(chip_id: String) -> String:
+	return String(SURVIVAL_CHIP_ICON_PATHS.get(chip_id, ""))
 
 
 func _create_survival_chip_row(

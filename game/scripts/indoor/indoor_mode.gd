@@ -17,12 +17,6 @@ const ACTION_ICON_PATHS := {
 	"locked": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/locked.png",
 	"exit": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/home.png",
 }
-const SURVIVAL_CHIP_ICON_PATHS := {
-	"hunger": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/question.png",
-	"thirst": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/basket.png",
-	"health": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/home.png",
-	"fatigue": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/locked.png",
-}
 
 var _director: Node = null
 var _title_label: Label = null
@@ -164,7 +158,7 @@ func _refresh_stat_chips() -> void:
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.name = chip_id
-		button.icon = _load_icon(String(SURVIVAL_CHIP_ICON_PATHS.get(String(chip.get("icon_id", "")), "")))
+		button.icon = _load_icon(_survival_chip_icon_path(String(chip.get("icon_id", ""))))
 		button.text = String(chip.get("display_value_text", chip.get("stage", "")))
 		button.tooltip_text = "%s: %s" % [String(chip.get("label", "")), String(chip.get("stage", ""))]
 		button.pressed.connect(Callable(self, "_on_stat_chip_pressed").bind(chip_id))
@@ -295,6 +289,12 @@ func _load_icon(path: String) -> Texture2D:
 	var texture := ImageTexture.create_from_image(image)
 	_icon_cache[path] = texture
 	return texture
+
+
+func _survival_chip_icon_path(chip_id: String) -> String:
+	if _director != null and _director.has_method("get_survival_chip_icon_path"):
+		return String(_director.get_survival_chip_icon_path(chip_id))
+	return ""
 
 
 func _refresh_minimap() -> void:
