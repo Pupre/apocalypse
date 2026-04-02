@@ -1,7 +1,7 @@
 {
   "id": "office_01",
   "name": "소형 사무실",
-  "summary": "출입구 너머로 업무 공간과 탕비실이 이어지고, 안쪽 기록보관실은 카드키가 필요해 보인다.",
+  "summary": "출입구 너머로 업무 공간과 탕비실, 안쪽 회의실과 기록보관실, 더 깊은 서버실이 이어진다.",
   "entry_zone_id": "office_lobby",
   "zones": [
     {
@@ -24,10 +24,11 @@
       "id": "open_office",
       "floor_id": "floor_1",
       "label": "업무 공간",
-      "summary": "넘어진 의자와 컴퓨터 사이로 팀장 자리와 기록보관실 문이 보인다.",
+      "summary": "넘어진 의자와 컴퓨터 사이로 팀장 자리, 회의실, 기록보관실 문이 보인다.",
       "connected_zone_ids": [
         "office_lobby",
         "manager_desk",
+        "meeting_room",
         "records_room"
       ],
       "event_ids": [
@@ -63,7 +64,22 @@
       "event_ids": [
         "manager_desk_search_event"
       ],
-      "map_position": [2, 1],
+      "map_position": [2, 2],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "meeting_room",
+      "floor_id": "floor_1",
+      "label": "회의실",
+      "summary": "프로젝터 리모컨과 남은 회의 자료, 응급 간식이 테이블 위에 흩어져 있다.",
+      "connected_zone_ids": [
+        "open_office"
+      ],
+      "event_ids": [
+        "meeting_room_search_event"
+      ],
+      "map_position": [2, 0],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -73,9 +89,10 @@
       "label": "기록보관실",
       "move_label": "기록보관실로 들어간다",
       "blocked_feedback": "기록보관실 카드 리더가 잠겨 있어 들어갈 수 없다.",
-      "summary": "문서 상자와 비상 장비가 아직 정리된 채 남아 있다.",
+      "summary": "문서 상자와 비상 장비가 아직 정리된 채 남아 있고, 안쪽 서버실 문이 이어진다.",
       "connected_zone_ids": [
-        "open_office"
+        "open_office",
+        "server_closet"
       ],
       "event_ids": [
         "records_room_search_event"
@@ -88,6 +105,21 @@
           "office_keycard"
         ]
       }
+    },
+    {
+      "id": "server_closet",
+      "floor_id": "floor_1",
+      "label": "서버실",
+      "summary": "랙 아래에 비상 장비와 손전등, 정리된 보급 박스가 남아 있다.",
+      "connected_zone_ids": [
+        "records_room"
+      ],
+      "event_ids": [
+        "server_closet_search_event"
+      ],
+      "map_position": [4, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
     }
   ],
   "clues": [],
@@ -215,6 +247,43 @@
       ]
     },
     {
+      "id": "meeting_room_search_event",
+      "zone_id": "meeting_room",
+      "type": "search",
+      "hint_text": "회의 테이블 아래와 서랍장 안쪽에 아직 손대지 않은 비상 간식과 전자기기가 남아 있다.",
+      "options": [
+        {
+          "id": "search_meeting_room",
+          "label": "회의실을 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "crackers",
+                "name": "크래커",
+                "bulk": 1
+              },
+              {
+                "id": "bottled_water",
+                "name": "생수",
+                "bulk": 1
+              },
+              {
+                "id": "spare_batteries",
+                "name": "건전지",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
       "id": "records_room_search_event",
       "zone_id": "records_room",
       "type": "search",
@@ -231,14 +300,41 @@
           "outcomes": {
             "discover_loot": [
               {
+                "id": "utility_vest",
+                "name": "작업 조끼",
+                "bulk": 2
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "server_closet_search_event",
+      "zone_id": "server_closet",
+      "type": "search",
+      "hint_text": "서버 랙 아래에 비상 장비와 손전등, 방호 부품이 남아 있다.",
+      "options": [
+        {
+          "id": "search_server_closet",
+          "label": "서버실을 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
                 "id": "flashlight",
                 "name": "손전등",
                 "bulk": 1
               },
               {
-                "id": "utility_vest",
-                "name": "작업 조끼",
-                "bulk": 2
+                "id": "filter_cartridge",
+                "name": "방호 필터",
+                "bulk": 1
               }
             ],
             "consume_on_use": true

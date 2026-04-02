@@ -89,6 +89,13 @@
     "category": "key"
   },
   {
+    "id": "apartment_201_key",
+    "name": "201호 열쇠",
+    "bulk": 1,
+    "description": "아파트 201호 출입문에 맞는 낡은 황동 열쇠다.",
+    "category": "key"
+  },
+  {
     "id": "clinic_storage_key",
     "name": "약품 보관실 열쇠",
     "bulk": 1,

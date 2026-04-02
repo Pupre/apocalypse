@@ -1,7 +1,7 @@
 {
   "id": "apartment_01",
   "name": "낡은 아파트",
-  "summary": "공동 현관 안쪽으로 우편함과 1층 복도가 이어진다.",
+  "summary": "공동 현관 안쪽으로 우편함, 1층 복도, 위층으로 이어지는 계단실이 보인다.",
   "entry_zone_id": "shared_entrance",
   "zones": [
     {
@@ -39,11 +39,12 @@
       "id": "first_floor_hall",
       "floor_id": "floor_1",
       "label": "1층 복도",
-      "summary": "먼지 낀 복도 끝으로 관리 창고와 101호 문이 보인다.",
+      "summary": "먼지 낀 복도 끝으로 관리 창고와 101호 문, 계단실 입구가 보인다.",
       "connected_zone_ids": [
         "shared_entrance",
         "janitor_closet",
-        "unit_101_door"
+        "unit_101_door",
+        "stairwell"
       ],
       "event_ids": [],
       "map_position": [1, 1],
@@ -98,6 +99,87 @@
       "access_requirements": {
         "required_item_ids": [
           "apartment_101_key"
+        ]
+      }
+    },
+    {
+      "id": "stairwell",
+      "floor_id": "floor_1",
+      "label": "계단실",
+      "summary": "난간이 삐걱거리는 계단이 2층으로 이어지고 있다.",
+      "connected_zone_ids": [
+        "first_floor_hall",
+        "second_floor_hall"
+      ],
+      "event_ids": [],
+      "map_position": [2, 2],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "second_floor_hall",
+      "floor_id": "floor_2",
+      "label": "2층 복도",
+      "move_label": "2층으로 올라간다",
+      "summary": "빨랫감 냄새가 밴 복도 끝으로 세탁실과 201호 문이 나란히 있다.",
+      "connected_zone_ids": [
+        "stairwell",
+        "laundry_room",
+        "unit_201_door"
+      ],
+      "event_ids": [],
+      "map_position": [3, 2],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "laundry_room",
+      "floor_id": "floor_2",
+      "label": "공용 세탁실",
+      "summary": "세탁기 뚜껑이 열린 채 멈춰 있고, 선반 위엔 빨랫감과 잡동사니가 남아 있다.",
+      "connected_zone_ids": [
+        "second_floor_hall"
+      ],
+      "event_ids": [
+        "laundry_room_search_event"
+      ],
+      "map_position": [4, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "unit_201_door",
+      "floor_id": "floor_2",
+      "label": "201호 앞",
+      "summary": "현관문 손잡이에 먼지가 덜 앉아 있다. 누군가 최근까지 드나든 것 같다.",
+      "connected_zone_ids": [
+        "second_floor_hall",
+        "unit_201_room"
+      ],
+      "event_ids": [],
+      "map_position": [4, 2],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "unit_201_room",
+      "floor_id": "floor_2",
+      "label": "201호",
+      "move_label": "201호 문을 연다",
+      "blocked_feedback": "201호 문이 잠겨 있어 들어갈 수 없다.",
+      "summary": "침대 옆 여행 가방과 손전등, 아직 덜 정리된 생활 흔적이 남아 있다.",
+      "connected_zone_ids": [
+        "unit_201_door"
+      ],
+      "event_ids": [
+        "unit_201_room_search_event"
+      ],
+      "map_position": [5, 2],
+      "first_visit_cost": 30,
+      "revisit_cost": 10,
+      "access_requirements": {
+        "required_item_ids": [
+          "apartment_201_key"
         ]
       }
     }
@@ -189,8 +271,8 @@
                 "bulk": 1
               },
               {
-                "id": "filter_cartridge",
-                "name": "방호 필터",
+                "id": "work_gloves",
+                "name": "작업 장갑",
                 "bulk": 1
               }
             ],
@@ -226,9 +308,88 @@
                 "bulk": 1
               },
               {
+                "id": "apartment_201_key",
+                "name": "201호 열쇠",
+                "bulk": 1
+              },
+              {
                 "id": "small_backpack",
                 "name": "작은 배낭",
                 "bulk": 2
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "laundry_room_search_event",
+      "zone_id": "laundry_room",
+      "type": "search",
+      "hint_text": "세제통 뒤와 접이식 선반 아래엔 아직 건질 만한 자잘한 물건이 남아 있다.",
+      "options": [
+        {
+          "id": "search_laundry_room",
+          "label": "세탁실을 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "bottled_water",
+                "name": "생수",
+                "bulk": 1
+              },
+              {
+                "id": "spare_batteries",
+                "name": "건전지",
+                "bulk": 1
+              },
+              {
+                "id": "instant_noodles",
+                "name": "컵라면",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "unit_201_room_search_event",
+      "zone_id": "unit_201_room",
+      "type": "search",
+      "hint_text": "침대 아래 여행 가방과 벽장 안쪽엔 아직 챙길 만한 장비가 남아 있다.",
+      "options": [
+        {
+          "id": "search_unit_201_room",
+          "label": "201호를 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "flashlight",
+                "name": "손전등",
+                "bulk": 1
+              },
+              {
+                "id": "running_shoes",
+                "name": "운동화",
+                "bulk": 1
+              },
+              {
+                "id": "canned_tuna",
+                "name": "참치 통조림",
+                "bulk": 1
               }
             ],
             "consume_on_use": true

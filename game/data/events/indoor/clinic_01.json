@@ -1,7 +1,7 @@
 {
   "id": "clinic_01",
   "name": "동네 의원",
-  "summary": "대기실 너머로 접수창구와 진료실이 이어지고, 안쪽 약품 보관실은 잠겨 있다.",
+  "summary": "대기실 너머로 접수창구와 진료실, 안쪽 처치 준비실과 약품 보관실이 이어진다.",
   "entry_zone_id": "clinic_lobby",
   "zones": [
     {
@@ -39,15 +39,47 @@
       "id": "treatment_room",
       "floor_id": "floor_1",
       "label": "진료실",
-      "summary": "침대와 약장 너머로 안쪽 약품 보관실 문이 잠겨 있다.",
+      "summary": "침대와 약장 너머로 처치 준비실, 휴게실, 약품 보관실 문이 이어진다.",
       "connected_zone_ids": [
         "clinic_lobby",
+        "nurse_station",
+        "staff_break_room",
         "medicine_storage"
       ],
       "event_ids": [
         "treatment_room_search_event"
       ],
       "map_position": [1, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "nurse_station",
+      "floor_id": "floor_1",
+      "label": "처치 준비실",
+      "summary": "멸균 포장지와 작은 카트가 남아 있어 급한 처치 물자를 찾을 수 있을 것 같다.",
+      "connected_zone_ids": [
+        "treatment_room"
+      ],
+      "event_ids": [
+        "nurse_station_search_event"
+      ],
+      "map_position": [2, 0],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "staff_break_room",
+      "floor_id": "floor_1",
+      "label": "휴게실",
+      "summary": "자판기 옆 탁자와 싱크대 주변에 아직 손대지 않은 간식과 생수가 남아 있다.",
+      "connected_zone_ids": [
+        "treatment_room"
+      ],
+      "event_ids": [
+        "staff_break_room_search_event"
+      ],
+      "map_position": [2, 1],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -64,7 +96,7 @@
       "event_ids": [
         "medicine_storage_search_event"
       ],
-      "map_position": [2, 1],
+      "map_position": [3, 1],
       "first_visit_cost": 30,
       "revisit_cost": 10,
       "access_requirements": {
@@ -164,6 +196,80 @@
               {
                 "id": "spare_batteries",
                 "name": "건전지",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "nurse_station_search_event",
+      "zone_id": "nurse_station",
+      "type": "search",
+      "hint_text": "카트 서랍과 멸균 포장 더미 사이에 붕대와 약품이 남아 있다.",
+      "options": [
+        {
+          "id": "search_nurse_station",
+          "label": "처치 준비실을 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "bandage",
+                "name": "붕대",
+                "bulk": 1
+              },
+              {
+                "id": "painkillers",
+                "name": "진통제",
+                "bulk": 1
+              },
+              {
+                "id": "flashlight",
+                "name": "손전등",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "staff_break_room_search_event",
+      "zone_id": "staff_break_room",
+      "type": "search",
+      "hint_text": "자판기 아래와 찻장 안쪽에 아직 식량이 조금 남아 있다.",
+      "options": [
+        {
+          "id": "search_staff_break_room",
+          "label": "휴게실을 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "energy_bar",
+                "name": "에너지바",
+                "bulk": 1
+              },
+              {
+                "id": "bottled_water",
+                "name": "생수",
+                "bulk": 1
+              },
+              {
+                "id": "crackers",
+                "name": "크래커",
                 "bulk": 1
               }
             ],

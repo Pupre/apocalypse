@@ -135,6 +135,62 @@ func _run_test() -> void:
 		_action_ids(director.get_actions()).has("move_mailbox_hall"),
 		"Apartment entry should expose an initial mailbox-hall route."
 	)
+	assert_true(director.apply_action("move_mailbox_hall"), "Apartment should allow moving into the mailbox hall.")
+	assert_true(director.apply_action("search_mailbox_hall"), "Apartment should allow searching the mailbox hall.")
+	var take_101_key_action_id := _action_id_by_label_prefix(director.get_actions(), "101호 열쇠 챙긴다")
+	assert_true(not take_101_key_action_id.is_empty(), "Apartment mailbox search should surface the 101 key.")
+	assert_true(director.apply_action(take_101_key_action_id), "Apartment should allow taking the 101 key.")
+	assert_true(director.apply_action("move_shared_entrance"), "Apartment should allow returning to the shared entrance.")
+	assert_true(director.apply_action("move_first_floor_hall"), "Apartment should allow moving into the first-floor hall.")
+	assert_true(
+		_action_ids(director.get_actions()).has("move_stairwell"),
+		"Apartment first-floor hall should expose the stairwell route."
+	)
+	assert_true(director.apply_action("move_unit_101_door"), "Apartment should allow moving to the 101 doorway.")
+	var room_101_move := _action_by_id(director.get_actions(), "move_unit_101_room")
+	assert_true(not room_101_move.is_empty(), "Apartment should expose the 101 room move at the doorway.")
+	assert_true(not bool(room_101_move.get("locked", true)), "Taking the 101 key should unlock room 101.")
+	assert_true(director.apply_action("move_unit_101_room"), "Apartment should allow entering room 101.")
+	assert_true(director.apply_action("search_unit_101_room"), "Apartment should allow searching room 101.")
+	var take_201_key_action_id := _action_id_by_label_prefix(director.get_actions(), "201호 열쇠 챙긴다")
+	assert_true(not take_201_key_action_id.is_empty(), "Apartment room 101 should surface the 201 key.")
+	assert_true(director.apply_action(take_201_key_action_id), "Apartment should allow taking the 201 key.")
+	assert_true(director.apply_action("move_unit_101_door"), "Apartment should allow stepping back to the 101 doorway.")
+	assert_true(director.apply_action("move_first_floor_hall"), "Apartment should allow returning to the first-floor hall.")
+	assert_true(director.apply_action("move_stairwell"), "Apartment should allow entering the stairwell.")
+	assert_true(director.apply_action("move_second_floor_hall"), "Apartment should allow reaching the second-floor hall.")
+	assert_true(
+		_action_ids(director.get_actions()).has("move_unit_201_door"),
+		"Apartment second-floor hall should expose the 201 doorway."
+	)
+	assert_true(director.apply_action("move_unit_201_door"), "Apartment should allow moving to the 201 doorway.")
+	var room_201_move := _action_by_id(director.get_actions(), "move_unit_201_room")
+	assert_true(not room_201_move.is_empty(), "Apartment should expose the 201 room move at the doorway.")
+	assert_true(not bool(room_201_move.get("locked", true)), "Taking the 201 key should unlock room 201.")
+
+	director.configure(run_state, "clinic_01")
+	assert_eq(director.get_current_zone_id(), "clinic_lobby", "Director should initialize at the clinic entry zone.")
+	assert_true(director.apply_action("move_treatment_room"), "Clinic should allow moving into the treatment room.")
+	assert_true(
+		_action_ids(director.get_actions()).has("move_nurse_station"),
+		"Clinic treatment room should expose the nurse station route."
+	)
+	assert_true(
+		_action_ids(director.get_actions()).has("move_staff_break_room"),
+		"Clinic treatment room should expose a staff break room side route."
+	)
+
+	director.configure(run_state, "office_01")
+	assert_eq(director.get_current_zone_id(), "office_lobby", "Director should initialize at the office entry zone.")
+	assert_true(director.apply_action("move_open_office"), "Office should allow moving into the open workspace.")
+	assert_true(
+		_action_ids(director.get_actions()).has("move_meeting_room"),
+		"Office workspace should expose a meeting-room route."
+	)
+	assert_true(
+		_action_ids(director.get_actions()).has("move_records_room"),
+		"Office workspace should still expose the records-room move."
+	)
 
 	director.free()
 	pass_test("INDOOR_DIRECTOR_OK")
@@ -169,6 +225,27 @@ func _action_ids(actions) -> Array[String]:
 			continue
 		ids.append(String((action_variant as Dictionary).get("id", "")))
 	return ids
+
+
+func _action_by_id(actions, expected_id: String) -> Dictionary:
+	for action_variant in actions:
+		if typeof(action_variant) != TYPE_DICTIONARY:
+			continue
+		var action := action_variant as Dictionary
+		if String(action.get("id", "")) == expected_id:
+			return action
+	return {}
+
+
+func _action_id_by_label_prefix(actions, expected_prefix: String) -> String:
+	for action_variant in actions:
+		if typeof(action_variant) != TYPE_DICTIONARY:
+			continue
+		var action := action_variant as Dictionary
+		var label := String(action.get("label", ""))
+		if label.begins_with(expected_prefix):
+			return String(action.get("id", ""))
+	return ""
 
 
 func get_job(job_id: String) -> Dictionary:

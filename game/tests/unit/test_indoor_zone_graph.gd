@@ -2,6 +2,9 @@ extends "res://tests/support/test_case.gd"
 
 const RESOLVER_PATH := "res://scripts/indoor/indoor_action_resolver.gd"
 const EVENT_PATH := "res://data/events/indoor/mart_01.json"
+const APARTMENT_EVENT_PATH := "res://data/events/indoor/apartment_01.json"
+const CLINIC_EVENT_PATH := "res://data/events/indoor/clinic_01.json"
+const OFFICE_EVENT_PATH := "res://data/events/indoor/office_01.json"
 
 
 class FakeRunState:
@@ -165,6 +168,58 @@ func _run_test() -> void:
 	var stair_landing_zone: Dictionary = resolver.get_zone(event_data, "stair_landing")
 	assert_true(not stair_landing_zone.is_empty(), "The second-floor landing should exist.")
 	assert_eq(String(stair_landing_zone.get("floor_id", "")), "floor_2", "The second-floor landing should belong to floor 2.")
+
+	var apartment_event_data := _load_json(APARTMENT_EVENT_PATH)
+	if apartment_event_data.is_empty():
+		return
+
+	var first_floor_hall: Dictionary = resolver.get_zone(apartment_event_data, "first_floor_hall")
+	assert_true(not first_floor_hall.is_empty(), "Apartment first-floor hall should exist.")
+	assert_true(
+		_sorted_strings(first_floor_hall.get("connected_zone_ids", [])).has("stairwell"),
+		"Apartment first-floor hall should connect to a stairwell."
+	)
+	var second_floor_hall: Dictionary = resolver.get_zone(apartment_event_data, "second_floor_hall")
+	assert_true(not second_floor_hall.is_empty(), "Apartment should expose a second-floor hall.")
+	assert_true(
+		_sorted_strings(second_floor_hall.get("connected_zone_ids", [])).has("laundry_room"),
+		"Apartment second floor should expose a laundry-room side route."
+	)
+	var unit_201_room: Dictionary = resolver.get_zone(apartment_event_data, "unit_201_room")
+	assert_true(not unit_201_room.is_empty(), "Apartment should expose a second locked unit.")
+	assert_eq(
+		_sorted_strings(unit_201_room.get("access_requirements", {}).get("required_item_ids", [])),
+		PackedStringArray(["apartment_201_key"]),
+		"Apartment 201 should require its own key."
+	)
+
+	var clinic_event_data := _load_json(CLINIC_EVENT_PATH)
+	if clinic_event_data.is_empty():
+		return
+	var treatment_room: Dictionary = resolver.get_zone(clinic_event_data, "treatment_room")
+	assert_true(not treatment_room.is_empty(), "Clinic treatment room should exist.")
+	assert_true(
+		_sorted_strings(treatment_room.get("connected_zone_ids", [])).has("nurse_station"),
+		"Clinic treatment room should connect to a nurse station."
+	)
+	var clinic_break_room: Dictionary = resolver.get_zone(clinic_event_data, "staff_break_room")
+	assert_true(not clinic_break_room.is_empty(), "Clinic should expose a staff break room.")
+
+	var office_event_data := _load_json(OFFICE_EVENT_PATH)
+	if office_event_data.is_empty():
+		return
+	var open_office: Dictionary = resolver.get_zone(office_event_data, "open_office")
+	assert_true(not open_office.is_empty(), "Office open workspace should exist.")
+	assert_true(
+		_sorted_strings(open_office.get("connected_zone_ids", [])).has("meeting_room"),
+		"Office workspace should connect to a meeting room."
+	)
+	var records_room: Dictionary = resolver.get_zone(office_event_data, "records_room")
+	assert_true(not records_room.is_empty(), "Office records room should exist.")
+	assert_true(
+		_sorted_strings(records_room.get("connected_zone_ids", [])).has("server_closet"),
+		"Office records room should lead into a deeper server closet."
+	)
 
 	pass_test("INDOOR_ZONE_GRAPH_OK")
 
