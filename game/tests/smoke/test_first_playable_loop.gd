@@ -152,16 +152,22 @@ func _run_test() -> void:
 	assert_eq(fade_rect.color.a, 0.0, "The transition layer should start transparent.")
 
 	var outdoor_mode: Node = run_shell.get_node_or_null("ModeHost/OutdoorMode")
+	var content_library := root.get_node_or_null("ContentLibrary")
 	if not assert_true(outdoor_mode != null, "Run shell should launch the outdoor mode first."):
+		bootstrap.free()
+		return
+	if not assert_true(content_library != null, "ContentLibrary autoload should be present for outdoor building lookups."):
 		bootstrap.free()
 		return
 
 	var player_marker := outdoor_mode.get_node_or_null("PlayerMarker") as Polygon2D
-	var building_marker := outdoor_mode.get_node_or_null("BuildingMarker") as Polygon2D
+	var mart_data: Dictionary = content_library.get_building("mart_01")
+	var mart_position_data: Dictionary = mart_data.get("outdoor_position", {})
+	var mart_position := Vector2(
+		float(mart_position_data.get("x", 640.0)),
+		float(mart_position_data.get("y", 360.0))
+	)
 	if not assert_true(player_marker != null, "Outdoor player marker should be present."):
-		bootstrap.free()
-		return
-	if not assert_true(building_marker != null, "Outdoor building marker should be present."):
 		bootstrap.free()
 		return
 
@@ -171,7 +177,7 @@ func _run_test() -> void:
 	assert_eq(hud_clock_label.text, "1일차 10:00", "HUD time should reflect outdoor time spent.")
 
 	outdoor_mode.move_player(Vector2.RIGHT, 1.5)
-	assert_true(player_marker.position.distance_to(building_marker.position) <= 72.0, "The player should move into building entry range.")
+	assert_true(player_marker.position.distance_to(mart_position) <= 72.0, "The player should move into building entry range.")
 	var pre_entry_player_position := player_marker.position
 
 	outdoor_mode.try_enter_building("mart_01")

@@ -177,6 +177,33 @@
     - `열림/잠김` 판정은 UI와 실제 실행이 같은 상태를 참조하게 됐다.
     - 장비 교체와 현재 장착 상태가 한눈에 보여 다음 장비 시스템 확장 때도 같은 UI 문법을 재사용할 수 있게 됐다.
 
+- 변경한 파일
+  - `game/data/buildings.json`
+  - `game/data/items.json`
+  - `game/data/events/indoor/apartment_01.json`
+  - `game/data/events/indoor/clinic_01.json`
+  - `game/data/events/indoor/office_01.json`
+  - `game/scripts/autoload/content_library.gd`
+  - `game/scripts/outdoor/outdoor_controller.gd`
+  - `game/scenes/outdoor/outdoor_mode.tscn`
+  - `game/tests/unit/test_content_library.gd`
+  - `game/tests/unit/test_outdoor_controller.gd`
+  - `game/tests/unit/test_indoor_director.gd`
+  - `game/tests/unit/test_run_controller_live_transition.gd`
+  - `game/tests/unit/test_survivor_creator.gd`
+  - `game/tests/smoke/test_first_playable_loop.gd`
+  - 무엇을 바꿨는지
+    - 외부 맵을 단일 건물 전제에서 `마트 + 아파트 + 의원 + 사무실` 4개 건물 전제로 바꿨다.
+    - 외부는 이제 가장 가까운 건물 기준으로 진입 힌트를 보여주고, 건물별 마커를 동적으로 생성한다.
+    - 아파트/의원/사무실에 각각 얕은 실내 루프를 추가해, 마트와 같은 `이동 -> 탐색 -> 발견 -> 선택 획득` 문법이 다른 건물에도 바로 복제되도록 했다.
+    - 새 실내에 필요한 열쇠와 의료/조명 계열 아이템도 같이 추가했다.
+  - 왜 바꿨는지
+    - 실내 시스템을 마트 하나에만 묶어두면 다음 단계 외부 확장으로 넘어갈 수 없고, 문법이 재사용 가능한지도 검증할 수 없기 때문이다.
+    - 외부 건물 선택이 생겨야 이후 `어디로 갈지`, `무슨 리스크를 감수할지` 같은 바깥 의사결정 시스템을 붙일 수 있다.
+  - 영향
+    - 이제 외부는 한 건물 진입 데모가 아니라 여러 건물 중 하나를 고르는 출정 전 단계가 됐다.
+    - 실내 시스템은 건물별 JSON만 추가하면 확장되는 구조라는 점이 실제 코드와 테스트로 검증됐다.
+
 ## 기대 효과
 
 - 마트가 단순 이벤트 카드 묶음이 아니라 실제 파밍 장소처럼 느껴진다.
@@ -209,3 +236,5 @@
 - 장착 아이템은 `작은 배낭`, `운동화`, `작업 장갑`까지 늘었지만, 장비 종류 대비 효과 축은 아직 적다.
 - 현재 과적 상태 문구는 인벤토리 패널 기준으로만 보인다. 외부 HUD에도 같은 상태를 보여줄지는 다음 단계에서 결정해야 한다.
 - 인벤토리/장착 UI는 정리됐지만, `버리기/먹기/장착` 외 더 많은 아이템 상호작용이 들어오면 하단 패널 정보 밀도를 다시 조정해야 할 수 있다.
+- 새 건물 3종은 모두 1차 프로토타입 깊이라서, 인간 조우/잠금 분기/희귀 이벤트는 아직 마트보다 얕다.
+- 외부에는 여러 건물이 보이지만, 아직 건물 간 거리 리스크나 외부 랜드마크별 차별화는 약하다.

@@ -128,6 +128,14 @@ func _run_test() -> void:
 		"At the staff door, the minimap should only add routes that can be seen directly from the current position."
 	)
 
+	director.configure(run_state, "apartment_01")
+	assert_eq(director.get_current_zone_id(), "shared_entrance", "Director should initialize at the apartment entry zone.")
+	assert_eq(director.get_current_zone_label(), "공동 현관", "Director should expose the readable apartment entry label.")
+	assert_true(
+		_action_ids(director.get_actions()).has("move_mailbox_hall"),
+		"Apartment entry should expose an initial mailbox-hall route."
+	)
+
 	director.free()
 	pass_test("INDOOR_DIRECTOR_OK")
 

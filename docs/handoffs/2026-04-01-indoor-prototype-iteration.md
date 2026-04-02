@@ -1,13 +1,18 @@
 ## Session Snapshot
 
 - Goal: 실내 마트 프로토타입의 정합성을 보정하고 파밍 흐름을 생존게임답게 수정
-- Current status: 실내 파밍은 `탐색 -> 발견 -> 선택 획득`으로 전환 완료, `잠긴 길 노출 / 도구 행동 숨김`, `하단 아이템 패널`, `생활용품 코너`, `작은 배낭/운동화/작업 장갑/작업 조끼`, `소프트 한도 초과 시 실외 이동속도 저하`, `인벤토리 상태 라벨`, `인벤토리 스크롤`, `장착 장비 목록`, `보관실 열쇠 경로 수정`까지 반영 완료
+- Current status: 실내 파밍은 `탐색 -> 발견 -> 선택 획득`으로 전환 완료, `잠긴 길 노출 / 도구 행동 숨김`, `하단 아이템 패널`, `생활용품 코너`, `작은 배낭/운동화/작업 장갑/작업 조끼`, `소프트 한도 초과 시 실외 이동속도 저하`, `인벤토리 상태 라벨`, `인벤토리 스크롤`, `장착 장비 목록`, `보관실 열쇠 경로 수정`, `외부 4건물 마커`, `아파트/의원/사무실 실내 데이터`까지 반영 완료
 - Last updated: 2026-04-01
 - Primary repos: apocalypse
 - Active branches: playtest-mart-indoor-content
 - Last touched files:
+  - `game/data/buildings.json`
   - `game/data/items.json`
+  - `game/data/events/indoor/apartment_01.json`
+  - `game/data/events/indoor/clinic_01.json`
   - `game/data/events/indoor/mart_01.json`
+  - `game/data/events/indoor/office_01.json`
+  - `game/scripts/autoload/content_library.gd`
   - `game/scripts/run/inventory_model.gd`
   - `game/scripts/run/run_state.gd`
   - `game/scripts/outdoor/outdoor_controller.gd`
@@ -17,17 +22,20 @@
   - `game/scenes/indoor/indoor_mode.tscn`
   - `game/tests/unit/test_indoor_actions.gd`
   - `game/tests/unit/test_indoor_director.gd`
+  - `game/tests/unit/test_run_controller_live_transition.gd`
   - `game/tests/unit/test_run_models.gd`
   - `game/tests/unit/test_outdoor_controller.gd`
   - `game/tests/unit/test_indoor_mode.gd`
+  - `game/tests/unit/test_survivor_creator.gd`
   - `game/tests/smoke/test_first_playable_loop.gd`
 
 ## Next Actions
 
-- [ ] 다른 건물 2~3개를 외부 맵에 추가해 실내 문법을 확장하기
+- [ ] 새 건물 3종의 인간 조우/잠금 분기/희귀 이벤트를 마트 수준으로 끌어올릴지 결정하기
 - [ ] 소프트 한도 초과 시 이동속도 저하 수치를 실제 플레이 체감 기준으로 튜닝하기
 - [ ] 장착 아이템 슬롯과 효과를 `배낭/신발/손/몸` 외 다른 장비로 확장할지 결정하기
 - [ ] 외부 HUD에도 과적 상태를 보여줄지 결정하기
+- [ ] 건물 간 거리와 외부 랜드마크 차이를 실제 위험/보상 규칙으로 연결하기
 
 ## Progress Checklist
 
@@ -54,9 +62,17 @@
   - 보관실 이동 판정도 UI와 동일하게 `run_state` 기준 잠금 해제를 보도록 맞췄다
   - 인벤토리 목록은 `InventoryScroll` 아래에 있고, 장착 상태는 `EquippedItems`로 따로 노출된다
   - 장비 교체 시 기존 장비는 가방으로 되돌아가며 결과 문구에 명시된다
+  - 외부는 이제 `Buildings` 노드 아래에 건물 마커를 동적으로 생성한다
+  - `ContentLibrary.get_building_rows()`로 정렬된 건물 배열을 받아 외부 맵과 테스트가 같은 목록을 본다
+  - 새 건물은 `apartment_01`, `clinic_01`, `office_01`이며 모두 별도 indoor JSON을 사용한다
 - 다음 작업 시작 전 확인할 것:
+  - `game/data/buildings.json`
   - `game/data/items.json`
+  - `game/data/events/indoor/apartment_01.json`
+  - `game/data/events/indoor/clinic_01.json`
   - `game/data/events/indoor/mart_01.json`
+  - `game/data/events/indoor/office_01.json`
+  - `game/scripts/autoload/content_library.gd`
   - `game/scripts/run/inventory_model.gd`
   - `game/scripts/run/run_state.gd`
   - `game/scripts/outdoor/outdoor_controller.gd`
@@ -64,8 +80,13 @@
   - `game/scripts/indoor/indoor_director.gd`
   - `game/scripts/indoor/indoor_mode.gd`
   - `game/scenes/indoor/indoor_mode.tscn`
+  - `game/scenes/outdoor/outdoor_mode.tscn`
+  - `game/tests/unit/test_content_library.gd`
+  - `game/tests/unit/test_indoor_director.gd`
   - `game/tests/unit/test_run_models.gd`
+  - `game/tests/unit/test_run_controller_live_transition.gd`
   - `game/tests/unit/test_outdoor_controller.gd`
+  - `game/tests/unit/test_survivor_creator.gd`
 
 ## Verification Status
 
@@ -78,8 +99,9 @@
   - `XDG_DATA_HOME=/tmp/codex-godot-home ... -s res://tests/unit/test_indoor_zone_graph.gd`
   - `XDG_DATA_HOME=/tmp/codex-godot-home ... -s res://tests/unit/test_indoor_actions.gd`
   - `XDG_DATA_HOME=/tmp/codex-godot-home ... -s res://tests/unit/test_indoor_mode.gd`
-  - `XDG_DATA_HOME=/tmp/codex-godot-home ... -s res://tests/smoke/test_first_playable_loop.gd`
+  - `XDG_DATA_HOME=/tmp/codex-godot-home ... -s res://tests/unit/test_run_controller_live_transition.gd`
   - `XDG_DATA_HOME=/tmp/codex-godot-home ... -s res://tests/unit/test_survivor_creator.gd`
+  - `XDG_DATA_HOME=/tmp/codex-godot-home ... -s res://tests/smoke/test_first_playable_loop.gd`
 - Results:
   - 위 테스트 전부 통과
   - 2026-04-02 기준 위 세트 전체를 다시 fresh run으로 통과 확인

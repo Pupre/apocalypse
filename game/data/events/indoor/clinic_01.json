@@ -1,0 +1,213 @@
+{
+  "id": "clinic_01",
+  "name": "동네 의원",
+  "summary": "대기실 너머로 접수창구와 진료실이 이어지고, 안쪽 약품 보관실은 잠겨 있다.",
+  "entry_zone_id": "clinic_lobby",
+  "zones": [
+    {
+      "id": "clinic_lobby",
+      "floor_id": "floor_1",
+      "label": "대기실",
+      "summary": "넘어진 의자들과 오래된 안내문 사이로 접수창구와 진료실 문이 보인다.",
+      "connected_zone_ids": [
+        "reception",
+        "treatment_room"
+      ],
+      "event_ids": [
+        "clinic_lobby_search_event"
+      ],
+      "map_position": [0, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "reception",
+      "floor_id": "floor_1",
+      "label": "접수창구",
+      "summary": "흩어진 문진표 사이로 잠긴 서랍과 명찰 걸이가 남아 있다.",
+      "connected_zone_ids": [
+        "clinic_lobby"
+      ],
+      "event_ids": [
+        "reception_search_event"
+      ],
+      "map_position": [1, 0],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "treatment_room",
+      "floor_id": "floor_1",
+      "label": "진료실",
+      "summary": "침대와 약장 너머로 안쪽 약품 보관실 문이 잠겨 있다.",
+      "connected_zone_ids": [
+        "clinic_lobby",
+        "medicine_storage"
+      ],
+      "event_ids": [
+        "treatment_room_search_event"
+      ],
+      "map_position": [1, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "medicine_storage",
+      "floor_id": "floor_1",
+      "label": "약품 보관실",
+      "move_label": "약품 보관실로 들어간다",
+      "blocked_feedback": "약품 보관실 문이 잠겨 있어 들어갈 수 없다.",
+      "summary": "정리된 약 상자와 응급용 키트가 아직 남아 있다.",
+      "connected_zone_ids": [
+        "treatment_room"
+      ],
+      "event_ids": [
+        "medicine_storage_search_event"
+      ],
+      "map_position": [2, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10,
+      "access_requirements": {
+        "required_item_ids": [
+          "clinic_storage_key"
+        ]
+      }
+    }
+  ],
+  "clues": [],
+  "events": [
+    {
+      "id": "clinic_lobby_search_event",
+      "zone_id": "clinic_lobby",
+      "type": "search",
+      "hint_text": "대기 의자 밑과 안내 데스크 주변에 놓치고 간 물건이 있을지 모른다.",
+      "options": [
+        {
+          "id": "search_clinic_lobby",
+          "label": "대기실을 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "bottled_water",
+                "name": "생수",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "reception_search_event",
+      "zone_id": "reception",
+      "type": "search",
+      "hint_text": "서랍 틈과 접수대 뒤편에 열쇠와 간단한 응급품이 남아 있다.",
+      "options": [
+        {
+          "id": "search_reception",
+          "label": "접수창구를 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "clinic_storage_key",
+                "name": "약품 보관실 열쇠",
+                "bulk": 1
+              },
+              {
+                "id": "bandage",
+                "name": "붕대",
+                "bulk": 1
+              },
+              {
+                "id": "painkillers",
+                "name": "진통제",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "treatment_room_search_event",
+      "zone_id": "treatment_room",
+      "type": "search",
+      "hint_text": "진료 침대 옆 카트와 작은 약장에서 아직 챙길 만한 물건이 보인다.",
+      "options": [
+        {
+          "id": "search_treatment_room",
+          "label": "진료실을 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "bandage",
+                "name": "붕대",
+                "bulk": 1
+              },
+              {
+                "id": "spare_batteries",
+                "name": "건전지",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "medicine_storage_search_event",
+      "zone_id": "medicine_storage",
+      "type": "search",
+      "hint_text": "정리된 약 상자와 응급 키트 안에는 아직 손대지 않은 물품이 남아 있다.",
+      "options": [
+        {
+          "id": "search_medicine_storage",
+          "label": "약품 보관실을 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "painkillers",
+                "name": "진통제",
+                "bulk": 1
+              },
+              {
+                "id": "bandage",
+                "name": "붕대",
+                "bulk": 1
+              },
+              {
+                "id": "filter_cartridge",
+                "name": "방호 필터",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

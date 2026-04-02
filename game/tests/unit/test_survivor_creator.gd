@@ -128,24 +128,29 @@ func _run_test() -> void:
 	transition_layer.set_duration_for_tests(0.0)
 
 	var hud_clock_label := hud.get_node_or_null("Panel/VBox/ClockLabel") as Label
+	var content_library := root.get_node_or_null("ContentLibrary")
 	if not assert_true(hud_clock_label != null, "HUD clock label should be present."):
 		bootstrap.free()
 		return
 	assert_eq(hud_clock_label.text, "1일차 08:00", "The run shell should start at the run-state clock.")
+	if not assert_true(content_library != null, "ContentLibrary autoload should be present for outdoor building lookups."):
+		bootstrap.free()
+		return
 
 	var player_marker := outdoor_mode.get_node_or_null("PlayerMarker") as Polygon2D
-	var building_marker := outdoor_mode.get_node_or_null("BuildingMarker") as Polygon2D
+	var mart_data: Dictionary = content_library.get_building("mart_01")
+	var mart_position_data: Dictionary = mart_data.get("outdoor_position", {})
+	var mart_position := Vector2(
+		float(mart_position_data.get("x", 640.0)),
+		float(mart_position_data.get("y", 360.0))
+	)
 	if not assert_true(player_marker != null, "Outdoor player marker should be present."):
 		bootstrap.free()
 		return
-	if not assert_true(building_marker != null, "Outdoor building marker should be present."):
-		bootstrap.free()
-		return
-
-	assert_true(player_marker.position.distance_to(building_marker.position) > 72.0, "The run should start outside the entry radius.")
+	assert_true(player_marker.position.distance_to(mart_position) > 72.0, "The run should start outside the entry radius.")
 
 	outdoor_mode.move_player(Vector2.RIGHT, 1.5)
-	assert_true(player_marker.position.distance_to(building_marker.position) <= 72.0, "Moving right should bring the player into entry range.")
+	assert_true(player_marker.position.distance_to(mart_position) <= 72.0, "Moving right should bring the player into entry range.")
 
 	outdoor_mode.try_enter_building("mart_01")
 	if not await _await_transition_completion(

@@ -82,10 +82,52 @@
     "category": "key"
   },
   {
+    "id": "apartment_101_key",
+    "name": "101호 열쇠",
+    "bulk": 1,
+    "description": "아파트 101호 출입문에 맞는 작은 열쇠다.",
+    "category": "key"
+  },
+  {
+    "id": "clinic_storage_key",
+    "name": "약품 보관실 열쇠",
+    "bulk": 1,
+    "description": "의원 안쪽 약품 보관실을 여는 열쇠다.",
+    "category": "key"
+  },
+  {
+    "id": "office_keycard",
+    "name": "출입 카드키",
+    "bulk": 1,
+    "description": "사무실 안쪽 기록보관실 문을 여는 카드키다.",
+    "category": "key"
+  },
+  {
     "id": "filter_cartridge",
     "name": "방호 필터",
     "bulk": 1,
     "description": "외부 활동 장비와 연결될 방호 필터다.",
+    "category": "utility"
+  },
+  {
+    "id": "bandage",
+    "name": "붕대",
+    "bulk": 1,
+    "description": "상처를 감싸거나 응급처치에 쓸 수 있는 붕대다.",
+    "category": "utility"
+  },
+  {
+    "id": "painkillers",
+    "name": "진통제",
+    "bulk": 1,
+    "description": "통증을 잠시 누그러뜨려 줄 약이다.",
+    "category": "utility"
+  },
+  {
+    "id": "flashlight",
+    "name": "손전등",
+    "bulk": 1,
+    "description": "어두운 실내를 살필 때 쓸 수 있는 작은 손전등이다.",
     "category": "utility"
   },
   {

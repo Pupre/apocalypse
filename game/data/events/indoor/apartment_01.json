@@ -1,0 +1,240 @@
+{
+  "id": "apartment_01",
+  "name": "낡은 아파트",
+  "summary": "공동 현관 안쪽으로 우편함과 1층 복도가 이어진다.",
+  "entry_zone_id": "shared_entrance",
+  "zones": [
+    {
+      "id": "shared_entrance",
+      "floor_id": "floor_1",
+      "label": "공동 현관",
+      "summary": "갈라진 타일 바닥 너머로 우편함 앞과 1층 복도가 보인다.",
+      "connected_zone_ids": [
+        "mailbox_hall",
+        "first_floor_hall"
+      ],
+      "event_ids": [
+        "shared_entrance_search_event"
+      ],
+      "map_position": [0, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "mailbox_hall",
+      "floor_id": "floor_1",
+      "label": "우편함 앞",
+      "summary": "열린 우편함 몇 개와 아직 닫힌 금속 함들이 벽을 따라 늘어서 있다.",
+      "connected_zone_ids": [
+        "shared_entrance"
+      ],
+      "event_ids": [
+        "mailbox_hall_search_event"
+      ],
+      "map_position": [1, 0],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "first_floor_hall",
+      "floor_id": "floor_1",
+      "label": "1층 복도",
+      "summary": "먼지 낀 복도 끝으로 관리 창고와 101호 문이 보인다.",
+      "connected_zone_ids": [
+        "shared_entrance",
+        "janitor_closet",
+        "unit_101_door"
+      ],
+      "event_ids": [],
+      "map_position": [1, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "janitor_closet",
+      "floor_id": "floor_1",
+      "label": "관리 창고",
+      "summary": "빗자루와 생수 상자, 비상용 자재가 어두운 창고 안에 쌓여 있다.",
+      "connected_zone_ids": [
+        "first_floor_hall"
+      ],
+      "event_ids": [
+        "janitor_closet_search_event"
+      ],
+      "map_position": [2, 0],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "unit_101_door",
+      "floor_id": "floor_1",
+      "label": "101호 앞",
+      "summary": "문틈 아래로 생활 흔적이 남아 있지만, 현관문은 잠겨 있다.",
+      "connected_zone_ids": [
+        "first_floor_hall",
+        "unit_101_room"
+      ],
+      "event_ids": [],
+      "map_position": [2, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "unit_101_room",
+      "floor_id": "floor_1",
+      "label": "101호",
+      "move_label": "101호 문을 연다",
+      "blocked_feedback": "101호 문이 잠겨 있어 들어갈 수 없다.",
+      "summary": "뒤집힌 식탁과 반쯤 열린 찬장 속에 생활 물자가 남아 있다.",
+      "connected_zone_ids": [
+        "unit_101_door"
+      ],
+      "event_ids": [
+        "unit_101_room_search_event"
+      ],
+      "map_position": [3, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10,
+      "access_requirements": {
+        "required_item_ids": [
+          "apartment_101_key"
+        ]
+      }
+    }
+  ],
+  "clues": [],
+  "events": [
+    {
+      "id": "shared_entrance_search_event",
+      "zone_id": "shared_entrance",
+      "type": "search",
+      "hint_text": "현관 매트 아래와 관리비 고지함 주변엔 놓치고 간 물건이 있을지 모른다.",
+      "options": [
+        {
+          "id": "search_shared_entrance",
+          "label": "공동 현관을 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "mailbox_hall_search_event",
+      "zone_id": "mailbox_hall",
+      "type": "search",
+      "hint_text": "금이 간 우편함 틈새에 아직 손대지 않은 봉투와 작은 열쇠가 남아 있다.",
+      "options": [
+        {
+          "id": "search_mailbox_hall",
+          "label": "우편함 앞을 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "apartment_101_key",
+                "name": "101호 열쇠",
+                "bulk": 1
+              },
+              {
+                "id": "crackers",
+                "name": "크래커",
+                "bulk": 1
+              },
+              {
+                "id": "lighter",
+                "name": "라이터",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "janitor_closet_search_event",
+      "zone_id": "janitor_closet",
+      "type": "search",
+      "hint_text": "생수 상자 뒤편과 청소 도구 사이엔 아직 쓸 만한 비상 물자가 남아 있다.",
+      "options": [
+        {
+          "id": "search_janitor_closet",
+          "label": "관리 창고를 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "bottled_water",
+                "name": "생수",
+                "bulk": 1
+              },
+              {
+                "id": "packing_tape",
+                "name": "포장 테이프",
+                "bulk": 1
+              },
+              {
+                "id": "filter_cartridge",
+                "name": "방호 필터",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "unit_101_room_search_event",
+      "zone_id": "unit_101_room",
+      "type": "search",
+      "hint_text": "뒤집힌 찬장과 식탁 아래엔 통조림과 개인 짐이 뒤섞여 있다.",
+      "options": [
+        {
+          "id": "search_unit_101_room",
+          "label": "101호를 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "canned_beans",
+                "name": "통조림 콩",
+                "bulk": 1
+              },
+              {
+                "id": "energy_bar",
+                "name": "에너지바",
+                "bulk": 1
+              },
+              {
+                "id": "small_backpack",
+                "name": "작은 배낭",
+                "bulk": 2
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -43,6 +43,7 @@ func _run_test() -> void:
 	var transition_layer := run_shell.get_node_or_null("TransitionLayer")
 	var mode_host := run_shell.get_node_or_null("ModeHost")
 	var outdoor_mode := run_shell.get_node_or_null("ModeHost/OutdoorMode")
+	var content_library := root.get_node_or_null("ContentLibrary")
 	if not assert_true(transition_layer != null, "Run shell should include a transition layer."):
 		run_shell.free()
 		return
@@ -50,6 +51,9 @@ func _run_test() -> void:
 		run_shell.free()
 		return
 	if not assert_true(outdoor_mode != null, "Run shell should start in outdoor mode."):
+		run_shell.free()
+		return
+	if not assert_true(content_library != null, "ContentLibrary autoload should be present for outdoor building lookups."):
 		run_shell.free()
 		return
 	if not assert_true(
@@ -63,19 +67,20 @@ func _run_test() -> void:
 
 	var fade_rect := transition_layer.get_node_or_null("FadeRect") as ColorRect
 	var player_marker := outdoor_mode.get_node_or_null("PlayerMarker") as Polygon2D
-	var building_marker := outdoor_mode.get_node_or_null("BuildingMarker") as Polygon2D
+	var mart_data: Dictionary = content_library.get_building("mart_01")
+	var mart_position_data: Dictionary = mart_data.get("outdoor_position", {})
+	var mart_position := Vector2(
+		float(mart_position_data.get("x", 640.0)),
+		float(mart_position_data.get("y", 360.0))
+	)
 	if not assert_true(fade_rect != null, "Transition layer should expose FadeRect."):
 		run_shell.free()
 		return
 	if not assert_true(player_marker != null, "Outdoor player marker should be present."):
 		run_shell.free()
 		return
-	if not assert_true(building_marker != null, "Outdoor building marker should be present."):
-		run_shell.free()
-		return
-
 	outdoor_mode.move_player(Vector2.RIGHT, 1.5)
-	assert_true(player_marker.position.distance_to(building_marker.position) <= 72.0, "Player should enter building range before transition test.")
+	assert_true(player_marker.position.distance_to(mart_position) <= 72.0, "Player should enter building range before transition test.")
 
 	run_shell.transition_started.connect(Callable(self, "_on_transition_started"))
 	run_shell.transition_completed.connect(Callable(self, "_on_transition_completed"))

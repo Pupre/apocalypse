@@ -78,15 +78,27 @@ func _run_test() -> void:
 	assert_true(run_state.exposure < before_exposure, "Outdoor time should drain exposure.")
 
 	var player_marker := outdoor_mode.get_node_or_null("PlayerMarker") as Polygon2D
-	var building_marker := outdoor_mode.get_node_or_null("BuildingMarker") as Polygon2D
+	var building_markers := outdoor_mode.get_node_or_null("Buildings") as Node2D
 	if not assert_true(player_marker != null, "Outdoor mode should expose a player marker."):
 		outdoor_mode.free()
 		return
-	if not assert_true(building_marker != null, "Outdoor mode should expose a building marker."):
+	if not assert_true(building_markers != null, "Outdoor mode should expose a building marker host."):
+		outdoor_mode.free()
+		return
+	assert_eq(building_markers.get_child_count(), 4, "Outdoor mode should render four building markers.")
+
+	var content_library := root.get_node_or_null("ContentLibrary")
+	if not assert_true(content_library != null, "ContentLibrary autoload should be available for building lookups."):
 		outdoor_mode.free()
 		return
 
-	var far_distance := player_marker.position.distance_to(building_marker.position)
+	var mart_data: Dictionary = content_library.get_building("mart_01")
+	var mart_position := Vector2(
+		float((mart_data.get("outdoor_position", {}) as Dictionary).get("x", 640.0)),
+		float((mart_data.get("outdoor_position", {}) as Dictionary).get("y", 360.0))
+	)
+
+	var far_distance := player_marker.position.distance_to(mart_position)
 	assert_true(far_distance > 72.0, "The player should start outside the entry radius.")
 
 	outdoor_mode.try_enter_building("mart_01")
@@ -102,7 +114,7 @@ func _run_test() -> void:
 
 	outdoor_mode.move_player(Vector2.RIGHT, 1.5)
 
-	var near_distance := player_marker.position.distance_to(building_marker.position)
+	var near_distance := player_marker.position.distance_to(mart_position)
 	assert_true(near_distance <= 72.0, "Moving toward the building should place the player in entry range.")
 
 	outdoor_mode.try_enter_building("wrong_building")
@@ -112,6 +124,16 @@ func _run_test() -> void:
 
 	assert_eq(_building_entered_count, 1, "Trying to enter from nearby should emit building_entered.")
 	assert_eq(_entered_building_id, "mart_01", "The emitted building id should match the entry target.")
+
+	var apartment_data: Dictionary = content_library.get_building("apartment_01")
+	var apartment_position := Vector2(
+		float((apartment_data.get("outdoor_position", {}) as Dictionary).get("x", 0.0)),
+		float((apartment_data.get("outdoor_position", {}) as Dictionary).get("y", 0.0))
+	)
+	outdoor_mode.bind_run_state(run_state, "mart_01", apartment_position)
+	outdoor_mode.try_enter_building("apartment_01")
+	assert_eq(_building_entered_count, 2, "Trying to enter a second building from its own doorstep should also emit building_entered.")
+	assert_eq(_entered_building_id, "apartment_01", "The emitted building id should match the second entry target.")
 
 	var overloaded_run_state = run_state_script.from_survivor_config({
 		"job_id": "courier",

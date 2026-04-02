@@ -10,10 +10,7 @@ position = Vector2(240, 360)
 polygon = PackedVector2Array(-12, -12, 12, -12, 0, 14)
 color = Color(0.88, 0.88, 0.88, 1)
 
-[node name="BuildingMarker" type="Polygon2D" parent="."]
-position = Vector2(640, 360)
-polygon = PackedVector2Array(-18, -18, 18, -18, 18, 18, -18, 18)
-color = Color(0.45, 0.7, 0.45, 1)
+[node name="Buildings" type="Node2D" parent="."]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
