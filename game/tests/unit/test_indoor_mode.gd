@@ -137,11 +137,14 @@ func _run_test() -> void:
 		indoor_mode.free()
 		return
 
+	for chip_index in stat_chip_row.get_child_count():
+		var chip := stat_chip_row.get_child(chip_index) as Button
+		if not assert_true(chip != null, "Indoor mode should render survival chips as buttons, not passive labels."):
+			indoor_mode.free()
+			return
+		assert_true(chip.icon != null, "Indoor mode should give each survival chip an icon.")
+
 	var first_chip := stat_chip_row.get_child(0) as Button
-	if not assert_true(first_chip != null, "Indoor mode should render survival chips as buttons, not passive labels."):
-		indoor_mode.free()
-		return
-	assert_true(first_chip.icon != null, "Indoor mode should give each survival chip an icon.")
 
 	var stat_detail_sheet := indoor_mode.get_node_or_null("StatDetailSheet") as Control
 	if not assert_true(
