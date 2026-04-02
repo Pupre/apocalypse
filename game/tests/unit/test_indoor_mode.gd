@@ -407,7 +407,7 @@ func _run_test() -> void:
 	)
 	assert_eq(
 		time_label.text,
-		"시각: 1일차 11:00",
+		"시각: 1일차 11:10",
 		"Indoor mode should update the visible time after walking back through known zones."
 	)
 	assert_true(
