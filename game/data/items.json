@@ -12,7 +12,8 @@
     "bulk": 1,
     "description": "급하게 허기를 눌러줄 고열량 막대 식량이다.",
     "category": "food",
-    "hunger_restore": 10
+    "hunger_restore": 10,
+    "use_minutes": 10
   },
   {
     "id": "spare_batteries",
@@ -27,7 +28,8 @@
     "bulk": 1,
     "description": "상온 보관이 가능한 든든한 통조림이다.",
     "category": "food",
-    "hunger_restore": 18
+    "hunger_restore": 18,
+    "use_minutes": 15
   },
   {
     "id": "instant_noodles",
@@ -35,14 +37,18 @@
     "bulk": 1,
     "description": "뜨거운 물이 있으면 더 좋지만 그냥 먹어도 칼로리는 된다.",
     "category": "food",
-    "hunger_restore": 12
+    "hunger_restore": 12,
+    "thirst_restore": 3,
+    "use_minutes": 15
   },
   {
     "id": "bottled_water",
     "name": "생수",
     "bulk": 1,
-    "description": "밀봉된 생수병이다. 갈증 시스템이 들어오면 더 중요해진다.",
-    "category": "utility"
+    "description": "밀봉된 생수병이다. 목을 빠르게 축일 수 있다.",
+    "category": "drink",
+    "thirst_restore": 30,
+    "use_minutes": 5
   },
   {
     "id": "canned_tuna",
@@ -50,7 +56,8 @@
     "bulk": 1,
     "description": "칼로리가 높고 오래 두고 먹을 수 있는 통조림이다.",
     "category": "food",
-    "hunger_restore": 20
+    "hunger_restore": 20,
+    "use_minutes": 15
   },
   {
     "id": "crackers",
@@ -58,7 +65,29 @@
     "bulk": 1,
     "description": "부스러지기 쉽지만 가볍게 허기를 달랠 수 있다.",
     "category": "food",
-    "hunger_restore": 8
+    "hunger_restore": 8,
+    "thirst_restore": -2,
+    "use_minutes": 10
+  },
+  {
+    "id": "instant_coffee",
+    "name": "인스턴트 커피",
+    "bulk": 1,
+    "description": "진한 단맛과 카페인으로 잠깐 정신을 붙잡아 주는 믹스커피다.",
+    "category": "stimulant",
+    "fatigue_restore": 8,
+    "thirst_restore": -3,
+    "use_minutes": 5
+  },
+  {
+    "id": "stimulant_shot",
+    "name": "각성제 주사",
+    "bulk": 1,
+    "description": "응급 상황에서 정신을 억지로 끌어올리는 강한 각성제다.",
+    "category": "stimulant",
+    "fatigue_restore": 24,
+    "thirst_restore": -6,
+    "use_minutes": 5
   },
   {
     "id": "screwdriver",
@@ -120,15 +149,20 @@
     "id": "bandage",
     "name": "붕대",
     "bulk": 1,
-    "description": "상처를 감싸거나 응급처치에 쓸 수 있는 붕대다.",
-    "category": "utility"
+    "description": "상처를 감싸거나 지혈하는 데 쓸 수 있는 붕대다.",
+    "category": "medical",
+    "health_restore": 12,
+    "use_minutes": 10
   },
   {
     "id": "painkillers",
     "name": "진통제",
     "bulk": 1,
     "description": "통증을 잠시 누그러뜨려 줄 약이다.",
-    "category": "utility"
+    "category": "medical",
+    "health_restore": 6,
+    "fatigue_restore": 2,
+    "use_minutes": 5
   },
   {
     "id": "flashlight",

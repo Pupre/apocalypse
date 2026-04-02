@@ -195,6 +195,29 @@ func _run_test() -> void:
 	assert_true(state.inventory.total_bulk() > state.inventory.carry_limit, "Overflow test should exceed the soft carry limit.")
 	assert_true(state.get_outdoor_move_speed() < state.move_speed, "Exceeding the soft carry limit should reduce outdoor move speed.")
 
+	var consume_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, content_source)
+	assert_true(consume_state != null, "RunState should build for item consumption checks.")
+	consume_state.hunger = 40.0
+	consume_state.thirst = 25.0
+	consume_state.health = 55.0
+	consume_state.fatigue = 32.0
+	assert_true(consume_state.inventory.add_item({"id": "energy_bar", "name": "에너지바", "bulk": 1}), "Inventory should hold a food item for consumption tests.")
+	assert_true(consume_state.inventory.add_item({"id": "bottled_water", "name": "생수", "bulk": 1}), "Inventory should hold a drink item for consumption tests.")
+	assert_true(consume_state.inventory.add_item({"id": "bandage", "name": "붕대", "bulk": 1}), "Inventory should hold a medicine item for consumption tests.")
+	assert_true(consume_state.inventory.add_item({"id": "instant_coffee", "name": "인스턴트 커피", "bulk": 1}), "Inventory should hold a stimulant item for consumption tests.")
+	assert_true(consume_state.consume_inventory_item("energy_bar", {"hunger_restore": 10.0}), "Food consumption should succeed when the item is present.")
+	assert_eq(consume_state.hunger, 50.0, "Food consumption should restore hunger reserves.")
+	assert_true(consume_state.consume_inventory_item("bottled_water", {"thirst_restore": 30.0}), "Drink consumption should succeed when the item is present.")
+	assert_eq(consume_state.thirst, 55.0, "Drink consumption should restore thirst reserves.")
+	assert_true(consume_state.consume_inventory_item("bandage", {"health_restore": 12.0}), "Medicine consumption should succeed when the item is present.")
+	assert_eq(consume_state.health, 67.0, "Medicine consumption should restore health.")
+	assert_true(consume_state.consume_inventory_item("instant_coffee", {"fatigue_restore": 8.0}), "Stimulant consumption should succeed when the item is present.")
+	assert_eq(consume_state.fatigue, 24.0, "Stimulant consumption should reduce fatigue.")
+
 	var bad_trait_state = run_state_script.from_survivor_config({
 		"job_id": "courier",
 		"trait_ids": PackedStringArray(["athlete", "missing_trait"]),
