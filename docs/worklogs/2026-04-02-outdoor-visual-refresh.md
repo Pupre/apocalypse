@@ -50,3 +50,51 @@ After a live playtest, the borrowed neighborhood backdrop and external vehicle/c
 - no borrowed vehicle sprites in the live scene
 
 The vendored CC0 files remain in the repository as reviewed references, but they are no longer active. The live outdoor scene now uses simple geometric placeholder visuals until user-provided art direction or reference images arrive.
+
+## Survival Stats First Pass
+
+The prototype now has its first actual survival-pressure layer:
+
+- `허기`
+- `갈증`
+- `체력`
+- `피로`
+
+### What Changed
+
+- `RunState` now tracks `갈증` alongside the existing survival values.
+- `허기`와 `갈증` are modeled as remaining reserves that tick downward over time.
+- `갈증` drops faster than `허기`.
+- Either `허기` or `갈증` hitting zero now causes ongoing health loss.
+- `체력` only recovers through explicit item use.
+- `피로` still accumulates, but now meaningfully affects play:
+  - indoor actions take longer at higher fatigue
+  - outdoor movement speed drops at higher fatigue
+
+### Item Layer Added
+
+- food restores `허기`
+- drinks restore `갈증`
+- medical items restore `체력`
+- stimulants reduce `피로`
+- item sheets now show exact effect deltas and use time
+- indoor item use now consumes time instead of being free
+
+### Rest and Sleep Integration
+
+- safe indoor zones can now expose `휴식`
+- safe indoor zones can now expose `취침`
+- `휴식` lowers fatigue a little while still advancing hunger/thirst
+- `취침` lowers fatigue more strongly while still advancing hunger/thirst at slower rates
+
+### What Was Intentionally Deferred
+
+- fatigue rebound modeling for stimulants
+- partial penalties before hunger/thirst reaches zero
+- character-stat checks like `힘`/`민첩`/`운`
+- outdoor item-use UI
+- a dedicated aggregate regression runner script
+
+### Verification Note
+
+The plan referenced `res://tests/run_all.gd`, but that script does not currently exist. Full regression was therefore run by explicitly executing the current unit and smoke test set one-by-one under the same headless Godot environment.

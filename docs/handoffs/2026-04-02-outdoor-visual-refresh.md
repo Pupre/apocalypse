@@ -35,8 +35,27 @@
 - Add real obstacle collision beyond the current simple blocked rectangles
 - Apply user-approved outdoor references instead of generic borrowed CC0 art
 - Expand outdoor HUD readability once the external threat layer gets denser
+- Build dedicated outdoor item-use interactions once the user wants survival consumption outside the indoor sheet flow
+- Add future stat-check systems on top of the new fatigue/survival model
+- Consider adding `tests/run_all.gd` so the regression command can become a single stable entry point
 
 ## Verification
 
 - Re-run `test_outdoor_controller.gd` after any outdoor scene structure changes
 - Re-run the full smoke/unit regression set before pushing
+
+## Survival Stats Status
+
+- first-pass survival stats are live:
+  - `허기`
+  - `갈증`
+  - `체력`
+  - `피로`
+- `갈증` drains faster than `허기`
+- zero `허기` or zero `갈증` now causes ongoing `체력` loss
+- indoor HUD and item sheets now expose readable stages plus exact item deltas where needed
+- safe indoor zones can now offer `휴식` and `취침`
+- indoor item consumption now costs time
+- high fatigue now:
+  - increases indoor action time
+  - reduces outdoor movement speed
