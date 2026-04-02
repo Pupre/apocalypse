@@ -23,4 +23,5 @@ This repository is docs-first during pre-production.
 - [Godot Technical Architecture](specs/godot-technical-architecture.md)
 - [Mart Indoor Content Design](specs/mart-indoor-content-design.md)
 - [Mode Transition Presentation Design](specs/mode-transition-presentation-design.md)
+- [Outdoor Visual Refresh Design](specs/outdoor-visual-refresh-design.md)
 - [Godot Android Development Setup](setup/godot-android-development-setup.md)
