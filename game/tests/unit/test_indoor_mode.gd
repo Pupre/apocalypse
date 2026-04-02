@@ -59,6 +59,38 @@ func _run_test() -> void:
 
 	indoor_mode.exit_requested.connect(Callable(self, "_on_exit_requested"))
 
+	var sidebar := indoor_mode.get_node_or_null("Panel/Layout/Sidebar")
+	if not assert_true(sidebar == null, "Indoor mode should remove the permanent sidebar layout."):
+		indoor_mode.free()
+		return
+
+	var top_bar := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar")
+	if not assert_true(top_bar != null, "Indoor mode should expose a dedicated indoor top bar."):
+		indoor_mode.free()
+		return
+
+	var map_button := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/Tools/MapButton") as Button
+	if not assert_true(map_button != null, "Indoor mode should expose a 구조도 button in the top bar."):
+		indoor_mode.free()
+		return
+
+	var bag_button := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/Tools/BagButton") as Button
+	if not assert_true(bag_button != null, "Indoor mode should expose a 가방 button in the top bar."):
+		indoor_mode.free()
+		return
+
+	var minimap_overlay := indoor_mode.get_node_or_null("MinimapOverlay") as Control
+	if not assert_true(minimap_overlay != null, "Indoor mode should expose a minimap overlay."):
+		indoor_mode.free()
+		return
+	assert_true(not minimap_overlay.visible, "Indoor mode should keep the minimap overlay hidden by default.")
+
+	var bag_sheet := indoor_mode.get_node_or_null("BagSheet") as Control
+	if not assert_true(bag_sheet != null, "Indoor mode should expose a bag bottom sheet."):
+		indoor_mode.free()
+		return
+	assert_true(not bag_sheet.visible, "Indoor mode should keep the bag sheet hidden by default.")
+
 	var exit_button := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/Header/ExitButton") as Button
 	if not assert_true(exit_button == null, "Indoor mode should no longer expose a global ExitButton."):
 		indoor_mode.free()

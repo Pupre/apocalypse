@@ -117,6 +117,11 @@ func _run_test() -> void:
 		run_shell.free()
 		return
 
+	assert_true(
+		not hud.visible or hud.modulate.a < 0.05,
+		"Indoor mode should hide or fully minimize the shared HUD."
+	)
+
 	assert_true(not run_shell.is_transition_in_progress(), "RunController should clear the transition flag after live fade completes.")
 	assert_eq(mode_host.process_mode, Node.PROCESS_MODE_INHERIT, "ModeHost should be re-enabled after live fade completes.")
 	assert_eq(fade_rect.mouse_filter, Control.MOUSE_FILTER_IGNORE, "FadeRect should stop blocking pointer input after live fade completes.")
