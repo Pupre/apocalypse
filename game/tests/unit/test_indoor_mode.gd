@@ -137,14 +137,48 @@ func _run_test() -> void:
 		indoor_mode.free()
 		return
 
-	for chip_index in stat_chip_row.get_child_count():
-		var chip := stat_chip_row.get_child(chip_index) as Button
-		if not assert_true(chip != null, "Indoor mode should render survival chips as buttons, not passive labels."):
+	var director := _find_descendant_by_name_and_type(indoor_mode, "Director")
+	if not assert_true(director != null and director.has_method("get_survival_chip_rows") and director.has_method("get_survival_chip_detail"), "Indoor mode should expose chip data through its Director."):
+		indoor_mode.free()
+		return
+
+	var chip_rows: Array[Dictionary] = director.get_survival_chip_rows()
+	if not assert_true(chip_rows.size() == 4, "Indoor mode should expose four chip payload rows."):
+		indoor_mode.free()
+		return
+
+	for chip_row_variant in chip_rows:
+		if typeof(chip_row_variant) != TYPE_DICTIONARY:
+			continue
+		var chip_row := chip_row_variant as Dictionary
+		var chip_id := String(chip_row.get("id", ""))
+		var chip := _find_descendant_by_name_and_type(stat_chip_row, chip_id, "Button") as Button
+		if not assert_true(chip != null, "Indoor mode should name each survival chip after its stat id."):
 			indoor_mode.free()
 			return
-		assert_true(chip.icon != null, "Indoor mode should give each survival chip an icon.")
+		assert_eq(
+			chip.text,
+			String(chip_row.get("display_value_text", "")),
+			"Indoor mode should render the director-provided chip display text."
+		)
+		assert_true(chip.icon != null, "Indoor mode should give each survival chip an icon from the director payload.")
 
-	var first_chip := stat_chip_row.get_child(0) as Button
+	var target_chip_row: Dictionary = {}
+	for chip_row_variant in chip_rows:
+		if typeof(chip_row_variant) != TYPE_DICTIONARY:
+			continue
+		var chip_row := chip_row_variant as Dictionary
+		if String(chip_row.get("id", "")) == "health":
+			target_chip_row = chip_row
+			break
+	if not assert_true(not target_chip_row.is_empty(), "Indoor mode should expose a stable health chip payload."):
+		indoor_mode.free()
+		return
+
+	var target_chip_button := _find_descendant_by_name_and_type(stat_chip_row, "health", "Button") as Button
+	if not assert_true(target_chip_button != null, "Indoor mode should expose a health chip button by id."):
+		indoor_mode.free()
+		return
 
 	var stat_detail_sheet := _find_descendant_by_name_and_type(indoor_mode, "StatDetailSheet", "Control") as Control
 	if not assert_true(
@@ -153,7 +187,11 @@ func _run_test() -> void:
 	):
 		indoor_mode.free()
 		return
-	first_chip.emit_signal("pressed")
+	target_chip_button = _find_descendant_by_name_and_type(stat_chip_row, "health", "Button") as Button
+	if not assert_true(target_chip_button != null, "Indoor mode should keep the health chip button available after sheet toggles."):
+		indoor_mode.free()
+		return
+	target_chip_button.emit_signal("pressed")
 	await process_frame
 	assert_true(stat_detail_sheet.visible, "Indoor mode should open the stat detail sheet when a chip is pressed.")
 	var stat_detail_title := _find_descendant_by_name_and_type(stat_detail_sheet, "TitleLabel", "Label") as Label
@@ -166,22 +204,45 @@ func _run_test() -> void:
 	):
 		indoor_mode.free()
 		return
-	assert_eq(stat_detail_title.text, "허기", "Indoor mode should show the selected stat title in the detail sheet.")
+	assert_eq(stat_detail_title.text, String(target_chip_row.get("label", "")), "Indoor mode should show the selected stat title in the detail sheet.")
 	assert_eq(
 		stat_detail_value.text,
-		"100 / 100 · 든든함",
-		"Indoor mode should show the exact hunger value and stage in the stat detail sheet."
+		String(target_chip_row.get("detail_value_text", "")),
+		"Indoor mode should show the exact stat value text from the director payload."
 	)
 	assert_eq(
 		stat_detail_rule.text,
-		"0이 되면 체력이 계속 감소한다",
-		"Indoor mode should show the hunger rule text in the stat detail sheet."
+		String(target_chip_row.get("rule_text", "")),
+		"Indoor mode should show the selected stat rule text from the director payload."
 	)
 	assert_eq(
 		stat_detail_recovery.text,
-		"음식으로 회복",
-		"Indoor mode should show the hunger recovery hint in the stat detail sheet."
+		String(target_chip_row.get("recovery_text", "")),
+		"Indoor mode should show the selected stat recovery hint from the director payload."
 	)
+
+	bag_button.emit_signal("pressed")
+	await process_frame
+	assert_true(bag_sheet.visible, "Indoor mode should open the bag sheet from the top bar.")
+	assert_true(not stat_detail_sheet.visible, "Opening the bag should close the stat detail sheet.")
+	bag_button.emit_signal("pressed")
+	await process_frame
+	assert_true(not bag_sheet.visible, "Indoor mode should close the bag sheet when the button is pressed again.")
+	assert_true(not stat_detail_sheet.visible, "Closing the bag should keep the stat detail sheet cleared.")
+
+	target_chip_button = _find_descendant_by_name_and_type(stat_chip_row, "health", "Button") as Button
+	if not assert_true(target_chip_button != null, "Indoor mode should keep the health chip button available after closing the bag."):
+		indoor_mode.free()
+		return
+	target_chip_button.emit_signal("pressed")
+	await process_frame
+	map_button.emit_signal("pressed")
+	await process_frame
+	assert_true(minimap_overlay.visible, "Indoor mode should open the minimap overlay when the top-bar map button is pressed.")
+	assert_true(not stat_detail_sheet.visible, "Opening the minimap should close the stat detail sheet.")
+	map_button.emit_signal("pressed")
+	await process_frame
+	assert_true(not minimap_overlay.visible, "Indoor mode should close the minimap overlay when the map button is pressed again.")
 
 	var summary_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/ReadingCard/VBox/SummaryLabel") as Label
 	if not assert_true(summary_label != null, "Indoor mode should expose a current-zone SummaryLabel."):
@@ -318,7 +379,6 @@ func _run_test() -> void:
 		return
 	assert_true(not item_sheet.visible, "Indoor mode should keep the item sheet hidden until an inventory item is selected.")
 
-	var director := _find_descendant_by_name_and_type(indoor_mode, "Director")
 	if not assert_true(director != null and director.has_method("apply_action"), "Indoor mode should expose its Director node."):
 		indoor_mode.free()
 		return

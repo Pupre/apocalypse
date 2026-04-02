@@ -17,12 +17,6 @@ const ACTION_ICON_PATHS := {
 	"locked": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/locked.png",
 	"exit": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/home.png",
 }
-const SURVIVAL_CHIP_ICON_PATHS := {
-	"hunger": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/question.png",
-	"thirst": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/basket.png",
-	"health": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/home.png",
-	"fatigue": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/locked.png",
-}
 
 var _director: Node = null
 var _title_label: Label = null
@@ -156,16 +150,18 @@ func _refresh_stat_chips() -> void:
 			continue
 
 		var chip := chip_variant as Dictionary
+		var chip_id := String(chip.get("id", ""))
 		var button := Button.new()
 		button.flat = false
 		button.toggle_mode = false
 		button.custom_minimum_size = Vector2(0, 44)
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		button.icon = _survival_chip_icon(String(chip.get("icon_id", "")))
-		button.text = String(chip.get("stage", ""))
+		button.name = chip_id
+		button.icon = _load_icon(String(chip.get("icon_path", "")))
+		button.text = String(chip.get("display_value_text", chip.get("stage", "")))
 		button.tooltip_text = "%s: %s" % [String(chip.get("label", "")), String(chip.get("stage", ""))]
-		button.pressed.connect(Callable(self, "_on_stat_chip_pressed").bind(String(chip.get("id", ""))))
+		button.pressed.connect(Callable(self, "_on_stat_chip_pressed").bind(chip_id))
 		_stat_chips.add_child(button)
 
 
@@ -293,10 +289,6 @@ func _load_icon(path: String) -> Texture2D:
 	var texture := ImageTexture.create_from_image(image)
 	_icon_cache[path] = texture
 	return texture
-
-
-func _survival_chip_icon(icon_id: String) -> Texture2D:
-	return _load_icon(String(SURVIVAL_CHIP_ICON_PATHS.get(icon_id, "")))
 
 
 func _refresh_minimap() -> void:
@@ -427,7 +419,7 @@ func _refresh_stat_detail_sheet() -> void:
 	if _stat_detail_title != null:
 		_stat_detail_title.text = String(detail.get("label", "상태"))
 	if _stat_detail_value != null:
-		_stat_detail_value.text = "%d / 100 · %s" % [int(round(float(detail.get("value", 0.0)))), String(detail.get("stage", ""))]
+		_stat_detail_value.text = String(detail.get("detail_value_text", ""))
 	if _stat_detail_rule != null:
 		_stat_detail_rule.text = String(detail.get("rule_text", ""))
 	if _stat_detail_recovery != null:
@@ -439,6 +431,7 @@ func _on_map_button_pressed() -> void:
 		return
 	_minimap_overlay.visible = not _minimap_overlay.visible
 	if _minimap_overlay.visible:
+		_clear_stat_detail_selection()
 		_close_bag_sheet()
 
 
@@ -447,6 +440,7 @@ func _on_bag_button_pressed() -> void:
 		return
 	_bag_sheet.visible = not _bag_sheet.visible
 	if _bag_sheet.visible:
+		_clear_stat_detail_selection()
 		if _minimap_overlay != null:
 			_minimap_overlay.visible = false
 	else:
@@ -458,6 +452,7 @@ func _on_bag_button_pressed() -> void:
 func _on_minimap_close_pressed() -> void:
 	if _minimap_overlay != null:
 		_minimap_overlay.visible = false
+	_clear_stat_detail_selection()
 
 
 func _on_bag_close_pressed() -> void:
@@ -479,6 +474,7 @@ func _on_equipped_tab_pressed() -> void:
 func _close_bag_sheet() -> void:
 	if _bag_sheet != null:
 		_bag_sheet.visible = false
+	_clear_stat_detail_selection()
 	_close_item_sheet_selection()
 	_refresh_item_sheet()
 
@@ -502,6 +498,12 @@ func _on_action_pressed(action_id: String) -> void:
 func _on_stat_chip_pressed(chip_id: String) -> void:
 	_selected_chip_id = chip_id
 	_refresh_stat_detail_sheet()
+
+
+func _clear_stat_detail_selection() -> void:
+	_selected_chip_id = ""
+	if _stat_detail_sheet != null:
+		_stat_detail_sheet.visible = false
 
 
 func _cache_nodes() -> void:

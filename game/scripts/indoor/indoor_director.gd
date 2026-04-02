@@ -3,6 +3,12 @@ extends Node
 signal state_changed
 
 const ACTION_RESOLVER_SCRIPT := preload("res://scripts/indoor/indoor_action_resolver.gd")
+const SURVIVAL_CHIP_ICON_PATHS := {
+	"hunger": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/question.png",
+	"thirst": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/basket.png",
+	"health": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/home.png",
+	"fatigue": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/locked.png",
+}
 
 var _resolver := ACTION_RESOLVER_SCRIPT.new()
 var _run_state = null
@@ -98,42 +104,38 @@ func get_survival_chip_rows() -> Array[Dictionary]:
 		return []
 
 	return [
-		{
-			"id": "hunger",
-			"label": "허기",
-			"stage": _run_state.get_hunger_stage(),
-			"value": _run_state.hunger,
-			"icon_id": "hunger",
-			"rule_text": "0이 되면 체력이 계속 감소한다",
-			"recovery_text": "음식으로 회복",
-		},
-		{
-			"id": "thirst",
-			"label": "갈증",
-			"stage": _run_state.get_thirst_stage(),
-			"value": _run_state.thirst,
-			"icon_id": "thirst",
-			"rule_text": "허기보다 더 빠르게 바닥난다",
-			"recovery_text": "물과 음료로 회복",
-		},
-		{
-			"id": "health",
-			"label": "체력",
-			"stage": _run_state.get_health_stage(),
-			"value": _run_state.health,
-			"icon_id": "health",
-			"rule_text": "부상과 위기로 줄어든다",
-			"recovery_text": "의약품으로 회복",
-		},
-		{
-			"id": "fatigue",
-			"label": "피로",
-			"stage": _run_state.get_fatigue_stage(),
-			"value": _run_state.fatigue,
-			"icon_id": "fatigue",
-			"rule_text": "시간과 행동으로 쌓인다",
-			"recovery_text": "휴식과 취침으로 회복",
-		},
+		_create_survival_chip_row(
+			"hunger",
+			"허기",
+			_run_state.get_hunger_stage(),
+			float(_run_state.hunger),
+			"0이 되면 체력이 계속 감소한다",
+			"음식으로 회복"
+		),
+		_create_survival_chip_row(
+			"thirst",
+			"갈증",
+			_run_state.get_thirst_stage(),
+			float(_run_state.thirst),
+			"허기보다 더 빠르게 바닥난다",
+			"물과 음료로 회복"
+		),
+		_create_survival_chip_row(
+			"health",
+			"체력",
+			_run_state.get_health_stage(),
+			float(_run_state.health),
+			"부상과 위기로 줄어든다",
+			"의약품으로 회복"
+		),
+		_create_survival_chip_row(
+			"fatigue",
+			"피로",
+			_run_state.get_fatigue_stage(),
+			float(_run_state.fatigue),
+			"시간과 행동으로 쌓인다",
+			"휴식과 취침으로 회복"
+		),
 	]
 
 
@@ -143,6 +145,31 @@ func get_survival_chip_detail(chip_id: String) -> Dictionary:
 			return chip
 
 	return {}
+
+
+func _create_survival_chip_row(
+	chip_id: String,
+	label: String,
+	stage: String,
+	value: float,
+	rule_text: String,
+	recovery_text: String
+) -> Dictionary:
+	return {
+		"id": chip_id,
+		"label": label,
+		"stage": stage,
+		"value": value,
+		"display_value_text": stage,
+		"detail_value_text": "%d / %d · %s" % [
+			int(round(value)),
+			int(_run_state.MAX_SURVIVAL_VALUE),
+			stage,
+		],
+		"icon_path": String(SURVIVAL_CHIP_ICON_PATHS.get(chip_id, "")),
+		"rule_text": rule_text,
+		"recovery_text": recovery_text,
+	}
 
 
 func get_sleep_preview() -> Dictionary:
