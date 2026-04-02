@@ -57,36 +57,92 @@ func _run_test() -> void:
 		"remaining_points": 0,
 	}, content_source)
 	assert_true(state != null, "Injected content source should produce a valid run state.")
+	assert_true(state.has_method("get_hunger_stage"), "RunState should expose a hunger stage helper.")
+	assert_true(state.has_method("get_thirst_stage"), "RunState should expose a thirst stage helper.")
+	assert_true(state.has_method("get_health_stage"), "RunState should expose a health stage helper.")
+	assert_true(state.has_method("get_fatigue_stage"), "RunState should expose a fatigue stage helper.")
 
 	assert_eq(state.clock.day_index, 1, "RunState should start on day one.")
 	assert_eq(state.clock.minute_of_day, 480, "RunState should start at 08:00.")
 	assert_eq(state.clock.get_clock_label(), "1일차 08:00", "RunState clock label should be readable.")
 	assert_eq(int(state.move_speed), 230, "Job and trait modifiers should increase move speed.")
 	assert_eq(state.fatigue_model.get_band(state.fatigue), "양호", "Fresh runs should start in the light fatigue band.")
+	assert_eq(state.get_hunger_stage(), "든든함", "Fresh runs should start well-fed.")
+	assert_eq(state.get_thirst_stage(), "수분 충분", "Fresh runs should start hydrated.")
+	assert_eq(state.get_health_stage(), "안정", "Fresh runs should start healthy.")
+	assert_eq(state.get_fatigue_stage(), "양호", "Fatigue stage helper should mirror the fatigue model band.")
 	assert_eq(state.inventory.carry_limit, 8, "This build should keep the default carry limit.")
 
+	var before_hunger_after_spawn: float = state.hunger
+	var before_thirst_after_spawn: float = state.thirst
 	state.advance_minutes(180)
 
 	assert_eq(state.clock.day_index, 1, "Three hours should stay on day one.")
 	assert_eq(state.clock.minute_of_day, 660, "Clock should advance from 08:00 to 11:00.")
 	assert_eq(state.clock.get_clock_label(), "1일차 11:00", "RunState clock label should reflect elapsed time.")
+	assert_true(state.hunger < before_hunger_after_spawn, "Active time should reduce hunger reserves.")
+	assert_true(state.thirst < before_thirst_after_spawn, "Active time should reduce thirst reserves.")
 
 	var before_day_index: int = state.clock.day_index
 	var before_minute_of_day: int = state.clock.minute_of_day
 	var before_fatigue: float = state.fatigue
 	var before_hunger: float = state.hunger
+	var before_thirst: float = state.thirst
 
 	state.advance_minutes(-15)
 	assert_eq(state.clock.day_index, before_day_index, "Negative active-run time should not rewind the day.")
 	assert_eq(state.clock.minute_of_day, before_minute_of_day, "Negative active-run time should not rewind the clock.")
 	assert_eq(state.fatigue, before_fatigue, "Negative active-run time should not reduce fatigue.")
-	assert_eq(state.hunger, before_hunger, "Negative active-run time should not reduce hunger.")
+	assert_eq(state.hunger, before_hunger, "Negative active-run time should not change hunger.")
+	assert_eq(state.thirst, before_thirst, "Negative active-run time should not change thirst.")
 
 	state.advance_sleep_time(-20)
 	assert_eq(state.clock.day_index, before_day_index, "Negative sleep time should not rewind the day.")
 	assert_eq(state.clock.minute_of_day, before_minute_of_day, "Negative sleep time should not rewind the clock.")
 	assert_eq(state.fatigue, before_fatigue, "Negative sleep time should not reduce fatigue.")
-	assert_eq(state.hunger, before_hunger, "Negative sleep time should not reduce hunger.")
+	assert_eq(state.hunger, before_hunger, "Negative sleep time should not change hunger.")
+	assert_eq(state.thirst, before_thirst, "Negative sleep time should not change thirst.")
+
+	var indoor_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, content_source)
+	var outdoor_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, content_source)
+	assert_true(indoor_state != null and outdoor_state != null, "Comparison run states should build for indoor/outdoor survival checks.")
+	indoor_state.advance_minutes(60, "indoor")
+	outdoor_state.advance_minutes(60, "outdoor")
+	assert_true(outdoor_state.thirst < indoor_state.thirst, "Outdoor time should drain thirst faster than indoor time.")
+	assert_true(outdoor_state.hunger < indoor_state.hunger, "Outdoor time should drain hunger faster than indoor time.")
+	assert_true(outdoor_state.fatigue > indoor_state.fatigue, "Outdoor time should build fatigue faster than indoor time.")
+
+	var starvation_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, content_source)
+	assert_true(starvation_state != null, "RunState should build for zero-state damage checks.")
+	starvation_state.hunger = 0.0
+	starvation_state.thirst = 50.0
+	starvation_state.health = 100.0
+	starvation_state.advance_minutes(30, "indoor")
+	assert_true(starvation_state.health < 100.0, "Zero hunger should cause ongoing health loss over time.")
+
+	var dehydration_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, content_source)
+	assert_true(dehydration_state != null, "RunState should build for thirst damage checks.")
+	dehydration_state.hunger = 50.0
+	dehydration_state.thirst = 0.0
+	dehydration_state.health = 100.0
+	dehydration_state.advance_minutes(30, "indoor")
+	assert_true(dehydration_state.health < starvation_state.health, "Zero thirst should damage health more harshly than zero hunger.")
 
 	state.fatigue = 52.0
 	var sleep_preview: Dictionary = state.get_sleep_preview()
