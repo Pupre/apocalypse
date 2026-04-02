@@ -22,6 +22,12 @@ func set_snapshot(snapshot: Dictionary) -> void:
 	queue_redraw()
 
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_RESIZED:
+		_rebuild_nodes()
+		queue_redraw()
+
+
 func _rebuild_nodes() -> void:
 	for child in get_children():
 		remove_child(child)
