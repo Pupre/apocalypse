@@ -350,11 +350,17 @@ func _run_test() -> void:
 	if not assert_true(carried_tab_button != null and equipped_tab_button != null, "Indoor mode should expose carried/equipped bag tabs."):
 		indoor_mode.free()
 		return
+	assert_true(
+		carried_tab_button.button_group != null and carried_tab_button.button_group == equipped_tab_button.button_group,
+		"Indoor mode should wire the bag tabs as a segmented control."
+	)
 	bag_button.emit_signal("pressed")
 	await process_frame
 	assert_true(bag_sheet.visible, "Indoor mode should open the bag sheet from the top bar.")
 	assert_true(carried_tab_button.toggle_mode, "Carried tab should render as an explicit selectable tab.")
 	assert_true(equipped_tab_button.toggle_mode, "Equipped tab should render as an explicit selectable tab.")
+	assert_true(not carried_tab_button.disabled, "The selected tab should stay enabled so the control reads as a segment, not a disabled button.")
+	assert_true(not equipped_tab_button.disabled, "The inactive tab should stay enabled so it remains part of the segmented control.")
 	assert_true(carried_tab_button.button_pressed, "Carried tab should be selected by default.")
 	assert_true(not equipped_tab_button.button_pressed, "Equipped tab should be inactive by default.")
 	assert_eq(
@@ -549,8 +555,12 @@ func _run_test() -> void:
 	await process_frame
 	assert_eq(
 		_inventory_labels(inventory_items),
-		["등: 작은 배낭"],
-		"Equipping an item should surface it in the equipped bag tab."
+		["등에 작은 배낭"],
+		"Equipping an item should surface it as a readable state summary in the equipped bag tab."
+	)
+	assert_true(
+		_find_button_by_text(inventory_items, "등에 작은 배낭") == null,
+		"Equipped rows should read like summaries instead of interactive buttons."
 	)
 	carried_tab_button.emit_signal("pressed")
 	await process_frame
@@ -712,26 +722,31 @@ func _inventory_labels(container: VBoxContainer) -> Array[String]:
 		return labels
 
 	for child in container.get_children():
-		var button := child as Button
-		if button != null:
-			labels.append(button.text)
-			continue
-		var label := child as Label
-		if label != null:
-			labels.append(label.text)
-			continue
-		if child is Container:
-			for nested_child in child.get_children():
-				var nested_button := nested_child as Button
-				if nested_button != null:
-					labels.append(nested_button.text)
-					break
-				var nested_label := nested_child as Label
-				if nested_label != null:
-					labels.append(nested_label.text)
-					break
+		var text := _first_inventory_row_text(child)
+		if not text.is_empty():
+			labels.append(text)
 
 	return labels
+
+
+func _first_inventory_row_text(node: Node) -> String:
+	if node == null:
+		return ""
+
+	var button := node as Button
+	if button != null:
+		return button.text
+
+	var label := node as Label
+	if label != null:
+		return label.text
+
+	for child in node.get_children():
+		var nested_text := _first_inventory_row_text(child)
+		if not nested_text.is_empty():
+			return nested_text
+
+	return ""
 
 
 func _find_descendant_by_name_and_type(container: Node, expected_name: String, type_name: String = "") -> Node:

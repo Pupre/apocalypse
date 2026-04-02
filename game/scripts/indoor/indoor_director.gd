@@ -222,7 +222,12 @@ func get_inventory_status_text() -> String:
 
 func get_inventory_rows() -> Array[Dictionary]:
 	if _run_state == null or _run_state.inventory == null:
-		return [{"label": "소지품 없음", "action_id": ""}]
+		return [{
+			"kind": "empty",
+			"label": "소지품 없음",
+			"action_id": "",
+			"detail_text": "",
+		}]
 
 	var rows: Array[Dictionary] = []
 	var counts := {}
@@ -241,33 +246,58 @@ func get_inventory_rows() -> Array[Dictionary]:
 		counts[item_id] = int(counts[item_id]) + 1
 
 	if order.is_empty():
-		return [{"label": "소지품 없음", "action_id": ""}]
+		return [{
+			"kind": "empty",
+			"label": "소지품 없음",
+			"action_id": "",
+			"detail_text": "",
+		}]
 
 	for item_id in order:
 		var item_data := _item_definition(item_id)
 		rows.append({
+			"kind": "carried",
 			"label": "%s x%d" % [_item_name(item_data, item_id), int(counts[item_id])],
 			"action_id": "inspect_inventory_%s" % item_id,
+			"detail_text": "탭하여 상세 보기",
 		})
 
 	return rows
 
 
-func get_equipped_rows() -> Array[String]:
+func get_equipped_rows() -> Array[Dictionary]:
 	if _run_state == null:
-		var empty_rows: Array[String] = ["장착중인 장비 없음"]
+		var empty_rows: Array[Dictionary] = [{
+			"kind": "empty",
+			"summary_text": "장착중인 장비 없음",
+			"state_text": "",
+			"detail_text": "",
+		}]
 		return empty_rows
 
 	var slot_order := ["back", "body", "feet", "hands"]
-	var rows: Array[String] = []
+	var rows: Array[Dictionary] = []
 	for slot_id in slot_order:
 		var equipped_item: Dictionary = _run_state.equipped_items.get(slot_id, {})
 		if equipped_item.is_empty():
 			continue
-		rows.append("%s: %s" % [_slot_label(slot_id), _item_name(equipped_item, slot_id)])
+		rows.append({
+			"kind": "equipped",
+			"slot_id": slot_id,
+			"slot_label": _slot_label(slot_id),
+			"item_name": _item_name(equipped_item, slot_id),
+			"summary_text": "%s에 %s" % [_slot_label(slot_id), _item_name(equipped_item, slot_id)],
+			"state_text": "장착중",
+			"detail_text": _item_effect_text(equipped_item),
+		})
 
 	if rows.is_empty():
-		var fallback_rows: Array[String] = ["장착중인 장비 없음"]
+		var fallback_rows: Array[Dictionary] = [{
+			"kind": "empty",
+			"summary_text": "장착중인 장비 없음",
+			"state_text": "",
+			"detail_text": "",
+		}]
 		return fallback_rows
 	return rows
 

@@ -322,10 +322,8 @@ func _refresh_bag_sheet() -> void:
 			_bag_status_label.text = ""
 
 	if _carried_tab_button != null:
-		_carried_tab_button.disabled = _active_bag_tab == "carried"
 		_carried_tab_button.button_pressed = _active_bag_tab == "carried"
 	if _equipped_tab_button != null:
-		_equipped_tab_button.disabled = _active_bag_tab == "equipped"
 		_equipped_tab_button.button_pressed = _active_bag_tab == "equipped"
 
 	if _inventory_items == null:
@@ -337,10 +335,10 @@ func _refresh_bag_sheet() -> void:
 
 	if _active_bag_tab == "equipped":
 		if _director.has_method("get_equipped_rows"):
-			for row_text in _director.get_equipped_rows():
-				var label := Label.new()
-				label.text = String(row_text)
-				_inventory_items.add_child(label)
+			for row_variant in _director.get_equipped_rows():
+				if typeof(row_variant) != TYPE_DICTIONARY:
+					continue
+				_inventory_items.add_child(_create_equipped_row(row_variant as Dictionary))
 		return
 
 	if not _director.has_method("get_inventory_rows"):
@@ -350,20 +348,86 @@ func _refresh_bag_sheet() -> void:
 		if typeof(row_variant) != TYPE_DICTIONARY:
 			continue
 
-		var row := row_variant as Dictionary
-		var label_text := String(row.get("label", ""))
-		var action_id := String(row.get("action_id", ""))
-		if action_id.is_empty():
-			var label := Label.new()
-			label.text = label_text
-			_inventory_items.add_child(label)
-			continue
+		_inventory_items.add_child(_create_inventory_row(row_variant as Dictionary))
 
-		var item_button := Button.new()
-		item_button.text = label_text
-		item_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		item_button.pressed.connect(Callable(self, "_on_action_pressed").bind(action_id))
-		_inventory_items.add_child(item_button)
+
+func _create_inventory_row(row: Dictionary) -> Control:
+	var label_text := String(row.get("label", ""))
+	var action_id := String(row.get("action_id", ""))
+	if action_id.is_empty():
+		var placeholder_label := Label.new()
+		placeholder_label.text = label_text
+		placeholder_label.autowrap_mode = 3
+		placeholder_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		return placeholder_label
+
+	var row_panel := PanelContainer.new()
+	row_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row_panel.custom_minimum_size = Vector2(0, 60)
+
+	var row_box := VBoxContainer.new()
+	row_box.add_theme_constant_override("separation", 2)
+	row_panel.add_child(row_box)
+
+	var item_button := Button.new()
+	item_button.text = label_text
+	item_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	item_button.custom_minimum_size = Vector2(0, 40)
+	item_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	item_button.expand_icon = true
+	item_button.icon = _load_icon(String(ACTION_ICON_PATHS.get("move", "")))
+	item_button.pressed.connect(Callable(self, "_on_action_pressed").bind(action_id))
+	row_box.add_child(item_button)
+
+	var hint_label := Label.new()
+	hint_label.text = String(row.get("detail_text", "탭하여 상세 보기"))
+	hint_label.modulate = Color(0.82, 0.86, 0.9, 0.96)
+	hint_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row_box.add_child(hint_label)
+	return row_panel
+
+
+func _create_equipped_row(row: Dictionary) -> Control:
+	var summary_text := String(row.get("summary_text", ""))
+	if summary_text.is_empty():
+		var fallback_label := Label.new()
+		fallback_label.text = String(row.get("state_text", ""))
+		fallback_label.autowrap_mode = 3
+		fallback_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		return fallback_label
+
+	var row_panel := PanelContainer.new()
+	row_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row_panel.custom_minimum_size = Vector2(0, 60)
+
+	var row_box := VBoxContainer.new()
+	row_box.add_theme_constant_override("separation", 2)
+	row_panel.add_child(row_box)
+
+	var summary_label := Label.new()
+	summary_label.text = summary_text
+	summary_label.autowrap_mode = 3
+	summary_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row_box.add_child(summary_label)
+
+	var state_text := String(row.get("state_text", ""))
+	if not state_text.is_empty():
+		var state_label := Label.new()
+		state_label.text = state_text
+		state_label.modulate = Color(0.82, 0.9, 1.0, 0.95)
+		state_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		row_box.add_child(state_label)
+
+	var detail_text := String(row.get("detail_text", ""))
+	if not detail_text.is_empty():
+		var detail_label := Label.new()
+		detail_label.text = detail_text
+		detail_label.autowrap_mode = 3
+		detail_label.modulate = Color(0.9, 0.9, 0.9, 0.9)
+		detail_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		row_box.add_child(detail_label)
+
+	return row_panel
 
 
 func _refresh_item_sheet() -> void:

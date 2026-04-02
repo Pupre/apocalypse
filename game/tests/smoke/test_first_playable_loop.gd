@@ -204,19 +204,19 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
-	var location_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/LocationLabel") as Label
+	var location_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/LocationLabel") as Label
 	if not assert_true(location_label != null, "Indoor mode should expose a location label."):
 		bootstrap.free()
 		return
 	assert_eq(location_label.text, "위치: 정문 진입부", "Indoor mode should begin at the mart entrance zone.")
 
-	var indoor_time_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/TimeLabel") as Label
+	var indoor_time_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/TimeLabel") as Label
 	if not assert_true(indoor_time_label != null, "Indoor mode should expose a visible time label."):
 		bootstrap.free()
 		return
 	assert_eq(indoor_time_label.text, "시각: 1일차 10:00", "Indoor mode should carry the shared clock into the indoor UI.")
 
-	var summary_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/SummaryLabel") as Label
+	var summary_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/ReadingCard/VBox/SummaryLabel") as Label
 	if not assert_true(summary_label != null, "Indoor mode should expose a current-zone summary label."):
 		bootstrap.free()
 		return
@@ -250,8 +250,8 @@ func _run_test() -> void:
 		"Indoor mode should not expose the removed flat rest action."
 	)
 
-	var map_button := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/Tools/MapButton") as Button
-	var bag_button := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/Tools/BagButton") as Button
+	var map_button := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/StatusRow/Tools/MapButton") as Button
+	var bag_button := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/StatusRow/Tools/BagButton") as Button
 	var minimap_overlay := indoor_mode.get_node_or_null("MinimapOverlay") as Control
 	var minimap_nodes := indoor_mode.get_node_or_null("MinimapOverlay/VBox/MapNodes") as Control
 	if not assert_true(map_button != null and bag_button != null, "Indoor mode should expose map and bag buttons in the top bar."):
@@ -293,7 +293,7 @@ func _run_test() -> void:
 		return
 	assert_true(not move_checkout_button.disabled, "The checkout movement action should be enabled before it is pressed.")
 
-	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/ResultLabel") as Label
+	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/ReadingCard/VBox/ResultLabel") as Label
 	if not assert_true(result_label != null, "Indoor result label should be present."):
 		bootstrap.free()
 		return
@@ -591,26 +591,31 @@ func _inventory_labels(container: VBoxContainer) -> Array[String]:
 		return labels
 
 	for child in container.get_children():
-		var button := child as Button
-		if button != null:
-			labels.append(button.text)
-			continue
-		var label := child as Label
-		if label != null:
-			labels.append(label.text)
-			continue
-		if child is Container:
-			for nested_child in child.get_children():
-				var nested_button := nested_child as Button
-				if nested_button != null:
-					labels.append(nested_button.text)
-					break
-				var nested_label := nested_child as Label
-				if nested_label != null:
-					labels.append(nested_label.text)
-					break
+		var text := _first_inventory_row_text(child)
+		if not text.is_empty():
+			labels.append(text)
 
 	return labels
+
+
+func _first_inventory_row_text(node: Node) -> String:
+	if node == null:
+		return ""
+
+	var button := node as Button
+	if button != null:
+		return button.text
+
+	var label := node as Label
+	if label != null:
+		return label.text
+
+	for child in node.get_children():
+		var nested_text := _first_inventory_row_text(child)
+		if not nested_text.is_empty():
+			return nested_text
+
+	return ""
 
 
 func _is_transition_settled(
