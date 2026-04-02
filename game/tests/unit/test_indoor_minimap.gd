@@ -17,8 +17,8 @@ func _run_test() -> void:
 		return
 
 	root.add_child(minimap)
-	minimap.custom_minimum_size = Vector2(280, 220)
-	minimap.size = Vector2(280, 220)
+	minimap.custom_minimum_size = Vector2(200, 132)
+	minimap.size = Vector2(200, 132)
 	minimap.set_snapshot({
 		"current_zone_id": "staff_corridor_gate",
 		"current_floor_id": "floor_1",
@@ -50,6 +50,7 @@ func _run_test() -> void:
 			{"from": "staff_corridor_gate", "to": "stair_landing", "locked": true},
 		],
 	})
+	await process_frame
 
 	var current_label := _find_label(minimap, "직원 출입문")
 	if not assert_true(current_label != null, "Indoor minimap should render a label for the current zone."):
@@ -57,8 +58,8 @@ func _run_test() -> void:
 		return
 
 	assert_true(
-		absf(current_label.position.x - 140.0) <= 24.0 and absf(current_label.position.y - 100.0) <= 24.0,
-		"Indoor minimap should keep the current zone centered within the available viewport."
+		absf((current_label.position.x + current_label.size.x * 0.5) - 100.0) <= 12.0 and absf((current_label.position.y + current_label.size.y * 0.5) - 66.0) <= 12.0,
+		"Indoor minimap should keep the current room centered even in the compact inline-card viewport."
 	)
 
 	minimap.free()

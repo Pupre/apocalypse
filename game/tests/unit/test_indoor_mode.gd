@@ -116,6 +116,44 @@ func _run_test() -> void:
 		"Indoor mode should show the shared run clock after configure."
 	)
 
+	var inline_minimap_card := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/MiniMapCard") as Control
+	if not assert_true(
+		inline_minimap_card != null and inline_minimap_card.visible,
+		"Indoor mode should keep a small minimap visible in the main reading screen."
+	):
+		indoor_mode.free()
+		return
+
+	var inline_minimap := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/MiniMapCard/MapNodes") as Control
+	if not assert_true(inline_minimap != null, "Indoor mode should mount an always-visible minimap node."):
+		indoor_mode.free()
+		return
+
+	var stat_chip_row := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/StatusRow/StatChips") as HBoxContainer
+	if not assert_true(
+		stat_chip_row != null and stat_chip_row.get_child_count() == 4,
+		"Indoor mode should show four survival chips."
+	):
+		indoor_mode.free()
+		return
+
+	var first_chip := stat_chip_row.get_child(0) as Button
+	if not assert_true(first_chip != null, "Indoor mode should render survival chips as buttons, not passive labels."):
+		indoor_mode.free()
+		return
+	assert_true(first_chip.icon != null, "Indoor mode should give each survival chip an icon.")
+
+	var stat_detail_sheet := indoor_mode.get_node_or_null("StatDetailSheet") as Control
+	if not assert_true(
+		stat_detail_sheet != null and not stat_detail_sheet.visible,
+		"Indoor mode should keep the stat detail sheet hidden by default."
+	):
+		indoor_mode.free()
+		return
+	first_chip.emit_signal("pressed")
+	await process_frame
+	assert_true(stat_detail_sheet.visible, "Indoor mode should open the stat detail sheet when a chip is pressed.")
+
 	var summary_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/SummaryLabel") as Label
 	if not assert_true(summary_label != null, "Indoor mode should expose a current-zone SummaryLabel."):
 		indoor_mode.free()
@@ -219,6 +257,10 @@ func _run_test() -> void:
 	bag_button.emit_signal("pressed")
 	await process_frame
 	assert_true(bag_sheet.visible, "Indoor mode should open the bag sheet from the top bar.")
+	assert_true(carried_tab_button.toggle_mode, "Carried tab should render as an explicit selectable tab.")
+	assert_true(equipped_tab_button.toggle_mode, "Equipped tab should render as an explicit selectable tab.")
+	assert_true(carried_tab_button.button_pressed, "Carried tab should be selected by default.")
+	assert_true(not equipped_tab_button.button_pressed, "Equipped tab should be inactive by default.")
 	assert_eq(
 		bag_title_label.text,
 		"소지품 (0/8)",
@@ -236,6 +278,8 @@ func _run_test() -> void:
 	)
 	equipped_tab_button.emit_signal("pressed")
 	await process_frame
+	assert_true(equipped_tab_button.button_pressed, "Equipped tab should become the selected state when tapped.")
+	assert_true(not carried_tab_button.button_pressed, "Carried tab should leave the selected state when another tab is active.")
 	assert_eq(_inventory_labels(inventory_items), ["장착중인 장비 없음"], "Indoor mode should show empty equipped gear in the bag sheet.")
 	carried_tab_button.emit_signal("pressed")
 	await process_frame
