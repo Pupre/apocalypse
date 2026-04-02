@@ -116,7 +116,7 @@ func _run_test() -> void:
 		"Indoor mode should show the shared run clock after configure."
 	)
 
-	var inline_minimap_card := _find_descendant_by_name_and_type(indoor_mode, "MiniMapCard", "Control") as Control
+	var inline_minimap_card := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/MiniMapCard") as Control
 	if not assert_true(
 		inline_minimap_card != null and inline_minimap_card.visible,
 		"Indoor mode should keep a small minimap visible in the main reading screen."
@@ -124,12 +124,12 @@ func _run_test() -> void:
 		indoor_mode.free()
 		return
 
-	var inline_minimap := _find_descendant_by_name_and_type(inline_minimap_card, "MapNodes", "Control") as Control
+	var inline_minimap := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/MiniMapCard/MapNodes") as Control
 	if not assert_true(inline_minimap != null, "Indoor mode should mount an always-visible minimap node."):
 		indoor_mode.free()
 		return
 
-	var stat_chip_row := _find_descendant_by_name_and_type(top_bar, "StatChips", "HBoxContainer") as HBoxContainer
+	var stat_chip_row := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/StatusRow/StatChips") as HBoxContainer
 	if not assert_true(
 		stat_chip_row != null and stat_chip_row.get_child_count() == 4,
 		"Indoor mode should show four survival chips."
@@ -260,6 +260,8 @@ func _run_test() -> void:
 	bag_button.emit_signal("pressed")
 	await process_frame
 	assert_true(bag_sheet.visible, "Indoor mode should open the bag sheet from the top bar.")
+	assert_true(carried_tab_button.toggle_mode, "Carried tab should render as an explicit selectable tab.")
+	assert_true(equipped_tab_button.toggle_mode, "Equipped tab should render as an explicit selectable tab.")
 	assert_true(carried_tab_button.button_pressed, "Carried tab should be selected by default.")
 	assert_true(not equipped_tab_button.button_pressed, "Equipped tab should be inactive by default.")
 	assert_eq(
