@@ -312,7 +312,8 @@ func _run_test() -> void:
 		return
 	assert_eq(item_sheet_title.text, "에너지바", "Indoor item sheet should show the selected item title.")
 	assert_true(item_sheet_description.text.length() > 0, "Indoor item sheet should show an item description.")
-	assert_true(item_sheet_effect.text.find("포만감") != -1, "Indoor item sheet should show food effect details.")
+	assert_true(item_sheet_effect.text.find("허기 +10") != -1, "Indoor item sheet should show exact hunger recovery values.")
+	assert_true(item_sheet_effect.text.find("10분") != -1, "Indoor item sheet should show exact item use time where relevant.")
 	assert_true(_find_button_in_container(item_sheet_actions, "먹는다") != null, "Food items should expose an eat action in the item sheet.")
 	assert_true(_find_button_in_container(item_sheet_actions, "버린다") != null, "Item sheet should expose a drop action.")
 

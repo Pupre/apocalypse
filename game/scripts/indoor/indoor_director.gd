@@ -320,7 +320,10 @@ func apply_action(action_id: String) -> bool:
 		if not _run_state.consume_inventory_item(consume_item_id, consume_item_data):
 			return false
 		_selected_inventory_item_id = ""
-		_event_state["last_feedback_message"] = "%s 먹었다." % _item_name(consume_item_data, consume_item_id)
+		_event_state["last_feedback_message"] = "%s %s." % [
+			_item_name(consume_item_data, consume_item_id),
+			_consume_feedback_verb(consume_item_data),
+		]
 		state_changed.emit()
 		return true
 
@@ -464,7 +467,16 @@ func _item_effect_text(item_data: Dictionary) -> String:
 	var parts: Array[String] = []
 	var hunger_restore := int(item_data.get("hunger_restore", 0))
 	if hunger_restore > 0:
-		parts.append("포만감 +%d" % hunger_restore)
+		parts.append("허기 +%d" % hunger_restore)
+	var thirst_restore := int(item_data.get("thirst_restore", 0))
+	if thirst_restore != 0:
+		parts.append("갈증 %s%d" % [_signed_prefix(thirst_restore), abs(thirst_restore)])
+	var health_restore := int(item_data.get("health_restore", 0))
+	if health_restore > 0:
+		parts.append("체력 +%d" % health_restore)
+	var fatigue_restore := int(item_data.get("fatigue_restore", 0))
+	if fatigue_restore > 0:
+		parts.append("피로 -%d" % fatigue_restore)
 	var carry_limit_bonus := int(item_data.get("carry_limit_bonus", 0))
 	if carry_limit_bonus > 0:
 		parts.append("소지 한도 +%d" % carry_limit_bonus)
@@ -477,16 +489,19 @@ func _item_effect_text(item_data: Dictionary) -> String:
 	var equip_slot := String(item_data.get("equip_slot", ""))
 	if not equip_slot.is_empty():
 		parts.append("장착 슬롯: %s" % _slot_label(equip_slot))
+	var use_minutes := int(item_data.get("use_minutes", 0))
+	if use_minutes > 0:
+		parts.append("소요 시간 %d분" % use_minutes)
 
 	return "효과 없음" if parts.is_empty() else " / ".join(parts)
 
 
 func _inventory_sheet_actions(item_data: Dictionary, item_id: String) -> Array[Dictionary]:
 	var actions: Array[Dictionary] = []
-	if int(item_data.get("hunger_restore", 0)) > 0:
+	if _is_consumable(item_data):
 		actions.append({
 			"id": "consume_inventory_%s" % item_id,
-			"label": "먹는다",
+			"label": _consume_action_label(item_data),
 		})
 	if not String(item_data.get("equip_slot", "")).is_empty():
 		actions.append({
@@ -532,3 +547,32 @@ func _slot_label(slot_id: String) -> String:
 			return "몸"
 		_:
 			return slot_id
+
+
+func _consume_action_label(item_data: Dictionary) -> String:
+	var category := String(item_data.get("category", ""))
+	if category == "drink":
+		return "마신다"
+	if category == "medical" or category == "stimulant":
+		return "사용한다"
+	return "먹는다"
+
+
+func _consume_feedback_verb(item_data: Dictionary) -> String:
+	var category := String(item_data.get("category", ""))
+	if category == "drink":
+		return "마셨다"
+	if category == "medical" or category == "stimulant":
+		return "사용했다"
+	return "먹었다"
+
+
+func _is_consumable(item_data: Dictionary) -> bool:
+	return int(item_data.get("hunger_restore", 0)) > 0 \
+		or int(item_data.get("thirst_restore", 0)) != 0 \
+		or int(item_data.get("health_restore", 0)) > 0 \
+		or int(item_data.get("fatigue_restore", 0)) > 0
+
+
+func _signed_prefix(value: int) -> String:
+	return "+" if value >= 0 else "-"

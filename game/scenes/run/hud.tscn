@@ -14,7 +14,7 @@ anchor_right = 1.0
 offset_left = -336.0
 offset_top = 16.0
 offset_right = -16.0
-offset_bottom = 180.0
+offset_bottom = 228.0
 modulate = Color(1, 1, 1, 1)
 
 [node name="VBox" type="VBoxContainer" parent="Panel"]
@@ -31,6 +31,12 @@ text = "피로: --"
 
 [node name="HungerLabel" type="Label" parent="Panel/VBox"]
 text = "허기: --"
+
+[node name="ThirstLabel" type="Label" parent="Panel/VBox"]
+text = "갈증: --"
+
+[node name="HealthLabel" type="Label" parent="Panel/VBox"]
+text = "체력: --"
 
 [node name="CarryLabel" type="Label" parent="Panel/VBox"]
 text = "소지량: --"
