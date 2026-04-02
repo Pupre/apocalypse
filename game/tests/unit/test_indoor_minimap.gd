@@ -58,7 +58,7 @@ func _run_test() -> void:
 		minimap.free()
 		return
 
-	var current_map_point: Vector2 = minimap._raw_point_for_node(current_node)
+	var current_map_point: Vector2 = minimap._point_for_node(current_node)
 	var expected_center: Vector2 = minimap.size * 0.5
 	assert_true(
 		current_map_point.distance_to(expected_center) <= 12.0,
@@ -78,4 +78,3 @@ func _find_node(snapshot: Dictionary, expected_id: String) -> Dictionary:
 		if String(node.get("id", "")) == expected_id:
 			return node
 	return {}
-
