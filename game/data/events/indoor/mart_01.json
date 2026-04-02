@@ -130,6 +130,8 @@
       "floor_id": "floor_2",
       "label": "직원 휴게실",
       "summary": "식은 컵라면 용기와 접히지 않은 담요가 아직 그대로 남아 있다.",
+      "rest_minutes": 60,
+      "sleep_allowed": true,
       "connected_zone_ids": [
         "stair_landing"
       ],

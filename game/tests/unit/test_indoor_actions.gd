@@ -219,6 +219,88 @@ func _run_test() -> void:
 		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, take_checkout_lighter_action_id),
 		"Revealed checkout loot should be collectible with a separate action."
 	)
+
+	var break_room_run_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, self)
+	if not assert_true(break_room_run_state != null, "RunState should build for safe-zone rest tests."):
+		return
+	break_room_run_state.fatigue = 40.0
+	var break_room_state := {
+		"current_zone_id": "break_room",
+		"visited_zone_ids": PackedStringArray(["mart_entrance", "checkout", "staff_corridor_gate", "stair_landing", "break_room"]),
+		"traversed_edge_ids": PackedStringArray(["break_room|stair_landing", "staff_corridor_gate|stair_landing"]),
+		"revealed_clue_ids": PackedStringArray(),
+		"spent_action_ids": PackedStringArray(),
+		"zone_flags": {
+			"staff_gate_forced": true,
+		},
+		"noise": 0,
+	}
+	var break_room_actions: Array = resolver.get_actions(event_data, break_room_state, break_room_run_state)
+	assert_true(_action_ids(break_room_actions).has("rest_in_safe_zone"), "Safe zones should expose a short rest action.")
+	assert_true(_action_ids(break_room_actions).has("sleep_in_safe_zone"), "Safe zones should expose a sleep action.")
+
+	var before_rest_clock: int = break_room_run_state.clock.minute_of_day
+	var before_rest_fatigue: float = break_room_run_state.fatigue
+	var before_rest_hunger: float = break_room_run_state.hunger
+	var before_rest_thirst: float = break_room_run_state.thirst
+	assert_true(resolver.apply_action(break_room_run_state, event_data, break_room_state, "rest_in_safe_zone"), "Rest should resolve in a safe zone.")
+	assert_eq(break_room_run_state.clock.minute_of_day, before_rest_clock + 60, "Rest should spend one hour.")
+	assert_true(break_room_run_state.fatigue < before_rest_fatigue, "Rest should lower fatigue a little.")
+	assert_true(break_room_run_state.hunger < before_rest_hunger, "Rest should still advance hunger pressure.")
+	assert_true(break_room_run_state.thirst < before_rest_thirst, "Rest should still advance thirst pressure.")
+
+	var sleep_run_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, self)
+	if not assert_true(sleep_run_state != null, "RunState should build for sleep tests."):
+		return
+	sleep_run_state.fatigue = 52.0
+	var sleep_state := {
+		"current_zone_id": "break_room",
+		"visited_zone_ids": PackedStringArray(["mart_entrance", "checkout", "staff_corridor_gate", "stair_landing", "break_room"]),
+		"traversed_edge_ids": PackedStringArray(["break_room|stair_landing", "staff_corridor_gate|stair_landing"]),
+		"revealed_clue_ids": PackedStringArray(),
+		"spent_action_ids": PackedStringArray(),
+		"zone_flags": {
+			"staff_gate_forced": true,
+		},
+		"noise": 0,
+	}
+	var before_sleep_clock: int = sleep_run_state.clock.minute_of_day
+	var before_sleep_fatigue: float = sleep_run_state.fatigue
+	var before_sleep_hunger: float = sleep_run_state.hunger
+	var before_sleep_thirst: float = sleep_run_state.thirst
+	assert_true(resolver.apply_action(sleep_run_state, event_data, sleep_state, "sleep_in_safe_zone"), "Sleep should resolve in a safe zone.")
+	assert_true(sleep_run_state.clock.minute_of_day > before_sleep_clock + 300, "Sleep should spend multiple hours based on fatigue.")
+	assert_true(sleep_run_state.fatigue < before_sleep_fatigue, "Sleep should lower fatigue more strongly than rest.")
+	assert_true(sleep_run_state.hunger < before_sleep_hunger, "Sleep should still reduce hunger reserves.")
+	assert_true(sleep_run_state.thirst < before_sleep_thirst, "Sleep should still reduce thirst reserves.")
+
+	var tired_run_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, self)
+	if not assert_true(tired_run_state != null, "RunState should build for fatigue-time penalty tests."):
+		return
+	tired_run_state.fatigue = 70.0
+	var tired_event_state := {
+		"current_zone_id": "mart_entrance",
+		"visited_zone_ids": PackedStringArray(["mart_entrance"]),
+		"revealed_clue_ids": PackedStringArray(),
+		"spent_action_ids": PackedStringArray(),
+		"zone_flags": {},
+		"noise": 0,
+	}
+	var tired_before_clock: int = tired_run_state.clock.minute_of_day
+	assert_true(resolver.apply_action(tired_run_state, event_data, tired_event_state, "move_checkout"), "Tired survivors should still be able to move.")
+	assert_true(tired_run_state.clock.minute_of_day > tired_before_clock + ACTIVE_SEARCH_MINUTES, "Higher fatigue should make indoor actions take longer.")
 	assert_eq(
 		checkout_run_state.inventory.total_bulk(),
 		1,

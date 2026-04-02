@@ -64,6 +64,8 @@ func get_move_actions(event_data: Dictionary, event_state: Dictionary, run_state
 		var move_label := _resolve_move_label(zone, connected_zone)
 
 		var minute_cost := int(connected_zone.get("revisit_cost", 10)) if visited_zone_ids.has(connected_zone_id) else int(connected_zone.get("first_visit_cost", 30))
+		if run_state != null and run_state.has_method("get_indoor_action_minutes"):
+			minute_cost = int(run_state.get_indoor_action_minutes(minute_cost))
 		actions.append({
 			"id": "move_%s" % connected_zone_id,
 			"type": "move",
@@ -100,6 +102,7 @@ func get_actions(event_data: Dictionary, event_state: Dictionary = {}, run_state
 
 	actions.append_array(_get_flat_actions(event_data, event_state))
 	actions.append_array(_get_zone_actions(event_data, event_state, run_state))
+	actions.append_array(_get_safe_zone_actions(event_data, event_state, run_state))
 	if _has_zone_state(event_data, event_state):
 		actions.append_array(get_move_actions(event_data, event_state, run_state))
 
@@ -135,8 +138,11 @@ func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, ac
 		return false
 
 	if run_state != null:
+		var rest_minutes := int(action.get("rest_minutes", 0))
 		var minute_cost := int(action.get("minute_cost", 0))
-		if minute_cost > 0 and run_state.has_method("advance_minutes"):
+		if rest_minutes > 0 and run_state.has_method("advance_rest_time"):
+			run_state.advance_rest_time(rest_minutes)
+		elif minute_cost > 0 and run_state.has_method("advance_minutes"):
 			run_state.advance_minutes(minute_cost)
 		else:
 			var sleep_minutes := int(action.get("sleep_minutes", 0))
@@ -181,8 +187,10 @@ func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, ac
 				event_state["last_feedback_message"] = collected_message
 			elif minute_cost > 0:
 				event_state["last_feedback_message"] = "%d분 동안 수색했다." % minute_cost
-		if int(action.get("sleep_minutes", 0)) > 0 and not action.has("discover_loot"):
-			event_state["last_feedback_message"] = "%d분 동안 휴식했다." % int(action.get("sleep_minutes", 0))
+		if int(action.get("rest_minutes", 0)) > 0 and not action.has("discover_loot"):
+			event_state["last_feedback_message"] = "%d분 동안 숨을 골랐다." % int(action.get("rest_minutes", 0))
+		elif int(action.get("sleep_minutes", 0)) > 0 and not action.has("discover_loot"):
+			event_state["last_feedback_message"] = "%d분 동안 잠을 청했다." % int(action.get("sleep_minutes", 0))
 
 	_apply_action_outcomes(event_state, action)
 
@@ -233,6 +241,8 @@ func _get_zone_actions(event_data: Dictionary, event_state: Dictionary, run_stat
 			var action_id := String(action.get("id", ""))
 			if action.is_empty():
 				continue
+			if int(action.get("minute_cost", 0)) > 0 and run_state != null and run_state.has_method("get_indoor_action_minutes"):
+				action["minute_cost"] = int(run_state.get_indoor_action_minutes(int(action.get("minute_cost", 0))))
 			var is_available := _option_is_available(action, event_state, run_state)
 			if not is_available and not bool(action.get("show_when_locked", true)):
 				continue
@@ -242,6 +252,40 @@ func _get_zone_actions(event_data: Dictionary, event_state: Dictionary, run_stat
 
 			action["locked"] = not is_available
 			actions.append(action)
+
+	return actions
+
+
+func _get_safe_zone_actions(event_data: Dictionary, event_state: Dictionary, run_state = null) -> Array[Dictionary]:
+	var current_zone_id := String(event_state.get("current_zone_id", ""))
+	if current_zone_id.is_empty():
+		return []
+
+	var current_zone := get_zone(event_data, current_zone_id)
+	if current_zone.is_empty():
+		return []
+
+	var actions: Array[Dictionary] = []
+	var rest_minutes := int(current_zone.get("rest_minutes", 0))
+	if rest_minutes > 0:
+		actions.append({
+			"id": "rest_in_safe_zone",
+			"type": "interaction",
+			"label": "짧게 숨을 고른다",
+			"rest_minutes": rest_minutes,
+			"minute_cost": rest_minutes,
+		})
+
+	if bool(current_zone.get("sleep_allowed", false)) and run_state != null and run_state.has_method("get_sleep_preview"):
+		var preview: Dictionary = run_state.get_sleep_preview()
+		var sleep_minutes := int(preview.get("sleep_minutes", 0))
+		if sleep_minutes > 0:
+			actions.append({
+				"id": "sleep_in_safe_zone",
+				"type": "interaction",
+				"label": "잠을 청한다",
+				"sleep_minutes": sleep_minutes,
+			})
 
 	return actions
 
@@ -294,6 +338,14 @@ func _get_action(event_data: Dictionary, event_state: Dictionary, action_id: Str
 			return action
 
 	for action_variant in _get_zone_actions(event_data, event_state, run_state):
+		if typeof(action_variant) != TYPE_DICTIONARY:
+			continue
+
+		var action := action_variant as Dictionary
+		if String(action.get("id", "")) == action_id:
+			return action
+
+	for action_variant in _get_safe_zone_actions(event_data, event_state, run_state):
 		if typeof(action_variant) != TYPE_DICTIONARY:
 			continue
 

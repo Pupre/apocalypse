@@ -317,6 +317,11 @@ func apply_action(action_id: String) -> bool:
 		var consume_item_data: Dictionary = _item_definition(consume_item_id)
 		if consume_item_data.is_empty() or _run_state == null or not _run_state.has_method("consume_inventory_item"):
 			return false
+		var use_minutes := int(consume_item_data.get("use_minutes", 0))
+		if use_minutes > 0 and _run_state.has_method("get_indoor_action_minutes"):
+			use_minutes = int(_run_state.get_indoor_action_minutes(use_minutes))
+		if use_minutes > 0 and _run_state.has_method("advance_minutes"):
+			_run_state.advance_minutes(use_minutes)
 		if not _run_state.consume_inventory_item(consume_item_id, consume_item_data):
 			return false
 		_selected_inventory_item_id = ""
@@ -324,6 +329,8 @@ func apply_action(action_id: String) -> bool:
 			_item_name(consume_item_data, consume_item_id),
 			_consume_feedback_verb(consume_item_data),
 		]
+		if use_minutes > 0:
+			_event_state["last_feedback_message"] += " %d분이 지났다." % use_minutes
 		state_changed.emit()
 		return true
 

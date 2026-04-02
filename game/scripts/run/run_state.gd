@@ -15,8 +15,12 @@ const OUTDOOR_THIRST_MULTIPLIER := 1.75
 const OUTDOOR_FATIGUE_MULTIPLIER := 1.35
 const SLEEP_HUNGER_MULTIPLIER := 0.45
 const SLEEP_THIRST_MULTIPLIER := 0.55
+const REST_HUNGER_MULTIPLIER := 0.75
+const REST_THIRST_MULTIPLIER := 0.8
 const STARVATION_HEALTH_LOSS_PER_MINUTE := 1.0 / 30.0
 const DEHYDRATION_HEALTH_LOSS_PER_MINUTE := 1.0 / 15.0
+const REST_FATIGUE_RECOVERY_PER_MINUTE := 1.0 / 10.0
+const SLEEP_FATIGUE_RECOVERY_PER_MINUTE := 1.0 / 4.5
 const MAX_SURVIVAL_VALUE := 100.0
 const BASE_CARRY_LIMIT := 8
 const MIN_OVERLOADED_MOVE_MULTIPLIER := 0.45
@@ -78,6 +82,18 @@ func advance_sleep_time(minutes: int) -> void:
 	clock.advance_minutes(minutes)
 	hunger = max(0.0, hunger - (float(minutes) * HUNGER_DECAY_PER_MINUTE * SLEEP_HUNGER_MULTIPLIER))
 	thirst = max(0.0, thirst - (float(minutes) * THIRST_DECAY_PER_MINUTE * SLEEP_THIRST_MULTIPLIER))
+	fatigue = max(0.0, fatigue - (float(minutes) * SLEEP_FATIGUE_RECOVERY_PER_MINUTE))
+	_apply_survival_damage(minutes)
+
+
+func advance_rest_time(minutes: int) -> void:
+	if minutes < 0:
+		return
+
+	clock.advance_minutes(minutes)
+	hunger = max(0.0, hunger - (float(minutes) * HUNGER_DECAY_PER_MINUTE * REST_HUNGER_MULTIPLIER))
+	thirst = max(0.0, thirst - (float(minutes) * THIRST_DECAY_PER_MINUTE * REST_THIRST_MULTIPLIER))
+	fatigue = max(0.0, fatigue - (float(minutes) * REST_FATIGUE_RECOVERY_PER_MINUTE))
 	_apply_survival_damage(minutes)
 
 
@@ -125,6 +141,20 @@ func get_health_stage() -> String:
 
 func get_fatigue_stage() -> String:
 	return fatigue_model.get_band(fatigue)
+
+
+func get_indoor_action_minutes(base_minutes: int) -> int:
+	if base_minutes <= 0:
+		return 0
+
+	var multiplier := 1.0
+	if fatigue >= 75.0:
+		multiplier = 1.5
+	elif fatigue >= 55.0:
+		multiplier = 1.3
+	elif fatigue >= 35.0:
+		multiplier = 1.15
+	return int(ceili(float(base_minutes) * multiplier))
 
 
 func _apply_survivor_config(config: Dictionary) -> void:
@@ -192,14 +222,15 @@ func equip_inventory_item(item_id: String, item_data: Dictionary) -> Dictionary:
 
 func get_outdoor_move_speed() -> float:
 	var overflow_bulk: int = inventory.overflow_bulk()
+	var fatigue_multiplier := fatigue_model.outdoor_efficiency_multiplier(fatigue)
 	if overflow_bulk <= 0:
-		return move_speed
+		return move_speed * fatigue_multiplier
 
 	var multiplier := float(max(
 		MIN_OVERLOADED_MOVE_MULTIPLIER,
 		1.0 - (float(overflow_bulk) * OVERFLOW_MOVE_PENALTY_PER_BULK)
 	))
-	return move_speed * multiplier
+	return move_speed * multiplier * fatigue_multiplier
 
 
 func _apply_job_modifiers(job_id: String) -> int:

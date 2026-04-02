@@ -63,6 +63,9 @@ func _run_test() -> void:
 
 	var before_clock_minute_of_day: int = run_state.clock.minute_of_day
 	var before_exposure: float = run_state.exposure
+	var before_hunger: float = run_state.hunger
+	var before_thirst: float = run_state.thirst
+	var before_fatigue: float = run_state.fatigue
 
 	if not assert_true(outdoor_mode.has_method("simulate_seconds"), "Outdoor mode should expose simulate_seconds()."):
 		outdoor_mode.free()
@@ -76,6 +79,9 @@ func _run_test() -> void:
 		"Three real minutes should advance three in-game hours."
 	)
 	assert_true(run_state.exposure < before_exposure, "Outdoor time should drain exposure.")
+	assert_true(run_state.hunger < before_hunger, "Outdoor time should reduce hunger reserves.")
+	assert_true(run_state.thirst < before_thirst, "Outdoor time should reduce thirst reserves.")
+	assert_true(run_state.fatigue > before_fatigue, "Outdoor time should build fatigue.")
 
 	var ground := outdoor_mode.get_node_or_null("Ground") as Node2D
 	var player_sprite := outdoor_mode.get_node_or_null("PlayerSprite") as Polygon2D
@@ -163,6 +169,27 @@ func _run_test() -> void:
 		outdoor_mode.get_player_position().x < overloaded_run_state.move_speed,
 		"Outdoor movement should slow down when the player is carrying more than the soft limit."
 	)
+
+	var fresh_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, self)
+	var tired_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, self)
+	if not assert_true(fresh_state != null and tired_state != null, "RunState should build for fatigue movement checks."):
+		outdoor_mode.free()
+		return
+	tired_state.fatigue = 80.0
+	outdoor_mode.bind_run_state(fresh_state, "mart_01", Vector2(0.0, 0.0))
+	outdoor_mode.move_player(Vector2.RIGHT, 1.0)
+	var fresh_x: float = outdoor_mode.get_player_position().x
+	outdoor_mode.bind_run_state(tired_state, "mart_01", Vector2(0.0, 0.0))
+	outdoor_mode.move_player(Vector2.RIGHT, 1.0)
+	assert_true(outdoor_mode.get_player_position().x < fresh_x, "Higher fatigue should reduce outdoor movement speed.")
 
 	outdoor_mode.free()
 	pass_test("OUTDOOR_CONTROLLER_OK")

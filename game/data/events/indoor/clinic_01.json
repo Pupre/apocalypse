@@ -73,6 +73,8 @@
       "floor_id": "floor_1",
       "label": "휴게실",
       "summary": "자판기 옆 탁자와 싱크대 주변에 아직 손대지 않은 간식과 생수가 남아 있다.",
+      "rest_minutes": 60,
+      "sleep_allowed": true,
       "connected_zone_ids": [
         "treatment_room"
       ],

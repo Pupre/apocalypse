@@ -69,7 +69,7 @@ func simulate_seconds(seconds_elapsed: float) -> void:
 		return
 
 	_seconds_buffer -= float(full_minutes)
-	run_state.advance_minutes(full_minutes)
+	run_state.advance_minutes(full_minutes, "outdoor")
 	run_state.exposure = exposure_model.drain(run_state.exposure, float(full_minutes), run_state.fatigue)
 	_sync_view()
 	state_changed.emit()
