@@ -8,11 +8,27 @@ const EXPOSURE_MODEL_SCRIPT := preload("res://scripts/outdoor/exposure_model.gd"
 const DEFAULT_BUILDING_ID := "mart_01"
 const DEFAULT_PLAYER_POSITION := Vector2(240.0, 360.0)
 const ENTER_RADIUS := 72.0
+const WORLD_BOUNDS := Rect2(0.0, 0.0, 1200.0, 1092.0)
 const MOVE_LEFT_ACTION := "move_left"
 const MOVE_RIGHT_ACTION := "move_right"
 const MOVE_UP_ACTION := "move_up"
 const MOVE_DOWN_ACTION := "move_down"
 const ENTER_BUILDING_ACTION := "enter_building"
+const BUILDING_LABELS := {
+	"mart_01": "마트",
+	"apartment_01": "아파트",
+	"clinic_01": "의원",
+	"office_01": "사무실",
+}
+const BACKDROP_TEXTURE_PATH := "res://assets/outdoor/third_party/opengameart/TopDownCityPack/Sprites/sMockup.png"
+const PLAYER_TEXTURE_PATH := "res://assets/outdoor/third_party/kenney/PNG/Survivor 1/survivor1_stand.png"
+const BLUE_CAR_TEXTURE_PATH := "res://assets/outdoor/third_party/opengameart/TopDownCityPack/Sprites/Vehicles/sBlueCar.png"
+const GREEN_PICKUP_TEXTURE_PATH := "res://assets/outdoor/third_party/opengameart/TopDownCityPack/Sprites/Vehicles/sGreenPickup.png"
+const OBSTACLE_RECTS := [
+	Rect2(462.0, 438.0, 48.0, 48.0),
+	Rect2(758.0, 446.0, 48.0, 48.0),
+]
+static var _texture_cache: Dictionary = {}
 
 var run_state = null
 var exposure_model := EXPOSURE_MODEL_SCRIPT.new()
@@ -20,8 +36,11 @@ var _seconds_buffer := 0.0
 var _player_position := DEFAULT_PLAYER_POSITION
 var _building_rows: Array[Dictionary] = []
 var _building_positions: Dictionary = {}
-var _player_marker: Polygon2D = null
+var _player_sprite: Sprite2D = null
+var _camera: Camera2D = null
+var _ground_host: Node2D = null
 var _building_host: Node2D = null
+var _obstacle_host: Node2D = null
 var _building_markers: Dictionary = {}
 var _exposure_label: Label = null
 var _hint_label: Label = null
@@ -29,7 +48,9 @@ var _hint_label: Label = null
 
 func _ready() -> void:
 	_cache_nodes()
+	_apply_visual_assets()
 	_refresh_buildings()
+	_refresh_obstacles()
 	_sync_view()
 
 
@@ -38,7 +59,9 @@ func bind_run_state(value, building_id: String = DEFAULT_BUILDING_ID, player_pos
 	_seconds_buffer = 0.0
 	_player_position = player_position if typeof(player_position) == TYPE_VECTOR2 else DEFAULT_PLAYER_POSITION
 	_cache_nodes()
+	_apply_visual_assets()
 	_refresh_buildings()
+	_refresh_obstacles()
 	_sync_view()
 	state_changed.emit()
 
@@ -67,7 +90,8 @@ func move_player(direction: Vector2, seconds_elapsed: float) -> void:
 	if run_state.has_method("get_outdoor_move_speed"):
 		effective_move_speed = float(run_state.get_outdoor_move_speed())
 
-	_player_position += direction.normalized() * effective_move_speed * seconds_elapsed
+	var target_position := _player_position + direction.normalized() * effective_move_speed * seconds_elapsed
+	_player_position = _constrain_player_position(target_position)
 	_sync_view()
 	state_changed.emit()
 
@@ -119,38 +143,77 @@ func _refresh_buildings() -> void:
 		var building_id := String(building_data.get("id", ""))
 		if building_id.is_empty():
 			continue
+
 		var building_position := _resolve_building_position(building_data)
 		_building_positions[building_id] = building_position
 		if _building_host == null:
 			continue
 
-		var marker := Polygon2D.new()
-		marker.name = "%sMarker" % building_id
-		marker.position = building_position
-		marker.polygon = [
-			Vector2(-18, -18),
-			Vector2(18, -18),
-			Vector2(18, 18),
-			Vector2(-18, 18),
+		var marker_root := Node2D.new()
+		marker_root.name = "%sMarker" % building_id
+		marker_root.position = building_position
+
+		var base := Polygon2D.new()
+		base.name = "Base"
+		base.polygon = [
+			Vector2(-42, -14),
+			Vector2(42, -14),
+			Vector2(42, 14),
+			Vector2(-42, 14),
 		]
-		marker.color = _building_color(String(building_data.get("category", "")))
-		_building_host.add_child(marker)
-		_building_markers[building_id] = marker
+		base.color = _building_color(String(building_data.get("category", "")))
+		marker_root.add_child(base)
+
+		var door := Polygon2D.new()
+		door.name = "Door"
+		door.position = Vector2(0, 16)
+		door.polygon = [
+			Vector2(-10, -6),
+			Vector2(10, -6),
+			Vector2(10, 6),
+			Vector2(-10, 6),
+		]
+		door.color = Color(0.96, 0.92, 0.76, 0.95)
+		marker_root.add_child(door)
+
+		var label := Label.new()
+		label.name = "Label"
+		label.text = BUILDING_LABELS.get(building_id, String(building_data.get("name", "건물")))
+		label.position = Vector2(-36, -34)
+		label.size = Vector2(72, 18)
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label.add_theme_font_size_override("font_size", 12)
+		marker_root.add_child(label)
+
+		_building_host.add_child(marker_root)
+		_building_markers[building_id] = marker_root
+
+
+func _refresh_obstacles() -> void:
+	if _obstacle_host == null:
+		return
+
+	for child in _obstacle_host.get_children():
+		var sprite := child as Sprite2D
+		if sprite != null:
+			sprite.modulate = Color(0.92, 0.92, 0.92, 1.0)
 
 
 func _sync_view() -> void:
-	if _player_marker != null:
-		_player_marker.position = _player_position
+	if _player_sprite != null:
+		_player_sprite.position = _player_position
+	if _camera != null:
+		_camera.position = _player_position
 
 	var nearby_building_id := _get_nearby_building_id()
 	for building_data in _building_rows:
 		var building_id := String(building_data.get("id", ""))
-		var marker: Polygon2D = _building_markers.get(building_id, null)
+		var marker: Node2D = _building_markers.get(building_id, null)
 		if marker == null:
 			continue
 		marker.position = _resolve_building_position(building_data)
-		marker.scale = Vector2.ONE * (1.15 if building_id == nearby_building_id else 1.0)
-		marker.modulate = Color(1.0, 1.0, 1.0, 1.0) if building_id == nearby_building_id else Color(0.82, 0.82, 0.82, 1.0)
+		marker.scale = Vector2.ONE * (1.12 if building_id == nearby_building_id else 1.0)
+		marker.modulate = Color(1.0, 1.0, 1.0, 1.0) if building_id == nearby_building_id else Color(0.88, 0.88, 0.88, 1.0)
 
 	if _exposure_label != null and run_state != null:
 		_exposure_label.text = "노출: %d" % int(roundf(run_state.exposure))
@@ -164,10 +227,30 @@ func _sync_view() -> void:
 
 
 func _cache_nodes() -> void:
-	_player_marker = get_node_or_null("PlayerMarker") as Polygon2D
+	_ground_host = get_node_or_null("Ground") as Node2D
+	_player_sprite = get_node_or_null("PlayerSprite") as Sprite2D
+	_camera = get_node_or_null("WorldCamera") as Camera2D
 	_building_host = get_node_or_null("Buildings") as Node2D
+	_obstacle_host = get_node_or_null("Obstacles") as Node2D
 	_exposure_label = get_node_or_null("CanvasLayer/StatusPanel/VBox/ExposureLabel") as Label
 	_hint_label = get_node_or_null("CanvasLayer/StatusPanel/VBox/HintLabel") as Label
+
+
+func _apply_visual_assets() -> void:
+	var backdrop := get_node_or_null("Ground/Backdrop") as Sprite2D
+	if backdrop != null:
+		backdrop.texture = _load_texture(BACKDROP_TEXTURE_PATH)
+
+	if _player_sprite != null:
+		_player_sprite.texture = _load_texture(PLAYER_TEXTURE_PATH)
+
+	var blue_car := get_node_or_null("Obstacles/BlueCar") as Sprite2D
+	if blue_car != null:
+		blue_car.texture = _load_texture(BLUE_CAR_TEXTURE_PATH)
+
+	var green_pickup := get_node_or_null("Obstacles/GreenPickup") as Sprite2D
+	if green_pickup != null:
+		green_pickup.texture = _load_texture(GREEN_PICKUP_TEXTURE_PATH)
 
 
 func _get_nearby_building_id() -> String:
@@ -212,10 +295,35 @@ func _resolve_building_position(building_data: Dictionary) -> Vector2:
 func _building_color(category: String) -> Color:
 	match category:
 		"medical":
-			return Color(0.68, 0.45, 0.45, 1.0)
+			return Color(0.56, 0.37, 0.37, 0.92)
 		"office":
-			return Color(0.45, 0.58, 0.76, 1.0)
+			return Color(0.36, 0.47, 0.63, 0.92)
 		"residential":
-			return Color(0.74, 0.64, 0.42, 1.0)
+			return Color(0.63, 0.53, 0.35, 0.92)
 		_:
-			return Color(0.45, 0.7, 0.45, 1.0)
+			return Color(0.41, 0.49, 0.38, 0.92)
+
+
+func _constrain_player_position(target_position: Vector2) -> Vector2:
+	var clamped := Vector2(
+		clampf(target_position.x, WORLD_BOUNDS.position.x + 24.0, WORLD_BOUNDS.end.x - 24.0),
+		clampf(target_position.y, WORLD_BOUNDS.position.y + 24.0, WORLD_BOUNDS.end.y - 24.0)
+	)
+	for obstacle_rect in OBSTACLE_RECTS:
+		if obstacle_rect.has_point(clamped):
+			return _player_position
+	return clamped
+
+
+func _load_texture(resource_path: String) -> Texture2D:
+	if _texture_cache.has(resource_path):
+		return _texture_cache[resource_path] as Texture2D
+
+	var image := Image.new()
+	if image.load(ProjectSettings.globalize_path(resource_path)) != OK:
+		push_error("Failed to load outdoor texture: %s" % resource_path)
+		return null
+
+	var texture := ImageTexture.create_from_image(image)
+	_texture_cache[resource_path] = texture
+	return texture

@@ -160,14 +160,14 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
-	var player_marker := outdoor_mode.get_node_or_null("PlayerMarker") as Polygon2D
+	var player_sprite := outdoor_mode.get_node_or_null("PlayerSprite") as Sprite2D
 	var mart_data: Dictionary = content_library.get_building("mart_01")
 	var mart_position_data: Dictionary = mart_data.get("outdoor_position", {})
 	var mart_position := Vector2(
 		float(mart_position_data.get("x", 640.0)),
 		float(mart_position_data.get("y", 360.0))
 	)
-	if not assert_true(player_marker != null, "Outdoor player marker should be present."):
+	if not assert_true(player_sprite != null, "Outdoor player sprite should be present."):
 		bootstrap.free()
 		return
 
@@ -177,8 +177,8 @@ func _run_test() -> void:
 	assert_eq(hud_clock_label.text, "1일차 10:00", "HUD time should reflect outdoor time spent.")
 
 	outdoor_mode.move_player(Vector2.RIGHT, 1.5)
-	assert_true(player_marker.position.distance_to(mart_position) <= 72.0, "The player should move into building entry range.")
-	var pre_entry_player_position := player_marker.position
+	assert_true(player_sprite.position.distance_to(mart_position) <= 72.0, "The player should move into building entry range.")
+	var pre_entry_player_position := player_sprite.position
 
 	outdoor_mode.try_enter_building("mart_01")
 	if not await _await_transition_completion(
@@ -389,12 +389,12 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
-	player_marker = outdoor_mode.get_node_or_null("PlayerMarker") as Polygon2D
-	if not assert_true(player_marker != null, "Outdoor mode should restore the player marker after exit."):
+	player_sprite = outdoor_mode.get_node_or_null("PlayerSprite") as Sprite2D
+	if not assert_true(player_sprite != null, "Outdoor mode should restore the player sprite after exit."):
 		bootstrap.free()
 		return
 	assert_true(
-		player_marker.position.distance_to(pre_entry_player_position) <= 0.01,
+		player_sprite.position.distance_to(pre_entry_player_position) <= 0.01,
 		"Exiting the building should restore the previous outdoor player position."
 	)
 

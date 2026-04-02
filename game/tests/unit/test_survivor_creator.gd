@@ -137,20 +137,20 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
-	var player_marker := outdoor_mode.get_node_or_null("PlayerMarker") as Polygon2D
+	var player_sprite := outdoor_mode.get_node_or_null("PlayerSprite") as Sprite2D
 	var mart_data: Dictionary = content_library.get_building("mart_01")
 	var mart_position_data: Dictionary = mart_data.get("outdoor_position", {})
 	var mart_position := Vector2(
 		float(mart_position_data.get("x", 640.0)),
 		float(mart_position_data.get("y", 360.0))
 	)
-	if not assert_true(player_marker != null, "Outdoor player marker should be present."):
+	if not assert_true(player_sprite != null, "Outdoor player sprite should be present."):
 		bootstrap.free()
 		return
-	assert_true(player_marker.position.distance_to(mart_position) > 72.0, "The run should start outside the entry radius.")
+	assert_true(player_sprite.position.distance_to(mart_position) > 72.0, "The run should start outside the entry radius.")
 
 	outdoor_mode.move_player(Vector2.RIGHT, 1.5)
-	assert_true(player_marker.position.distance_to(mart_position) <= 72.0, "Moving right should bring the player into entry range.")
+	assert_true(player_sprite.position.distance_to(mart_position) <= 72.0, "Moving right should bring the player into entry range.")
 
 	outdoor_mode.try_enter_building("mart_01")
 	if not await _await_transition_completion(

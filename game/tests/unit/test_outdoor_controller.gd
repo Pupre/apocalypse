@@ -77,15 +77,26 @@ func _run_test() -> void:
 	)
 	assert_true(run_state.exposure < before_exposure, "Outdoor time should drain exposure.")
 
-	var player_marker := outdoor_mode.get_node_or_null("PlayerMarker") as Polygon2D
+	var ground := outdoor_mode.get_node_or_null("Ground") as Node2D
+	var player_sprite := outdoor_mode.get_node_or_null("PlayerSprite") as Sprite2D
 	var building_markers := outdoor_mode.get_node_or_null("Buildings") as Node2D
-	if not assert_true(player_marker != null, "Outdoor mode should expose a player marker."):
+	var obstacles := outdoor_mode.get_node_or_null("Obstacles") as Node2D
+	if not assert_true(ground != null, "Outdoor mode should expose a ground host."):
+		outdoor_mode.free()
+		return
+	if not assert_true(player_sprite != null, "Outdoor mode should expose a player sprite."):
 		outdoor_mode.free()
 		return
 	if not assert_true(building_markers != null, "Outdoor mode should expose a building marker host."):
 		outdoor_mode.free()
 		return
+	if not assert_true(obstacles != null, "Outdoor mode should expose an obstacle host."):
+		outdoor_mode.free()
+		return
+	assert_true(ground.get_child_count() > 0, "Outdoor ground should render at least one visual layer.")
+	assert_true(player_sprite.texture != null, "Outdoor player sprite should load a texture.")
 	assert_eq(building_markers.get_child_count(), 4, "Outdoor mode should render four building markers.")
+	assert_true(obstacles.get_child_count() > 0, "Outdoor mode should render at least one obstacle prop.")
 
 	var content_library := root.get_node_or_null("ContentLibrary")
 	if not assert_true(content_library != null, "ContentLibrary autoload should be available for building lookups."):
@@ -98,7 +109,7 @@ func _run_test() -> void:
 		float((mart_data.get("outdoor_position", {}) as Dictionary).get("y", 360.0))
 	)
 
-	var far_distance := player_marker.position.distance_to(mart_position)
+	var far_distance := player_sprite.position.distance_to(mart_position)
 	assert_true(far_distance > 72.0, "The player should start outside the entry radius.")
 
 	outdoor_mode.try_enter_building("mart_01")
@@ -114,7 +125,7 @@ func _run_test() -> void:
 
 	outdoor_mode.move_player(Vector2.RIGHT, 1.5)
 
-	var near_distance := player_marker.position.distance_to(mart_position)
+	var near_distance := player_sprite.position.distance_to(mart_position)
 	assert_true(near_distance <= 72.0, "Moving toward the building should place the player in entry range.")
 
 	outdoor_mode.try_enter_building("wrong_building")
