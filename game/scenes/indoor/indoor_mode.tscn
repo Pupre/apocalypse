@@ -34,45 +34,55 @@ theme_override_constants/separation = 12
 [node name="MainColumn" type="VBoxContainer" parent="Panel/Layout"]
 theme_override_constants/separation = 12
 
-[node name="TopBar" type="HBoxContainer" parent="Panel/Layout/MainColumn"]
+[node name="TopBar" type="VBoxContainer" parent="Panel/Layout/MainColumn"]
 theme_override_constants/separation = 12
 
-[node name="TitleLabel" type="Label" parent="Panel/Layout/MainColumn/TopBar"]
+[node name="HeaderRow" type="HBoxContainer" parent="Panel/Layout/MainColumn/TopBar"]
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="Panel/Layout/MainColumn/TopBar/HeaderRow"]
 size_flags_horizontal = 1
 text = "실내"
 
-[node name="LocationLabel" type="Label" parent="Panel/Layout/MainColumn/TopBar"]
+[node name="LocationLabel" type="Label" parent="Panel/Layout/MainColumn/TopBar/HeaderRow"]
 size_flags_horizontal = 3
 text = "위치: 확인 중"
 
-[node name="TimeLabel" type="Label" parent="Panel/Layout/MainColumn/TopBar"]
+[node name="TimeLabel" type="Label" parent="Panel/Layout/MainColumn/TopBar/HeaderRow"]
 size_flags_horizontal = 1
 text = "시각: 확인 중"
 
-[node name="StatChips" type="HBoxContainer" parent="Panel/Layout/MainColumn/TopBar"]
+[node name="StatusRow" type="HBoxContainer" parent="Panel/Layout/MainColumn/TopBar"]
+theme_override_constants/separation = 12
+
+[node name="StatChips" type="HBoxContainer" parent="Panel/Layout/MainColumn/TopBar/StatusRow"]
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
 
-[node name="Tools" type="HBoxContainer" parent="Panel/Layout/MainColumn/TopBar"]
+[node name="Tools" type="HBoxContainer" parent="Panel/Layout/MainColumn/TopBar/StatusRow"]
 theme_override_constants/separation = 8
 
-[node name="MapButton" type="Button" parent="Panel/Layout/MainColumn/TopBar/Tools"]
+[node name="MapButton" type="Button" parent="Panel/Layout/MainColumn/TopBar/StatusRow/Tools"]
 text = "구조도"
 
-[node name="BagButton" type="Button" parent="Panel/Layout/MainColumn/TopBar/Tools"]
+[node name="BagButton" type="Button" parent="Panel/Layout/MainColumn/TopBar/StatusRow/Tools"]
 text = "가방"
 
-[node name="ReadingCard" type="PanelContainer" parent="Panel/Layout/MainColumn"]
+[node name="ContextRow" type="HBoxContainer" parent="Panel/Layout/MainColumn"]
+theme_override_constants/separation = 12
+
+[node name="ReadingCard" type="PanelContainer" parent="Panel/Layout/MainColumn/ContextRow"]
+size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="VBox" type="VBoxContainer" parent="Panel/Layout/MainColumn/ReadingCard"]
+[node name="VBox" type="VBoxContainer" parent="Panel/Layout/MainColumn/ContextRow/ReadingCard"]
 theme_override_constants/separation = 10
 
-[node name="SummaryLabel" type="Label" parent="Panel/Layout/MainColumn/ReadingCard/VBox"]
+[node name="SummaryLabel" type="Label" parent="Panel/Layout/MainColumn/ContextRow/ReadingCard/VBox"]
 autowrap_mode = 3
 text = "방 안을 살펴 단서를 찾아본다."
 
-[node name="ResultLabel" type="Label" parent="Panel/Layout/MainColumn/ReadingCard/VBox"]
+[node name="ResultLabel" type="Label" parent="Panel/Layout/MainColumn/ContextRow/ReadingCard/VBox"]
 autowrap_mode = 3
 text = ""
 
@@ -82,6 +92,15 @@ text = "행동"
 [node name="ActionButtons" type="VBoxContainer" parent="Panel/Layout/MainColumn"]
 size_flags_vertical = 3
 theme_override_constants/separation = 12
+
+[node name="MiniMapCard" type="PanelContainer" parent="Panel/Layout/MainColumn/ContextRow"]
+custom_minimum_size = Vector2(200, 132)
+
+[node name="MapNodes" type="Control" parent="Panel/Layout/MainColumn/ContextRow/MiniMapCard"]
+custom_minimum_size = Vector2(200, 132)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("3")
 
 [node name="MinimapOverlay" type="PanelContainer" parent="."]
 visible = false
@@ -147,10 +166,13 @@ theme_override_constants/separation = 8
 
 [node name="CarriedTabButton" type="Button" parent="BagSheet/VBox/Tabs"]
 size_flags_horizontal = 3
+toggle_mode = true
+button_pressed = true
 text = "소지품"
 
 [node name="EquippedTabButton" type="Button" parent="BagSheet/VBox/Tabs"]
 size_flags_horizontal = 3
+toggle_mode = true
 text = "장착중"
 
 [node name="InventoryScroll" type="ScrollContainer" parent="BagSheet/VBox"]
@@ -188,3 +210,31 @@ text = ""
 
 [node name="ActionButtons" type="HBoxContainer" parent="ItemSheet/VBox"]
 theme_override_constants/separation = 8
+
+[node name="StatDetailSheet" type="PanelContainer" parent="."]
+visible = false
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 104.0
+offset_top = -280.0
+offset_right = -104.0
+offset_bottom = -24.0
+
+[node name="VBox" type="VBoxContainer" parent="StatDetailSheet"]
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="StatDetailSheet/VBox"]
+text = "상태"
+
+[node name="ValueLabel" type="Label" parent="StatDetailSheet/VBox"]
+text = ""
+
+[node name="RuleLabel" type="Label" parent="StatDetailSheet/VBox"]
+autowrap_mode = 3
+text = ""
+
+[node name="RecoveryLabel" type="Label" parent="StatDetailSheet/VBox"]
+autowrap_mode = 3
+text = ""

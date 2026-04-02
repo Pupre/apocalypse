@@ -156,8 +156,34 @@ func _run_test() -> void:
 	first_chip.emit_signal("pressed")
 	await process_frame
 	assert_true(stat_detail_sheet.visible, "Indoor mode should open the stat detail sheet when a chip is pressed.")
+	var stat_detail_title := _find_descendant_by_name_and_type(stat_detail_sheet, "TitleLabel", "Label") as Label
+	var stat_detail_value := _find_descendant_by_name_and_type(stat_detail_sheet, "ValueLabel", "Label") as Label
+	var stat_detail_rule := _find_descendant_by_name_and_type(stat_detail_sheet, "RuleLabel", "Label") as Label
+	var stat_detail_recovery := _find_descendant_by_name_and_type(stat_detail_sheet, "RecoveryLabel", "Label") as Label
+	if not assert_true(
+		stat_detail_title != null and stat_detail_value != null and stat_detail_rule != null and stat_detail_recovery != null,
+		"Indoor mode should expose title/value/rule/recovery labels in the stat detail sheet."
+	):
+		indoor_mode.free()
+		return
+	assert_eq(stat_detail_title.text, "허기", "Indoor mode should show the selected stat title in the detail sheet.")
+	assert_eq(
+		stat_detail_value.text,
+		"100 / 100 · 든든함",
+		"Indoor mode should show the exact hunger value and stage in the stat detail sheet."
+	)
+	assert_eq(
+		stat_detail_rule.text,
+		"0이 되면 체력이 계속 감소한다",
+		"Indoor mode should show the hunger rule text in the stat detail sheet."
+	)
+	assert_eq(
+		stat_detail_recovery.text,
+		"음식으로 회복",
+		"Indoor mode should show the hunger recovery hint in the stat detail sheet."
+	)
 
-	var summary_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/SummaryLabel") as Label
+	var summary_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/ReadingCard/VBox/SummaryLabel") as Label
 	if not assert_true(summary_label != null, "Indoor mode should expose a current-zone SummaryLabel."):
 		indoor_mode.free()
 		return
@@ -182,7 +208,7 @@ func _run_test() -> void:
 		indoor_mode.free()
 		return
 
-	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/ResultLabel") as Label
+	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/ReadingCard/VBox/ResultLabel") as Label
 	if not assert_true(result_label != null, "Indoor mode should expose a ResultLabel."):
 		indoor_mode.free()
 		return

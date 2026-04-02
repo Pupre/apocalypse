@@ -17,12 +17,19 @@ const ACTION_ICON_PATHS := {
 	"locked": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/locked.png",
 	"exit": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/home.png",
 }
+const SURVIVAL_CHIP_ICON_PATHS := {
+	"hunger": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/warning.png",
+	"thirst": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/information.png",
+	"health": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/cross.png",
+	"fatigue": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/star.png",
+}
 
 var _director: Node = null
 var _title_label: Label = null
 var _location_label: Label = null
 var _time_label: Label = null
 var _stat_chips: HBoxContainer = null
+var _inline_minimap: Control = null
 var _summary_label: Label = null
 var _result_label: Label = null
 var _action_buttons: VBoxContainer = null
@@ -43,6 +50,12 @@ var _item_sheet_title: Label = null
 var _item_sheet_description: Label = null
 var _item_sheet_effect: Label = null
 var _item_sheet_actions: HBoxContainer = null
+var _stat_detail_sheet: Control = null
+var _stat_detail_title: Label = null
+var _stat_detail_value: Label = null
+var _stat_detail_rule: Label = null
+var _stat_detail_recovery: Label = null
+var _selected_chip_id := ""
 var _director_connected := false
 var _buttons_bound := false
 var _icon_cache: Dictionary = {}
@@ -106,6 +119,7 @@ func _refresh_view() -> void:
 	_refresh_minimap()
 	_refresh_bag_sheet()
 	_refresh_item_sheet()
+	_refresh_stat_detail_sheet()
 
 
 func _refresh_top_bar() -> void:
@@ -142,12 +156,17 @@ func _refresh_stat_chips() -> void:
 			continue
 
 		var chip := chip_variant as Dictionary
-		var panel := PanelContainer.new()
-		panel.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-		var label := Label.new()
-		label.text = "%s: %s" % [String(chip.get("label", "")), String(chip.get("value", ""))]
-		panel.add_child(label)
-		_stat_chips.add_child(panel)
+		var button := Button.new()
+		button.flat = false
+		button.toggle_mode = false
+		button.custom_minimum_size = Vector2(0, 44)
+		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		button.icon = _survival_chip_icon(String(chip.get("icon_id", "")))
+		button.text = String(chip.get("stage", ""))
+		button.tooltip_text = "%s: %s" % [String(chip.get("label", "")), String(chip.get("stage", ""))]
+		button.pressed.connect(Callable(self, "_on_stat_chip_pressed").bind(String(chip.get("id", ""))))
+		_stat_chips.add_child(button)
 
 
 func _refresh_reading_area() -> void:
@@ -276,12 +295,19 @@ func _load_icon(path: String) -> Texture2D:
 	return texture
 
 
+func _survival_chip_icon(icon_id: String) -> Texture2D:
+	return _load_icon(String(SURVIVAL_CHIP_ICON_PATHS.get(icon_id, "")))
+
+
 func _refresh_minimap() -> void:
-	if _minimap == null or _director == null or not _director.has_method("get_map_snapshot"):
+	if _director == null or not _director.has_method("get_map_snapshot"):
 		return
 
-	if _minimap.has_method("set_snapshot"):
-		_minimap.set_snapshot(_director.get_map_snapshot())
+	var snapshot: Dictionary = _director.get_map_snapshot()
+	if _inline_minimap != null and _inline_minimap.has_method("set_snapshot"):
+		_inline_minimap.set_snapshot(snapshot)
+	if _minimap != null and _minimap.has_method("set_snapshot"):
+		_minimap.set_snapshot(snapshot)
 
 
 func _refresh_bag_sheet() -> void:
@@ -299,8 +325,10 @@ func _refresh_bag_sheet() -> void:
 
 	if _carried_tab_button != null:
 		_carried_tab_button.disabled = _active_bag_tab == "carried"
+		_carried_tab_button.button_pressed = _active_bag_tab == "carried"
 	if _equipped_tab_button != null:
 		_equipped_tab_button.disabled = _active_bag_tab == "equipped"
+		_equipped_tab_button.button_pressed = _active_bag_tab == "equipped"
 
 	if _inventory_items == null:
 		return
@@ -382,6 +410,30 @@ func _refresh_item_sheet() -> void:
 			_item_sheet_actions.add_child(button)
 
 
+func _refresh_stat_detail_sheet() -> void:
+	if _stat_detail_sheet == null:
+		return
+
+	if _director == null or _selected_chip_id.is_empty() or not _director.has_method("get_survival_chip_detail"):
+		_stat_detail_sheet.visible = false
+		return
+
+	var detail: Dictionary = _director.get_survival_chip_detail(_selected_chip_id)
+	if detail.is_empty():
+		_stat_detail_sheet.visible = false
+		return
+
+	_stat_detail_sheet.visible = true
+	if _stat_detail_title != null:
+		_stat_detail_title.text = String(detail.get("label", "상태"))
+	if _stat_detail_value != null:
+		_stat_detail_value.text = "%d / 100 · %s" % [int(round(float(detail.get("value", 0.0)))), String(detail.get("stage", ""))]
+	if _stat_detail_rule != null:
+		_stat_detail_rule.text = String(detail.get("rule_text", ""))
+	if _stat_detail_recovery != null:
+		_stat_detail_recovery.text = String(detail.get("recovery_text", ""))
+
+
 func _on_map_button_pressed() -> void:
 	if _minimap_overlay == null:
 		return
@@ -447,17 +499,23 @@ func _on_action_pressed(action_id: String) -> void:
 		_director.apply_action(action_id)
 
 
+func _on_stat_chip_pressed(chip_id: String) -> void:
+	_selected_chip_id = chip_id
+	_refresh_stat_detail_sheet()
+
+
 func _cache_nodes() -> void:
 	_director = get_node_or_null("Director")
-	_title_label = get_node_or_null("Panel/Layout/MainColumn/TopBar/TitleLabel") as Label
-	_location_label = get_node_or_null("Panel/Layout/MainColumn/TopBar/LocationLabel") as Label
-	_time_label = get_node_or_null("Panel/Layout/MainColumn/TopBar/TimeLabel") as Label
-	_stat_chips = get_node_or_null("Panel/Layout/MainColumn/TopBar/StatChips") as HBoxContainer
-	_summary_label = get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/SummaryLabel") as Label
-	_result_label = get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/ResultLabel") as Label
+	_title_label = get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/TitleLabel") as Label
+	_location_label = get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/LocationLabel") as Label
+	_time_label = get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/TimeLabel") as Label
+	_stat_chips = get_node_or_null("Panel/Layout/MainColumn/TopBar/StatusRow/StatChips") as HBoxContainer
+	_inline_minimap = get_node_or_null("Panel/Layout/MainColumn/ContextRow/MiniMapCard/MapNodes") as Control
+	_summary_label = get_node_or_null("Panel/Layout/MainColumn/ContextRow/ReadingCard/VBox/SummaryLabel") as Label
+	_result_label = get_node_or_null("Panel/Layout/MainColumn/ContextRow/ReadingCard/VBox/ResultLabel") as Label
 	_action_buttons = get_node_or_null("Panel/Layout/MainColumn/ActionButtons") as VBoxContainer
-	_map_button = get_node_or_null("Panel/Layout/MainColumn/TopBar/Tools/MapButton") as Button
-	_bag_button = get_node_or_null("Panel/Layout/MainColumn/TopBar/Tools/BagButton") as Button
+	_map_button = get_node_or_null("Panel/Layout/MainColumn/TopBar/StatusRow/Tools/MapButton") as Button
+	_bag_button = get_node_or_null("Panel/Layout/MainColumn/TopBar/StatusRow/Tools/BagButton") as Button
 	_minimap_overlay = get_node_or_null("MinimapOverlay") as Control
 	_minimap_close_button = get_node_or_null("MinimapOverlay/VBox/Header/CloseButton") as Button
 	_minimap = get_node_or_null("MinimapOverlay/VBox/MapNodes") as Control
@@ -473,6 +531,11 @@ func _cache_nodes() -> void:
 	_item_sheet_description = get_node_or_null("ItemSheet/VBox/ItemDescriptionLabel") as Label
 	_item_sheet_effect = get_node_or_null("ItemSheet/VBox/ItemEffectLabel") as Label
 	_item_sheet_actions = get_node_or_null("ItemSheet/VBox/ActionButtons") as HBoxContainer
+	_stat_detail_sheet = get_node_or_null("StatDetailSheet") as Control
+	_stat_detail_title = get_node_or_null("StatDetailSheet/VBox/TitleLabel") as Label
+	_stat_detail_value = get_node_or_null("StatDetailSheet/VBox/ValueLabel") as Label
+	_stat_detail_rule = get_node_or_null("StatDetailSheet/VBox/RuleLabel") as Label
+	_stat_detail_recovery = get_node_or_null("StatDetailSheet/VBox/RecoveryLabel") as Label
 
 
 func _clear_children(container: Node) -> void:
