@@ -183,10 +183,12 @@ func _run_test() -> void:
 	outdoor_mode.try_enter_building("mart_01")
 	if not await _await_transition_completion(
 		run_shell,
+		hud,
 		hud_title_label,
 		fade_rect,
 		"indoor",
-		"실내 생존 정보",
+		false,
+		"",
 		"IndoorMode",
 		"Timed out waiting for the enter transition to settle on indoor mode."
 	):
@@ -194,7 +196,7 @@ func _run_test() -> void:
 		return
 
 	assert_eq(run_shell.get_current_mode_name(), "indoor", "Entering the building should swap the run shell to indoor mode.")
-	assert_eq(hud_title_label.text, "실내 생존 정보", "Indoor mode should switch the shared HUD presentation.")
+	assert_true(not hud.visible, "Indoor mode should hide the shared HUD.")
 	assert_eq(fade_rect.color.a, 0.0, "The transition layer should end transparent after entering a building.")
 
 	var indoor_mode: Node = run_shell.get_node_or_null("ModeHost/IndoorMode")
@@ -202,19 +204,19 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
-	var location_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/Header/LocationLabel") as Label
+	var location_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/LocationLabel") as Label
 	if not assert_true(location_label != null, "Indoor mode should expose a location label."):
 		bootstrap.free()
 		return
 	assert_eq(location_label.text, "위치: 정문 진입부", "Indoor mode should begin at the mart entrance zone.")
 
-	var indoor_time_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/Header/TimeLabel") as Label
+	var indoor_time_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/TimeLabel") as Label
 	if not assert_true(indoor_time_label != null, "Indoor mode should expose a visible time label."):
 		bootstrap.free()
 		return
 	assert_eq(indoor_time_label.text, "시각: 1일차 10:00", "Indoor mode should carry the shared clock into the indoor UI.")
 
-	var summary_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/SummaryLabel") as Label
+	var summary_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/SummaryLabel") as Label
 	if not assert_true(summary_label != null, "Indoor mode should expose a current-zone summary label."):
 		bootstrap.free()
 		return
@@ -248,17 +250,42 @@ func _run_test() -> void:
 		"Indoor mode should not expose the removed flat rest action."
 	)
 
-	var minimap_nodes := indoor_mode.get_node_or_null("Panel/Layout/Sidebar/MinimapPanel/VBox/MapNodes") as Control
+	var map_button := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/Tools/MapButton") as Button
+	var bag_button := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/Tools/BagButton") as Button
+	var minimap_overlay := indoor_mode.get_node_or_null("MinimapOverlay") as Control
+	var minimap_nodes := indoor_mode.get_node_or_null("MinimapOverlay/VBox/MapNodes") as Control
+	if not assert_true(map_button != null and bag_button != null, "Indoor mode should expose map and bag buttons in the top bar."):
+		bootstrap.free()
+		return
+	if not assert_true(minimap_overlay != null, "Indoor mode should expose a minimap overlay."):
+		bootstrap.free()
+		return
 	if not assert_true(minimap_nodes != null, "Indoor mode should expose a minimap node container."):
 		bootstrap.free()
 		return
+	map_button.emit_signal("pressed")
+	await process_frame
+	assert_true(minimap_overlay.visible, "Indoor map button should open the minimap overlay.")
 	assert_eq(_map_labels(minimap_nodes), ["?", "?", "정문 진입부"], "Indoor minimap should start with the current zone and adjacent unknown rooms only.")
+	map_button.emit_signal("pressed")
+	await process_frame
+	assert_true(not minimap_overlay.visible, "Indoor map button should hide the minimap overlay on the second press.")
 
-	var inventory_items := indoor_mode.get_node_or_null("Panel/Layout/Sidebar/InventoryPanel/VBox/InventoryScroll/InventoryItems") as VBoxContainer
+	var bag_sheet := indoor_mode.get_node_or_null("BagSheet") as Control
+	var inventory_items := indoor_mode.get_node_or_null("BagSheet/VBox/InventoryScroll/InventoryItems") as VBoxContainer
 	if not assert_true(inventory_items != null, "Indoor mode should expose an inventory item list."):
 		bootstrap.free()
 		return
+	if not assert_true(bag_sheet != null, "Indoor mode should expose a bag sheet."):
+		bootstrap.free()
+		return
+	bag_button.emit_signal("pressed")
+	await process_frame
+	assert_true(bag_sheet.visible, "Indoor bag button should open the bag sheet.")
 	assert_eq(_inventory_labels(inventory_items), ["소지품 없음"], "Indoor inventory should start empty before any loot.")
+	bag_button.emit_signal("pressed")
+	await process_frame
+	assert_true(not bag_sheet.visible, "Indoor bag button should close the bag sheet when pressed again.")
 
 	var move_checkout_button := _find_button_by_text(action_buttons, "계산대로 이동한다 (30분)")
 	if not assert_true(move_checkout_button != null, "Indoor mode should expose a movement action into checkout."):
@@ -266,7 +293,7 @@ func _run_test() -> void:
 		return
 	assert_true(not move_checkout_button.disabled, "The checkout movement action should be enabled before it is pressed.")
 
-	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ResultLabel") as Label
+	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/ResultLabel") as Label
 	if not assert_true(result_label != null, "Indoor result label should be present."):
 		bootstrap.free()
 		return
@@ -285,7 +312,11 @@ func _run_test() -> void:
 		_buttons_include_text(action_buttons, "계산대를 탐색한다 (30분)"),
 		"Checkout should expose its local search action."
 	)
+	map_button.emit_signal("pressed")
+	await process_frame
 	assert_eq(_map_labels(minimap_nodes), ["?", "계산대", "정문 진입부"], "Indoor minimap should keep visited zones visible after moving.")
+	map_button.emit_signal("pressed")
+	await process_frame
 	assert_true(
 		not _buttons_include_text(action_buttons, "건물 밖으로 나간다"),
 		"Leaving the building should not stay visible away from the entrance."
@@ -300,11 +331,11 @@ func _run_test() -> void:
 	if not await _wait_until(
 			Callable(self, "_is_indoor_action_applied").bind(
 				run_shell,
-				hud_clock_label,
+				indoor_time_label,
 				result_label,
 				action_buttons,
 				0,
-				"1일차 11:00",
+				"시각: 1일차 11:00",
 				"발견했다.",
 				-1
 			),
@@ -314,10 +345,14 @@ func _run_test() -> void:
 		return
 
 	assert_eq(run_shell.run_state.inventory.total_bulk(), 0, "Searching should not add loot to inventory until the player picks an item.")
-	assert_eq(hud_clock_label.text, "1일차 11:00", "The checkout search should advance shared time.")
+	assert_eq(indoor_time_label.text, "시각: 1일차 11:00", "The checkout search should advance shared indoor time.")
 	assert_true(result_label.text.find("30분 동안 탐색했다.") != -1, "Indoor feedback should describe the spent time.")
 	assert_true(result_label.text.find("라이터") != -1, "Indoor feedback should mention a discovered item.")
+	bag_button.emit_signal("pressed")
+	await process_frame
 	assert_eq(_inventory_labels(inventory_items), ["소지품 없음"], "Indoor inventory should stay empty until the player chooses loot.")
+	bag_button.emit_signal("pressed")
+	await process_frame
 
 	var take_lighter_button := _find_button_by_text(action_buttons, "라이터 챙긴다")
 	if not assert_true(take_lighter_button != null, "Searching checkout should reveal a take action for the lighter."):
@@ -328,11 +363,11 @@ func _run_test() -> void:
 	if not await _wait_until(
 		Callable(self, "_is_indoor_action_applied").bind(
 			run_shell,
-			hud_clock_label,
+			indoor_time_label,
 			result_label,
 			action_buttons,
 			1,
-			"1일차 11:00",
+			"시각: 1일차 11:00",
 			"라이터 챙겼다.",
 			-1
 		),
@@ -342,7 +377,11 @@ func _run_test() -> void:
 		return
 
 	assert_eq(run_shell.run_state.inventory.total_bulk(), 1, "Picking a revealed item should add it to inventory.")
+	bag_button.emit_signal("pressed")
+	await process_frame
 	assert_eq(_inventory_labels(inventory_items), ["라이터 x1"], "Indoor inventory should list the picked item.")
+	bag_button.emit_signal("pressed")
+	await process_frame
 
 	var return_to_entrance_button := _find_button_by_text(action_buttons, "정문 진입부로 이동한다 (10분)")
 	if not assert_true(return_to_entrance_button != null, "Checkout should allow returning to the entrance zone."):
@@ -370,9 +409,11 @@ func _run_test() -> void:
 	exit_action_button.emit_signal("pressed")
 	if not await _await_transition_completion(
 		run_shell,
+		hud,
 		hud_title_label,
 		fade_rect,
 		"outdoor",
+		true,
 		"외부 생존 정보",
 		"OutdoorMode",
 		"Timed out waiting for the exit transition to settle on outdoor mode."
@@ -381,6 +422,7 @@ func _run_test() -> void:
 		return
 
 	assert_eq(run_shell.get_current_mode_name(), "outdoor", "Pressing the entrance leave action should return the run shell to outdoor mode.")
+	assert_true(hud.visible, "Returning outside should restore the shared HUD.")
 	assert_eq(hud_title_label.text, "외부 생존 정보", "Returning outside should restore the outdoor HUD presentation.")
 	assert_eq(fade_rect.color.a, 0.0, "The transition layer should end transparent after leaving the building.")
 
@@ -471,9 +513,11 @@ func _label_text_is(label: Label, expected_text: String) -> bool:
 
 func _await_transition_completion(
 	run_shell: Node,
+	hud: Control,
 	hud_title_label: Label,
 	fade_rect: ColorRect,
 	expected_mode_name: String,
+	expected_hud_visible: bool,
 	expected_hud_title: String,
 	expected_mode_node_name: String,
 	failure_message: String,
@@ -483,9 +527,11 @@ func _await_transition_completion(
 	run_shell.transition_completed.connect(Callable(self, "_on_transition_completed"))
 	var predicate := Callable(self, "_is_transition_settled").bind(
 		run_shell,
+		hud,
 		hud_title_label,
 		fade_rect,
 		expected_mode_name,
+		expected_hud_visible,
 		expected_hud_title,
 		expected_mode_node_name
 	)
@@ -506,7 +552,7 @@ func _wait_until(predicate: Callable, failure_message: String, max_frames: int =
 
 func _is_indoor_action_applied(
 	run_shell: Node,
-	hud_clock_label: Label,
+	clock_label: Label,
 	result_label: Label,
 	action_buttons: VBoxContainer,
 	expected_inventory_bulk: int,
@@ -514,12 +560,12 @@ func _is_indoor_action_applied(
 	expected_feedback_substring: String,
 	expected_action_count: int
 ) -> bool:
-	if run_shell == null or hud_clock_label == null or result_label == null or action_buttons == null:
+	if run_shell == null or clock_label == null or result_label == null or action_buttons == null:
 		return false
 
 	return (
 		run_shell.run_state.inventory.total_bulk() == expected_inventory_bulk
-		and hud_clock_label.text == expected_clock_text
+		and clock_label.text == expected_clock_text
 		and result_label.text.find(expected_feedback_substring) != -1
 		and (expected_action_count < 0 or _count_buttons(action_buttons) == expected_action_count)
 	)
@@ -569,13 +615,15 @@ func _inventory_labels(container: VBoxContainer) -> Array[String]:
 
 func _is_transition_settled(
 	run_shell: Node,
+	hud: Control,
 	hud_title_label: Label,
 	fade_rect: ColorRect,
 	expected_mode_name: String,
+	expected_hud_visible: bool,
 	expected_hud_title: String,
 	expected_mode_node_name: String
 ) -> bool:
-	if run_shell == null or hud_title_label == null or fade_rect == null:
+	if run_shell == null or hud == null or hud_title_label == null or fade_rect == null:
 		return false
 	if not run_shell.has_method("get_current_mode_name"):
 		return false
@@ -590,7 +638,8 @@ func _is_transition_settled(
 		_transition_completed_modes.has(expected_mode_name)
 		and run_shell.get_current_mode_name() == expected_mode_name
 		and not run_shell.is_transition_in_progress()
-		and hud_title_label.text == expected_hud_title
+		and hud.visible == expected_hud_visible
+		and (not expected_hud_visible or hud_title_label.text == expected_hud_title)
 		and is_equal_approx(fade_rect.color.a, 0.0)
 		and mode_host.get_node_or_null(expected_mode_node_name) != null
 	)
