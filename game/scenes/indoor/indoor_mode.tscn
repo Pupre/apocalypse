@@ -102,6 +102,18 @@ text = "구조도"
 [node name="BagButton" type="Button" parent="Panel/Layout/MainColumn/TopBar/StatusRow/Tools"]
 text = "가방"
 
+[node name="LocationStrip" type="PanelContainer" parent="Panel/Layout/MainColumn"]
+
+[node name="HBox" type="HBoxContainer" parent="Panel/Layout/MainColumn/LocationStrip"]
+theme_override_constants/separation = 8
+
+[node name="LocationCaptionLabel" type="Label" parent="Panel/Layout/MainColumn/LocationStrip/HBox"]
+text = "현재 위치"
+
+[node name="LocationValueLabel" type="Label" parent="Panel/Layout/MainColumn/LocationStrip/HBox"]
+size_flags_horizontal = 3
+text = "확인 중"
+
 [node name="ContextRow" type="HBoxContainer" parent="Panel/Layout/MainColumn"]
 theme_override_constants/separation = 12
 
@@ -222,39 +234,42 @@ theme_override_styles/pressed = SubResource("3")
 theme_override_styles/hover_pressed = SubResource("3")
 
 [node name="InventoryScroll" type="ScrollContainer" parent="BagSheet/VBox"]
+[node name="ContentRow" type="HBoxContainer" parent="BagSheet/VBox"]
+theme_override_constants/separation = 12
+
+[node name="InventoryColumn" type="VBoxContainer" parent="BagSheet/VBox/ContentRow"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="InventoryScroll" type="ScrollContainer" parent="BagSheet/VBox/ContentRow/InventoryColumn"]
 custom_minimum_size = Vector2(0, 160)
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="InventoryItems" type="VBoxContainer" parent="BagSheet/VBox/InventoryScroll"]
+[node name="InventoryItems" type="VBoxContainer" parent="BagSheet/VBox/ContentRow/InventoryColumn/InventoryScroll"]
 theme_override_constants/separation = 6
 
-[node name="ItemSheet" type="PanelContainer" parent="."]
+[node name="ItemDetailPanel" type="PanelContainer" parent="BagSheet/VBox/ContentRow"]
 visible = false
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 104.0
-offset_top = -220.0
-offset_right = -104.0
-offset_bottom = -24.0
+size_flags_horizontal = 2
+size_flags_vertical = 3
 
-[node name="VBox" type="VBoxContainer" parent="ItemSheet"]
+[node name="VBox" type="VBoxContainer" parent="BagSheet/VBox/ContentRow/ItemDetailPanel"]
 theme_override_constants/separation = 10
 
-[node name="ItemNameLabel" type="Label" parent="ItemSheet/VBox"]
+[node name="ItemNameLabel" type="Label" parent="BagSheet/VBox/ContentRow/ItemDetailPanel/VBox"]
 text = "아이템"
 
-[node name="ItemDescriptionLabel" type="Label" parent="ItemSheet/VBox"]
+[node name="ItemDescriptionLabel" type="Label" parent="BagSheet/VBox/ContentRow/ItemDetailPanel/VBox"]
 autowrap_mode = 3
 text = ""
 
-[node name="ItemEffectLabel" type="Label" parent="ItemSheet/VBox"]
+[node name="ItemEffectLabel" type="Label" parent="BagSheet/VBox/ContentRow/ItemDetailPanel/VBox"]
 autowrap_mode = 3
 text = ""
 
-[node name="ActionButtons" type="HBoxContainer" parent="ItemSheet/VBox"]
+[node name="ActionButtons" type="HBoxContainer" parent="BagSheet/VBox/ContentRow/ItemDetailPanel/VBox"]
 theme_override_constants/separation = 8
 
 [node name="StatDetailSheet" type="PanelContainer" parent="."]
@@ -271,8 +286,15 @@ offset_bottom = -24.0
 [node name="VBox" type="VBoxContainer" parent="StatDetailSheet"]
 theme_override_constants/separation = 10
 
-[node name="TitleLabel" type="Label" parent="StatDetailSheet/VBox"]
+[node name="Header" type="HBoxContainer" parent="StatDetailSheet/VBox"]
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="StatDetailSheet/VBox/Header"]
+size_flags_horizontal = 3
 text = "상태"
+
+[node name="CloseButton" type="Button" parent="StatDetailSheet/VBox/Header"]
+text = "닫기"
 
 [node name="ValueLabel" type="Label" parent="StatDetailSheet/VBox"]
 text = ""
