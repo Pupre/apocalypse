@@ -1,0 +1,346 @@
+{
+  "id": "office_01",
+  "name": "소형 사무실",
+  "summary": "출입구 너머로 업무 공간과 탕비실, 안쪽 회의실과 기록보관실, 더 깊은 서버실이 이어진다.",
+  "entry_zone_id": "office_lobby",
+  "zones": [
+    {
+      "id": "office_lobby",
+      "floor_id": "floor_1",
+      "label": "출입구",
+      "summary": "낡은 출입구를 지나면 업무 공간과 탕비실이 보인다.",
+      "connected_zone_ids": [
+        "open_office",
+        "break_nook"
+      ],
+      "event_ids": [
+        "office_lobby_search_event"
+      ],
+      "map_position": [0, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "open_office",
+      "floor_id": "floor_1",
+      "label": "업무 공간",
+      "summary": "넘어진 의자와 컴퓨터 사이로 팀장 자리, 회의실, 기록보관실 문이 보인다.",
+      "connected_zone_ids": [
+        "office_lobby",
+        "manager_desk",
+        "meeting_room",
+        "records_room"
+      ],
+      "event_ids": [
+        "open_office_search_event"
+      ],
+      "map_position": [1, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "break_nook",
+      "floor_id": "floor_1",
+      "label": "탕비실",
+      "summary": "종이컵과 간식 상자가 흩어진 작은 탕비실이다.",
+      "connected_zone_ids": [
+        "office_lobby"
+      ],
+      "event_ids": [
+        "break_nook_search_event"
+      ],
+      "map_position": [1, 0],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "manager_desk",
+      "floor_id": "floor_1",
+      "label": "팀장 자리",
+      "summary": "서류 더미와 카드 지갑이 뒤엉킨 책상 주변이다.",
+      "connected_zone_ids": [
+        "open_office"
+      ],
+      "event_ids": [
+        "manager_desk_search_event"
+      ],
+      "map_position": [2, 2],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "meeting_room",
+      "floor_id": "floor_1",
+      "label": "회의실",
+      "summary": "프로젝터 리모컨과 남은 회의 자료, 응급 간식이 테이블 위에 흩어져 있다.",
+      "connected_zone_ids": [
+        "open_office"
+      ],
+      "event_ids": [
+        "meeting_room_search_event"
+      ],
+      "map_position": [2, 0],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "records_room",
+      "floor_id": "floor_1",
+      "label": "기록보관실",
+      "move_label": "기록보관실로 들어간다",
+      "blocked_feedback": "기록보관실 카드 리더가 잠겨 있어 들어갈 수 없다.",
+      "summary": "문서 상자와 비상 장비가 아직 정리된 채 남아 있고, 안쪽 서버실 문이 이어진다.",
+      "connected_zone_ids": [
+        "open_office",
+        "server_closet"
+      ],
+      "event_ids": [
+        "records_room_search_event"
+      ],
+      "map_position": [3, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10,
+      "access_requirements": {
+        "required_item_ids": [
+          "office_keycard"
+        ]
+      }
+    },
+    {
+      "id": "server_closet",
+      "floor_id": "floor_1",
+      "label": "서버실",
+      "summary": "랙 아래에 비상 장비와 손전등, 정리된 보급 박스가 남아 있다.",
+      "connected_zone_ids": [
+        "records_room"
+      ],
+      "event_ids": [
+        "server_closet_search_event"
+      ],
+      "map_position": [4, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [],
+  "events": [
+    {
+      "id": "office_lobby_search_event",
+      "zone_id": "office_lobby",
+      "type": "search",
+      "hint_text": "신발장과 안내 데스크 아래엔 작은 물건이 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_office_lobby",
+          "label": "출입구를 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "open_office_search_event",
+      "zone_id": "open_office",
+      "type": "search",
+      "hint_text": "책상 위 간식과 서랍 속 자잘한 물건이 아직 남아 있다.",
+      "options": [
+        {
+          "id": "search_open_office",
+          "label": "업무 공간을 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "crackers",
+                "name": "크래커",
+                "bulk": 1
+              },
+              {
+                "id": "spare_batteries",
+                "name": "건전지",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "break_nook_search_event",
+      "zone_id": "break_nook",
+      "type": "search",
+      "hint_text": "간식 상자와 정수기 주변에 챙길 만한 물건이 조금 남아 있다.",
+      "options": [
+        {
+          "id": "search_break_nook",
+          "label": "탕비실을 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "energy_bar",
+                "name": "에너지바",
+                "bulk": 1
+              },
+              {
+                "id": "instant_noodles",
+                "name": "컵라면",
+                "bulk": 1
+              },
+              {
+                "id": "bottled_water",
+                "name": "생수",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "manager_desk_search_event",
+      "zone_id": "manager_desk",
+      "type": "search",
+      "hint_text": "카드 지갑과 잠금 서랍 사이에 안쪽 문을 열 단서가 남아 있다.",
+      "options": [
+        {
+          "id": "search_manager_desk",
+          "label": "팀장 자리를 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "office_keycard",
+                "name": "출입 카드키",
+                "bulk": 1
+              },
+              {
+                "id": "lighter",
+                "name": "라이터",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "meeting_room_search_event",
+      "zone_id": "meeting_room",
+      "type": "search",
+      "hint_text": "회의 테이블 아래와 서랍장 안쪽에 아직 손대지 않은 비상 간식과 전자기기가 남아 있다.",
+      "options": [
+        {
+          "id": "search_meeting_room",
+          "label": "회의실을 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "crackers",
+                "name": "크래커",
+                "bulk": 1
+              },
+              {
+                "id": "bottled_water",
+                "name": "생수",
+                "bulk": 1
+              },
+              {
+                "id": "spare_batteries",
+                "name": "건전지",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "records_room_search_event",
+      "zone_id": "records_room",
+      "type": "search",
+      "hint_text": "문서 상자 뒤에 숨겨둔 비상 장비와 조끼가 아직 정리된 채 남아 있다.",
+      "options": [
+        {
+          "id": "search_records_room",
+          "label": "기록보관실을 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "utility_vest",
+                "name": "작업 조끼",
+                "bulk": 2
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "server_closet_search_event",
+      "zone_id": "server_closet",
+      "type": "search",
+      "hint_text": "서버 랙 아래에 비상 장비와 손전등, 방호 부품이 남아 있다.",
+      "options": [
+        {
+          "id": "search_server_closet",
+          "label": "서버실을 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "flashlight",
+                "name": "손전등",
+                "bulk": 1
+              },
+              {
+                "id": "filter_cartridge",
+                "name": "방호 필터",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

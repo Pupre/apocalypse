@@ -9,5 +9,38 @@
       "y": 360
     },
     "indoor_event_path": "res://data/events/indoor/mart_01.json"
+  },
+  {
+    "id": "apartment_01",
+    "name": "낡은 아파트",
+    "category": "residential",
+    "base_candidate": false,
+    "outdoor_position": {
+      "x": 900,
+      "y": 240
+    },
+    "indoor_event_path": "res://data/events/indoor/apartment_01.json"
+  },
+  {
+    "id": "clinic_01",
+    "name": "동네 의원",
+    "category": "medical",
+    "base_candidate": false,
+    "outdoor_position": {
+      "x": 980,
+      "y": 520
+    },
+    "indoor_event_path": "res://data/events/indoor/clinic_01.json"
+  },
+  {
+    "id": "office_01",
+    "name": "소형 사무실",
+    "category": "office",
+    "base_candidate": false,
+    "outdoor_position": {
+      "x": 360,
+      "y": 180
+    },
+    "indoor_event_path": "res://data/events/indoor/office_01.json"
   }
 ]

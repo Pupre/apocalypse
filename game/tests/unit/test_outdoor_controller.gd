@@ -63,6 +63,9 @@ func _run_test() -> void:
 
 	var before_clock_minute_of_day: int = run_state.clock.minute_of_day
 	var before_exposure: float = run_state.exposure
+	var before_hunger: float = run_state.hunger
+	var before_thirst: float = run_state.thirst
+	var before_fatigue: float = run_state.fatigue
 
 	if not assert_true(outdoor_mode.has_method("simulate_seconds"), "Outdoor mode should expose simulate_seconds()."):
 		outdoor_mode.free()
@@ -76,17 +79,43 @@ func _run_test() -> void:
 		"Three real minutes should advance three in-game hours."
 	)
 	assert_true(run_state.exposure < before_exposure, "Outdoor time should drain exposure.")
+	assert_true(run_state.hunger < before_hunger, "Outdoor time should reduce hunger reserves.")
+	assert_true(run_state.thirst < before_thirst, "Outdoor time should reduce thirst reserves.")
+	assert_true(run_state.fatigue > before_fatigue, "Outdoor time should build fatigue.")
 
-	var player_marker := outdoor_mode.get_node_or_null("PlayerMarker") as Polygon2D
-	var building_marker := outdoor_mode.get_node_or_null("BuildingMarker") as Polygon2D
-	if not assert_true(player_marker != null, "Outdoor mode should expose a player marker."):
+	var ground := outdoor_mode.get_node_or_null("Ground") as Node2D
+	var player_sprite := outdoor_mode.get_node_or_null("PlayerSprite") as Polygon2D
+	var building_markers := outdoor_mode.get_node_or_null("Buildings") as Node2D
+	var obstacles := outdoor_mode.get_node_or_null("Obstacles") as Node2D
+	if not assert_true(ground != null, "Outdoor mode should expose a ground host."):
 		outdoor_mode.free()
 		return
-	if not assert_true(building_marker != null, "Outdoor mode should expose a building marker."):
+	if not assert_true(player_sprite != null, "Outdoor mode should expose a player marker."):
+		outdoor_mode.free()
+		return
+	if not assert_true(building_markers != null, "Outdoor mode should expose a building marker host."):
+		outdoor_mode.free()
+		return
+	if not assert_true(obstacles != null, "Outdoor mode should expose an obstacle host."):
+		outdoor_mode.free()
+		return
+	assert_true(ground.get_child_count() > 0, "Outdoor ground should render at least one visual layer.")
+	assert_true(player_sprite.polygon.size() >= 3, "Outdoor player marker should render a visible polygon.")
+	assert_eq(building_markers.get_child_count(), 4, "Outdoor mode should render four building markers.")
+	assert_true(obstacles.get_child_count() > 0, "Outdoor mode should render at least one obstacle prop.")
+
+	var content_library := root.get_node_or_null("ContentLibrary")
+	if not assert_true(content_library != null, "ContentLibrary autoload should be available for building lookups."):
 		outdoor_mode.free()
 		return
 
-	var far_distance := player_marker.position.distance_to(building_marker.position)
+	var mart_data: Dictionary = content_library.get_building("mart_01")
+	var mart_position := Vector2(
+		float((mart_data.get("outdoor_position", {}) as Dictionary).get("x", 640.0)),
+		float((mart_data.get("outdoor_position", {}) as Dictionary).get("y", 360.0))
+	)
+
+	var far_distance := player_sprite.position.distance_to(mart_position)
 	assert_true(far_distance > 72.0, "The player should start outside the entry radius.")
 
 	outdoor_mode.try_enter_building("mart_01")
@@ -102,7 +131,7 @@ func _run_test() -> void:
 
 	outdoor_mode.move_player(Vector2.RIGHT, 1.5)
 
-	var near_distance := player_marker.position.distance_to(building_marker.position)
+	var near_distance := player_sprite.position.distance_to(mart_position)
 	assert_true(near_distance <= 72.0, "Moving toward the building should place the player in entry range.")
 
 	outdoor_mode.try_enter_building("wrong_building")
@@ -112,6 +141,55 @@ func _run_test() -> void:
 
 	assert_eq(_building_entered_count, 1, "Trying to enter from nearby should emit building_entered.")
 	assert_eq(_entered_building_id, "mart_01", "The emitted building id should match the entry target.")
+
+	var apartment_data: Dictionary = content_library.get_building("apartment_01")
+	var apartment_position := Vector2(
+		float((apartment_data.get("outdoor_position", {}) as Dictionary).get("x", 0.0)),
+		float((apartment_data.get("outdoor_position", {}) as Dictionary).get("y", 0.0))
+	)
+	outdoor_mode.bind_run_state(run_state, "mart_01", apartment_position)
+	outdoor_mode.try_enter_building("apartment_01")
+	assert_eq(_building_entered_count, 2, "Trying to enter a second building from its own doorstep should also emit building_entered.")
+	assert_eq(_entered_building_id, "apartment_01", "The emitted building id should match the second entry target.")
+
+	var overloaded_run_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, self)
+	if not assert_true(overloaded_run_state != null, "RunState should build for overload movement tests."):
+		outdoor_mode.free()
+		return
+	for index in range(12):
+		assert_true(overloaded_run_state.inventory.add_item({"id": "weight_%d" % index, "bulk": 1}), "Overload movement tests should be able to fill the inventory.")
+
+	outdoor_mode.bind_run_state(overloaded_run_state, "mart_01", Vector2(0.0, 0.0))
+	outdoor_mode.move_player(Vector2.RIGHT, 1.0)
+	assert_true(
+		outdoor_mode.get_player_position().x < overloaded_run_state.move_speed,
+		"Outdoor movement should slow down when the player is carrying more than the soft limit."
+	)
+
+	var fresh_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, self)
+	var tired_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, self)
+	if not assert_true(fresh_state != null and tired_state != null, "RunState should build for fatigue movement checks."):
+		outdoor_mode.free()
+		return
+	tired_state.fatigue = 80.0
+	outdoor_mode.bind_run_state(fresh_state, "mart_01", Vector2(0.0, 0.0))
+	outdoor_mode.move_player(Vector2.RIGHT, 1.0)
+	var fresh_x: float = outdoor_mode.get_player_position().x
+	outdoor_mode.bind_run_state(tired_state, "mart_01", Vector2(0.0, 0.0))
+	outdoor_mode.move_player(Vector2.RIGHT, 1.0)
+	assert_true(outdoor_mode.get_player_position().x < fresh_x, "Higher fatigue should reduce outdoor movement speed.")
 
 	outdoor_mode.free()
 	pass_test("OUTDOOR_CONTROLLER_OK")

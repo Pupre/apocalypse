@@ -1,7 +1,199 @@
 {
   "id": "mart_01",
   "name": "동네 마트",
-  "summary": "진열대는 반쯤 비어 있지만, 계산대와 뒷방에는 아직 쓸 만한 물건이 남아 있다.",
+  "summary": "진열대는 반쯤 비어 있지만, 계산대와 매장 뒤편에는 아직 쓸 만한 물건이 남아 있다.",
+  "entry_zone_id": "mart_entrance",
+  "zones": [
+    {
+      "id": "mart_entrance",
+      "floor_id": "floor_1",
+      "label": "정문 진입부",
+      "summary": "깨진 자동문과 쓰러진 장바구니가 보인다.",
+      "connected_zone_ids": [
+        "checkout",
+        "food_aisle"
+      ],
+      "event_ids": [
+        "entrance_search_event"
+      ],
+      "map_position": [0, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "checkout",
+      "floor_id": "floor_1",
+      "label": "계산대",
+      "summary": "계산대 뒤쪽에는 직원 출입문이 있다.",
+      "connected_zone_ids": [
+        "mart_entrance",
+        "staff_corridor_gate"
+      ],
+      "event_ids": [
+        "checkout_drawer_event"
+      ],
+      "map_position": [1, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "food_aisle",
+      "floor_id": "floor_1",
+      "label": "식품 진열대",
+      "summary": "빈 선반 사이로 통조림 몇 개가 남아 있다.",
+      "connected_zone_ids": [
+        "mart_entrance",
+        "household_goods"
+      ],
+      "event_ids": [
+        "food_aisle_search_event"
+      ],
+      "map_position": [0, 2],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "household_goods",
+      "floor_id": "floor_1",
+      "label": "생활용품 코너",
+      "summary": "건전지와 공구, 가방 같은 물건이 어지럽게 남아 있다.",
+      "connected_zone_ids": [
+        "food_aisle",
+        "back_hall"
+      ],
+      "event_ids": [
+        "household_goods_search_event"
+      ],
+      "map_position": [1, 2],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "back_hall",
+      "floor_id": "floor_1",
+      "label": "매장 뒤편",
+      "summary": "쓰러진 음료 상자와 끌린 자국이 직원 출입문 앞에서 멈춘다.",
+      "connected_zone_ids": [
+        "household_goods",
+        "staff_corridor_gate"
+      ],
+      "event_ids": [
+        "back_hall_supply_event",
+        "drag_marks_event"
+      ],
+      "map_position": [2, 2],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "staff_corridor_gate",
+      "floor_id": "floor_1",
+      "label": "직원 출입문",
+      "summary": "직원 출입문 너머로 2층으로 올라가는 계단이 보이지만, 문은 잠겨 있다.",
+      "connected_zone_ids": [
+        "checkout",
+        "back_hall",
+        "stair_landing"
+      ],
+      "event_ids": [
+        "staff_gate_event"
+      ],
+      "map_position": [2, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "stair_landing",
+      "floor_id": "floor_2",
+      "label": "2층 입구",
+      "move_label": "2층으로 올라간다",
+      "blocked_feedback": "위층으로 올라가는 철문이 잠겨 있어 열리지 않는다.",
+      "summary": "먼지 위로 최근에 찍힌 발자국이 2층 안쪽에서 멈춰 있다.",
+      "connected_zone_ids": [
+        "staff_corridor_gate",
+        "break_room",
+        "office",
+        "warehouse"
+      ],
+      "event_ids": [],
+      "map_position": [3, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10,
+      "access_requirements": {
+        "required_flag_ids": [
+          "staff_gate_forced"
+        ]
+      }
+    },
+    {
+      "id": "break_room",
+      "floor_id": "floor_2",
+      "label": "직원 휴게실",
+      "summary": "식은 컵라면 용기와 접히지 않은 담요가 아직 그대로 남아 있다.",
+      "rest_minutes": 60,
+      "sleep_allowed": true,
+      "connected_zone_ids": [
+        "stair_landing"
+      ],
+      "event_ids": [
+        "break_room_supplies_event"
+      ],
+      "map_position": [4, 0],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "office",
+      "floor_id": "floor_2",
+      "label": "사무실",
+      "summary": "뒤집힌 서류철과 열린 서랍 사이로 누군가 열쇠를 숨겨둔 흔적이 남아 있다.",
+      "connected_zone_ids": [
+        "stair_landing"
+      ],
+      "event_ids": [
+        "office_drawer_event"
+      ],
+      "map_position": [4, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "warehouse",
+      "floor_id": "floor_2",
+      "label": "창고",
+      "summary": "뜯긴 박스 사이로 아직 손대지 않은 묶음이 더 안쪽에 남아 있다.",
+      "connected_zone_ids": [
+        "stair_landing",
+        "locked_storage"
+      ],
+      "event_ids": [
+        "warehouse_crate_event"
+      ],
+      "map_position": [4, 2],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "locked_storage",
+      "floor_id": "floor_2",
+      "label": "보관실",
+      "summary": "봉인된 상자와 공구함이 먼지 속에 그대로 남아 있다.",
+      "connected_zone_ids": [
+        "warehouse"
+      ],
+      "event_ids": [
+        "locked_storage_cache_event"
+      ],
+      "map_position": [5, 2],
+      "first_visit_cost": 30,
+      "revisit_cost": 10,
+      "access_requirements": {
+        "required_item_ids": [
+          "storage_key"
+        ]
+      }
+    }
+  ],
   "clues": [
     {
       "id": "front_aisles",
@@ -12,31 +204,429 @@
       "id": "stock_room",
       "text": "계산대 뒤로 돌아가면 반쯤 닫힌 창고 문이 보인다.",
       "visible": false
+    },
+    {
+      "id": "staff_key_board_hint",
+      "text": "서랍 안쪽에서 직원용 열쇠 보드의 흔적이 스쳐 지나간다.",
+      "visible": false
+    },
+    {
+      "id": "muffled_breath_hint",
+      "text": "문 너머에서 숨죽인 인기척이 아주 희미하게 들린다.",
+      "visible": false
+    },
+    {
+      "id": "recent_human_presence_hint",
+      "text": "누군가 최근까지 뒤쪽 통로를 서성였던 것 같은 기척이 남아 있다.",
+      "visible": false
+    },
+    {
+      "id": "warm_blanket_hint",
+      "text": "담요의 온기가 완전히 빠지지 않았다. 누군가 오래전 일은 아니다.",
+      "visible": false
+    },
+    {
+      "id": "storage_key_missing_hint",
+      "text": "사무실 서랍 안쪽 메모에는 보관실 열쇠를 따로 숨겨둔다고 적혀 있다.",
+      "visible": false
     }
   ],
-  "actions": [
+  "events": [
     {
-      "id": "search_counter",
-      "label": "계산대를 수색한다",
-      "consume_on_use": true,
-      "minute_cost": 30,
-      "reveal_clue_ids": [
-        "stock_room"
-      ],
-      "loot": [
+      "id": "entrance_search_event",
+      "zone_id": "mart_entrance",
+      "type": "search",
+      "hint_text": "부서진 카트와 찢어진 봉투 사이에 누가 놓치고 간 게 있을지도 모른다.",
+      "options": [
         {
-          "id": "canned_beans",
-          "name": "통조림 콩",
-          "bulk": 1
+          "id": "search_mart_entrance",
+          "label": "정문 주변을 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [],
+            "consume_on_use": true
+          }
         }
       ]
     },
     {
-      "id": "rest",
-      "label": "한 시간 쉰다",
-      "sleep_minutes": 60,
-      "reveal_clue_ids": [],
-      "loot": []
+      "id": "checkout_drawer_event",
+      "zone_id": "checkout",
+      "type": "search",
+      "hint_text": "서랍은 닫혀 있는데 급히 뜯은 흔적은 없다.",
+      "options": [
+        {
+          "id": "search_checkout_counter",
+          "label": "계산대를 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "lighter",
+                "name": "라이터",
+                "bulk": 1
+              },
+              {
+                "id": "energy_bar",
+                "name": "에너지바",
+                "bulk": 1
+              },
+              {
+                "id": "spare_batteries",
+                "name": "건전지",
+                "bulk": 1
+              }
+            ],
+            "reveal_clue_ids": [
+              "staff_key_board_hint"
+            ],
+            "set_flags": [
+              "checkout_counter_searched"
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "food_aisle_search_event",
+      "zone_id": "food_aisle",
+      "type": "search",
+      "hint_text": "빈 선반 사이에도 아직 깊숙이 남은 캔과 상온 식품이 보인다.",
+      "options": [
+        {
+          "id": "search_food_aisle",
+          "label": "식품 진열대를 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "canned_beans",
+                "name": "통조림 콩",
+                "bulk": 1
+              },
+              {
+                "id": "instant_noodles",
+                "name": "컵라면",
+                "bulk": 1
+              },
+              {
+                "id": "bottled_water",
+                "name": "생수",
+                "bulk": 1
+              },
+              {
+                "id": "canned_tuna",
+                "name": "참치 통조림",
+                "bulk": 1
+              },
+              {
+                "id": "crackers",
+                "name": "크래커",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "household_goods_search_event",
+      "zone_id": "household_goods",
+      "type": "search",
+      "hint_text": "무너지지 않은 선반 쪽엔 가방과 생활용품이 아직 정리된 채 남아 있다.",
+      "options": [
+        {
+          "id": "search_household_goods",
+          "label": "생활용품 코너를 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "small_backpack",
+                "name": "작은 배낭",
+                "bulk": 2
+              },
+              {
+                "id": "running_shoes",
+                "name": "운동화",
+                "bulk": 1
+              },
+              {
+                "id": "work_gloves",
+                "name": "작업 장갑",
+                "bulk": 1
+              },
+              {
+                "id": "packing_tape",
+                "name": "포장 테이프",
+                "bulk": 1
+              },
+              {
+                "id": "utility_vest",
+                "name": "작업 조끼",
+                "bulk": 2
+              },
+              {
+                "id": "spare_batteries",
+                "name": "건전지",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "staff_gate_event",
+      "zone_id": "staff_corridor_gate",
+      "type": "gate",
+      "hint_text": "문 손잡이 아래만 유독 닳아 있다.",
+      "options": [
+        {
+          "id": "inspect_staff_corridor_gate",
+          "label": "직원 출입문에 귀를 댄다",
+          "requirements": {},
+          "costs": {
+            "minutes": 10,
+            "noise": 0
+          },
+          "outcomes": {
+            "reveal_clue_ids": [
+              "muffled_breath_hint"
+            ]
+          }
+        },
+        {
+          "id": "force_staff_corridor_gate",
+          "label": "직원 출입문을 공구로 비집는다",
+          "show_when_locked": false,
+          "requirements": {
+            "required_item_ids": [
+              "screwdriver"
+            ]
+          },
+          "blocked_feedback": "문틈을 벌릴 만한 공구가 없어 억지로 열 수 없다.",
+          "costs": {
+            "minutes": 30,
+            "noise": 2
+          },
+          "outcomes": {
+            "set_flags": [
+              "staff_gate_forced"
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "back_hall_supply_event",
+      "zone_id": "back_hall",
+      "type": "search",
+      "hint_text": "쓰러진 음료 상자 옆에 정리용 공구함이 반쯤 열린 채 놓여 있다.",
+      "options": [
+        {
+          "id": "search_back_hall_supplies",
+          "label": "매장 뒤편을 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "screwdriver",
+                "name": "작은 드라이버",
+                "bulk": 1
+              },
+              {
+                "id": "bottled_water",
+                "name": "생수",
+                "bulk": 1
+              },
+              {
+                "id": "packing_tape",
+                "name": "포장 테이프",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "drag_marks_event",
+      "zone_id": "back_hall",
+      "type": "human_encounter",
+      "hint_text": "무거운 상자를 끈 자국이 통로 안쪽으로 이어진다.",
+      "options": [
+        {
+          "id": "wait_and_listen",
+          "label": "소리를 죽이고 기다린다",
+          "requirements": {},
+          "costs": {
+            "minutes": 10,
+            "noise": 0
+          },
+          "outcomes": {
+            "reveal_clue_ids": [
+              "recent_human_presence_hint"
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "break_room_supplies_event",
+      "zone_id": "break_room",
+      "type": "search",
+      "hint_text": "식은 컵라면 용기 옆으로 열리지 않은 사물함 하나가 남아 있다.",
+      "options": [
+        {
+          "id": "search_break_room_locker",
+          "label": "휴게실 사물함을 뒤진다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "instant_noodles",
+                "name": "컵라면",
+                "bulk": 1
+              },
+              {
+                "id": "crackers",
+                "name": "크래커",
+                "bulk": 1
+              }
+            ],
+            "reveal_clue_ids": [
+              "warm_blanket_hint"
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "office_drawer_event",
+      "zone_id": "office",
+      "type": "search",
+      "hint_text": "사무실 책상 서랍 하나만 급하게 열린 채 멈춰 있다.",
+      "options": [
+        {
+          "id": "search_office_drawer",
+          "label": "사무실을 탐색한다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "storage_key",
+                "name": "보관실 열쇠",
+                "bulk": 1
+              }
+            ],
+            "reveal_clue_ids": [
+              "storage_key_missing_hint"
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "warehouse_crate_event",
+      "zone_id": "warehouse",
+      "type": "search",
+      "hint_text": "안쪽 박스 더미 하나는 아직 개봉되지 않았다.",
+      "options": [
+        {
+          "id": "search_warehouse_crate",
+          "label": "안쪽 상자를 연다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "bottled_water",
+                "name": "생수",
+                "bulk": 1
+              },
+              {
+                "id": "canned_beans",
+                "name": "통조림 콩",
+                "bulk": 1
+              },
+              {
+                "id": "work_gloves",
+                "name": "작업 장갑",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "locked_storage_cache_event",
+      "zone_id": "locked_storage",
+      "type": "search",
+      "hint_text": "봉인된 상자 안에 아직 포장도 뜯지 않은 물자가 남아 있다.",
+      "options": [
+        {
+          "id": "search_locked_storage_cache",
+          "label": "보관실 상자를 연다",
+          "requirements": {},
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "filter_cartridge",
+                "name": "방호 필터",
+                "bulk": 1
+              }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
     }
-  ]
+  ],
+  "actions": []
 }

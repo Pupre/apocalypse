@@ -128,24 +128,29 @@ func _run_test() -> void:
 	transition_layer.set_duration_for_tests(0.0)
 
 	var hud_clock_label := hud.get_node_or_null("Panel/VBox/ClockLabel") as Label
+	var content_library := root.get_node_or_null("ContentLibrary")
 	if not assert_true(hud_clock_label != null, "HUD clock label should be present."):
 		bootstrap.free()
 		return
 	assert_eq(hud_clock_label.text, "1일차 08:00", "The run shell should start at the run-state clock.")
-
-	var player_marker := outdoor_mode.get_node_or_null("PlayerMarker") as Polygon2D
-	var building_marker := outdoor_mode.get_node_or_null("BuildingMarker") as Polygon2D
-	if not assert_true(player_marker != null, "Outdoor player marker should be present."):
-		bootstrap.free()
-		return
-	if not assert_true(building_marker != null, "Outdoor building marker should be present."):
+	if not assert_true(content_library != null, "ContentLibrary autoload should be present for outdoor building lookups."):
 		bootstrap.free()
 		return
 
-	assert_true(player_marker.position.distance_to(building_marker.position) > 72.0, "The run should start outside the entry radius.")
+	var player_sprite := outdoor_mode.get_node_or_null("PlayerSprite") as Polygon2D
+	var mart_data: Dictionary = content_library.get_building("mart_01")
+	var mart_position_data: Dictionary = mart_data.get("outdoor_position", {})
+	var mart_position := Vector2(
+		float(mart_position_data.get("x", 640.0)),
+		float(mart_position_data.get("y", 360.0))
+	)
+	if not assert_true(player_sprite != null, "Outdoor player marker should be present."):
+		bootstrap.free()
+		return
+	assert_true(player_sprite.position.distance_to(mart_position) > 72.0, "The run should start outside the entry radius.")
 
 	outdoor_mode.move_player(Vector2.RIGHT, 1.5)
-	assert_true(player_marker.position.distance_to(building_marker.position) <= 72.0, "Moving right should bring the player into entry range.")
+	assert_true(player_sprite.position.distance_to(mart_position) <= 72.0, "Moving right should bring the player into entry range.")
 
 	outdoor_mode.try_enter_building("mart_01")
 	if not await _await_transition_completion(
@@ -160,22 +165,45 @@ func _run_test() -> void:
 	if not assert_true(indoor_mode != null, "Entering a building should swap to the indoor mode."):
 		bootstrap.free()
 		return
-	var result_label := indoor_mode.get_node_or_null("Panel/VBox/ResultLabel") as Label
-	var action_buttons := indoor_mode.get_node_or_null("Panel/VBox/ActionButtons") as VBoxContainer
+	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ResultLabel") as Label
+	var action_buttons := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ActionButtons") as VBoxContainer
 	if not assert_true(result_label != null, "Indoor result label should be present."):
 		bootstrap.free()
 		return
 	if not assert_true(action_buttons != null, "Indoor action buttons container should be present."):
 		bootstrap.free()
 		return
-	assert_eq(action_buttons.get_child_count(), 2, "Mart indoor mode should start with two actions.")
+	assert_true(_count_buttons(action_buttons) >= 1, "Mart indoor mode should expose at least one indoor action.")
+	assert_true(_section_labels(action_buttons).has("이동"), "Indoor UI should expose a movement section in the creator flow.")
+	assert_true(
+		_find_button_by_text(action_buttons, "계산대를 수색한다 (30분)") == null,
+		"The mart entrance should not expose checkout-only search actions."
+	)
 
-	var search_button := action_buttons.get_child(0) as Button
-	if not assert_true(search_button != null, "The first indoor action should be a button."):
+	var move_checkout_button := _find_button_by_text(action_buttons, "계산대로 이동한다 (30분)")
+	if not assert_true(move_checkout_button != null, "The mart entrance should expose movement into the checkout zone."):
 		bootstrap.free()
 		return
 
-	var expected_feedback := "30분 동안 수색했다."
+	var location_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/Header/LocationLabel") as Label
+	if not assert_true(location_label != null, "Indoor mode should expose a location label in the creator flow."):
+		bootstrap.free()
+		return
+
+	move_checkout_button.emit_signal("pressed")
+	if not await _wait_until(
+		Callable(self, "_label_text_is").bind(location_label, "위치: 계산대"),
+		"Timed out waiting for the creator flow to move into checkout."
+	):
+		bootstrap.free()
+		return
+
+	var search_button := _find_button_by_text(action_buttons, "계산대를 탐색한다 (30분)")
+	if not assert_true(search_button != null, "Checkout should expose the search action after moving there."):
+		bootstrap.free()
+		return
+	
+	var expected_feedback := "발견했다."
 	search_button.emit_signal("pressed")
 	if not await _wait_until(
 		Callable(self, "_is_indoor_action_applied").bind(
@@ -183,18 +211,26 @@ func _run_test() -> void:
 			hud_clock_label,
 			result_label,
 			action_buttons,
-			"1일차 08:30",
+			0,
+			"1일차 09:00",
 			expected_feedback,
-			1
+			-1
 		),
 		"Timed out waiting for the indoor action result to settle."
 	):
 		bootstrap.free()
 		return
 
-	assert_eq(hud_clock_label.text, "1일차 08:30", "Pressing the indoor action should advance the HUD clock.")
+	assert_eq(hud_clock_label.text, "1일차 09:00", "Moving into checkout and then searching should advance the HUD clock.")
 	assert_true(result_label.text.find(expected_feedback) != -1, "Pressing the indoor action should refresh the result feedback.")
-	assert_eq(action_buttons.get_child_count(), 1, "The one-shot search action should be removed after use.")
+	assert_true(
+		_find_button_by_text(action_buttons, "계산대를 탐색한다 (30분)") == null,
+		"The one-shot search action should be removed after use."
+	)
+	assert_true(
+		_find_button_by_text(action_buttons, "라이터 챙긴다") != null,
+		"Searching should reveal take actions in the creator flow as well."
+	)
 
 	bootstrap.free()
 	bootstrap = null
@@ -233,6 +269,7 @@ func _is_indoor_action_applied(
 	hud_clock_label: Label,
 	result_label: Label,
 	action_buttons: VBoxContainer,
+	expected_inventory_bulk: int,
 	expected_clock_text: String,
 	expected_feedback_substring: String,
 	expected_action_count: int
@@ -241,11 +278,58 @@ func _is_indoor_action_applied(
 		return false
 
 	return (
-		run_shell.run_state.inventory.total_bulk() == 1
+		run_shell.run_state.inventory.total_bulk() == expected_inventory_bulk
 		and hud_clock_label.text == expected_clock_text
 		and result_label.text.find(expected_feedback_substring) != -1
-		and action_buttons.get_child_count() == expected_action_count
+		and (expected_action_count < 0 or _count_buttons(action_buttons) == expected_action_count)
 	)
+
+
+func _find_button_by_text(container: Node, expected_text: String) -> Button:
+	if container == null:
+		return null
+
+	for child in container.get_children():
+		var button := child as Button
+		if button != null and button.text == expected_text:
+			return button
+		var nested := _find_button_by_text(child, expected_text)
+		if nested != null:
+			return nested
+
+	return null
+
+
+func _count_buttons(container: Node) -> int:
+	if container == null:
+		return 0
+
+	var total := 0
+	for child in container.get_children():
+		if child is Button:
+			total += 1
+		total += _count_buttons(child)
+	return total
+
+
+func _section_labels(container: Node) -> Array[String]:
+	var labels: Array[String] = []
+	if container == null:
+		return labels
+
+	for child in container.get_children():
+		var label := child as Label
+		if label != null:
+			var text := label.text.strip_edges()
+			if not text.is_empty():
+				labels.append(text)
+		labels.append_array(_section_labels(child))
+
+	return labels
+
+
+func _label_text_is(label: Label, expected_text: String) -> bool:
+	return label != null and label.text == expected_text
 
 
 func _has_transition_completed(run_shell: Node, expected_mode_name: String) -> bool:

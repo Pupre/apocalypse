@@ -3,6 +3,7 @@ extends Node
 var jobs: Dictionary = {}
 var traits: Dictionary = {}
 var buildings: Dictionary = {}
+var items: Dictionary = {}
 
 
 func _ready() -> void:
@@ -13,6 +14,7 @@ func load_all() -> void:
 	jobs = _load_indexed_array("res://data/jobs.json")
 	traits = _load_indexed_array("res://data/traits.json")
 	buildings = _load_indexed_array("res://data/buildings.json")
+	items = _load_indexed_array("res://data/items.json")
 
 
 func get_job(job_id: String) -> Dictionary:
@@ -25,6 +27,22 @@ func get_trait(trait_id: String) -> Dictionary:
 
 func get_building(building_id: String) -> Dictionary:
 	return buildings.get(building_id, {})
+
+
+func get_building_rows() -> Array[Dictionary]:
+	var building_ids: Array[String] = []
+	for building_id_variant in buildings.keys():
+		building_ids.append(String(building_id_variant))
+	building_ids.sort()
+
+	var rows: Array[Dictionary] = []
+	for building_id in building_ids:
+		rows.append(buildings.get(building_id, {}))
+	return rows
+
+
+func get_item(item_id: String) -> Dictionary:
+	return items.get(item_id, {})
 
 
 func _load_indexed_array(path: String) -> Dictionary:

@@ -1,0 +1,210 @@
+[
+  {
+    "id": "lighter",
+    "name": "라이터",
+    "bulk": 1,
+    "description": "손바닥만 한 일회용 라이터다. 불씨가 필요할 때 유용하다.",
+    "category": "utility"
+  },
+  {
+    "id": "energy_bar",
+    "name": "에너지바",
+    "bulk": 1,
+    "description": "급하게 허기를 눌러줄 고열량 막대 식량이다.",
+    "category": "food",
+    "hunger_restore": 10,
+    "use_minutes": 10
+  },
+  {
+    "id": "spare_batteries",
+    "name": "건전지",
+    "bulk": 1,
+    "description": "작은 전자기기에 쓸 수 있는 여분의 건전지 묶음이다.",
+    "category": "utility"
+  },
+  {
+    "id": "canned_beans",
+    "name": "통조림 콩",
+    "bulk": 1,
+    "description": "상온 보관이 가능한 든든한 통조림이다.",
+    "category": "food",
+    "hunger_restore": 18,
+    "use_minutes": 15
+  },
+  {
+    "id": "instant_noodles",
+    "name": "컵라면",
+    "bulk": 1,
+    "description": "뜨거운 물이 있으면 더 좋지만 그냥 먹어도 칼로리는 된다.",
+    "category": "food",
+    "hunger_restore": 12,
+    "thirst_restore": 3,
+    "use_minutes": 15
+  },
+  {
+    "id": "bottled_water",
+    "name": "생수",
+    "bulk": 1,
+    "description": "밀봉된 생수병이다. 목을 빠르게 축일 수 있다.",
+    "category": "drink",
+    "thirst_restore": 30,
+    "use_minutes": 5
+  },
+  {
+    "id": "canned_tuna",
+    "name": "참치 통조림",
+    "bulk": 1,
+    "description": "칼로리가 높고 오래 두고 먹을 수 있는 통조림이다.",
+    "category": "food",
+    "hunger_restore": 20,
+    "use_minutes": 15
+  },
+  {
+    "id": "crackers",
+    "name": "크래커",
+    "bulk": 1,
+    "description": "부스러지기 쉽지만 가볍게 허기를 달랠 수 있다.",
+    "category": "food",
+    "hunger_restore": 8,
+    "thirst_restore": -2,
+    "use_minutes": 10
+  },
+  {
+    "id": "instant_coffee",
+    "name": "인스턴트 커피",
+    "bulk": 1,
+    "description": "진한 단맛과 카페인으로 잠깐 정신을 붙잡아 주는 믹스커피다.",
+    "category": "stimulant",
+    "fatigue_restore": 8,
+    "thirst_restore": -3,
+    "use_minutes": 5
+  },
+  {
+    "id": "stimulant_shot",
+    "name": "각성제 주사",
+    "bulk": 1,
+    "description": "응급 상황에서 정신을 억지로 끌어올리는 강한 각성제다.",
+    "category": "stimulant",
+    "fatigue_restore": 24,
+    "thirst_restore": -6,
+    "use_minutes": 5
+  },
+  {
+    "id": "screwdriver",
+    "name": "작은 드라이버",
+    "bulk": 1,
+    "description": "문틈을 비집거나 나사를 푸는 데 쓸 수 있는 작은 공구다.",
+    "category": "tool"
+  },
+  {
+    "id": "packing_tape",
+    "name": "포장 테이프",
+    "bulk": 1,
+    "description": "급한 수리나 임시 고정에 쓸 수 있는 테이프다.",
+    "category": "utility"
+  },
+  {
+    "id": "storage_key",
+    "name": "보관실 열쇠",
+    "bulk": 1,
+    "description": "마트 2층 보관실 문을 여는 열쇠다.",
+    "category": "key"
+  },
+  {
+    "id": "apartment_101_key",
+    "name": "101호 열쇠",
+    "bulk": 1,
+    "description": "아파트 101호 출입문에 맞는 작은 열쇠다.",
+    "category": "key"
+  },
+  {
+    "id": "apartment_201_key",
+    "name": "201호 열쇠",
+    "bulk": 1,
+    "description": "아파트 201호 출입문에 맞는 낡은 황동 열쇠다.",
+    "category": "key"
+  },
+  {
+    "id": "clinic_storage_key",
+    "name": "약품 보관실 열쇠",
+    "bulk": 1,
+    "description": "의원 안쪽 약품 보관실을 여는 열쇠다.",
+    "category": "key"
+  },
+  {
+    "id": "office_keycard",
+    "name": "출입 카드키",
+    "bulk": 1,
+    "description": "사무실 안쪽 기록보관실 문을 여는 카드키다.",
+    "category": "key"
+  },
+  {
+    "id": "filter_cartridge",
+    "name": "방호 필터",
+    "bulk": 1,
+    "description": "외부 활동 장비와 연결될 방호 필터다.",
+    "category": "utility"
+  },
+  {
+    "id": "bandage",
+    "name": "붕대",
+    "bulk": 1,
+    "description": "상처를 감싸거나 지혈하는 데 쓸 수 있는 붕대다.",
+    "category": "medical",
+    "health_restore": 12,
+    "use_minutes": 10
+  },
+  {
+    "id": "painkillers",
+    "name": "진통제",
+    "bulk": 1,
+    "description": "통증을 잠시 누그러뜨려 줄 약이다.",
+    "category": "medical",
+    "health_restore": 6,
+    "fatigue_restore": 2,
+    "use_minutes": 5
+  },
+  {
+    "id": "flashlight",
+    "name": "손전등",
+    "bulk": 1,
+    "description": "어두운 실내를 살필 때 쓸 수 있는 작은 손전등이다.",
+    "category": "utility"
+  },
+  {
+    "id": "work_gloves",
+    "name": "작업 장갑",
+    "bulk": 1,
+    "description": "거친 물건을 옮길 때 손을 보호해 주는 장갑이다.",
+    "category": "equipment",
+    "equip_slot": "hands",
+    "fatigue_gain_bonus": -0.1
+  },
+  {
+    "id": "utility_vest",
+    "name": "작업 조끼",
+    "bulk": 2,
+    "description": "주머니가 많은 작업 조끼다. 몸에 걸치면 자잘한 물건을 더 챙길 수 있다.",
+    "category": "equipment",
+    "equip_slot": "body",
+    "carry_limit_bonus": 2
+  },
+  {
+    "id": "running_shoes",
+    "name": "운동화",
+    "bulk": 1,
+    "description": "밑창이 살아 있는 운동화다. 오래 걷거나 뛸 때 훨씬 편하다.",
+    "category": "equipment",
+    "equip_slot": "feet",
+    "move_speed_bonus": 24
+  },
+  {
+    "id": "small_backpack",
+    "name": "작은 배낭",
+    "bulk": 2,
+    "description": "어깨끈이 멀쩡한 소형 배낭이다. 메고 다니면 더 많은 짐을 챙길 수 있다.",
+    "category": "equipment",
+    "equip_slot": "back",
+    "carry_limit_bonus": 4
+  }
+]

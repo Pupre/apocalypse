@@ -42,14 +42,22 @@ func _run_test() -> void:
 
 	var transition_layer := run_shell.get_node_or_null("TransitionLayer")
 	var mode_host := run_shell.get_node_or_null("ModeHost")
+	var hud := run_shell.get_node_or_null("HUD")
 	var outdoor_mode := run_shell.get_node_or_null("ModeHost/OutdoorMode")
+	var content_library := root.get_node_or_null("ContentLibrary")
 	if not assert_true(transition_layer != null, "Run shell should include a transition layer."):
 		run_shell.free()
 		return
 	if not assert_true(mode_host != null, "Run shell should include a mode host."):
 		run_shell.free()
 		return
+	if not assert_true(hud != null, "Run shell should include a HUD."):
+		run_shell.free()
+		return
 	if not assert_true(outdoor_mode != null, "Run shell should start in outdoor mode."):
+		run_shell.free()
+		return
+	if not assert_true(content_library != null, "ContentLibrary autoload should be present for outdoor building lookups."):
 		run_shell.free()
 		return
 	if not assert_true(
@@ -58,24 +66,26 @@ func _run_test() -> void:
 	):
 		run_shell.free()
 		return
+	assert_true(hud.get_index() > mode_host.get_index(), "HUD should render above the mode host so indoor panels do not hide it.")
 
 	transition_layer.set_duration_for_tests(0.1)
 
 	var fade_rect := transition_layer.get_node_or_null("FadeRect") as ColorRect
-	var player_marker := outdoor_mode.get_node_or_null("PlayerMarker") as Polygon2D
-	var building_marker := outdoor_mode.get_node_or_null("BuildingMarker") as Polygon2D
+	var player_sprite := outdoor_mode.get_node_or_null("PlayerSprite") as Polygon2D
+	var mart_data: Dictionary = content_library.get_building("mart_01")
+	var mart_position_data: Dictionary = mart_data.get("outdoor_position", {})
+	var mart_position := Vector2(
+		float(mart_position_data.get("x", 640.0)),
+		float(mart_position_data.get("y", 360.0))
+	)
 	if not assert_true(fade_rect != null, "Transition layer should expose FadeRect."):
 		run_shell.free()
 		return
-	if not assert_true(player_marker != null, "Outdoor player marker should be present."):
+	if not assert_true(player_sprite != null, "Outdoor player marker should be present."):
 		run_shell.free()
 		return
-	if not assert_true(building_marker != null, "Outdoor building marker should be present."):
-		run_shell.free()
-		return
-
 	outdoor_mode.move_player(Vector2.RIGHT, 1.5)
-	assert_true(player_marker.position.distance_to(building_marker.position) <= 72.0, "Player should enter building range before transition test.")
+	assert_true(player_sprite.position.distance_to(mart_position) <= 72.0, "Player should enter building range before transition test.")
 
 	run_shell.transition_started.connect(Callable(self, "_on_transition_started"))
 	run_shell.transition_completed.connect(Callable(self, "_on_transition_completed"))
@@ -106,6 +116,11 @@ func _run_test() -> void:
 	):
 		run_shell.free()
 		return
+
+	assert_true(
+		not hud.visible or hud.modulate.a < 0.05,
+		"Indoor mode should hide or fully minimize the shared HUD."
+	)
 
 	assert_true(not run_shell.is_transition_in_progress(), "RunController should clear the transition flag after live fade completes.")
 	assert_eq(mode_host.process_mode, Node.PROCESS_MODE_INHERIT, "ModeHost should be re-enabled after live fade completes.")
