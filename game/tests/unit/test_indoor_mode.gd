@@ -116,6 +116,24 @@ func _run_test() -> void:
 		"Indoor mode should show the shared run clock after configure."
 	)
 
+	var location_strip := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/LocationStrip") as Control
+	if not assert_true(
+		location_strip != null and location_strip.visible,
+		"Indoor mode should expose a dedicated location strip below the top bar."
+	):
+		indoor_mode.free()
+		return
+
+	var location_value := _find_descendant_by_name_and_type(location_strip, "LocationValueLabel", "Label") as Label
+	if not assert_true(location_value != null, "Indoor mode should render the current zone inside the location strip."):
+		indoor_mode.free()
+		return
+	assert_eq(
+		location_value.text,
+		"정문 진입부",
+		"Indoor mode should show the current zone label without the old header-row prefix."
+	)
+
 	var inline_minimap_card := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/MiniMapCard") as Control
 	if not assert_true(
 		inline_minimap_card != null and inline_minimap_card.visible,
@@ -199,17 +217,18 @@ func _run_test() -> void:
 	var stat_detail_value := _find_descendant_by_name_and_type(stat_detail_sheet, "ValueLabel", "Label") as Label
 	var stat_detail_rule := _find_descendant_by_name_and_type(stat_detail_sheet, "RuleLabel", "Label") as Label
 	var stat_detail_recovery := _find_descendant_by_name_and_type(stat_detail_sheet, "RecoveryLabel", "Label") as Label
+	var stat_detail_close := _find_descendant_by_name_and_type(stat_detail_sheet, "CloseButton", "Button") as Button
 	if not assert_true(
-		stat_detail_title != null and stat_detail_value != null and stat_detail_rule != null and stat_detail_recovery != null,
-		"Indoor mode should expose title/value/rule/recovery labels in the stat detail sheet."
+		stat_detail_title != null and stat_detail_value != null and stat_detail_rule != null and stat_detail_recovery != null and stat_detail_close != null,
+		"Indoor mode should expose title/value/rule/recovery labels and a close button in the stat detail sheet."
 	):
 		indoor_mode.free()
 		return
 	assert_eq(stat_detail_title.text, String(target_chip_row.get("label", "")), "Indoor mode should show the selected stat title in the detail sheet.")
 	assert_eq(
 		stat_detail_value.text,
-		String(target_chip_row.get("detail_value_text", "")),
-		"Indoor mode should show the exact stat value text from the director payload."
+		"100 / 100 · 안정",
+		"Indoor mode should render exact stat values without decimals."
 	)
 	assert_eq(
 		stat_detail_rule.text,
@@ -221,6 +240,9 @@ func _run_test() -> void:
 		String(target_chip_row.get("recovery_text", "")),
 		"Indoor mode should show the selected stat recovery hint from the director payload."
 	)
+	stat_detail_close.emit_signal("pressed")
+	await process_frame
+	assert_true(not stat_detail_sheet.visible, "Indoor mode should close the stat detail sheet when the close button is pressed.")
 
 	bag_button.emit_signal("pressed")
 	await process_frame
@@ -348,6 +370,18 @@ func _run_test() -> void:
 		indoor_mode.free()
 		return
 	if not assert_true(carried_tab_button != null and equipped_tab_button != null, "Indoor mode should expose carried/equipped bag tabs."):
+		indoor_mode.free()
+		return
+	var bag_content_row := indoor_mode.get_node_or_null("BagSheet/VBox/ContentRow") as HBoxContainer
+	if not assert_true(bag_content_row != null, "Indoor mode should split the bag sheet into list/detail columns."):
+		indoor_mode.free()
+		return
+	var item_detail_panel := indoor_mode.get_node_or_null("BagSheet/VBox/ContentRow/ItemDetailPanel") as Control
+	if not assert_true(item_detail_panel != null, "Indoor mode should render selected inventory details inside the bag sheet."):
+		indoor_mode.free()
+		return
+	var item_detail_title := indoor_mode.get_node_or_null("BagSheet/VBox/ContentRow/ItemDetailPanel/VBox/ItemNameLabel") as Label
+	if not assert_true(item_detail_title != null, "Indoor mode should render the item detail title inside the right-side bag panel."):
 		indoor_mode.free()
 		return
 	assert_true(
