@@ -269,7 +269,7 @@ func get_equipped_rows() -> Array[Dictionary]:
 	if _run_state == null:
 		var empty_rows: Array[Dictionary] = [{
 			"kind": "empty",
-			"summary_text": "장착중인 장비 없음",
+			"summary_text": "장착 장비 없음",
 			"state_text": "",
 			"detail_text": "",
 		}]
@@ -294,7 +294,7 @@ func get_equipped_rows() -> Array[Dictionary]:
 	if rows.is_empty():
 		var fallback_rows: Array[Dictionary] = [{
 			"kind": "empty",
-			"summary_text": "장착중인 장비 없음",
+			"summary_text": "장착 장비 없음",
 			"state_text": "",
 			"detail_text": "",
 		}]

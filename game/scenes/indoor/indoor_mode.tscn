@@ -7,12 +7,12 @@
 [sub_resource type="ButtonGroup" id="1"]
 
 [sub_resource type="StyleBoxFlat" id="2"]
-bg_color = Color(0.129412, 0.145098, 0.172549, 1)
+bg_color = Color(0.101961, 0.121569, 0.14902, 0.98)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.27451, 0.309804, 0.360784, 1)
+border_color = Color(0.25098, 0.298039, 0.364706, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -23,12 +23,12 @@ content_margin_right = 10.0
 content_margin_bottom = 8.0
 
 [sub_resource type="StyleBoxFlat" id="3"]
-bg_color = Color(0.2, 0.25098, 0.313726, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.560784, 0.721569, 0.901961, 1)
+bg_color = Color(0.231373, 0.345098, 0.47451, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.717647, 0.858824, 1, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -37,6 +37,38 @@ content_margin_left = 10.0
 content_margin_top = 8.0
 content_margin_right = 10.0
 content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="4"]
+bg_color = Color(0.0509804, 0.0627451, 0.0823529, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.270588, 0.317647, 0.388235, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxFlat" id="5"]
+bg_color = Color(0.0823529, 0.101961, 0.129412, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25098, 0.341176, 0.470588, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+content_margin_left = 14.0
+content_margin_top = 14.0
+content_margin_right = 14.0
+content_margin_bottom = 14.0
 
 [node name="IndoorMode" type="Control"]
 anchors_preset = 15
@@ -185,10 +217,11 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 72.0
-offset_top = -320.0
-offset_right = -72.0
+offset_left = 40.0
+offset_top = -360.0
+offset_right = -40.0
 offset_bottom = -24.0
+theme_override_styles/panel = SubResource("4")
 
 [node name="VBox" type="VBoxContainer" parent="BagSheet"]
 theme_override_constants/separation = 8
@@ -240,23 +273,27 @@ theme_override_styles/hover_pressed = SubResource("3")
 theme_override_constants/separation = 12
 
 [node name="InventoryColumn" type="VBoxContainer" parent="BagSheet/VBox/ContentRow"]
+custom_minimum_size = Vector2(340, 0)
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 8
 
 [node name="InventoryScroll" type="ScrollContainer" parent="BagSheet/VBox/ContentRow/InventoryColumn"]
-custom_minimum_size = Vector2(0, 160)
+custom_minimum_size = Vector2(0, 220)
+size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
 [node name="InventoryItems" type="VBoxContainer" parent="BagSheet/VBox/ContentRow/InventoryColumn/InventoryScroll"]
+size_flags_horizontal = 3
 theme_override_constants/separation = 6
 
 [node name="ItemDetailPanel" type="PanelContainer" parent="BagSheet/VBox/ContentRow"]
 visible = false
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(300, 0)
 size_flags_horizontal = 2
 size_flags_vertical = 3
+theme_override_styles/panel = SubResource("5")
 
 [node name="VBox" type="VBoxContainer" parent="BagSheet/VBox/ContentRow/ItemDetailPanel"]
 theme_override_constants/separation = 10

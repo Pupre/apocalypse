@@ -39,6 +39,7 @@ var _bag_status_label: Label = null
 var _bag_close_button: Button = null
 var _carried_tab_button: Button = null
 var _equipped_tab_button: Button = null
+var _inventory_column: Control = null
 var _inventory_items: VBoxContainer = null
 var _item_sheet: Control = null
 var _item_sheet_title: Label = null
@@ -328,8 +329,10 @@ func _refresh_bag_sheet() -> void:
 
 	if _carried_tab_button != null:
 		_carried_tab_button.button_pressed = _active_bag_tab == "carried"
+		_apply_tab_visual_state(_carried_tab_button, _active_bag_tab == "carried")
 	if _equipped_tab_button != null:
 		_equipped_tab_button.button_pressed = _active_bag_tab == "equipped"
+		_apply_tab_visual_state(_equipped_tab_button, _active_bag_tab == "equipped")
 
 	if _inventory_items == null:
 		return
@@ -368,7 +371,7 @@ func _create_inventory_row(row: Dictionary) -> Control:
 	if action_id.is_empty():
 		return _create_empty_state_row("InventoryEmptyRow", "EmptyLabel", label_text)
 
-	var row_panel := _create_row_panel("InventoryRow_%s" % action_id)
+	var row_panel := _create_row_panel("InventoryRow_%s" % action_id, _row_panel_style(Color(0.086, 0.102, 0.129, 0.98), Color(0.22, 0.29, 0.38, 1.0)))
 	var row_box := _create_row_box()
 	row_panel.add_child(row_box)
 
@@ -409,7 +412,7 @@ func _create_equipped_row(row: Dictionary) -> Control:
 	var row_name := "EquippedRow"
 	if not slot_id.is_empty():
 		row_name = "EquippedRow_%s" % slot_id
-	var row_panel := _create_row_panel(row_name)
+	var row_panel := _create_row_panel(row_name, _row_panel_style(Color(0.106, 0.125, 0.157, 1.0), Color(0.34, 0.5, 0.66, 1.0)))
 	row_panel.custom_minimum_size = Vector2(0, 88)
 	var row_box := _create_row_box()
 	row_box.add_theme_constant_override("separation", 4)
@@ -418,7 +421,7 @@ func _create_equipped_row(row: Dictionary) -> Control:
 	var summary_label := Label.new()
 	summary_label.name = "SummaryLabel"
 	summary_label.text = summary_text
-	summary_label.autowrap_mode = 3
+	summary_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	summary_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	summary_label.modulate = Color(0.74, 0.86, 1.0, 0.96)
 	row_box.add_child(summary_label)
@@ -428,7 +431,7 @@ func _create_equipped_row(row: Dictionary) -> Control:
 		var item_label := Label.new()
 		item_label.name = "ItemLabel"
 		item_label.text = item_text
-		item_label.autowrap_mode = 3
+		item_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 		item_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		row_box.add_child(item_label)
 
@@ -445,32 +448,56 @@ func _create_equipped_row(row: Dictionary) -> Control:
 	return row_panel
 
 
-func _create_row_panel(row_name: String) -> PanelContainer:
+func _create_row_panel(row_name: String, stylebox: StyleBoxFlat = null) -> PanelContainer:
 	var row_panel := PanelContainer.new()
 	row_panel.name = row_name
 	row_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row_panel.custom_minimum_size = Vector2(0, 60)
+	if stylebox != null:
+		row_panel.add_theme_stylebox_override("panel", stylebox)
 	return row_panel
 
 
 func _create_row_box() -> VBoxContainer:
 	var row_box := VBoxContainer.new()
+	row_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row_box.add_theme_constant_override("separation", 2)
 	return row_box
 
 
 func _create_empty_state_row(row_name: String, label_name: String, label_text: String) -> Control:
-	var row_panel := _create_row_panel(row_name)
+	var row_panel := _create_row_panel(row_name, _row_panel_style(Color(0.075, 0.086, 0.11, 0.98), Color(0.18, 0.22, 0.28, 1.0)))
 	var row_box := _create_row_box()
 	row_panel.add_child(row_box)
 
 	var empty_label := Label.new()
 	empty_label.name = label_name
 	empty_label.text = label_text
-	empty_label.autowrap_mode = 3
+	empty_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	empty_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	empty_label.modulate = Color(0.82, 0.86, 0.9, 0.96)
 	empty_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row_box.add_child(empty_label)
 	return row_panel
+
+
+func _row_panel_style(bg_color: Color, border_color: Color) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = bg_color
+	style.border_width_left = 1
+	style.border_width_top = 1
+	style.border_width_right = 1
+	style.border_width_bottom = 1
+	style.border_color = border_color
+	style.corner_radius_top_left = 10
+	style.corner_radius_top_right = 10
+	style.corner_radius_bottom_right = 10
+	style.corner_radius_bottom_left = 10
+	style.content_margin_left = 10
+	style.content_margin_top = 10
+	style.content_margin_right = 10
+	style.content_margin_bottom = 10
+	return style
 
 
 func _refresh_item_sheet() -> void:
@@ -478,18 +505,22 @@ func _refresh_item_sheet() -> void:
 		return
 
 	if _bag_sheet == null or not _bag_sheet.visible:
+		_sync_item_detail_layout(false)
 		_item_sheet.visible = false
 		return
 
 	if _director == null or not _director.has_method("get_selected_inventory_sheet"):
+		_sync_item_detail_layout(false)
 		_item_sheet.visible = false
 		return
 
 	var sheet: Dictionary = _director.get_selected_inventory_sheet()
 	if not bool(sheet.get("visible", false)):
+		_sync_item_detail_layout(false)
 		_item_sheet.visible = false
 		return
 
+	_sync_item_detail_layout(true)
 	_item_sheet.visible = true
 	if _item_sheet_title != null:
 		_item_sheet_title.text = String(sheet.get("title", "아이템"))
@@ -513,6 +544,55 @@ func _refresh_item_sheet() -> void:
 			button.text = String(action.get("label", action_id))
 			button.pressed.connect(Callable(self, "_on_action_pressed").bind(action_id))
 			_item_sheet_actions.add_child(button)
+
+
+func _sync_item_detail_layout(detail_visible: bool) -> void:
+	if _item_sheet != null:
+		_item_sheet.visible = detail_visible
+		_item_sheet.custom_minimum_size = Vector2(300, 0) if detail_visible else Vector2.ZERO
+		_item_sheet.size_flags_horizontal = Control.SIZE_FILL if detail_visible else 0
+	if _inventory_column != null:
+		_inventory_column.custom_minimum_size = Vector2(340, 0) if detail_visible else Vector2.ZERO
+
+
+func _apply_tab_visual_state(button: Button, active: bool) -> void:
+	if button == null:
+		return
+	button.modulate = Color(1, 1, 1, 1) if active else Color(0.76, 0.79, 0.84, 0.94)
+	var normal_style := _tab_style(active)
+	var hover_style := _tab_style(active, true)
+	button.add_theme_stylebox_override("normal", normal_style)
+	button.add_theme_stylebox_override("focus", normal_style)
+	button.add_theme_stylebox_override("pressed", normal_style)
+	button.add_theme_stylebox_override("hover", hover_style)
+	button.add_theme_stylebox_override("hover_pressed", hover_style)
+
+
+func _tab_style(active: bool, hovered: bool = false) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.corner_radius_top_left = 10
+	style.corner_radius_top_right = 10
+	style.corner_radius_bottom_right = 10
+	style.corner_radius_bottom_left = 10
+	style.content_margin_left = 12
+	style.content_margin_top = 10
+	style.content_margin_right = 12
+	style.content_margin_bottom = 10
+	if active:
+		style.bg_color = Color(0.23, 0.35, 0.48, 1.0) if not hovered else Color(0.27, 0.4, 0.54, 1.0)
+		style.border_width_left = 2
+		style.border_width_top = 2
+		style.border_width_right = 2
+		style.border_width_bottom = 2
+		style.border_color = Color(0.76, 0.88, 1.0, 1.0)
+	else:
+		style.bg_color = Color(0.1, 0.12, 0.15, 0.98) if not hovered else Color(0.13, 0.16, 0.2, 1.0)
+		style.border_width_left = 1
+		style.border_width_top = 1
+		style.border_width_right = 1
+		style.border_width_bottom = 1
+		style.border_color = Color(0.26, 0.31, 0.37, 1.0)
+	return style
 
 
 func _refresh_stat_detail_sheet() -> void:
@@ -653,6 +733,7 @@ func _cache_nodes() -> void:
 	_bag_close_button = get_node_or_null("BagSheet/VBox/Header/CloseButton") as Button
 	_carried_tab_button = get_node_or_null("BagSheet/VBox/Tabs/CarriedTabButton") as Button
 	_equipped_tab_button = get_node_or_null("BagSheet/VBox/Tabs/EquippedTabButton") as Button
+	_inventory_column = get_node_or_null("BagSheet/VBox/ContentRow/InventoryColumn") as Control
 	_inventory_items = get_node_or_null("BagSheet/VBox/ContentRow/InventoryColumn/InventoryScroll/InventoryItems") as VBoxContainer
 	_item_sheet = get_node_or_null("BagSheet/VBox/ContentRow/ItemDetailPanel") as Control
 	_item_sheet_title = get_node_or_null("BagSheet/VBox/ContentRow/ItemDetailPanel/VBox/ItemNameLabel") as Label

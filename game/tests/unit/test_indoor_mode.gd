@@ -407,6 +407,10 @@ func _run_test() -> void:
 	assert_true(not equipped_tab_button.disabled, "The inactive tab should stay enabled so it remains part of the segmented control.")
 	assert_true(carried_tab_button.button_pressed, "Carried tab should be selected by default.")
 	assert_true(not equipped_tab_button.button_pressed, "Equipped tab should be inactive by default.")
+	assert_true(
+		carried_tab_button.modulate != equipped_tab_button.modulate,
+		"Indoor mode should give the active bag tab a visibly different tone."
+	)
 	assert_eq(
 		bag_title_label.text,
 		"소지품 (0/8)",
@@ -436,12 +440,17 @@ func _run_test() -> void:
 	)
 	assert_eq(
 		_row_text(_find_row_by_name(inventory_items, "EquippedEmptyRow"), "EmptyLabel"),
-		"장착중인 장비 없음",
+		"장착 장비 없음",
 		"Indoor mode should show empty equipped gear in the bag sheet."
 	)
 	carried_tab_button.emit_signal("pressed")
 	await process_frame
 	assert_true(not item_detail_panel.visible, "Indoor mode should keep the bag detail panel hidden until an inventory item is selected.")
+	assert_eq(
+		item_detail_panel.custom_minimum_size.x,
+		0.0,
+		"Indoor mode should collapse the item detail column width while nothing is selected."
+	)
 
 	if not assert_true(director != null and director.has_method("apply_action"), "Indoor mode should expose its Director node."):
 		indoor_mode.free()
@@ -567,6 +576,10 @@ func _run_test() -> void:
 	energy_bar_button.emit_signal("pressed")
 	await process_frame
 	assert_true(item_detail_panel.visible, "Selecting an inventory item should open the in-bag detail panel.")
+	assert_true(
+		item_detail_panel.custom_minimum_size.x >= 260.0,
+		"Indoor mode should reserve a readable right-hand detail column once an item is selected."
+	)
 	var item_sheet_title := _find_descendant_by_name_and_type(item_detail_panel, "ItemNameLabel", "Label") as Label
 	var item_sheet_description := _find_descendant_by_name_and_type(item_detail_panel, "ItemDescriptionLabel", "Label") as Label
 	var item_sheet_effect := _find_descendant_by_name_and_type(item_detail_panel, "ItemEffectLabel", "Label") as Label
