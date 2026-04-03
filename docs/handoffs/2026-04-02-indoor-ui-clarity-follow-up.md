@@ -2,49 +2,75 @@
 
 ## 세션 요약
 
-- 목표: 실내 가방 UI에서 `소지품`과 `장착중`의 역할 차이를 더 즉시 읽히게 정리
-- 현재 상태: 탭 세그먼트, 고정 이름이 있는 행 구조, 선택 상태 스타일, smoke 회귀까지 모두 반영되어 있고 검증도 통과한 상태다
-- 마지막 갱신: 2026-04-02
+- 목표: 실내 UI를 `상시 미니맵 + 위치 스트립 + 닫을 수 있는 상태 상세 + 가방 우측 상세` 구조로 안정화
+- 현재 상태: 구현과 회귀 검증까지 완료했다
+- 마지막 갱신: 2026-04-03
 - 저장소: `/home/muhyeon_shin/packages/apocalypse`
 - 활성 브랜치: `playtest-mart-indoor-content`
 - 이번 세션에 주로 손댄 파일:
   - `game/scenes/indoor/indoor_mode.tscn`
   - `game/scripts/indoor/indoor_mode.gd`
   - `game/tests/unit/test_indoor_mode.gd`
-  - `game/tests/smoke/test_first_playable_loop.gd`
-  - `docs/worklogs/2026-04-02-indoor-ui-clarity-follow-up.md`
-  - `docs/handoffs/2026-04-02-indoor-ui-clarity-follow-up.md`
+- `game/tests/smoke/test_first_playable_loop.gd`
+- `docs/worklogs/2026-04-02-indoor-ui-clarity-follow-up.md`
+- `docs/handoffs/2026-04-02-indoor-ui-clarity-follow-up.md`
 
 ## 다음 작업
 
-- 없음. 이번 후속 작업 범위는 종료되었고, 다음 세션에서는 다른 기능을 시작하면 된다.
+- `game/tests/unit/test_indoor_mode.gd`에 새 UI 계약을 먼저 고정
+- `game/scenes/indoor/indoor_mode.tscn`을 위치 스트립 / 가방 좌우 컬럼 / 상태 상세 닫기 버튼 구조로 재배치
+- `game/scripts/indoor/indoor_mode.gd`, `game/scripts/indoor/indoor_director.gd`에서 새 노드와 정수형 수치 표시를 연결
 
 ## 진행 체크리스트
 
-- [x] 시작 문맥 확인
-- [x] 위험과 수정 방향 기록
-- [x] 1차 변경 반영
-- [x] 1차 변경 검증
-- [x] 후속 변경 반영
-- [x] 후속 상태 검증
-- [x] worklog 요약 갱신
+- [x] 새 피드백과 수정 방향 기록
+- [x] 설계 문서 갱신
+- [x] 구현 계획 작성
+- [x] 새 UI 계약 테스트 추가
+- [x] 씬 구조 재배치
+- [x] `IndoorMode` / `IndoorDirector` 동작 반영
+- [x] 회귀 검증 및 문서 마감
 
 ## 다음 세션 메모
 
-- 기존 실내 재구성 문서는 별도로 유지한다.
-- 이번 후속 작업은 구조를 다시 뒤엎기보다 가방 탭/행의 시각적 차이를 좁히는 작업이다.
-- `ButtonGroup`으로 탭을 묶었고, `IndoorDirector.get_equipped_rows()`는 구조화된 summary payload를 돌려준다.
-- UI 수정 후에는 `res://tests/unit/test_indoor_mode.gd`와 `res://tests/smoke/test_first_playable_loop.gd`를 반드시 다시 돌린다.
-- 위 두 테스트와 `res://tests/unit/test_indoor_director.gd`는 이번 세션에서 재검증했고 모두 통과했다.
+- 상시 미니맵은 다시 메인 화면에 둔다. 다만 `전체 구조도` 오버레이는 유지한다.
+- 아이템 상세는 더 이상 메인 화면 위에 뜨는 별도 패널이 아니라, 가방 내부 우측 컬럼으로 옮긴다.
+- 상태칩 상세는 `닫기` 버튼이 필요하다.
+- 정확한 생존 수치는 정수형만 보여준다.
+- 현재 위치는 상단 바 바로 아래의 전용 위치 스트립으로 분리한다.
+- 구현 시작 전 기준 문서:
+  - `docs/specs/indoor-ui-clarity-follow-up-design.md`
+  - `docs/superpowers/plans/2026-04-03-indoor-ui-clarity-refinement.md`
+
+## 현재 구현 요약
+
+- `game/scenes/indoor/indoor_mode.tscn`
+  - `LocationStrip` 추가
+  - `BagSheet`를 `왼쪽 목록 / 오른쪽 상세` 구조로 변경
+  - `StatDetailSheet`에 `닫기` 버튼 추가
+- `game/scripts/indoor/indoor_mode.gd`
+  - 위치 스트립 갱신
+  - 가방 우측 상세 패널 렌더링
+  - 상태 상세 닫기 버튼 바인딩
+- `game/scripts/indoor/indoor_director.gd`
+  - 생존 수치 상세값 정수화
+  - 장착 행 문구를 슬롯 중심 카드 문구로 정리
+- `game/tests/unit/test_indoor_mode.gd`
+  - 위치 스트립, 정수 수치, 상태 상세 닫기, 가방 우측 상세 검증
+- `game/tests/smoke/test_first_playable_loop.gd`
+  - 새 위치 스트립과 가방 경로를 반영한 smoke 회귀
 
 ## 검증 상태
 
-- 실행한 명령:
+- 최근 안정화 기준 검증:
+  - `INDOOR_MODE_OK`
+  - `FIRST_PLAYABLE_LOOP_OK`
+  - `INDOOR_DIRECTOR_OK`
+- 이번 라운드 최종 검증 명령:
   - `XDG_DATA_HOME=/tmp/codex-godot-home /home/muhyeon_shin/packages/.local-tools/godot/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64 --headless --path /home/muhyeon_shin/packages/apocalypse/game -s res://tests/unit/test_indoor_mode.gd`
   - `XDG_DATA_HOME=/tmp/codex-godot-home /home/muhyeon_shin/packages/.local-tools/godot/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64 --headless --path /home/muhyeon_shin/packages/apocalypse/game -s res://tests/smoke/test_first_playable_loop.gd`
 - 결과:
   - `INDOOR_MODE_OK`
   - `FIRST_PLAYABLE_LOOP_OK`
-- `INDOOR_DIRECTOR_OK`
 - 보류:
   - 없음

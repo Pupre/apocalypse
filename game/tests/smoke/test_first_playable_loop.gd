@@ -204,11 +204,15 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
-	var location_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/LocationLabel") as Label
-	if not assert_true(location_label != null, "Indoor mode should expose a location label."):
+	var location_strip := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/LocationStrip") as Control
+	if not assert_true(location_strip != null and location_strip.visible, "Indoor mode should expose a visible location strip."):
 		bootstrap.free()
 		return
-	assert_eq(location_label.text, "위치: 정문 진입부", "Indoor mode should begin at the mart entrance zone.")
+	var location_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/LocationStrip/HBox/LocationValueLabel") as Label
+	if not assert_true(location_label != null, "Indoor mode should expose the current zone inside the location strip."):
+		bootstrap.free()
+		return
+	assert_eq(location_label.text, "정문 진입부", "Indoor mode should begin at the mart entrance zone.")
 
 	var indoor_time_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/TimeLabel") as Label
 	if not assert_true(indoor_time_label != null, "Indoor mode should expose a visible time label."):
@@ -221,6 +225,10 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 	assert_eq(summary_label.text, "깨진 자동문과 쓰러진 장바구니가 보인다.", "Indoor mode should describe the current entrance zone.")
+	var inline_minimap_card := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/MiniMapCard") as Control
+	if not assert_true(inline_minimap_card != null and inline_minimap_card.visible, "Indoor mode should keep a small inline minimap visible."):
+		bootstrap.free()
+		return
 
 	var clue_list := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ClueList") as VBoxContainer
 	assert_true(clue_list == null, "Indoor mode should not expose a persistent clue list in the main layout.")
@@ -276,7 +284,7 @@ func _run_test() -> void:
 	assert_true(not minimap_overlay.visible, "Indoor map button should hide the minimap overlay on the second press.")
 
 	var bag_sheet := indoor_mode.get_node_or_null("BagSheet") as Control
-	var inventory_items := indoor_mode.get_node_or_null("BagSheet/VBox/InventoryScroll/InventoryItems") as VBoxContainer
+	var inventory_items := indoor_mode.get_node_or_null("BagSheet/VBox/ContentRow/InventoryColumn/InventoryScroll/InventoryItems") as VBoxContainer
 	var carried_tab_button := _find_descendant_by_name_and_type(bag_sheet, "CarriedTabButton", "Button") as Button
 	var equipped_tab_button := _find_descendant_by_name_and_type(bag_sheet, "EquippedTabButton", "Button") as Button
 	if not assert_true(inventory_items != null, "Indoor mode should expose an inventory item list."):
@@ -312,7 +320,7 @@ func _run_test() -> void:
 
 	move_checkout_button.emit_signal("pressed")
 	if not await _wait_until(
-		Callable(self, "_label_text_is").bind(location_label, "위치: 계산대"),
+		Callable(self, "_label_text_is").bind(location_label, "계산대"),
 		"Timed out waiting for the indoor location to change to checkout."
 	):
 		bootstrap.free()
@@ -408,7 +416,7 @@ func _run_test() -> void:
 		return
 	move_entrance_button.emit_signal("pressed")
 	if not await _wait_until(
-		Callable(self, "_label_text_is").bind(location_label, "위치: 정문 진입부"),
+		Callable(self, "_label_text_is").bind(location_label, "정문 진입부"),
 		"Timed out waiting for the indoor location to return to the entrance."
 	):
 		bootstrap.free()
@@ -421,7 +429,7 @@ func _run_test() -> void:
 		return
 	move_food_aisle_button.emit_signal("pressed")
 	if not await _wait_until(
-		Callable(self, "_label_text_is").bind(location_label, "위치: 식품 진열대"),
+		Callable(self, "_label_text_is").bind(location_label, "식품 진열대"),
 		"Timed out waiting for the indoor location to change to the food aisle."
 	):
 		bootstrap.free()
@@ -433,7 +441,7 @@ func _run_test() -> void:
 		return
 	move_household_goods_button.emit_signal("pressed")
 	if not await _wait_until(
-		Callable(self, "_label_text_is").bind(location_label, "위치: 생활용품 코너"),
+		Callable(self, "_label_text_is").bind(location_label, "생활용품 코너"),
 		"Timed out waiting for the indoor location to change to household goods."
 	):
 		bootstrap.free()
@@ -509,7 +517,7 @@ func _run_test() -> void:
 		return
 	move_food_aisle_back_button.emit_signal("pressed")
 	if not await _wait_until(
-		Callable(self, "_label_text_is").bind(location_label, "위치: 식품 진열대"),
+		Callable(self, "_label_text_is").bind(location_label, "식품 진열대"),
 		"Timed out waiting for the indoor location to return to the food aisle."
 	):
 		bootstrap.free()
@@ -521,7 +529,7 @@ func _run_test() -> void:
 		return
 	move_entrance_back_button.emit_signal("pressed")
 	if not await _wait_until(
-		Callable(self, "_label_text_is").bind(location_label, "위치: 정문 진입부"),
+		Callable(self, "_label_text_is").bind(location_label, "정문 진입부"),
 		"Timed out waiting for the indoor location to return to the entrance."
 	):
 		bootstrap.free()
