@@ -144,3 +144,36 @@
 - 결과:
   - `INDOOR_MODE_OK`
   - `FIRST_PLAYABLE_LOOP_OK`
+
+## 2026-04-03 후속 미세 조정
+
+사용자 플레이테스트 기준으로, 4월 3일 실내 UI 재구성 뒤에도 두 가지 이질감이 남아 있었다.
+
+- `장착중` 탭이 너무 좁고, 장착 행도 상태 카드라기보다 목록 텍스트처럼 보여 읽기 불편했다.
+- 소지품 행마다 `탭하여 상세 보기`가 반복돼 시선이 분산됐다.
+- 상태칩 상세는 닫기 버튼이 생겼지만, 같은 칩을 한 번 더 눌러 닫는 더 빠른 상호작용이 없었다.
+
+이번 수정은 레이아웃을 다시 뒤엎지 않고, 이미 바꾼 가방 구조 안에서 시각 계층만 더 분명히 만드는 데 집중했다.
+
+### 이번 수정 내용
+
+- 상태칩은 같은 칩을 다시 누르면 상세 패널이 닫히게 바꿨다.
+- `소지품` 행은 버튼 라벨만 남기고, 반복적인 `탭하여 상세 보기` 문구를 제거했다.
+- `장착중` 탭은 최소 크기를 키워 좁고 답답한 느낌을 줄였다.
+- `장착중` 행은 `슬롯명 / 장비명 / 효과` 3단 카드형으로 바꿨다.
+  - 예전처럼 `등 · 작은 배낭 / 장착중 / ...`처럼 한 덩어리 텍스트로 읽히지 않고, 현재 상태 카드처럼 보이도록 정리했다.
+
+### 왜 이 수정이 더 낫나
+
+- 소지품은 눌러서 상세를 보는 목록이고, 장착중은 현재 상태를 읽는 카드라는 차이가 더 명확해졌다.
+- 같은 문구가 반복되지 않아, 실제로 필요한 라벨만 읽게 된다.
+- 상태칩은 `열기/닫기`를 같은 위치에서 해결할 수 있어 상호작용이 더 짧아졌다.
+
+### 이번 수정 검증
+
+- 실행한 명령:
+  - `XDG_DATA_HOME=/tmp/codex-godot-home /home/muhyeon_shin/packages/.local-tools/godot/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64 --headless --path /home/muhyeon_shin/packages/apocalypse/game -s res://tests/unit/test_indoor_mode.gd`
+  - `XDG_DATA_HOME=/tmp/codex-godot-home /home/muhyeon_shin/packages/.local-tools/godot/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64 --headless --path /home/muhyeon_shin/packages/apocalypse/game -s res://tests/smoke/test_first_playable_loop.gd`
+- 결과:
+  - `INDOOR_MODE_OK`
+  - `FIRST_PLAYABLE_LOOP_OK`

@@ -230,6 +230,18 @@ func _run_test() -> void:
 		String(target_chip_row.get("recovery_text", "")),
 		"Indoor mode should show the selected stat recovery hint from the director payload."
 	)
+	target_chip_button.emit_signal("pressed")
+	await process_frame
+	assert_true(
+		not stat_detail_sheet.visible,
+		"Indoor mode should toggle the stat detail sheet closed when the same chip is pressed again."
+	)
+	target_chip_button.emit_signal("pressed")
+	await process_frame
+	assert_true(
+		stat_detail_sheet.visible,
+		"Indoor mode should reopen the stat detail sheet when the chip is pressed again after toggling closed."
+	)
 	stat_detail_close.emit_signal("pressed")
 	await process_frame
 	assert_true(not stat_detail_sheet.visible, "Indoor mode should close the stat detail sheet when the close button is pressed.")
@@ -378,6 +390,14 @@ func _run_test() -> void:
 		carried_tab_button.button_group != null and carried_tab_button.button_group == equipped_tab_button.button_group,
 		"Indoor mode should wire the bag tabs as a segmented control."
 	)
+	assert_true(
+		carried_tab_button.custom_minimum_size.x >= 120.0 and carried_tab_button.custom_minimum_size.y >= 44.0,
+		"Indoor mode should keep the carried tab finger-friendly."
+	)
+	assert_true(
+		equipped_tab_button.custom_minimum_size.x >= 120.0 and equipped_tab_button.custom_minimum_size.y >= 44.0,
+		"Indoor mode should keep the equipped tab finger-friendly."
+	)
 	bag_button.emit_signal("pressed")
 	await process_frame
 	assert_true(bag_sheet.visible, "Indoor mode should open the bag sheet from the top bar.")
@@ -524,8 +544,8 @@ func _run_test() -> void:
 			_find_row_by_name(inventory_items, String("InventoryRow_%s" % String(carried_rows[0].get("action_id", "")))),
 			"DetailLabel"
 		),
-		"탭하여 상세 보기",
-		"Picking up discovered items should keep the carried-row detail cue explicit."
+		"",
+		"Picking up discovered items should keep carried rows visually concise."
 	)
 	assert_eq(
 		_row_text(
@@ -628,18 +648,18 @@ func _run_test() -> void:
 		return
 	assert_eq(
 		_row_text(equipped_row, "SummaryLabel"),
-		String(equipped_rows[0].get("summary_text", "")),
-		"Equipping an item should surface the summary text in the equipped row."
+		String(equipped_rows[0].get("slot_label", "")),
+		"Equipped rows should surface the slot label as the summary heading."
 	)
 	assert_eq(
-		_row_text(equipped_row, "StateLabel"),
-		String(equipped_rows[0].get("state_text", "")),
-		"Equipping an item should surface the state text in the equipped row."
+		_row_text(equipped_row, "ItemLabel"),
+		String(equipped_rows[0].get("item_name", "")),
+		"Equipped rows should surface the equipped item name as a separate line."
 	)
 	assert_eq(
-		_row_text(equipped_row, "DetailLabel"),
+		_row_text(equipped_row, "EffectLabel"),
 		String(equipped_rows[0].get("detail_text", "")),
-		"Equipping an item should surface the detail text in the equipped row."
+		"Equipped rows should surface the equipped item effect text."
 	)
 	assert_true(
 		_find_descendant_by_name_and_type(equipped_row, "RowButton", "Button") == null,

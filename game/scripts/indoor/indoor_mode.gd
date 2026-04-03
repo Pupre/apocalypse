@@ -385,9 +385,10 @@ func _create_inventory_row(row: Dictionary) -> Control:
 
 	var hint_label := Label.new()
 	hint_label.name = "DetailLabel"
-	hint_label.text = String(row.get("detail_text", "탭하여 상세 보기"))
+	hint_label.text = String(row.get("detail_text", ""))
 	hint_label.modulate = Color(0.82, 0.86, 0.9, 0.96)
 	hint_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hint_label.visible = not hint_label.text.is_empty()
 	row_box.add_child(hint_label)
 	return row_panel
 
@@ -409,7 +410,9 @@ func _create_equipped_row(row: Dictionary) -> Control:
 	if not slot_id.is_empty():
 		row_name = "EquippedRow_%s" % slot_id
 	var row_panel := _create_row_panel(row_name)
+	row_panel.custom_minimum_size = Vector2(0, 88)
 	var row_box := _create_row_box()
+	row_box.add_theme_constant_override("separation", 4)
 	row_panel.add_child(row_box)
 
 	var summary_label := Label.new()
@@ -417,26 +420,27 @@ func _create_equipped_row(row: Dictionary) -> Control:
 	summary_label.text = summary_text
 	summary_label.autowrap_mode = 3
 	summary_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	summary_label.modulate = Color(0.74, 0.86, 1.0, 0.96)
 	row_box.add_child(summary_label)
 
-	var state_text := String(row.get("state_text", ""))
-	if not state_text.is_empty():
-		var state_label := Label.new()
-		state_label.name = "StateLabel"
-		state_label.text = state_text
-		state_label.modulate = Color(0.82, 0.9, 1.0, 0.95)
-		state_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		row_box.add_child(state_label)
+	var item_text := String(row.get("item_name", ""))
+	if not item_text.is_empty():
+		var item_label := Label.new()
+		item_label.name = "ItemLabel"
+		item_label.text = item_text
+		item_label.autowrap_mode = 3
+		item_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		row_box.add_child(item_label)
 
 	var detail_text := String(row.get("detail_text", ""))
 	if not detail_text.is_empty():
-		var detail_label := Label.new()
-		detail_label.name = "DetailLabel"
-		detail_label.text = detail_text
-		detail_label.autowrap_mode = 3
-		detail_label.modulate = Color(0.9, 0.9, 0.9, 0.9)
-		detail_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		row_box.add_child(detail_label)
+		var effect_label := Label.new()
+		effect_label.name = "EffectLabel"
+		effect_label.text = detail_text
+		effect_label.autowrap_mode = 3
+		effect_label.modulate = Color(0.9, 0.9, 0.9, 0.9)
+		effect_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		row_box.add_child(effect_label)
 
 	return row_panel
 
@@ -614,6 +618,9 @@ func _on_stat_chip_pressed(chip_id: String) -> void:
 	if _minimap_overlay != null and _minimap_overlay.visible:
 		_minimap_overlay.visible = false
 		_clear_stat_detail_selection()
+	if _selected_chip_id == chip_id and _stat_detail_sheet != null and _stat_detail_sheet.visible:
+		_clear_stat_detail_selection()
+		return
 	_selected_chip_id = chip_id
 	_refresh_stat_detail_sheet()
 

@@ -17,9 +17,9 @@
 
 ## 다음 작업
 
-- `game/tests/unit/test_indoor_mode.gd`에 새 UI 계약을 먼저 고정
-- `game/scenes/indoor/indoor_mode.tscn`을 위치 스트립 / 가방 좌우 컬럼 / 상태 상세 닫기 버튼 구조로 재배치
-- `game/scripts/indoor/indoor_mode.gd`, `game/scripts/indoor/indoor_director.gd`에서 새 노드와 정수형 수치 표시를 연결
+- 실제 플레이테스트 기준으로 `장착중` 탭/카드 가독성을 다시 확인
+- 필요하면 가방 시트 폭이나 장착 카드 높이를 한 번 더 늘리기
+- 다음 큰 단계는 이 UI 안정화를 바탕으로 내부 시스템/스토리 확장 재개
 
 ## 진행 체크리스트
 
@@ -30,6 +30,10 @@
 - [x] 씬 구조 재배치
 - [x] `IndoorMode` / `IndoorDirector` 동작 반영
 - [x] 회귀 검증 및 문서 마감
+- [x] 상태칩 재탭 닫기
+- [x] 소지품 `탭하여 상세 보기` 문구 제거
+- [x] 장착 탭 최소 크기 확대
+- [x] 장착 행 카드형 문구 정리
 
 ## 다음 세션 메모
 
@@ -41,6 +45,10 @@
 - 구현 시작 전 기준 문서:
   - `docs/specs/indoor-ui-clarity-follow-up-design.md`
   - `docs/superpowers/plans/2026-04-03-indoor-ui-clarity-refinement.md`
+- 최근 후속 수정:
+  - 같은 상태칩을 다시 누르면 상세 패널이 닫힌다.
+  - 소지품 행은 버튼 라벨만 남기고, 반복 문구는 제거했다.
+  - 장착중 행은 `슬롯명 / 장비명 / 효과` 구조로 바뀌었다.
 
 ## 현재 구현 요약
 
@@ -52,13 +60,16 @@
   - 위치 스트립 갱신
   - 가방 우측 상세 패널 렌더링
   - 상태 상세 닫기 버튼 바인딩
+  - 같은 상태칩 재탭 시 상세 닫기
+  - 장착 카드형 렌더링
 - `game/scripts/indoor/indoor_director.gd`
   - 생존 수치 상세값 정수화
+  - 소지품 행 반복 문구 제거
   - 장착 행 문구를 슬롯 중심 카드 문구로 정리
 - `game/tests/unit/test_indoor_mode.gd`
-  - 위치 스트립, 정수 수치, 상태 상세 닫기, 가방 우측 상세 검증
+  - 위치 스트립, 정수 수치, 상태 상세 토글 닫기, 가방 우측 상세, 장착 카드 검증
 - `game/tests/smoke/test_first_playable_loop.gd`
-  - 새 위치 스트립과 가방 경로를 반영한 smoke 회귀
+  - 새 위치 스트립, 가방 경로, 장착 카드 문구를 반영한 smoke 회귀
 
 ## 검증 상태
 

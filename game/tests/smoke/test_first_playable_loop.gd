@@ -473,16 +473,16 @@ func _run_test() -> void:
 		return
 	assert_eq(
 		_row_text(equipped_row, "SummaryLabel"),
-		String(equipped_rows[0].get("summary_text", "")),
-		"Equipped rows should show the summary text explicitly."
+		String(equipped_rows[0].get("slot_label", "")),
+		"Equipped rows should show the slot label explicitly."
 	)
 	assert_eq(
-		_row_text(equipped_row, "StateLabel"),
-		String(equipped_rows[0].get("state_text", "")),
-		"Equipped rows should show the state text explicitly."
+		_row_text(equipped_row, "ItemLabel"),
+		String(equipped_rows[0].get("item_name", "")),
+		"Equipped rows should show the equipped item name explicitly."
 	)
 	assert_eq(
-		_row_text(equipped_row, "DetailLabel"),
+		_row_text(equipped_row, "EffectLabel"),
 		String(equipped_rows[0].get("detail_text", "")),
 		"Equipped rows should show the detail text explicitly."
 	)
@@ -507,8 +507,8 @@ func _run_test() -> void:
 	)
 	assert_eq(
 		_row_text(carried_row, "DetailLabel"),
-		"탭하여 상세 보기",
-		"Carried rows should keep the interaction cue explicit."
+		"",
+		"Carried rows should stay visually concise."
 	)
 
 	var move_food_aisle_back_button := _find_button_by_text(action_buttons, "식품 진열대로 이동한다 (10분)")

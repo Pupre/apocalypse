@@ -259,7 +259,7 @@ func get_inventory_rows() -> Array[Dictionary]:
 			"kind": "carried",
 			"label": "%s x%d" % [_item_name(item_data, item_id), int(counts[item_id])],
 			"action_id": "inspect_inventory_%s" % item_id,
-			"detail_text": "탭하여 상세 보기",
+			"detail_text": "",
 		})
 
 	return rows
@@ -286,8 +286,8 @@ func get_equipped_rows() -> Array[Dictionary]:
 			"slot_id": slot_id,
 			"slot_label": _slot_label(slot_id),
 			"item_name": _item_name(equipped_item, slot_id),
-			"summary_text": "%s · %s" % [_slot_label(slot_id), _item_name(equipped_item, slot_id)],
-			"state_text": "장착중",
+			"summary_text": _slot_label(slot_id),
+			"state_text": "",
 			"detail_text": _item_effect_text(equipped_item),
 		})
 
