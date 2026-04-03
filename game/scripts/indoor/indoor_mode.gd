@@ -21,6 +21,7 @@ const ACTION_ICON_PATHS := {
 var _director: Node = null
 var _title_label: Label = null
 var _location_label: Label = null
+var _location_value_label: Label = null
 var _time_label: Label = null
 var _stat_chips: HBoxContainer = null
 var _inline_minimap: Control = null
@@ -49,6 +50,7 @@ var _stat_detail_title: Label = null
 var _stat_detail_value: Label = null
 var _stat_detail_rule: Label = null
 var _stat_detail_recovery: Label = null
+var _stat_detail_close_button: Button = null
 var _selected_chip_id := ""
 var _director_connected := false
 var _buttons_bound := false
@@ -94,6 +96,8 @@ func _bind_ui_buttons() -> void:
 		_carried_tab_button.pressed.connect(Callable(self, "_on_carried_tab_pressed"))
 	if _equipped_tab_button != null and not _equipped_tab_button.pressed.is_connected(Callable(self, "_on_equipped_tab_pressed")):
 		_equipped_tab_button.pressed.connect(Callable(self, "_on_equipped_tab_pressed"))
+	if _stat_detail_close_button != null and not _stat_detail_close_button.pressed.is_connected(Callable(self, "_on_stat_detail_close_pressed")):
+		_stat_detail_close_button.pressed.connect(Callable(self, "_on_stat_detail_close_pressed"))
 
 	_buttons_bound = true
 
@@ -120,12 +124,13 @@ func _refresh_top_bar() -> void:
 	if _title_label != null and _director.has_method("get_event_title"):
 		_title_label.text = _director.get_event_title()
 
+	var zone_label := ""
+	if _director.has_method("get_current_zone_label"):
+		zone_label = String(_director.get_current_zone_label())
+	if _location_value_label != null:
+		_location_value_label.text = zone_label if not zone_label.is_empty() else "확인 중"
 	if _location_label != null:
-		if _director.has_method("get_current_zone_label"):
-			var zone_label := String(_director.get_current_zone_label())
-			_location_label.text = "위치: %s" % (zone_label if not zone_label.is_empty() else "확인 중")
-		else:
-			_location_label.text = "위치: 확인 중"
+		_location_label.visible = false
 
 	if _time_label != null:
 		if _director.has_method("get_clock_label"):
@@ -575,6 +580,10 @@ func _on_equipped_tab_pressed() -> void:
 	_refresh_bag_sheet()
 
 
+func _on_stat_detail_close_pressed() -> void:
+	_clear_stat_detail_selection()
+
+
 func _close_bag_sheet() -> void:
 	if _bag_sheet != null:
 		_bag_sheet.visible = false
@@ -619,6 +628,7 @@ func _cache_nodes() -> void:
 	_director = get_node_or_null("Director")
 	_title_label = get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/TitleLabel") as Label
 	_location_label = get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/LocationLabel") as Label
+	_location_value_label = get_node_or_null("Panel/Layout/MainColumn/LocationStrip/HBox/LocationValueLabel") as Label
 	_time_label = get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/TimeLabel") as Label
 	_stat_chips = get_node_or_null("Panel/Layout/MainColumn/TopBar/StatusRow/StatChips") as HBoxContainer
 	_inline_minimap = get_node_or_null("Panel/Layout/MainColumn/ContextRow/MiniMapCard/MapNodes") as Control
@@ -636,14 +646,15 @@ func _cache_nodes() -> void:
 	_bag_close_button = get_node_or_null("BagSheet/VBox/Header/CloseButton") as Button
 	_carried_tab_button = get_node_or_null("BagSheet/VBox/Tabs/CarriedTabButton") as Button
 	_equipped_tab_button = get_node_or_null("BagSheet/VBox/Tabs/EquippedTabButton") as Button
-	_inventory_items = get_node_or_null("BagSheet/VBox/InventoryScroll/InventoryItems") as VBoxContainer
-	_item_sheet = get_node_or_null("ItemSheet") as Control
-	_item_sheet_title = get_node_or_null("ItemSheet/VBox/ItemNameLabel") as Label
-	_item_sheet_description = get_node_or_null("ItemSheet/VBox/ItemDescriptionLabel") as Label
-	_item_sheet_effect = get_node_or_null("ItemSheet/VBox/ItemEffectLabel") as Label
-	_item_sheet_actions = get_node_or_null("ItemSheet/VBox/ActionButtons") as HBoxContainer
+	_inventory_items = get_node_or_null("BagSheet/VBox/ContentRow/InventoryColumn/InventoryScroll/InventoryItems") as VBoxContainer
+	_item_sheet = get_node_or_null("BagSheet/VBox/ContentRow/ItemDetailPanel") as Control
+	_item_sheet_title = get_node_or_null("BagSheet/VBox/ContentRow/ItemDetailPanel/VBox/ItemNameLabel") as Label
+	_item_sheet_description = get_node_or_null("BagSheet/VBox/ContentRow/ItemDetailPanel/VBox/ItemDescriptionLabel") as Label
+	_item_sheet_effect = get_node_or_null("BagSheet/VBox/ContentRow/ItemDetailPanel/VBox/ItemEffectLabel") as Label
+	_item_sheet_actions = get_node_or_null("BagSheet/VBox/ContentRow/ItemDetailPanel/VBox/ActionButtons") as HBoxContainer
 	_stat_detail_sheet = get_node_or_null("StatDetailSheet") as Control
-	_stat_detail_title = get_node_or_null("StatDetailSheet/VBox/TitleLabel") as Label
+	_stat_detail_title = get_node_or_null("StatDetailSheet/VBox/Header/TitleLabel") as Label
+	_stat_detail_close_button = get_node_or_null("StatDetailSheet/VBox/Header/CloseButton") as Button
 	_stat_detail_value = get_node_or_null("StatDetailSheet/VBox/ValueLabel") as Label
 	_stat_detail_rule = get_node_or_null("StatDetailSheet/VBox/RuleLabel") as Label
 	_stat_detail_recovery = get_node_or_null("StatDetailSheet/VBox/RecoveryLabel") as Label

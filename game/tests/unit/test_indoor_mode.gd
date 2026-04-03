@@ -96,16 +96,6 @@ func _run_test() -> void:
 		indoor_mode.free()
 		return
 
-	var location_label := _find_descendant_by_name_and_type(top_bar, "LocationLabel", "Label") as Label
-	if not assert_true(location_label != null, "Indoor mode should expose a LocationLabel."):
-		indoor_mode.free()
-		return
-	assert_eq(
-		location_label.text,
-		"위치: 정문 진입부",
-		"Indoor mode should show the mart entry zone label after configure."
-	)
-
 	var time_label := _find_descendant_by_name_and_type(top_bar, "TimeLabel", "Label") as Label
 	if not assert_true(time_label != null, "Indoor mode should expose a TimeLabel for the shared clock."):
 		indoor_mode.free()
@@ -431,11 +421,7 @@ func _run_test() -> void:
 	)
 	carried_tab_button.emit_signal("pressed")
 	await process_frame
-	var item_sheet := _find_descendant_by_name_and_type(indoor_mode, "ItemSheet", "Control") as Control
-	if not assert_true(item_sheet != null, "Indoor mode should expose a bottom item sheet."):
-		indoor_mode.free()
-		return
-	assert_true(not item_sheet.visible, "Indoor mode should keep the item sheet hidden until an inventory item is selected.")
+	assert_true(not item_detail_panel.visible, "Indoor mode should keep the bag detail panel hidden until an inventory item is selected.")
 
 	if not assert_true(director != null and director.has_method("apply_action"), "Indoor mode should expose its Director node."):
 		indoor_mode.free()
@@ -446,9 +432,9 @@ func _run_test() -> void:
 		"Director should allow moving to the checkout zone from the entry zone."
 	)
 	assert_eq(
-		location_label.text,
-		"위치: 계산대",
-		"Indoor mode should refresh the location label after the director changes zone."
+		location_value.text,
+		"계산대",
+		"Indoor mode should refresh the location strip after the director changes zone."
 	)
 	assert_eq(
 		summary_label.text,
@@ -560,11 +546,11 @@ func _run_test() -> void:
 		return
 	energy_bar_button.emit_signal("pressed")
 	await process_frame
-	assert_true(item_sheet.visible, "Selecting an inventory item should open the bottom item sheet.")
-	var item_sheet_title := _find_descendant_by_name_and_type(item_sheet, "ItemNameLabel", "Label") as Label
-	var item_sheet_description := _find_descendant_by_name_and_type(item_sheet, "ItemDescriptionLabel", "Label") as Label
-	var item_sheet_effect := _find_descendant_by_name_and_type(item_sheet, "ItemEffectLabel", "Label") as Label
-	var item_sheet_actions := _find_descendant_by_name_and_type(item_sheet, "ActionButtons", "HBoxContainer") as HBoxContainer
+	assert_true(item_detail_panel.visible, "Selecting an inventory item should open the in-bag detail panel.")
+	var item_sheet_title := _find_descendant_by_name_and_type(item_detail_panel, "ItemNameLabel", "Label") as Label
+	var item_sheet_description := _find_descendant_by_name_and_type(item_detail_panel, "ItemDescriptionLabel", "Label") as Label
+	var item_sheet_effect := _find_descendant_by_name_and_type(item_detail_panel, "ItemEffectLabel", "Label") as Label
+	var item_sheet_actions := _find_descendant_by_name_and_type(item_detail_panel, "ActionButtons", "HBoxContainer") as HBoxContainer
 	if not assert_true(item_sheet_title != null and item_sheet_description != null and item_sheet_effect != null and item_sheet_actions != null, "Indoor item sheet should expose detail labels and action buttons."):
 		indoor_mode.free()
 		return
@@ -601,7 +587,7 @@ func _run_test() -> void:
 		result_label.text.find("먹었다") != -1,
 		"Eating an item should leave readable feedback."
 	)
-	assert_true(not item_sheet.visible, "Resolving an item-sheet action should close the bottom sheet.")
+	assert_true(not item_detail_panel.visible, "Resolving an item-sheet action should close the in-bag detail panel.")
 
 	var move_entrance_button := _find_button_by_text(action_buttons, "정문 진입부로 이동한다 (10분)")
 	if not assert_true(move_entrance_button != null, "Indoor mode should expose a return action back to the entrance."):

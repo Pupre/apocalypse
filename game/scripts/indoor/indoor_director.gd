@@ -111,7 +111,7 @@ func get_survival_chip_rows() -> Array[Dictionary]:
 			"0이 되면 체력이 계속 감소한다",
 			"음식으로 회복",
 			"hunger",
-			"%s / %s · %s" % [str(_run_state.hunger), str(_run_state.MAX_SURVIVAL_VALUE), _run_state.get_hunger_stage()]
+			"%d / %d · %s" % [int(round(_run_state.hunger)), _run_state.MAX_SURVIVAL_VALUE, _run_state.get_hunger_stage()]
 		),
 		_create_survival_chip_row(
 			"thirst",
@@ -121,7 +121,7 @@ func get_survival_chip_rows() -> Array[Dictionary]:
 			"허기보다 더 빠르게 바닥난다",
 			"물과 음료로 회복",
 			"thirst",
-			"%s / %s · %s" % [str(_run_state.thirst), str(_run_state.MAX_SURVIVAL_VALUE), _run_state.get_thirst_stage()]
+			"%d / %d · %s" % [int(round(_run_state.thirst)), _run_state.MAX_SURVIVAL_VALUE, _run_state.get_thirst_stage()]
 		),
 		_create_survival_chip_row(
 			"health",
@@ -131,7 +131,7 @@ func get_survival_chip_rows() -> Array[Dictionary]:
 			"부상과 위기로 줄어든다",
 			"의약품으로 회복",
 			"health",
-			"%s / %s · %s" % [str(_run_state.health), str(_run_state.MAX_SURVIVAL_VALUE), _run_state.get_health_stage()]
+			"%d / %d · %s" % [int(round(_run_state.health)), _run_state.MAX_SURVIVAL_VALUE, _run_state.get_health_stage()]
 		),
 		_create_survival_chip_row(
 			"fatigue",
@@ -141,7 +141,7 @@ func get_survival_chip_rows() -> Array[Dictionary]:
 			"시간과 행동으로 쌓인다",
 			"휴식과 취침으로 회복",
 			"fatigue",
-			"%s · %s" % [str(_run_state.fatigue), _run_state.get_fatigue_stage()]
+			"%d · %s" % [int(round(_run_state.fatigue)), _run_state.get_fatigue_stage()]
 		),
 	]
 
@@ -286,7 +286,7 @@ func get_equipped_rows() -> Array[Dictionary]:
 			"slot_id": slot_id,
 			"slot_label": _slot_label(slot_id),
 			"item_name": _item_name(equipped_item, slot_id),
-			"summary_text": "%s에 %s" % [_slot_label(slot_id), _item_name(equipped_item, slot_id)],
+			"summary_text": "%s · %s" % [_slot_label(slot_id), _item_name(equipped_item, slot_id)],
 			"state_text": "장착중",
 			"detail_text": _item_effect_text(equipped_item),
 		})
