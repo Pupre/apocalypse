@@ -28,7 +28,14 @@ func configure(run_state, building_id: String) -> void:
 		return
 
 	_event_data = _resolver.load_event(String(_building_data.get("indoor_event_path", "")))
-	_event_state = _create_initial_event_state(_resolver.get_entry_zone_id(_event_data))
+	var entry_zone_id := _resolver.get_entry_zone_id(_event_data)
+	if _run_state != null and _run_state.has_method("get_or_create_site_memory"):
+		_run_state.enter_indoor_site(building_id, entry_zone_id)
+		var site_memory: Dictionary = _run_state.get_or_create_site_memory(building_id, entry_zone_id)
+		_event_state = site_memory
+		_event_state["current_zone_id"] = entry_zone_id
+	else:
+		_event_state = _create_initial_event_state(entry_zone_id)
 	state_changed.emit()
 
 
@@ -77,6 +84,22 @@ func get_current_zone_summary() -> String:
 		return zone_summary
 
 	return get_event_summary()
+
+
+func get_current_zone_status_rows() -> Array[String]:
+	var rows: Array[String] = []
+	var zone_id := get_current_zone_id()
+	if zone_id.is_empty():
+		return rows
+
+	var memory := _current_site_memory()
+	var zone_loot := _zone_loot_for_zone(memory, zone_id)
+	rows.append("남아 있는 물건 %d개" % zone_loot.size())
+	var deployments := _deployments_for_zone(memory, zone_id)
+	rows.append("설치물 %d개" % deployments.size())
+	if _zone_search_completed(zone_id):
+		rows.append("수색 완료")
+	return rows
 
 
 func get_actions() -> Array[Dictionary]:
@@ -314,6 +337,9 @@ func get_selected_inventory_sheet() -> Dictionary:
 		"visible": true,
 		"title": _item_name(item_data, _selected_inventory_item_id),
 		"description": String(item_data.get("description", "")),
+		"usage_hint": String(item_data.get("usage_hint", "")),
+		"cold_hint": String(item_data.get("cold_hint", "")),
+		"item_tags": item_data.get("item_tags", []),
 		"effect_text": _item_effect_text(item_data),
 		"actions": _inventory_sheet_actions(item_data, _selected_inventory_item_id),
 	}
@@ -425,22 +451,29 @@ func apply_action(action_id: String) -> bool:
 		var dropped_item: Dictionary = _run_state.inventory.take_first_item_by_id(drop_item_id)
 		if dropped_item.is_empty():
 			return false
+		if _run_state.has_method("drop_item_in_current_zone_data"):
+			_run_state.drop_item_in_current_zone_data(dropped_item)
 		_selected_inventory_item_id = ""
-		_event_state["last_feedback_message"] = "%s 버렸다." % _item_name(dropped_item, drop_item_id)
+		_event_state["last_feedback_message"] = "%s 내려놓았다." % _item_name(dropped_item, drop_item_id)
 		state_changed.emit()
 		return true
 
 	if action_id.begins_with("consume_inventory_"):
 		var consume_item_id := action_id.trim_prefix("consume_inventory_")
 		var consume_item_data: Dictionary = _item_definition(consume_item_id)
-		if consume_item_data.is_empty() or _run_state == null or not _run_state.has_method("consume_inventory_item"):
+		if consume_item_data.is_empty() or _run_state == null:
 			return false
 		var use_minutes := int(consume_item_data.get("use_minutes", 0))
 		if use_minutes > 0 and _run_state.has_method("get_indoor_action_minutes"):
 			use_minutes = int(_run_state.get_indoor_action_minutes(use_minutes))
 		if use_minutes > 0 and _run_state.has_method("advance_minutes"):
 			_run_state.advance_minutes(use_minutes)
-		if not _run_state.consume_inventory_item(consume_item_id, consume_item_data):
+		var consumed := false
+		if _run_state.has_method("use_inventory_item"):
+			consumed = bool(_run_state.use_inventory_item(consume_item_id))
+		elif _run_state.has_method("consume_inventory_item"):
+			consumed = bool(_run_state.consume_inventory_item(consume_item_id, consume_item_data))
+		if not consumed:
 			return false
 		_selected_inventory_item_id = ""
 		_event_state["last_feedback_message"] = "%s %s." % [
@@ -562,6 +595,66 @@ func _inventory_has_item(item_id: String) -> bool:
 		if String((item_variant as Dictionary).get("id", "")) == item_id:
 			return true
 	return false
+
+
+func _current_site_memory() -> Dictionary:
+	if _building_data.is_empty():
+		return _event_state
+	if _run_state != null and _run_state.has_method("get_or_create_site_memory"):
+		return _run_state.get_or_create_site_memory(String(_building_data.get("id", "")), _resolver.get_entry_zone_id(_event_data))
+	return _event_state
+
+
+func _zone_loot_for_zone(memory: Dictionary, zone_id: String) -> Array[Dictionary]:
+	if zone_id.is_empty():
+		return []
+	var zone_loot_variant: Variant = memory.get("zone_loot_entries", {})
+	if typeof(zone_loot_variant) != TYPE_DICTIONARY:
+		return []
+	return _dictionary_loot_array((zone_loot_variant as Dictionary).get(zone_id, []))
+
+
+func _deployments_for_zone(memory: Dictionary, zone_id: String) -> Array[Dictionary]:
+	var deployments_variant: Variant = memory.get("installed_deployments", [])
+	if typeof(deployments_variant) != TYPE_ARRAY:
+		return []
+	var deployments: Array[Dictionary] = []
+	for deployment_variant in deployments_variant:
+		if typeof(deployment_variant) != TYPE_DICTIONARY:
+			continue
+		var deployment := deployment_variant as Dictionary
+		if String(deployment.get("zone_id", "")) != zone_id:
+			continue
+		deployments.append(deployment.duplicate(true))
+	return deployments
+
+
+func _zone_search_completed(zone_id: String) -> bool:
+	if zone_id.is_empty():
+		return false
+	var spent_action_ids := _string_ids(_event_state.get("spent_action_ids", []))
+	for event_variant in _event_data.get("events", []):
+		if typeof(event_variant) != TYPE_DICTIONARY:
+			continue
+		var event := event_variant as Dictionary
+		if String(event.get("zone_id", "")) != zone_id:
+			continue
+		for option_variant in event.get("options", []):
+			if typeof(option_variant) != TYPE_DICTIONARY:
+				continue
+			var option := option_variant as Dictionary
+			var action_id := String(option.get("id", ""))
+			if action_id.begins_with("search_") and spent_action_ids.has(action_id):
+				return true
+	return false
+
+
+func _dictionary_loot_array(values) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for value in values:
+		if typeof(value) == TYPE_DICTIONARY:
+			result.append((value as Dictionary).duplicate(true))
+	return result
 
 
 func _item_definition(item_id: String) -> Dictionary:

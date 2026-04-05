@@ -165,8 +165,8 @@ func _run_test() -> void:
 	if not assert_true(indoor_mode != null, "Entering a building should swap to the indoor mode."):
 		bootstrap.free()
 		return
-	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ResultLabel") as Label
-	var action_buttons := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ActionButtons") as VBoxContainer
+	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/ReadingCard/VBox/ResultLabel") as Label
+	var action_buttons := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ActionScroll/ActionButtons") as VBoxContainer
 	if not assert_true(result_label != null, "Indoor result label should be present."):
 		bootstrap.free()
 		return
@@ -185,14 +185,14 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
-	var location_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/Header/LocationLabel") as Label
+	var location_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/LocationStrip/HBox/LocationValueLabel") as Label
 	if not assert_true(location_label != null, "Indoor mode should expose a location label in the creator flow."):
 		bootstrap.free()
 		return
 
 	move_checkout_button.emit_signal("pressed")
 	if not await _wait_until(
-		Callable(self, "_label_text_is").bind(location_label, "위치: 계산대"),
+		Callable(self, "_label_text_is").bind(location_label, "계산대"),
 		"Timed out waiting for the creator flow to move into checkout."
 	):
 		bootstrap.free()

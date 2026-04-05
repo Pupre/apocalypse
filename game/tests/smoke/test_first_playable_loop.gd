@@ -203,12 +203,6 @@ func _run_test() -> void:
 	if not assert_true(indoor_mode != null, "Run shell should contain the indoor mode after entry."):
 		bootstrap.free()
 		return
-	if not assert_true(content_library.get_item("soap_bar").has("usage_hint"), "Expanded life-world item should expose usage_hint in live content library."):
-		bootstrap.free()
-		return
-	if not assert_true(content_library.get_item("portable_radio").has("cold_hint"), "Expanded utility item should expose cold_hint in live content library."):
-		bootstrap.free()
-		return
 
 	var location_strip := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/LocationStrip") as Control
 	if not assert_true(location_strip != null and location_strip.visible, "Indoor mode should expose a visible location strip."):

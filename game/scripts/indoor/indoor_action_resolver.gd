@@ -149,8 +149,8 @@ func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, ac
 			if sleep_minutes > 0 and run_state.has_method("advance_sleep_time"):
 				run_state.advance_sleep_time(sleep_minutes)
 
-		if action.has("discover_loot"):
-			var discovered_loot := _dictionary_loot_array(action.get("discover_loot", []))
+		if action.has("discover_loot") or action.has("loot_table"):
+			var discovered_loot := _resolve_discovered_loot(event_data, event_state, action, run_state)
 			_append_zone_found_loot(event_state, String(event_state.get("current_zone_id", "")), discovered_loot)
 			var discovered_labels := _loot_labels(discovered_loot)
 			if not discovered_labels.is_empty():
@@ -324,6 +324,8 @@ func _apply_move_action(run_state, event_data: Dictionary, event_state: Dictiona
 	if not visited_zone_ids.has(target_zone_id):
 		visited_zone_ids.append(target_zone_id)
 	event_state["visited_zone_ids"] = visited_zone_ids
+	if run_state != null and run_state.has_method("update_current_indoor_zone"):
+		run_state.update_current_indoor_zone(target_zone_id)
 	event_state["last_feedback_message"] = "%s로 이동했다." % String(target_zone.get("label", target_zone_id))
 	return true
 
@@ -406,6 +408,8 @@ func _normalize_zone_option(event: Dictionary, option: Dictionary) -> Dictionary
 			action["loot"] = outcomes.get("loot", [])
 		if outcomes.has("discover_loot"):
 			action["discover_loot"] = outcomes.get("discover_loot", [])
+		if outcomes.has("loot_table"):
+			action["loot_table"] = outcomes.get("loot_table", {})
 		if outcomes.has("reveal_clue_ids"):
 			action["reveal_clue_ids"] = _string_id_array(outcomes.get("reveal_clue_ids", []))
 		if outcomes.has("set_flags"):
@@ -508,6 +512,110 @@ func _apply_action_outcomes(event_state: Dictionary, action: Dictionary) -> void
 		event_state["unlocked_zone_ids"] = unlocked_zone_ids
 
 
+func _resolve_discovered_loot(event_data: Dictionary, event_state: Dictionary, action: Dictionary, run_state = null) -> Array[Dictionary]:
+	var discovered_loot := _normalized_loot_array(action.get("discover_loot", []))
+	var loot_table_variant: Variant = action.get("loot_table", {})
+	if typeof(loot_table_variant) != TYPE_DICTIONARY:
+		return discovered_loot
+
+	discovered_loot.append_array(_roll_loot_table(event_data, event_state, action, loot_table_variant as Dictionary, run_state))
+	return discovered_loot
+
+
+func _roll_loot_table(event_data: Dictionary, event_state: Dictionary, action: Dictionary, loot_table: Dictionary, run_state = null) -> Array[Dictionary]:
+	var entries_variant: Variant = loot_table.get("entries", [])
+	if typeof(entries_variant) != TYPE_ARRAY:
+		return []
+
+	var available_entries: Array[Dictionary] = []
+	for entry_variant in entries_variant:
+		if typeof(entry_variant) != TYPE_DICTIONARY:
+			continue
+		var entry := entry_variant as Dictionary
+		if String(entry.get("id", "")).is_empty():
+			continue
+		available_entries.append(entry.duplicate(true))
+
+	if available_entries.is_empty():
+		return []
+
+	var roll_count: int = max(0, int(loot_table.get("rolls", 0)))
+	if roll_count <= 0:
+		return []
+
+	var rng := RandomNumberGenerator.new()
+	rng.seed = _loot_roll_seed(event_data, event_state, action, run_state)
+	var allow_duplicates := bool(loot_table.get("allow_duplicates", false))
+	var rolled_loot: Array[Dictionary] = []
+	for _roll_index in range(roll_count):
+		if available_entries.is_empty():
+			break
+		var picked_index := _pick_weighted_entry_index(rng, available_entries)
+		if picked_index < 0 or picked_index >= available_entries.size():
+			break
+
+		var picked_entry: Dictionary = available_entries[picked_index]
+		var picked_count: int = max(1, int(picked_entry.get("count", 1)))
+		for _count_index in range(picked_count):
+			var loot_entry := _loot_entry_from_table(picked_entry)
+			if not loot_entry.is_empty():
+				rolled_loot.append(loot_entry)
+
+		if not allow_duplicates:
+			available_entries.remove_at(picked_index)
+
+	return rolled_loot
+
+
+func _loot_roll_seed(event_data: Dictionary, event_state: Dictionary, action: Dictionary, run_state = null) -> int:
+	var site_id := String(event_data.get("id", "indoor_site"))
+	var zone_id := String(action.get("zone_id", event_state.get("current_zone_id", "")))
+	var action_id := String(action.get("id", "indoor_action"))
+	if run_state != null and run_state.has_method("get_loot_roll_seed"):
+		return int(run_state.get_loot_roll_seed(site_id, zone_id, action_id))
+	return abs(hash("%s|%s|%s" % [site_id, zone_id, action_id]))
+
+
+func _pick_weighted_entry_index(rng: RandomNumberGenerator, entries: Array[Dictionary]) -> int:
+	var total_weight := 0.0
+	for entry in entries:
+		total_weight += max(0.0, float(entry.get("weight", 1.0)))
+	if total_weight <= 0.0:
+		return -1
+
+	var roll := rng.randf() * total_weight
+	var running := 0.0
+	for index in range(entries.size()):
+		running += max(0.0, float(entries[index].get("weight", 1.0)))
+		if roll <= running:
+			return index
+	return entries.size() - 1
+
+
+func _loot_entry_from_table(entry: Dictionary) -> Dictionary:
+	var item_id := String(entry.get("id", ""))
+	if item_id.is_empty():
+		return {}
+
+	var base_item: Dictionary = {}
+	if ContentLibrary != null and ContentLibrary.has_method("get_item"):
+		base_item = ContentLibrary.get_item(item_id)
+
+	var loot := base_item.duplicate(true)
+	for key_variant in entry.keys():
+		var key := String(key_variant)
+		if key == "weight" or key == "count":
+			continue
+		loot[key] = entry.get(key_variant)
+
+	loot["id"] = item_id
+	if String(loot.get("name", "")).is_empty():
+		loot["name"] = item_id
+	if int(loot.get("bulk", 0)) <= 0:
+		loot["bulk"] = 1
+	return loot
+
+
 func _zone_flags(event_state: Dictionary) -> Dictionary:
 	var zone_flags: Dictionary = event_state.get("zone_flags", {})
 	if typeof(zone_flags) == TYPE_DICTIONARY:
@@ -575,7 +683,7 @@ func _apply_take_loot_action(run_state, event_state: Dictionary, action: Diction
 
 
 func _get_zone_found_loot(event_state: Dictionary, zone_id: String) -> Array[Dictionary]:
-	var all_found_loot: Dictionary = event_state.get("zone_found_loot", {})
+	var all_found_loot: Dictionary = event_state.get("zone_loot_entries", {})
 	if typeof(all_found_loot) != TYPE_DICTIONARY:
 		return []
 	return _dictionary_loot_array(all_found_loot.get(zone_id, []))
@@ -585,7 +693,7 @@ func _append_zone_found_loot(event_state: Dictionary, zone_id: String, discovere
 	if zone_id.is_empty():
 		return
 
-	var all_found_loot: Dictionary = event_state.get("zone_found_loot", {})
+	var all_found_loot: Dictionary = event_state.get("zone_loot_entries", {})
 	if typeof(all_found_loot) != TYPE_DICTIONARY:
 		all_found_loot = {}
 
@@ -596,15 +704,15 @@ func _append_zone_found_loot(event_state: Dictionary, zone_id: String, discovere
 			loot_entry["loot_uid"] = _consume_loot_uid(event_state)
 		existing_loot.append(loot_entry)
 	all_found_loot[zone_id] = existing_loot
-	event_state["zone_found_loot"] = all_found_loot
+	event_state["zone_loot_entries"] = all_found_loot
 
 
 func _set_zone_found_loot(event_state: Dictionary, zone_id: String, found_loot: Array[Dictionary]) -> void:
-	var all_found_loot: Dictionary = event_state.get("zone_found_loot", {})
+	var all_found_loot: Dictionary = event_state.get("zone_loot_entries", {})
 	if typeof(all_found_loot) != TYPE_DICTIONARY:
 		all_found_loot = {}
 	all_found_loot[zone_id] = found_loot
-	event_state["zone_found_loot"] = all_found_loot
+	event_state["zone_loot_entries"] = all_found_loot
 
 
 func _consume_loot_uid(event_state: Dictionary) -> int:
@@ -625,6 +733,20 @@ func _dictionary_loot_array(values) -> Array[Dictionary]:
 	for value in values:
 		if typeof(value) == TYPE_DICTIONARY:
 			result.append((value as Dictionary).duplicate(true))
+	return result
+
+
+func _normalized_loot_array(values) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for value in values:
+		if typeof(value) != TYPE_DICTIONARY:
+			continue
+		var loot := value as Dictionary
+		var item_id := String(loot.get("id", ""))
+		if item_id.is_empty():
+			result.append(loot.duplicate(true))
+			continue
+		result.append(_loot_entry_from_table(loot))
 	return result
 
 

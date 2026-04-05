@@ -135,6 +135,9 @@ text = "구조도"
 [node name="BagButton" type="Button" parent="Panel/Layout/MainColumn/TopBar/StatusRow/Tools"]
 text = "가방"
 
+[node name="CraftButton" type="Button" parent="Panel/Layout/MainColumn/TopBar/StatusRow/Tools"]
+text = "조합"
+
 [node name="LocationStrip" type="PanelContainer" parent="Panel/Layout/MainColumn"]
 
 [node name="HBox" type="HBoxContainer" parent="Panel/Layout/MainColumn/LocationStrip"]
@@ -168,7 +171,14 @@ text = ""
 [node name="ActionHeadingLabel" type="Label" parent="Panel/Layout/MainColumn"]
 text = "행동"
 
-[node name="ActionButtons" type="VBoxContainer" parent="Panel/Layout/MainColumn"]
+[node name="ActionScroll" type="ScrollContainer" parent="Panel/Layout/MainColumn"]
+custom_minimum_size = Vector2(0, 220)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="ActionButtons" type="VBoxContainer" parent="Panel/Layout/MainColumn/ActionScroll"]
+size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 

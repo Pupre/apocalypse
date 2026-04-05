@@ -87,3 +87,6 @@ text = "노출: 100"
 [node name="HintLabel" type="Label" parent="CanvasLayer/StatusPanel/VBox"]
 text = "WASD로 이동"
 autowrap_mode = 3
+
+[node name="CraftButton" type="Button" parent="CanvasLayer/StatusPanel/VBox"]
+text = "조합"

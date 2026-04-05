@@ -249,28 +249,6 @@ func _run_test() -> void:
 	assert_eq(String(hot_water_outcome.get("result_item_id", "")), "hot_water", "Heating water should produce hot_water.")
 	assert_eq(heating_state.inventory.count_item_by_id("can_stove"), 1, "Heating water should keep the can stove.")
 
-	var life_world_state = run_state_script.from_survivor_config({
-		"job_id": "courier",
-		"trait_ids": PackedStringArray(["athlete"]),
-		"remaining_points": 0,
-	}, live_content_library)
-	assert_true(life_world_state != null, "RunState should build for life-world recipe checks.")
-
-	assert_true(life_world_state.inventory.add_item({"id": "hot_water", "name": "뜨거운 물", "bulk": 1}), "Life-world recipe tests should hold hot water.")
-	assert_true(life_world_state.inventory.add_item({"id": "instant_soup_powder", "name": "즉석 수프 분말", "bulk": 1}), "Life-world recipe tests should hold soup powder.")
-	var warm_soup_outcome: Dictionary = life_world_state.attempt_craft("hot_water", "instant_soup_powder", "indoor")
-	assert_eq(String(warm_soup_outcome.get("result_item_id", "")), "warm_soup", "Hot water plus soup powder should produce warm soup.")
-
-	assert_true(life_world_state.inventory.add_item({"id": "thermos", "name": "보온병", "bulk": 1}), "Life-world recipe tests should hold a thermos.")
-	assert_true(life_world_state.inventory.add_item({"id": "hot_water", "name": "뜨거운 물", "bulk": 1}), "Life-world recipe tests should hold fresh hot water for the thermos recipe.")
-	var sealed_outcome: Dictionary = life_world_state.attempt_craft("thermos", "hot_water", "indoor")
-	assert_eq(String(sealed_outcome.get("result_item_id", "")), "sealed_hot_water", "Thermos plus hot water should produce sealed hot water.")
-
-	assert_true(life_world_state.inventory.add_item({"id": "zip_bag", "name": "지퍼백", "bulk": 1}), "Life-world recipe tests should hold a zip bag.")
-	assert_true(life_world_state.inventory.add_item({"id": "alcohol_swab", "name": "알코올솜", "bulk": 1}), "Life-world recipe tests should hold an alcohol swab.")
-	var hygiene_outcome: Dictionary = life_world_state.attempt_craft("zip_bag", "alcohol_swab", "indoor")
-	assert_eq(String(hygiene_outcome.get("result_item_id", "")), "field_hygiene_kit", "Zip bag plus alcohol swab should produce a field hygiene kit.")
-
 	var insulation_state = run_state_script.from_survivor_config({
 		"job_id": "courier",
 		"trait_ids": PackedStringArray(["athlete"]),

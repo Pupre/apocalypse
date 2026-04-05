@@ -1,0 +1,73 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/crafting_sheet.gd" id="1"]
+
+[node name="CraftingSheet" type="CanvasLayer"]
+visible = false
+layer = 15
+script = ExtResource("1")
+
+[node name="Scrim" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.62)
+
+[node name="Panel" type="PanelContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -220.0
+offset_right = 280.0
+offset_bottom = 220.0
+
+[node name="VBox" type="VBoxContainer" parent="Panel"]
+theme_override_constants/separation = 10
+
+[node name="Header" type="HBoxContainer" parent="Panel/VBox"]
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="Panel/VBox/Header"]
+size_flags_horizontal = 3
+text = "조합"
+
+[node name="CloseButton" type="Button" parent="Panel/VBox/Header"]
+text = "닫기"
+
+[node name="SlotsRow" type="HBoxContainer" parent="Panel/VBox"]
+theme_override_constants/separation = 8
+
+[node name="PrimarySlotButton" type="Button" parent="Panel/VBox/SlotsRow"]
+size_flags_horizontal = 3
+text = "재료 A"
+
+[node name="SecondarySlotButton" type="Button" parent="Panel/VBox/SlotsRow"]
+size_flags_horizontal = 3
+text = "재료 B"
+
+[node name="CombineButton" type="Button" parent="Panel/VBox/SlotsRow"]
+text = "조합"
+disabled = true
+
+[node name="ResultCard" type="PanelContainer" parent="Panel/VBox"]
+custom_minimum_size = Vector2(0, 92)
+
+[node name="ResultLabel" type="Label" parent="Panel/VBox/ResultCard"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 550.0
+offset_bottom = 82.0
+autowrap_mode = 3
+text = ""
+
+[node name="InventoryScroll" type="ScrollContainer" parent="Panel/VBox"]
+custom_minimum_size = Vector2(0, 240)
+size_flags_vertical = 3
+
+[node name="Items" type="VBoxContainer" parent="Panel/VBox/InventoryScroll"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 6

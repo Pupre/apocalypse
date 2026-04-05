@@ -1,4 +1,4 @@
-extends Control
+extends CanvasLayer
 
 const OUTDOOR_TITLE := "외부 생존 정보"
 const INDOOR_TITLE := "실내 생존 정보"

@@ -278,10 +278,13 @@ func _run_test() -> void:
 	if not assert_true(summary_label != null, "Indoor mode should expose a current-zone SummaryLabel."):
 		indoor_mode.free()
 		return
-	assert_eq(
-		summary_label.text,
-		"깨진 자동문과 쓰러진 장바구니가 보인다.",
+	assert_true(
+		summary_label.text.find("깨진 자동문과 쓰러진 장바구니가 보인다.") != -1,
 		"Indoor mode should show the current zone summary instead of the building summary."
+	)
+	assert_true(
+		summary_label.text.find("남아 있는 물건 0개") != -1,
+		"Indoor mode should append room status rows to the reading summary."
 	)
 
 	var sleep_preview_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/SleepPreviewLabel") as Label
@@ -304,7 +307,11 @@ func _run_test() -> void:
 		indoor_mode.free()
 		return
 
-	var action_buttons := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ActionButtons") as VBoxContainer
+	var action_scroll := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ActionScroll") as ScrollContainer
+	if not assert_true(action_scroll != null, "Indoor mode should expose a scrollable action list container."):
+		indoor_mode.free()
+		return
+	var action_buttons := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ActionScroll/ActionButtons") as VBoxContainer
 	if not assert_true(action_buttons != null, "Indoor mode should expose action buttons."):
 		indoor_mode.free()
 		return
@@ -465,9 +472,8 @@ func _run_test() -> void:
 		"계산대",
 		"Indoor mode should refresh the location strip after the director changes zone."
 	)
-	assert_eq(
-		summary_label.text,
-		"계산대 뒤쪽에는 직원 출입문이 있다.",
+	assert_true(
+		summary_label.text.find("계산대 뒤쪽에는 직원 출입문이 있다.") != -1,
 		"Indoor mode should update the summary for the current zone after moving."
 	)
 	assert_eq(
@@ -591,6 +597,12 @@ func _run_test() -> void:
 	assert_true(item_sheet_description.text.length() > 0, "Indoor item sheet should show an item description.")
 	assert_true(item_sheet_effect.text.find("허기 +10") != -1, "Indoor item sheet should show exact hunger recovery values.")
 	assert_true(item_sheet_effect.text.find("10분") != -1, "Indoor item sheet should show exact item use time where relevant.")
+	var selected_item_sheet: Dictionary = director.get_selected_inventory_sheet()
+	assert_true(String(selected_item_sheet.get("usage_hint", "")).length() > 0, "Selected item sheets should expose usage_hint.")
+	assert_true(String(selected_item_sheet.get("cold_hint", "")).length() > 0, "Selected item sheets should expose cold_hint.")
+	assert_true(Array(selected_item_sheet.get("item_tags", [])).size() > 0, "Selected item sheets should expose item_tags.")
+	assert_true(item_sheet_description.text.find(String(selected_item_sheet.get("usage_hint", ""))) != -1, "Indoor item sheet should render usage hints in the detail copy.")
+	assert_true(item_sheet_effect.text.find("#") != -1, "Indoor item sheet should surface item tags in the effect summary.")
 	assert_true(_find_button_in_container(item_sheet_actions, "먹는다") != null, "Food items should expose an eat action in the item sheet.")
 	assert_true(_find_button_in_container(item_sheet_actions, "버린다") != null, "Item sheet should expose a drop action.")
 
@@ -708,7 +720,7 @@ func _run_test() -> void:
 		"Dropping the remaining item should free all carry space."
 	)
 	assert_true(
-		result_label.text.find("버렸다") != -1,
+		result_label.text.find("버렸다") != -1 or result_label.text.find("내려놓았다") != -1,
 		"Dropping an item from the sheet should leave readable feedback."
 	)
 

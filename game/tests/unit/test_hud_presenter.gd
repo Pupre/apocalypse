@@ -38,6 +38,12 @@ func _run_test() -> void:
 
 	root.add_child(hud)
 
+	var hud_layer := hud as CanvasLayer
+	if not assert_true(hud_layer != null, "HUD should mount in a CanvasLayer so outdoor survival info stays in the screen overlay instead of the world view."):
+		hud.free()
+		return
+	assert_eq(hud_layer.layer, 10, "HUD CanvasLayer should reserve a stable overlay layer above the world scene.")
+
 	if not assert_true(hud.has_method("set_mode_presentation"), "HUD should expose set_mode_presentation()."):
 		hud.free()
 		return
@@ -70,14 +76,7 @@ func _run_test() -> void:
 	assert_eq(title_label.text, "외부 생존 정보", "Outdoor mode should use the outdoor HUD title.")
 
 	hud.set_mode_presentation("indoor")
-	assert_eq(panel.anchor_left, 1.0, "Indoor mode should keep the HUD right-anchored.")
-	assert_eq(panel.anchor_right, 1.0, "Indoor mode should keep the HUD right-anchored.")
-	assert_eq(panel.offset_left, -272.0, "Indoor mode should keep the HUD inset from the right edge.")
-	assert_eq(panel.offset_top, 20.0, "Indoor mode should pin the HUD top offset to 20.")
-	assert_eq(panel.offset_right, -24.0, "Indoor mode should keep the HUD right margin at 24.")
-	assert_eq(panel.offset_bottom, 204.0, "Indoor mode should leave room for the added survival rows.")
-	assert_true(is_equal_approx(panel.modulate.a, 0.9), "Indoor mode should dim the HUD to alpha 0.9.")
-	assert_eq(title_label.text, "실내 생존 정보", "Indoor mode should use the indoor HUD title.")
+	assert_true(not hud.visible, "Indoor mode should hide the shared HUD so the reading-first indoor UI owns the screen.")
 
 	var run_state_script := load("res://scripts/run/run_state.gd") as Script
 	if not assert_true(run_state_script != null, "HUD test should load RunState."):
@@ -95,6 +94,7 @@ func _run_test() -> void:
 	run_state.thirst = 38.0
 	run_state.health = 54.0
 	run_state.fatigue = 28.0
+	hud.set_mode_presentation("outdoor")
 	hud.set_run_state(run_state)
 
 	assert_true(clock_label.text.find("1일차 08:00") != -1, "HUD should keep showing the shared clock.")

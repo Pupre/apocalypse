@@ -3,6 +3,7 @@ class_name OutdoorController
 
 signal state_changed
 signal building_entered(building_id: String)
+signal craft_requested
 
 const EXPOSURE_MODEL_SCRIPT := preload("res://scripts/outdoor/exposure_model.gd")
 const DEFAULT_BUILDING_ID := "mart_01"
@@ -39,10 +40,12 @@ var _obstacle_host: Node2D = null
 var _building_markers: Dictionary = {}
 var _exposure_label: Label = null
 var _hint_label: Label = null
+var _craft_button: Button = null
 
 
 func _ready() -> void:
 	_cache_nodes()
+	_bind_ui_buttons()
 	_refresh_buildings()
 	_refresh_obstacles()
 	_sync_view()
@@ -53,6 +56,7 @@ func bind_run_state(value, building_id: String = DEFAULT_BUILDING_ID, player_pos
 	_seconds_buffer = 0.0
 	_player_position = player_position if typeof(player_position) == TYPE_VECTOR2 else DEFAULT_PLAYER_POSITION
 	_cache_nodes()
+	_bind_ui_buttons()
 	_refresh_buildings()
 	_refresh_obstacles()
 	_sync_view()
@@ -99,6 +103,10 @@ func try_enter_building(building_id: String) -> bool:
 
 func get_player_position() -> Vector2:
 	return _player_position
+
+
+func refresh_view() -> void:
+	_sync_view()
 
 
 func _process(delta: float) -> void:
@@ -227,6 +235,16 @@ func _cache_nodes() -> void:
 	_obstacle_host = get_node_or_null("Obstacles") as Node2D
 	_exposure_label = get_node_or_null("CanvasLayer/StatusPanel/VBox/ExposureLabel") as Label
 	_hint_label = get_node_or_null("CanvasLayer/StatusPanel/VBox/HintLabel") as Label
+	_craft_button = get_node_or_null("CanvasLayer/StatusPanel/VBox/CraftButton") as Button
+
+
+func _bind_ui_buttons() -> void:
+	if _craft_button != null and not _craft_button.pressed.is_connected(Callable(self, "_on_craft_button_pressed")):
+		_craft_button.pressed.connect(Callable(self, "_on_craft_button_pressed"))
+
+
+func _on_craft_button_pressed() -> void:
+	craft_requested.emit()
 
 
 func _get_nearby_building_id() -> String:

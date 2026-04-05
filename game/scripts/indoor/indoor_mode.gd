@@ -2,6 +2,7 @@ extends Control
 
 signal state_changed
 signal exit_requested
+signal craft_requested
 
 const ACTION_SECTION_ORDER := ["move", "interaction", "loot", "locked"]
 const ACTION_SECTION_TITLES := {
@@ -30,6 +31,7 @@ var _result_label: Label = null
 var _action_buttons: VBoxContainer = null
 var _map_button: Button = null
 var _bag_button: Button = null
+var _craft_button: Button = null
 var _minimap_overlay: Control = null
 var _minimap_close_button: Button = null
 var _minimap: Control = null
@@ -89,6 +91,8 @@ func _bind_ui_buttons() -> void:
 		_map_button.pressed.connect(Callable(self, "_on_map_button_pressed"))
 	if _bag_button != null and not _bag_button.pressed.is_connected(Callable(self, "_on_bag_button_pressed")):
 		_bag_button.pressed.connect(Callable(self, "_on_bag_button_pressed"))
+	if _craft_button != null and not _craft_button.pressed.is_connected(Callable(self, "_on_craft_button_pressed")):
+		_craft_button.pressed.connect(Callable(self, "_on_craft_button_pressed"))
 	if _minimap_close_button != null and not _minimap_close_button.pressed.is_connected(Callable(self, "_on_minimap_close_pressed")):
 		_minimap_close_button.pressed.connect(Callable(self, "_on_minimap_close_pressed"))
 	if _bag_close_button != null and not _bag_close_button.pressed.is_connected(Callable(self, "_on_bag_close_pressed")):
@@ -119,6 +123,10 @@ func _refresh_view() -> void:
 	_refresh_bag_sheet()
 	_refresh_item_sheet()
 	_refresh_stat_detail_sheet()
+
+
+func refresh_view() -> void:
+	_refresh_view()
 
 
 func _refresh_top_bar() -> void:
@@ -174,7 +182,15 @@ func _refresh_stat_chips() -> void:
 func _refresh_reading_area() -> void:
 	if _summary_label != null and _director.has_method("get_current_zone_summary"):
 		var summary := String(_director.get_current_zone_summary())
-		_summary_label.text = summary if not summary.is_empty() else "방 안을 살펴 단서를 찾아본다."
+		var summary_lines: Array[String] = []
+		summary_lines.append(summary if not summary.is_empty() else "방 안을 살펴 단서를 찾아본다.")
+		if _director.has_method("get_current_zone_status_rows"):
+			var status_rows: Array[String] = _director.get_current_zone_status_rows()
+			if not status_rows.is_empty():
+				summary_lines.append("")
+				for row in status_rows:
+					summary_lines.append(row)
+		_summary_label.text = "\n".join(summary_lines)
 
 	if _result_label != null and _director.has_method("get_feedback_message"):
 		_result_label.text = String(_director.get_feedback_message())
@@ -525,9 +541,9 @@ func _refresh_item_sheet() -> void:
 	if _item_sheet_title != null:
 		_item_sheet_title.text = String(sheet.get("title", "아이템"))
 	if _item_sheet_description != null:
-		_item_sheet_description.text = String(sheet.get("description", ""))
+		_item_sheet_description.text = _formatted_item_sheet_description(sheet)
 	if _item_sheet_effect != null:
-		_item_sheet_effect.text = String(sheet.get("effect_text", ""))
+		_item_sheet_effect.text = _formatted_item_sheet_effect(sheet)
 
 	if _item_sheet_actions != null:
 		_clear_children(_item_sheet_actions)
@@ -544,6 +560,38 @@ func _refresh_item_sheet() -> void:
 			button.text = String(action.get("label", action_id))
 			button.pressed.connect(Callable(self, "_on_action_pressed").bind(action_id))
 			_item_sheet_actions.add_child(button)
+
+
+func _formatted_item_sheet_description(sheet: Dictionary) -> String:
+	var lines: Array[String] = []
+	var description := String(sheet.get("description", ""))
+	if not description.is_empty():
+		lines.append(description)
+	var usage_hint := String(sheet.get("usage_hint", ""))
+	if not usage_hint.is_empty():
+		lines.append("용도: %s" % usage_hint)
+	var cold_hint := String(sheet.get("cold_hint", ""))
+	if not cold_hint.is_empty():
+		lines.append("한파: %s" % cold_hint)
+	return "\n".join(lines)
+
+
+func _formatted_item_sheet_effect(sheet: Dictionary) -> String:
+	var lines: Array[String] = []
+	var item_tags_variant: Variant = sheet.get("item_tags", [])
+	if typeof(item_tags_variant) == TYPE_ARRAY:
+		var tag_labels: Array[String] = []
+		for tag_variant in item_tags_variant:
+			var tag_label := String(tag_variant)
+			if tag_label.is_empty():
+				continue
+			tag_labels.append("#%s" % tag_label)
+		if not tag_labels.is_empty():
+			lines.append(" ".join(tag_labels))
+	var effect_text := String(sheet.get("effect_text", ""))
+	if not effect_text.is_empty():
+		lines.append(effect_text)
+	return "\n".join(lines)
 
 
 func _sync_item_detail_layout(detail_visible: bool) -> void:
@@ -642,6 +690,10 @@ func _on_bag_button_pressed() -> void:
 	_refresh_item_sheet()
 
 
+func _on_craft_button_pressed() -> void:
+	craft_requested.emit()
+
+
 func _on_minimap_close_pressed() -> void:
 	if _minimap_overlay != null:
 		_minimap_overlay.visible = false
@@ -721,9 +773,10 @@ func _cache_nodes() -> void:
 	_inline_minimap = get_node_or_null("Panel/Layout/MainColumn/ContextRow/MiniMapCard/MapNodes") as Control
 	_summary_label = get_node_or_null("Panel/Layout/MainColumn/ContextRow/ReadingCard/VBox/SummaryLabel") as Label
 	_result_label = get_node_or_null("Panel/Layout/MainColumn/ContextRow/ReadingCard/VBox/ResultLabel") as Label
-	_action_buttons = get_node_or_null("Panel/Layout/MainColumn/ActionButtons") as VBoxContainer
+	_action_buttons = get_node_or_null("Panel/Layout/MainColumn/ActionScroll/ActionButtons") as VBoxContainer
 	_map_button = get_node_or_null("Panel/Layout/MainColumn/TopBar/StatusRow/Tools/MapButton") as Button
 	_bag_button = get_node_or_null("Panel/Layout/MainColumn/TopBar/StatusRow/Tools/BagButton") as Button
+	_craft_button = get_node_or_null("Panel/Layout/MainColumn/TopBar/StatusRow/Tools/CraftButton") as Button
 	_minimap_overlay = get_node_or_null("MinimapOverlay") as Control
 	_minimap_close_button = get_node_or_null("MinimapOverlay/VBox/Header/CloseButton") as Button
 	_minimap = get_node_or_null("MinimapOverlay/VBox/MapNodes") as Control

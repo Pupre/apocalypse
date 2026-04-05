@@ -128,6 +128,22 @@ func _run_test() -> void:
 		"At the staff door, the minimap should only add routes that can be seen directly from the current position."
 	)
 
+	director.configure(run_state, "mart_01")
+	assert_true(director.apply_action("move_checkout"), "Director should allow moving to checkout.")
+	assert_true(director.apply_action("search_checkout_counter"), "Director should allow searching checkout.")
+	var lighter_take_id := _action_id_by_label_prefix(director.get_actions(), "라이터 챙긴다")
+	assert_true(not lighter_take_id.is_empty(), "Checkout search should surface the lighter loot action.")
+	assert_true(director.apply_action(lighter_take_id), "Director should allow taking the lighter.")
+	assert_eq(run_state.inventory.count_item_by_id("lighter"), 1, "Loot should enter the inventory once.")
+
+	director.configure(run_state, "office_01")
+	director.configure(run_state, "mart_01")
+	assert_true(_action_id_by_label_prefix(director.get_actions(), "라이터 챙긴다").is_empty(), "Re-entering a searched room should not respawn already-looted items.")
+
+	assert_true(run_state.inventory.add_item({"id": "newspaper", "name": "신문지", "bulk": 1}), "Inventory should accept a newspaper for drop persistence checks.")
+	assert_true(director.apply_action("drop_inventory_newspaper"), "Dropping an inventory item should succeed.")
+	assert_true(not _action_id_by_label_prefix(director.get_actions(), "신문지 챙긴다").is_empty(), "Dropped items should appear in the room loot list.")
+
 	director.configure(run_state, "apartment_01")
 	assert_eq(director.get_current_zone_id(), "shared_entrance", "Director should initialize at the apartment entry zone.")
 	assert_eq(director.get_current_zone_label(), "공동 현관", "Director should expose the readable apartment entry label.")
