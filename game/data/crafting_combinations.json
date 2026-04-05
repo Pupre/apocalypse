@@ -1,0 +1,1946 @@
+[
+  {
+    "id": "newspaper__cooking_oil",
+    "ingredients": ["newspaper", "cooking_oil"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 15,
+    "ingredient_rules": {
+      "newspaper": "consume",
+      "cooking_oil": "consume"
+    },
+    "result_items": [
+      {"id": "dense_fuel", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "dense_fuel",
+    "indoor_minutes": 15,
+    "result_text": "신문지가 기름을 머금으면서 천천히 오래 타는 땔감으로 변했다."
+  },
+  {
+    "id": "newspaper__bottled_water",
+    "ingredients": ["newspaper", "bottled_water"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 10,
+    "ingredient_rules": {
+      "newspaper": "consume",
+      "bottled_water": "consume"
+    },
+    "result_items": [
+      {"id": "wet_newspaper", "count": 1}
+    ],
+    "result_type": "failure",
+    "result_item_id": "wet_newspaper",
+    "indoor_minutes": 10,
+    "result_text": "신문지가 물을 먹어 축축하게 뭉개졌다. 연료로 쓰기엔 최악이다."
+  },
+  {
+    "id": "newspaper__rubber_band",
+    "ingredients": ["newspaper", "rubber_band"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "newspaper": "consume",
+      "rubber_band": "consume"
+    },
+    "result_items": [
+      {"id": "tinder_bundle", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "tinder_bundle",
+    "indoor_minutes": 8,
+    "result_text": "신문지를 단단히 말아 점화용 다발로 묶었다."
+  },
+  {
+    "id": "old_cloth_rag__cooking_oil",
+    "ingredients": ["old_cloth_rag", "cooking_oil"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 10,
+    "ingredient_rules": {
+      "old_cloth_rag": "consume",
+      "cooking_oil": "consume"
+    },
+    "result_items": [
+      {"id": "oil_rag", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "oil_rag",
+    "indoor_minutes": 10,
+    "result_text": "헝겊이 기름을 머금어 불씨를 오래 붙잡는 재료가 됐다."
+  },
+  {
+    "id": "candle__glass_jar",
+    "ingredients": ["candle", "glass_jar"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 12,
+    "ingredient_rules": {
+      "candle": "consume",
+      "glass_jar": "consume"
+    },
+    "result_items": [
+      {"id": "candle_lantern", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "candle_lantern",
+    "indoor_minutes": 12,
+    "result_text": "유리병 안쪽에 양초를 세워 바람을 조금 막아주는 작은 랜턴을 만들었다."
+  },
+  {
+    "id": "steel_food_can__dense_fuel",
+    "ingredients": ["steel_food_can", "dense_fuel"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 15,
+    "ingredient_rules": {
+      "steel_food_can": "consume",
+      "dense_fuel": "consume"
+    },
+    "result_items": [
+      {"id": "can_stove", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "can_stove",
+    "indoor_minutes": 15,
+    "result_text": "깡통 안에 연료를 채워 임시 화로로 쓸 만한 형태를 만들었다."
+  },
+  {
+    "id": "gauze_pad__bandage",
+    "ingredients": ["gauze_pad", "bandage"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "gauze_pad": "consume",
+      "bandage": "consume"
+    },
+    "result_items": [
+      {"id": "pressure_bandage", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "pressure_bandage",
+    "indoor_minutes": 8,
+    "result_text": "거즈를 붕대로 감아 압박용 드레싱으로 정리했다."
+  },
+  {
+    "id": "disposable_mask__scarf",
+    "ingredients": ["disposable_mask", "scarf"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "disposable_mask": "consume",
+      "scarf": "consume"
+    },
+    "result_items": [
+      {"id": "scarf_mask", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "scarf_mask",
+    "indoor_minutes": 5,
+    "result_text": "마스크 위에 목도리를 덧대 얼굴과 목을 함께 가리는 보온 장비로 만들었다."
+  },
+  {
+    "id": "wool_socks__thermal_socks",
+    "ingredients": ["wool_socks", "thermal_socks"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "wool_socks": "consume",
+      "thermal_socks": "consume"
+    },
+    "result_items": [
+      {"id": "sock_layer", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "sock_layer",
+    "indoor_minutes": 4,
+    "result_text": "양말 두 켤레를 겹쳐 신기 좋게 정리해 발 보온을 강화했다."
+  },
+  {
+    "id": "receipt_bundle__rubber_band",
+    "ingredients": ["receipt_bundle", "rubber_band"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "receipt_bundle": "consume",
+      "rubber_band": "consume"
+    },
+    "result_items": [
+      {"id": "tinder_bundle", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "tinder_bundle",
+    "indoor_minutes": 4,
+    "result_text": "영수증을 말아 작은 점화용 다발로 묶었다."
+  },
+  {
+    "id": "tissue_pack__rubber_band",
+    "ingredients": ["tissue_pack", "rubber_band"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "tissue_pack": "consume",
+      "rubber_band": "consume"
+    },
+    "result_items": [
+      {"id": "tinder_bundle", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "tinder_bundle",
+    "indoor_minutes": 4,
+    "result_text": "휴지를 말아 짧게 타는 점화용 다발로 정리했다."
+  },
+  {
+    "id": "dryer_lint_bundle__paper_bag",
+    "ingredients": ["dryer_lint_bundle", "paper_bag"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "dryer_lint_bundle": "consume",
+      "paper_bag": "consume"
+    },
+    "result_items": [
+      {"id": "tinder_bundle", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "tinder_bundle",
+    "indoor_minutes": 6,
+    "result_text": "보풀과 종이를 묶어 불씨가 잘 붙는 다발을 만들었다."
+  },
+  {
+    "id": "newspaper__tea_light_candle",
+    "ingredients": ["newspaper", "tea_light_candle"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "newspaper": "consume",
+      "tea_light_candle": "consume"
+    },
+    "result_items": [
+      {"id": "waxed_tinder", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "waxed_tinder",
+    "indoor_minutes": 8,
+    "result_text": "얇은 왁스를 종이에 먹여 더 오래 타는 점화재를 만들었다."
+  },
+  {
+    "id": "paper_bag__paraffin_block",
+    "ingredients": ["paper_bag", "paraffin_block"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "paper_bag": "consume",
+      "paraffin_block": "consume"
+    },
+    "result_items": [
+      {"id": "waxed_tinder", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "waxed_tinder",
+    "indoor_minutes": 8,
+    "result_text": "종이봉투에 왁스를 스며들게 해 안정적인 점화재를 만들었다."
+  },
+  {
+    "id": "old_magazine__cooking_oil",
+    "ingredients": ["old_magazine", "cooking_oil"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 12,
+    "ingredient_rules": {
+      "old_magazine": "consume",
+      "cooking_oil": "consume"
+    },
+    "result_items": [
+      {"id": "dense_fuel", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "dense_fuel",
+    "indoor_minutes": 12,
+    "result_text": "두꺼운 종이가 기름을 먹어 꽤 버티는 연료가 됐다."
+  },
+  {
+    "id": "cardboard_sheet__cooking_oil",
+    "ingredients": ["cardboard_sheet", "cooking_oil"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 12,
+    "ingredient_rules": {
+      "cardboard_sheet": "consume",
+      "cooking_oil": "consume"
+    },
+    "result_items": [
+      {"id": "dense_fuel", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "dense_fuel",
+    "indoor_minutes": 12,
+    "result_text": "골판지에 기름을 먹여 오래 타는 연료 조각을 만들었다."
+  },
+  {
+    "id": "toilet_paper_roll__cooking_oil",
+    "ingredients": ["toilet_paper_roll", "cooking_oil"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 10,
+    "ingredient_rules": {
+      "toilet_paper_roll": "consume",
+      "cooking_oil": "consume"
+    },
+    "result_items": [
+      {"id": "dense_fuel", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "dense_fuel",
+    "indoor_minutes": 10,
+    "result_text": "화장지에 기름을 먹여 빨리 점화되는 연료 묶음을 만들었다."
+  },
+  {
+    "id": "towel__cooking_oil",
+    "ingredients": ["towel", "cooking_oil"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 10,
+    "ingredient_rules": {
+      "towel": "consume",
+      "cooking_oil": "consume"
+    },
+    "result_items": [
+      {"id": "oil_rag", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "oil_rag",
+    "indoor_minutes": 10,
+    "result_text": "수건에 기름이 배어 느리게 타는 헝겊 연료가 됐다."
+  },
+  {
+    "id": "dishcloth__cooking_oil",
+    "ingredients": ["dishcloth", "cooking_oil"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "dishcloth": "consume",
+      "cooking_oil": "consume"
+    },
+    "result_items": [
+      {"id": "oil_rag", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "oil_rag",
+    "indoor_minutes": 8,
+    "result_text": "행주에 기름을 먹여 쓸 만한 연소 재료로 바꿨다."
+  },
+  {
+    "id": "rubbing_alcohol__old_cloth_rag",
+    "ingredients": ["rubbing_alcohol", "old_cloth_rag"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "rubbing_alcohol": "consume",
+      "old_cloth_rag": "consume"
+    },
+    "result_items": [
+      {"id": "oil_rag", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "oil_rag",
+    "indoor_minutes": 6,
+    "result_text": "알코올을 머금은 헝겊이 빠르게 불붙는 점화 보조재가 됐다."
+  },
+  {
+    "id": "steel_food_can__candle",
+    "ingredients": ["steel_food_can", "candle"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "steel_food_can": "consume",
+      "candle": "consume"
+    },
+    "result_items": [
+      {"id": "shielded_candle", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "shielded_candle",
+    "indoor_minutes": 6,
+    "result_text": "캔 속에 양초를 세워 바람을 조금 덜 타는 작은 열원을 만들었다."
+  },
+  {
+    "id": "steel_food_can__tea_light_candle",
+    "ingredients": ["steel_food_can", "tea_light_candle"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "steel_food_can": "consume",
+      "tea_light_candle": "consume"
+    },
+    "result_items": [
+      {"id": "shielded_candle", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "shielded_candle",
+    "indoor_minutes": 5,
+    "result_text": "작은 양초를 캔에 고정해 바람막이 양초로 만들었다."
+  },
+  {
+    "id": "tea_light_candle__glass_jar",
+    "ingredients": ["tea_light_candle", "glass_jar"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "tea_light_candle": "consume",
+      "glass_jar": "consume"
+    },
+    "result_items": [
+      {"id": "candle_lantern", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "candle_lantern",
+    "indoor_minutes": 8,
+    "result_text": "티라이트를 병 안에 넣어 작은 랜턴으로 정리했다."
+  },
+  {
+    "id": "steel_food_can__charcoal_bag_small",
+    "ingredients": ["steel_food_can", "charcoal_bag_small"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "steel_food_can": "consume",
+      "charcoal_bag_small": "consume"
+    },
+    "result_items": [
+      {"id": "can_stove", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "can_stove",
+    "indoor_minutes": 14,
+    "result_text": "캔 안에 숯을 채워 조금 더 오래 버티는 간이 화로를 만들었다."
+  },
+  {
+    "id": "steel_food_can__paraffin_block",
+    "ingredients": ["steel_food_can", "paraffin_block"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 12,
+    "ingredient_rules": {
+      "steel_food_can": "consume",
+      "paraffin_block": "consume"
+    },
+    "result_items": [
+      {"id": "can_stove", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "can_stove",
+    "indoor_minutes": 12,
+    "result_text": "캔과 왁스를 이용해 짧게 쓰는 작은 화로를 만들었다."
+  },
+  {
+    "id": "bottled_water__can_stove",
+    "ingredients": ["bottled_water", "can_stove"],
+    "contexts": ["indoor"],
+    "required_tags": ["heat_source"],
+    "minutes": 12,
+    "ingredient_rules": {
+      "bottled_water": "consume",
+      "can_stove": "keep"
+    },
+    "result_items": [
+      {"id": "hot_water", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "hot_water",
+    "indoor_minutes": 12,
+    "result_text": "물을 데워 따뜻한 물을 만들었다."
+  },
+  {
+    "id": "bottled_water__candle_lantern",
+    "ingredients": ["bottled_water", "candle_lantern"],
+    "contexts": ["indoor"],
+    "required_tags": ["heat_source"],
+    "minutes": 16,
+    "ingredient_rules": {
+      "bottled_water": "consume",
+      "candle_lantern": "keep"
+    },
+    "result_items": [
+      {"id": "hot_water", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "hot_water",
+    "indoor_minutes": 16,
+    "result_text": "작은 랜턴 열로 시간이 걸렸지만 물을 데우는 데 성공했다."
+  },
+  {
+    "id": "bottled_water__shielded_candle",
+    "ingredients": ["bottled_water", "shielded_candle"],
+    "contexts": ["indoor"],
+    "required_tags": ["heat_source"],
+    "minutes": 18,
+    "ingredient_rules": {
+      "bottled_water": "consume",
+      "shielded_candle": "keep"
+    },
+    "result_items": [
+      {"id": "hot_water", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "hot_water",
+    "indoor_minutes": 18,
+    "result_text": "약한 열원을 오래 붙잡아 겨우 따뜻한 물을 만들었다."
+  },
+  {
+    "id": "hot_water__tea_bag",
+    "ingredients": ["hot_water", "tea_bag"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "hot_water": "consume",
+      "tea_bag": "consume"
+    },
+    "result_items": [
+      {"id": "warm_tea", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "warm_tea",
+    "indoor_minutes": 3,
+    "result_text": "뜨거운 물에 차를 우려 따뜻한 차를 만들었다."
+  },
+  {
+    "id": "hot_water__instant_coffee_mix",
+    "ingredients": ["hot_water", "instant_coffee_mix"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "hot_water": "consume",
+      "instant_coffee_mix": "consume"
+    },
+    "result_items": [
+      {"id": "warm_coffee", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "warm_coffee",
+    "indoor_minutes": 3,
+    "result_text": "뜨거운 물에 커피 믹스를 풀어 따뜻한 커피를 만들었다."
+  },
+  {
+    "id": "hot_water__sugar_stick",
+    "ingredients": ["hot_water", "sugar_stick"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 2,
+    "ingredient_rules": {
+      "hot_water": "consume",
+      "sugar_stick": "consume"
+    },
+    "result_items": [
+      {"id": "hot_sugar_water", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "hot_sugar_water",
+    "indoor_minutes": 2,
+    "result_text": "뜨거운 물에 설탕을 녹여 빠르게 마실 수 있는 당수를 만들었다."
+  },
+  {
+    "id": "hot_water__honey_stick",
+    "ingredients": ["hot_water", "honey_stick"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 2,
+    "ingredient_rules": {
+      "hot_water": "consume",
+      "honey_stick": "consume"
+    },
+    "result_items": [
+      {"id": "hot_sugar_water", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "hot_sugar_water",
+    "indoor_minutes": 2,
+    "result_text": "꿀을 풀어 조금 더 목 넘김이 좋은 뜨거운 음료를 만들었다."
+  },
+  {
+    "id": "hot_water__instant_soup_powder",
+    "ingredients": ["hot_water", "instant_soup_powder"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "hot_water": "consume",
+      "instant_soup_powder": "consume"
+    },
+    "result_items": [
+      {"id": "warm_soup", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "warm_soup",
+    "indoor_minutes": 4,
+    "result_text": "수프 가루를 풀어 따뜻한 수프를 만들었다."
+  },
+  {
+    "id": "empty_pet_bottle__hot_water",
+    "ingredients": ["empty_pet_bottle", "hot_water"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "empty_pet_bottle": "consume",
+      "hot_water": "consume"
+    },
+    "result_items": [
+      {"id": "hot_water_bottle", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "hot_water_bottle",
+    "indoor_minutes": 3,
+    "result_text": "뜨거운 물을 병에 담아 휴대용 온수병으로 만들었다."
+  },
+  {
+    "id": "thermos__hot_water",
+    "ingredients": ["thermos", "hot_water"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": ["insulated_container"],
+    "minutes": 3,
+    "ingredient_rules": {
+      "thermos": "consume",
+      "hot_water": "consume"
+    },
+    "result_items": [
+      {"id": "sealed_hot_water", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "sealed_hot_water",
+    "indoor_minutes": 3,
+    "result_text": "따뜻한 물을 보온병에 옮겨 담았다."
+  },
+  {
+    "id": "thermos__warm_tea",
+    "ingredients": ["thermos", "warm_tea"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": ["insulated_container"],
+    "minutes": 3,
+    "ingredient_rules": {
+      "thermos": "consume",
+      "warm_tea": "consume"
+    },
+    "result_items": [
+      {"id": "sealed_warm_tea", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "sealed_warm_tea",
+    "indoor_minutes": 3,
+    "result_text": "따뜻한 차를 보온병에 담아 열을 오래 유지하게 만들었다."
+  },
+  {
+    "id": "hot_water_bottle__towel",
+    "ingredients": ["hot_water_bottle", "towel"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "hot_water_bottle": "consume",
+      "towel": "consume"
+    },
+    "result_items": [
+      {"id": "hand_warmer_wrap", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "hand_warmer_wrap",
+    "indoor_minutes": 4,
+    "result_text": "온수병을 수건으로 감싸 손난로처럼 들고 다니기 좋게 만들었다."
+  },
+  {
+    "id": "hot_water_bottle__pillowcase",
+    "ingredients": ["hot_water_bottle", "pillowcase"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "hot_water_bottle": "consume",
+      "pillowcase": "consume"
+    },
+    "result_items": [
+      {"id": "hand_warmer_wrap", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "hand_warmer_wrap",
+    "indoor_minutes": 4,
+    "result_text": "온수병을 천으로 싸서 품 안에 넣기 좋은 꾸러미로 만들었다."
+  },
+  {
+    "id": "bubble_wrap_roll__duct_tape",
+    "ingredients": ["bubble_wrap_roll", "duct_tape"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "bubble_wrap_roll": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {"id": "window_cover_patch", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "window_cover_patch",
+    "indoor_minutes": 14,
+    "result_text": "뽁뽁이를 잘라 붙여 창문 단열 패치를 만들었다."
+  },
+  {
+    "id": "clear_plastic_sheet__duct_tape",
+    "ingredients": ["clear_plastic_sheet", "duct_tape"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 12,
+    "ingredient_rules": {
+      "clear_plastic_sheet": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {"id": "window_cover_patch", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "window_cover_patch",
+    "indoor_minutes": 12,
+    "result_text": "투명 비닐을 붙여 외풍을 막는 창문 패치를 만들었다."
+  },
+  {
+    "id": "curtain_panel__clear_plastic_sheet",
+    "ingredients": ["curtain_panel", "clear_plastic_sheet"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 16,
+    "ingredient_rules": {
+      "curtain_panel": "consume",
+      "clear_plastic_sheet": "consume"
+    },
+    "result_items": [
+      {"id": "window_cover_patch", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "window_cover_patch",
+    "indoor_minutes": 16,
+    "result_text": "커튼 천과 비닐을 덧대 넓은 창문 패치를 만들었다."
+  },
+  {
+    "id": "old_blanket__duct_tape",
+    "ingredients": ["old_blanket", "duct_tape"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 12,
+    "ingredient_rules": {
+      "old_blanket": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {"id": "draft_blocker", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "draft_blocker",
+    "indoor_minutes": 12,
+    "result_text": "낡은 담요를 말아 문풍 차단 뭉치로 만들었다."
+  },
+  {
+    "id": "towel__duct_tape",
+    "ingredients": ["towel", "duct_tape"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "towel": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {"id": "draft_blocker", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "draft_blocker",
+    "indoor_minutes": 8,
+    "result_text": "수건을 단단히 말아 임시 문풍 차단 뭉치로 만들었다."
+  },
+  {
+    "id": "curtain_panel__duct_tape",
+    "ingredients": ["curtain_panel", "duct_tape"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 10,
+    "ingredient_rules": {
+      "curtain_panel": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {"id": "draft_blocker", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "draft_blocker",
+    "indoor_minutes": 10,
+    "result_text": "커튼 천을 접어 큰 틈을 막는 차단 뭉치로 만들었다."
+  },
+  {
+    "id": "foam_board_piece__duct_tape",
+    "ingredients": ["foam_board_piece", "duct_tape"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 10,
+    "ingredient_rules": {
+      "foam_board_piece": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {"id": "door_gap_stopper", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "door_gap_stopper",
+    "indoor_minutes": 10,
+    "result_text": "발포 보드를 고정해 단단한 문틈 막이를 만들었다."
+  },
+  {
+    "id": "weather_strip_roll__duct_tape",
+    "ingredients": ["weather_strip_roll", "duct_tape"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "weather_strip_roll": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {"id": "door_gap_stopper", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "door_gap_stopper",
+    "indoor_minutes": 8,
+    "result_text": "문풍지를 두껍게 덧대 문 아래 틈을 막는 막이를 만들었다."
+  },
+  {
+    "id": "cardboard_sheet__aluminum_foil",
+    "ingredients": ["cardboard_sheet", "aluminum_foil"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 10,
+    "ingredient_rules": {
+      "cardboard_sheet": "consume",
+      "aluminum_foil": "consume"
+    },
+    "result_items": [
+      {"id": "foil_reflector_panel", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "foil_reflector_panel",
+    "indoor_minutes": 10,
+    "result_text": "골판지에 포일을 붙여 열 반사 패널을 만들었다."
+  },
+  {
+    "id": "foam_board_piece__aluminum_foil",
+    "ingredients": ["foam_board_piece", "aluminum_foil"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 10,
+    "ingredient_rules": {
+      "foam_board_piece": "consume",
+      "aluminum_foil": "consume"
+    },
+    "result_items": [
+      {"id": "foil_reflector_panel", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "foil_reflector_panel",
+    "indoor_minutes": 10,
+    "result_text": "단열 보드에 포일을 붙여 열을 돌려 보내는 패널을 만들었다."
+  },
+  {
+    "id": "bed_sheet__towel",
+    "ingredients": ["bed_sheet", "towel"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 12,
+    "ingredient_rules": {
+      "bed_sheet": "consume",
+      "towel": "consume"
+    },
+    "result_items": [
+      {"id": "quilted_pad", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "quilted_pad",
+    "indoor_minutes": 12,
+    "result_text": "천을 겹쳐 바닥이나 침상에 깔 수 있는 보온 패드를 만들었다."
+  },
+  {
+    "id": "pillowcase__towel",
+    "ingredients": ["pillowcase", "towel"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 10,
+    "ingredient_rules": {
+      "pillowcase": "consume",
+      "towel": "consume"
+    },
+    "result_items": [
+      {"id": "quilted_pad", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "quilted_pad",
+    "indoor_minutes": 10,
+    "result_text": "베갯잇 안에 수건을 채워 작은 누빔 패드로 만들었다."
+  },
+  {
+    "id": "bed_sheet__old_blanket",
+    "ingredients": ["bed_sheet", "old_blanket"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 15,
+    "ingredient_rules": {
+      "bed_sheet": "consume",
+      "old_blanket": "consume"
+    },
+    "result_items": [
+      {"id": "blanket_roll", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "blanket_roll",
+    "indoor_minutes": 15,
+    "result_text": "담요와 시트를 말아 휴식용 담요 세트로 정리했다."
+  },
+  {
+    "id": "fleece_blanket__bed_sheet",
+    "ingredients": ["fleece_blanket", "bed_sheet"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 15,
+    "ingredient_rules": {
+      "fleece_blanket": "consume",
+      "bed_sheet": "consume"
+    },
+    "result_items": [
+      {"id": "blanket_roll", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "blanket_roll",
+    "indoor_minutes": 15,
+    "result_text": "플리스 담요를 감싸 말아 더 따뜻한 휴식용 꾸러미를 만들었다."
+  },
+  {
+    "id": "knitted_gloves__old_cloth_rag",
+    "ingredients": ["knitted_gloves", "old_cloth_rag"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "knitted_gloves": "consume",
+      "old_cloth_rag": "consume"
+    },
+    "result_items": [
+      {"id": "glove_liner", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "glove_liner",
+    "indoor_minutes": 6,
+    "result_text": "장갑 안쪽에 천을 덧대 손 보온을 강화했다."
+  },
+  {
+    "id": "knitted_gloves__towel",
+    "ingredients": ["knitted_gloves", "towel"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 7,
+    "ingredient_rules": {
+      "knitted_gloves": "consume",
+      "towel": "consume"
+    },
+    "result_items": [
+      {"id": "glove_liner", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "glove_liner",
+    "indoor_minutes": 7,
+    "result_text": "수건 천을 덧대 좀 더 도톰한 손 보온 장비로 바꿨다."
+  },
+  {
+    "id": "shoe_insole__old_cloth_rag",
+    "ingredients": ["shoe_insole", "old_cloth_rag"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "shoe_insole": "consume",
+      "old_cloth_rag": "consume"
+    },
+    "result_items": [
+      {"id": "padded_insole", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "padded_insole",
+    "indoor_minutes": 6,
+    "result_text": "깔창에 천을 덧대 보온용 깔창으로 만들었다."
+  },
+  {
+    "id": "shoe_insole__thermal_socks",
+    "ingredients": ["shoe_insole", "thermal_socks"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "shoe_insole": "consume",
+      "thermal_socks": "consume"
+    },
+    "result_items": [
+      {"id": "padded_insole", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "padded_insole",
+    "indoor_minutes": 6,
+    "result_text": "기모 양말 일부를 덧대 발바닥 보온 깔창으로 바꿨다."
+  },
+  {
+    "id": "thermos__old_cloth_rag",
+    "ingredients": ["thermos", "old_cloth_rag"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": ["insulated_container"],
+    "minutes": 4,
+    "ingredient_rules": {
+      "thermos": "keep",
+      "old_cloth_rag": "consume"
+    },
+    "result_items": [
+      {"id": "insulated_bottle_cover", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "insulated_bottle_cover",
+    "indoor_minutes": 4,
+    "result_text": "보온병 크기에 맞춰 천 덮개를 만들어 열 손실을 줄이게 했다."
+  },
+  {
+    "id": "thermos__towel",
+    "ingredients": ["thermos", "towel"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": ["insulated_container"],
+    "minutes": 5,
+    "ingredient_rules": {
+      "thermos": "keep",
+      "towel": "consume"
+    },
+    "result_items": [
+      {"id": "insulated_bottle_cover", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "insulated_bottle_cover",
+    "indoor_minutes": 5,
+    "result_text": "수건 천으로 보온병 덮개를 만들어 온기를 더 오래 잡게 했다."
+  },
+  {
+    "id": "metal_bowl__tea_light_candle",
+    "ingredients": ["metal_bowl", "tea_light_candle"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "metal_bowl": "consume",
+      "tea_light_candle": "consume"
+    },
+    "result_items": [
+      {"id": "shielded_candle", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "shielded_candle",
+    "indoor_minutes": 5,
+    "result_text": "금속 그릇을 써서 작은 바람막이 양초를 만들었다."
+  },
+  {
+    "id": "metal_bowl__candle",
+    "ingredients": ["metal_bowl", "candle"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "metal_bowl": "consume",
+      "candle": "consume"
+    },
+    "result_items": [
+      {"id": "shielded_candle", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "shielded_candle",
+    "indoor_minutes": 6,
+    "result_text": "금속 그릇 안에 양초를 고정해 작은 열원으로 정리했다."
+  },
+  {
+    "id": "receipt_bundle__cooking_oil",
+    "ingredients": ["receipt_bundle", "cooking_oil"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "receipt_bundle": "consume",
+      "cooking_oil": "consume"
+    },
+    "result_items": [
+      {"id": "dense_fuel", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "dense_fuel",
+    "indoor_minutes": 8,
+    "result_text": "얇은 종이에 기름을 먹여 짧고 강하게 타는 연료를 만들었다."
+  },
+  {
+    "id": "paper_bag__cooking_oil",
+    "ingredients": ["paper_bag", "cooking_oil"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "paper_bag": "consume",
+      "cooking_oil": "consume"
+    },
+    "result_items": [
+      {"id": "dense_fuel", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "dense_fuel",
+    "indoor_minutes": 8,
+    "result_text": "종이봉투에 기름을 먹여 가볍지만 쓸 만한 연료 묶음을 만들었다."
+  },
+  {
+    "id": "old_magazine__rubber_band",
+    "ingredients": ["old_magazine", "rubber_band"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "old_magazine": "consume",
+      "rubber_band": "consume"
+    },
+    "result_items": [
+      {"id": "tinder_bundle", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "tinder_bundle",
+    "indoor_minutes": 5,
+    "result_text": "잡지 종이를 말아 단단한 점화용 다발로 묶었다."
+  },
+  {
+    "id": "bubble_wrap_roll__clear_plastic_sheet",
+    "ingredients": ["bubble_wrap_roll", "clear_plastic_sheet"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 12,
+    "ingredient_rules": {
+      "bubble_wrap_roll": "consume",
+      "clear_plastic_sheet": "consume"
+    },
+    "result_items": [
+      {"id": "window_cover_patch", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "window_cover_patch",
+    "indoor_minutes": 12,
+    "result_text": "비닐과 뽁뽁이를 겹쳐 더 두꺼운 창문 단열 패치를 만들었다."
+  },
+  {
+    "id": "thermos__warm_coffee",
+    "ingredients": ["thermos", "warm_coffee"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": ["insulated_container"],
+    "minutes": 3,
+    "ingredient_rules": {
+      "thermos": "consume",
+      "warm_coffee": "consume"
+    },
+    "result_items": [
+      {"id": "sealed_warm_coffee", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "sealed_warm_coffee",
+    "indoor_minutes": 3,
+    "result_text": "따뜻한 커피를 보온병에 옮겨 담아 더 오래 마실 수 있게 만들었다."
+  },
+  {
+    "id": "thermos__warm_soup",
+    "ingredients": ["thermos", "warm_soup"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": ["insulated_container"],
+    "minutes": 4,
+    "ingredient_rules": {
+      "thermos": "consume",
+      "warm_soup": "consume"
+    },
+    "result_items": [
+      {"id": "sealed_warm_soup", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "sealed_warm_soup",
+    "indoor_minutes": 4,
+    "result_text": "따뜻한 수프를 보온병에 담아 이동 중에도 온기를 유지하게 했다."
+  },
+  {
+    "id": "hot_water__powder_soup_packet",
+    "ingredients": ["hot_water", "powder_soup_packet"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "hot_water": "consume",
+      "powder_soup_packet": "consume"
+    },
+    "result_items": [
+      {"id": "warm_soup", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "warm_soup",
+    "indoor_minutes": 4,
+    "result_text": "분말 수프를 뜨거운 물에 풀어 따뜻한 수프로 만들었다."
+  },
+  {
+    "id": "hot_water__ramen_pack",
+    "ingredients": ["hot_water", "ramen_pack"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "hot_water": "consume",
+      "ramen_pack": "consume"
+    },
+    "result_items": [
+      {"id": "warm_soup", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "warm_soup",
+    "indoor_minutes": 6,
+    "result_text": "봉지라면을 뜨거운 물에 불려 간단한 따뜻한 국물 음식으로 만들었다."
+  },
+  {
+    "id": "fish_cake_can__hot_water",
+    "ingredients": ["fish_cake_can", "hot_water"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "fish_cake_can": "consume",
+      "hot_water": "consume"
+    },
+    "result_items": [
+      {"id": "warm_soup", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "warm_soup",
+    "indoor_minutes": 5,
+    "result_text": "어묵 통조림에 뜨거운 물을 더해 속을 덥히는 국물로 만들었다."
+  },
+  {
+    "id": "food_storage_container__instant_rice_bowl",
+    "ingredients": ["food_storage_container", "instant_rice_bowl"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "food_storage_container": "consume",
+      "instant_rice_bowl": "consume"
+    },
+    "result_items": [
+      {"id": "packed_meal_kit", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "packed_meal_kit",
+    "indoor_minutes": 4,
+    "result_text": "즉석밥을 밀폐용기에 나눠 담아 휴대 식사 키트로 만들었다."
+  },
+  {
+    "id": "instant_rice_bowl__seasoned_seaweed",
+    "ingredients": ["instant_rice_bowl", "seasoned_seaweed"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "instant_rice_bowl": "consume",
+      "seasoned_seaweed": "consume"
+    },
+    "result_items": [
+      {"id": "packed_meal_kit", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "packed_meal_kit",
+    "indoor_minutes": 3,
+    "result_text": "즉석밥에 조미김을 챙겨 간단한 식사 세트로 묶었다."
+  },
+  {
+    "id": "fish_cake_can__instant_rice_bowl",
+    "ingredients": ["fish_cake_can", "instant_rice_bowl"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "fish_cake_can": "consume",
+      "instant_rice_bowl": "consume"
+    },
+    "result_items": [
+      {"id": "packed_meal_kit", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "packed_meal_kit",
+    "indoor_minutes": 5,
+    "result_text": "밥과 어묵 통조림을 한데 묶어 더 든든한 식사 키트로 만들었다."
+  },
+  {
+    "id": "gochujang_tube__instant_rice_bowl",
+    "ingredients": ["gochujang_tube", "instant_rice_bowl"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 2,
+    "ingredient_rules": {
+      "gochujang_tube": "consume",
+      "instant_rice_bowl": "consume"
+    },
+    "result_items": [
+      {"id": "packed_meal_kit", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "packed_meal_kit",
+    "indoor_minutes": 2,
+    "result_text": "즉석밥에 고추장을 더해 먹기 쉬운 식사 키트로 정리했다."
+  },
+  {
+    "id": "instant_rice_bowl__soy_sauce_bottle",
+    "ingredients": ["instant_rice_bowl", "soy_sauce_bottle"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 2,
+    "ingredient_rules": {
+      "instant_rice_bowl": "consume",
+      "soy_sauce_bottle": "consume"
+    },
+    "result_items": [
+      {"id": "packed_meal_kit", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "packed_meal_kit",
+    "indoor_minutes": 2,
+    "result_text": "즉석밥에 간장을 곁들여 바로 먹기 좋은 식사로 만들었다."
+  },
+  {
+    "id": "instant_rice_bowl__sesame_oil_bottle",
+    "ingredients": ["instant_rice_bowl", "sesame_oil_bottle"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 2,
+    "ingredient_rules": {
+      "instant_rice_bowl": "consume",
+      "sesame_oil_bottle": "consume"
+    },
+    "result_items": [
+      {"id": "packed_meal_kit", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "packed_meal_kit",
+    "indoor_minutes": 2,
+    "result_text": "즉석밥에 참기름을 더해 향이 살아 있는 휴대 식사로 묶었다."
+  },
+  {
+    "id": "alcohol_swab__zip_bag",
+    "ingredients": ["zip_bag", "alcohol_swab"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "zip_bag": "consume",
+      "alcohol_swab": "consume"
+    },
+    "result_items": [
+      {"id": "field_hygiene_kit", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "field_hygiene_kit",
+    "indoor_minutes": 3,
+    "result_text": "알코올솜을 지퍼백에 넣어 현장에서 꺼내 쓰기 쉬운 위생 키트로 만들었다."
+  },
+  {
+    "id": "wet_wipes__zip_bag",
+    "ingredients": ["zip_bag", "wet_wipes"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "zip_bag": "consume",
+      "wet_wipes": "consume"
+    },
+    "result_items": [
+      {"id": "field_hygiene_kit", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "field_hygiene_kit",
+    "indoor_minutes": 3,
+    "result_text": "물티슈를 지퍼백에 모아 간단한 현장 위생 키트로 정리했다."
+  },
+  {
+    "id": "toothbrush__zip_bag",
+    "ingredients": ["zip_bag", "toothbrush"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "zip_bag": "consume",
+      "toothbrush": "consume"
+    },
+    "result_items": [
+      {"id": "field_hygiene_kit", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "field_hygiene_kit",
+    "indoor_minutes": 3,
+    "result_text": "칫솔을 지퍼백에 넣어 휴대용 위생 키트의 기본 형태를 만들었다."
+  },
+  {
+    "id": "scrub_sponge__soap_bar",
+    "ingredients": ["soap_bar", "scrub_sponge"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "soap_bar": "consume",
+      "scrub_sponge": "consume"
+    },
+    "result_items": [
+      {"id": "wash_kit", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "wash_kit",
+    "indoor_minutes": 3,
+    "result_text": "비누와 수세미를 묶어 기본 세척 키트로 만들었다."
+  },
+  {
+    "id": "dish_soap__scrub_sponge",
+    "ingredients": ["dish_soap", "scrub_sponge"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "dish_soap": "consume",
+      "scrub_sponge": "consume"
+    },
+    "result_items": [
+      {"id": "wash_kit", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "wash_kit",
+    "indoor_minutes": 3,
+    "result_text": "주방세제와 수세미를 묶어 바로 꺼내 쓰는 세척 키트로 정리했다."
+  },
+  {
+    "id": "laundry_detergent__scrub_sponge",
+    "ingredients": ["laundry_detergent", "scrub_sponge"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "laundry_detergent": "consume",
+      "scrub_sponge": "consume"
+    },
+    "result_items": [
+      {"id": "wash_kit", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "wash_kit",
+    "indoor_minutes": 4,
+    "result_text": "세제와 수세미를 묶어 천과 용기를 함께 정리하기 좋은 세척 키트로 만들었다."
+  },
+  {
+    "id": "soap_bar__wet_wipes",
+    "ingredients": ["soap_bar", "wet_wipes"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "soap_bar": "consume",
+      "wet_wipes": "consume"
+    },
+    "result_items": [
+      {"id": "wash_kit", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "wash_kit",
+    "indoor_minutes": 3,
+    "result_text": "비누와 물티슈를 묶어 물이 부족할 때 쓰는 세척 키트로 정리했다."
+  },
+  {
+    "id": "toothbrush__toothpaste_tube",
+    "ingredients": ["toothbrush", "toothpaste_tube"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 2,
+    "ingredient_rules": {
+      "toothbrush": "consume",
+      "toothpaste_tube": "consume"
+    },
+    "result_items": [
+      {"id": "wash_kit", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "wash_kit",
+    "indoor_minutes": 2,
+    "result_text": "칫솔과 치약을 묶어 기본 개인 세척 키트로 만들었다."
+  },
+  {
+    "id": "disinfectant_bottle__sterile_gauze_roll",
+    "ingredients": ["sterile_gauze_roll", "disinfectant_bottle"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "sterile_gauze_roll": "consume",
+      "disinfectant_bottle": "consume"
+    },
+    "result_items": [
+      {"id": "wound_cleaning_kit", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "wound_cleaning_kit",
+    "indoor_minutes": 5,
+    "result_text": "멸균 거즈와 소독약을 묶어 상처 세척 키트로 만들었다."
+  },
+  {
+    "id": "alcohol_swab__sterile_gauze_roll",
+    "ingredients": ["sterile_gauze_roll", "alcohol_swab"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "sterile_gauze_roll": "consume",
+      "alcohol_swab": "consume"
+    },
+    "result_items": [
+      {"id": "wound_cleaning_kit", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "wound_cleaning_kit",
+    "indoor_minutes": 4,
+    "result_text": "거즈 롤과 알코올솜을 묶어 휴대용 상처 세척 키트로 정리했다."
+  },
+  {
+    "id": "cotton_swab_pack__disinfectant_bottle",
+    "ingredients": ["cotton_swab_pack", "disinfectant_bottle"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "cotton_swab_pack": "consume",
+      "disinfectant_bottle": "consume"
+    },
+    "result_items": [
+      {"id": "wound_cleaning_kit", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "wound_cleaning_kit",
+    "indoor_minutes": 4,
+    "result_text": "면봉과 소독약을 함께 묶어 작은 상처 정리용 키트로 만들었다."
+  },
+  {
+    "id": "old_blanket__trash_bag_roll",
+    "ingredients": ["trash_bag_roll", "old_blanket"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "trash_bag_roll": "consume",
+      "old_blanket": "consume"
+    },
+    "result_items": [
+      {"id": "emergency_wrap", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "emergency_wrap",
+    "indoor_minutes": 6,
+    "result_text": "담요에 봉투 재질을 덧대 비상 보온 랩으로 만들었다."
+  },
+  {
+    "id": "old_blanket__rain_poncho",
+    "ingredients": ["rain_poncho", "old_blanket"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "rain_poncho": "consume",
+      "old_blanket": "consume"
+    },
+    "result_items": [
+      {"id": "emergency_wrap", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "emergency_wrap",
+    "indoor_minutes": 6,
+    "result_text": "우비와 담요를 겹쳐 바람과 습기를 막는 비상 보온 랩을 만들었다."
+  },
+  {
+    "id": "car_blanket__trash_bag_roll",
+    "ingredients": ["car_blanket", "trash_bag_roll"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "car_blanket": "consume",
+      "trash_bag_roll": "consume"
+    },
+    "result_items": [
+      {"id": "emergency_wrap", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "emergency_wrap",
+    "indoor_minutes": 5,
+    "result_text": "차량 담요에 비닐 외피를 더해 바깥 바람을 버티는 비상 보온 랩으로 만들었다."
+  },
+  {
+    "id": "cardboard_box__packing_tape",
+    "ingredients": ["cardboard_box", "packing_tape"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "cardboard_box": "consume",
+      "packing_tape": "consume"
+    },
+    "result_items": [
+      {"id": "storage_bundle", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "storage_bundle",
+    "indoor_minutes": 5,
+    "result_text": "골판지 상자를 단단히 감아 보관 꾸러미로 만들었다."
+  },
+  {
+    "id": "packing_tape__plastic_storage_bin",
+    "ingredients": ["plastic_storage_bin", "packing_tape"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "plastic_storage_bin": "consume",
+      "packing_tape": "consume"
+    },
+    "result_items": [
+      {"id": "storage_bundle", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "storage_bundle",
+    "indoor_minutes": 5,
+    "result_text": "수납함을 테이프로 고정해 운반과 보관이 쉬운 꾸러미로 만들었다."
+  },
+  {
+    "id": "cardboard_box__file_folder",
+    "ingredients": ["cardboard_box", "file_folder"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "cardboard_box": "consume",
+      "file_folder": "consume"
+    },
+    "result_items": [
+      {"id": "storage_bundle", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "storage_bundle",
+    "indoor_minutes": 4,
+    "result_text": "파일 폴더를 덧대 골판지 상자를 분류 가능한 보관 꾸러미로 정리했다."
+  },
+  {
+    "id": "binder_clip_box__notebook",
+    "ingredients": ["binder_clip_box", "notebook"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "binder_clip_box": "consume",
+      "notebook": "consume"
+    },
+    "result_items": [
+      {"id": "bundled_notes", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "bundled_notes",
+    "indoor_minutes": 3,
+    "result_text": "노트를 클립으로 단단히 묶어 기록 묶음으로 정리했다."
+  },
+  {
+    "id": "binder_clip_box__memo_pad",
+    "ingredients": ["binder_clip_box", "memo_pad"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 2,
+    "ingredient_rules": {
+      "binder_clip_box": "consume",
+      "memo_pad": "consume"
+    },
+    "result_items": [
+      {"id": "bundled_notes", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "bundled_notes",
+    "indoor_minutes": 2,
+    "result_text": "메모지를 클립으로 묶어 휴대하기 쉬운 기록 묶음으로 만들었다."
+  },
+  {
+    "id": "file_folder__stapler",
+    "ingredients": ["stapler", "file_folder"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "stapler": "consume",
+      "file_folder": "consume"
+    },
+    "result_items": [
+      {"id": "bundled_notes", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "bundled_notes",
+    "indoor_minutes": 3,
+    "result_text": "파일 폴더를 스테이플러로 고정해 기록 묶음으로 정리했다."
+  },
+  {
+    "id": "pliers__steel_wire",
+    "ingredients": ["steel_wire", "pliers"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "steel_wire": "consume",
+      "pliers": "consume"
+    },
+    "result_items": [
+      {"id": "wire_hooks", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "wire_hooks",
+    "indoor_minutes": 5,
+    "result_text": "철사를 구부려 여러 개의 작은 고리로 만들었다."
+  },
+  {
+    "id": "steel_wire__zip_ties",
+    "ingredients": ["steel_wire", "zip_ties"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "steel_wire": "consume",
+      "zip_ties": "consume"
+    },
+    "result_items": [
+      {"id": "wire_hooks", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "wire_hooks",
+    "indoor_minutes": 4,
+    "result_text": "철사와 결속재를 써서 간단한 걸쇠 겸 고리 세트를 만들었다."
+  },
+  {
+    "id": "rope_bundle__shopping_bag",
+    "ingredients": ["shopping_bag", "rope_bundle"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "shopping_bag": "consume",
+      "rope_bundle": "consume"
+    },
+    "result_items": [
+      {"id": "carry_sling", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "carry_sling",
+    "indoor_minutes": 4,
+    "result_text": "장바구니 봉투에 로프를 달아 메고 다닐 수 있는 슬링으로 만들었다."
+  },
+  {
+    "id": "shopping_bag__twine_bundle",
+    "ingredients": ["shopping_bag", "twine_bundle"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "shopping_bag": "consume",
+      "twine_bundle": "consume"
+    },
+    "result_items": [
+      {"id": "carry_sling", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "carry_sling",
+    "indoor_minutes": 4,
+    "result_text": "장바구니 손잡이를 노끈으로 보강해 어깨에 걸 수 있는 슬링으로 만들었다."
+  },
+  {
+    "id": "market_basket__rope_bundle",
+    "ingredients": ["market_basket", "rope_bundle"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "market_basket": "consume",
+      "rope_bundle": "consume"
+    },
+    "result_items": [
+      {"id": "carry_sling", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "carry_sling",
+    "indoor_minutes": 5,
+    "result_text": "시장 바구니에 로프를 달아 등에 멜 수 있는 운반 슬링으로 손봤다."
+  },
+  {
+    "id": "duct_tape__umbrella",
+    "ingredients": ["umbrella", "duct_tape"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "umbrella": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {"id": "wind_shield_wrap", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "wind_shield_wrap",
+    "indoor_minutes": 5,
+    "result_text": "우산 천을 접어 테이프로 고정해 즉석 바람막이 감개로 만들었다."
+  },
+  {
+    "id": "old_blanket__picnic_mat",
+    "ingredients": ["picnic_mat", "old_blanket"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "picnic_mat": "consume",
+      "old_blanket": "consume"
+    },
+    "result_items": [
+      {"id": "ground_insulation_roll", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "ground_insulation_roll",
+    "indoor_minutes": 6,
+    "result_text": "돗자리와 담요를 겹쳐 바닥 냉기를 막는 단열 말이로 만들었다."
+  },
+  {
+    "id": "car_blanket__picnic_mat",
+    "ingredients": ["picnic_mat", "car_blanket"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "picnic_mat": "consume",
+      "car_blanket": "consume"
+    },
+    "result_items": [
+      {"id": "ground_insulation_roll", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "ground_insulation_roll",
+    "indoor_minutes": 6,
+    "result_text": "돗자리와 차량 담요를 겹쳐 바닥 단열용 말이 꾸러미로 정리했다."
+  },
+  {
+    "id": "cotton_gloves__work_gloves",
+    "ingredients": ["cotton_gloves", "work_gloves"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "cotton_gloves": "consume",
+      "work_gloves": "consume"
+    },
+    "result_items": [
+      {"id": "glove_layer", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "glove_layer",
+    "indoor_minutes": 3,
+    "result_text": "면장갑을 안쪽에 덧대 더 따뜻한 장갑 레이어로 만들었다."
+  },
+  {
+    "id": "sleep_socks__wool_socks",
+    "ingredients": ["sleep_socks", "wool_socks"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "sleep_socks": "consume",
+      "wool_socks": "consume"
+    },
+    "result_items": [
+      {"id": "thick_sock_bundle", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "thick_sock_bundle",
+    "indoor_minutes": 3,
+    "result_text": "수면 양말과 울양말을 겹쳐 더 두툼한 양말 묶음으로 만들었다."
+  },
+  {
+    "id": "charging_cable__power_bank",
+    "ingredients": ["power_bank", "charging_cable"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 2,
+    "ingredient_rules": {
+      "power_bank": "consume",
+      "charging_cable": "consume"
+    },
+    "result_items": [
+      {"id": "charging_kit", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "charging_kit",
+    "indoor_minutes": 2,
+    "result_text": "보조배터리와 케이블을 묶어 바로 꺼내 쓰는 충전 키트로 만들었다."
+  },
+  {
+    "id": "power_strip__usb_charger",
+    "ingredients": ["power_strip", "usb_charger"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 2,
+    "ingredient_rules": {
+      "power_strip": "consume",
+      "usb_charger": "consume"
+    },
+    "result_items": [
+      {"id": "charging_kit", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "charging_kit",
+    "indoor_minutes": 2,
+    "result_text": "멀티탭과 USB 충전기를 묶어 충전 준비물을 한 세트로 정리했다."
+  },
+  {
+    "id": "power_bank__usb_charger",
+    "ingredients": ["power_bank", "usb_charger"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 2,
+    "ingredient_rules": {
+      "power_bank": "consume",
+      "usb_charger": "consume"
+    },
+    "result_items": [
+      {"id": "charging_kit", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "charging_kit",
+    "indoor_minutes": 2,
+    "result_text": "보조배터리와 충전기를 묶어 전력 키트처럼 한데 정리했다."
+  }
+]
