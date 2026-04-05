@@ -248,6 +248,17 @@
           },
           "outcomes": {
             "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "shopping_bag", "weight": 5 },
+                { "id": "zip_bag", "weight": 4 },
+                { "id": "wet_wipes", "weight": 3 },
+                { "id": "paper_bag", "weight": 3 },
+                { "id": "trash_bag_roll", "weight": 3 }
+              ]
+            },
             "consume_on_use": true
           }
         }
@@ -285,6 +296,18 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "zip_bag", "weight": 4 },
+                { "id": "shopping_bag", "weight": 4 },
+                { "id": "tea_bag", "weight": 3 },
+                { "id": "cooking_oil", "weight": 3 },
+                { "id": "dish_soap", "weight": 2 },
+                { "id": "food_storage_container", "weight": 2 }
+              ]
+            },
             "reveal_clue_ids": [
               "staff_key_board_hint"
             ],
@@ -338,6 +361,19 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "cooking_oil", "weight": 5 },
+                { "id": "tea_bag", "weight": 5 },
+                { "id": "zip_bag", "weight": 4 },
+                { "id": "shopping_bag", "weight": 4 },
+                { "id": "instant_soup_powder", "weight": 4 },
+                { "id": "food_storage_container", "weight": 3 },
+                { "id": "salt_packet", "weight": 3 }
+              ]
+            },
             "consume_on_use": true
           }
         }
@@ -390,6 +426,19 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "zip_bag", "weight": 5 },
+                { "id": "dish_soap", "weight": 4 },
+                { "id": "shopping_bag", "weight": 4 },
+                { "id": "scrub_sponge", "weight": 4 },
+                { "id": "trash_bag_roll", "weight": 3 },
+                { "id": "food_storage_container", "weight": 3 },
+                { "id": "plastic_storage_bin", "weight": 2 }
+              ]
+            },
             "consume_on_use": true
           }
         }
@@ -470,6 +519,18 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "cardboard_box", "weight": 4 },
+                { "id": "plastic_storage_bin", "weight": 4 },
+                { "id": "shopping_bag", "weight": 3 },
+                { "id": "food_storage_container", "weight": 3 },
+                { "id": "dish_soap", "weight": 2 },
+                { "id": "scrub_sponge", "weight": 2 }
+              ]
+            },
             "consume_on_use": true
           }
         }
@@ -525,6 +586,17 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "tea_bag", "weight": 5 },
+                { "id": "instant_coffee_mix", "weight": 4 },
+                { "id": "honey_stick", "weight": 3 },
+                { "id": "paper_cup", "weight": 3 },
+                { "id": "food_storage_container", "weight": 2 }
+              ]
+            },
             "reveal_clue_ids": [
               "warm_blanket_hint"
             ],
@@ -555,6 +627,17 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "notebook", "weight": 4 },
+                { "id": "zip_bag", "weight": 4 },
+                { "id": "shopping_bag", "weight": 3 },
+                { "id": "memo_pad", "weight": 3 },
+                { "id": "spare_batteries", "weight": 2 }
+              ]
+            },
             "reveal_clue_ids": [
               "storage_key_missing_hint"
             ],
@@ -595,6 +678,18 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "cardboard_box", "weight": 4 },
+                { "id": "plastic_storage_bin", "weight": 4 },
+                { "id": "food_storage_container", "weight": 3 },
+                { "id": "empty_pet_bottle", "weight": 3 },
+                { "id": "water_jug", "weight": 2 },
+                { "id": "zip_bag", "weight": 2 }
+              ]
+            },
             "consume_on_use": true
           }
         }
@@ -622,6 +717,17 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "plastic_storage_bin", "weight": 4 },
+                { "id": "food_storage_container", "weight": 4 },
+                { "id": "cardboard_box", "weight": 3 },
+                { "id": "dish_soap", "weight": 3 },
+                { "id": "trash_bag_roll", "weight": 2 }
+              ]
+            },
             "consume_on_use": true
           }
         }

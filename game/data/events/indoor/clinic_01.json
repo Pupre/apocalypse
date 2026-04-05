@@ -132,6 +132,17 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "hand_sanitizer_gel", "weight": 5 },
+                { "id": "alcohol_swab", "weight": 4 },
+                { "id": "paper_cup", "weight": 4 },
+                { "id": "wet_wipes", "weight": 3 },
+                { "id": "thermometer", "weight": 2 }
+              ]
+            },
             "consume_on_use": true
           }
         }
@@ -169,6 +180,17 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "hand_sanitizer_gel", "weight": 5 },
+                { "id": "alcohol_swab", "weight": 4 },
+                { "id": "thermometer", "weight": 4 },
+                { "id": "disinfectant_bottle", "weight": 3 },
+                { "id": "tissue_pack", "weight": 3 }
+              ]
+            },
             "consume_on_use": true
           }
         }
@@ -201,6 +223,18 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "alcohol_swab", "weight": 5 },
+                { "id": "thermometer", "weight": 4 },
+                { "id": "disinfectant_bottle", "weight": 4 },
+                { "id": "sterile_gauze_roll", "weight": 4 },
+                { "id": "cotton_swab_pack", "weight": 3 },
+                { "id": "rubbing_alcohol", "weight": 3 }
+              ]
+            },
             "consume_on_use": true
           }
         }
@@ -238,6 +272,18 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "alcohol_swab", "weight": 5 },
+                { "id": "sterile_gauze_roll", "weight": 4 },
+                { "id": "disinfectant_bottle", "weight": 4 },
+                { "id": "cotton_swab_pack", "weight": 4 },
+                { "id": "thermometer", "weight": 3 },
+                { "id": "rubbing_alcohol", "weight": 3 }
+              ]
+            },
             "consume_on_use": true
           }
         }
@@ -275,6 +321,17 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "tea_bag", "weight": 5 },
+                { "id": "instant_coffee_mix", "weight": 4 },
+                { "id": "paper_cup", "weight": 4 },
+                { "id": "honey_stick", "weight": 3 },
+                { "id": "instant_soup_powder", "weight": 3 }
+              ]
+            },
             "consume_on_use": true
           }
         }
@@ -312,6 +369,19 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "disinfectant_bottle", "weight": 5 },
+                { "id": "sterile_gauze_roll", "weight": 5 },
+                { "id": "alcohol_swab", "weight": 4 },
+                { "id": "cold_medicine", "weight": 4 },
+                { "id": "fever_reducer", "weight": 4 },
+                { "id": "thermometer", "weight": 3 },
+                { "id": "anti_inflammatory_ointment", "weight": 3 }
+              ]
+            },
             "consume_on_use": true
           }
         }

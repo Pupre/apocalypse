@@ -140,6 +140,17 @@
           },
           "outcomes": {
             "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "notebook", "weight": 4 },
+                { "id": "memo_pad", "weight": 4 },
+                { "id": "ballpoint_pen", "weight": 3 },
+                { "id": "newspaper", "weight": 3 },
+                { "id": "tissue_pack", "weight": 2 }
+              ]
+            },
             "consume_on_use": true
           }
         }
@@ -172,6 +183,18 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "notebook", "weight": 5 },
+                { "id": "binder_clip_box", "weight": 4 },
+                { "id": "portable_radio", "weight": 4 },
+                { "id": "power_strip", "weight": 4 },
+                { "id": "file_folder", "weight": 4 },
+                { "id": "memo_pad", "weight": 3 }
+              ]
+            },
             "consume_on_use": true
           }
         }
@@ -209,6 +232,17 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "instant_coffee_mix", "weight": 5 },
+                { "id": "tea_bag", "weight": 5 },
+                { "id": "honey_stick", "weight": 4 },
+                { "id": "salt_packet", "weight": 4 },
+                { "id": "paper_cup", "weight": 4 }
+              ]
+            },
             "consume_on_use": true
           }
         }
@@ -241,6 +275,19 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "notebook", "weight": 4 },
+                { "id": "binder_clip_box", "weight": 4 },
+                { "id": "file_folder", "weight": 4 },
+                { "id": "spare_batteries", "weight": 4 },
+                { "id": "portable_radio", "weight": 3 },
+                { "id": "power_bank", "weight": 3 },
+                { "id": "ballpoint_pen", "weight": 2 }
+              ]
+            },
             "consume_on_use": true
           }
         }
@@ -278,6 +325,19 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "notebook", "weight": 4 },
+                { "id": "memo_pad", "weight": 4 },
+                { "id": "file_folder", "weight": 4 },
+                { "id": "portable_radio", "weight": 3 },
+                { "id": "tea_bag", "weight": 3 },
+                { "id": "instant_coffee_mix", "weight": 3 },
+                { "id": "paper_cup", "weight": 3 }
+              ]
+            },
             "consume_on_use": true
           }
         }
@@ -305,6 +365,17 @@
                 "bulk": 2
               }
             ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "file_folder", "weight": 5 },
+                { "id": "binder_clip_box", "weight": 4 },
+                { "id": "notebook", "weight": 4 },
+                { "id": "staples_box", "weight": 4 },
+                { "id": "cardboard_box", "weight": 3 }
+              ]
+            },
             "consume_on_use": true
           }
         }
@@ -337,6 +408,18 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "power_strip", "weight": 5 },
+                { "id": "spare_batteries", "weight": 5 },
+                { "id": "charging_cable", "weight": 4 },
+                { "id": "usb_charger", "weight": 4 },
+                { "id": "power_bank", "weight": 4 },
+                { "id": "portable_radio", "weight": 3 }
+              ]
+            },
             "consume_on_use": true
           }
         }
