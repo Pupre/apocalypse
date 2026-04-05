@@ -116,7 +116,7 @@ func _run_test() -> void:
 		"The run should start without a mode transition in progress."
 	)
 
-	var hud: Node = run_shell.get_node_or_null("HUD")
+	var hud := run_shell.get_node_or_null("HUD") as CanvasLayer
 	var transition_layer: Node = run_shell.get_node_or_null("TransitionLayer")
 	if not assert_true(hud != null, "Run shell should include a HUD."):
 		bootstrap.free()
@@ -203,6 +203,12 @@ func _run_test() -> void:
 	if not assert_true(indoor_mode != null, "Run shell should contain the indoor mode after entry."):
 		bootstrap.free()
 		return
+	if not assert_true(content_library.get_item("soap_bar").has("usage_hint"), "Expanded life-world item should expose usage_hint in live content library."):
+		bootstrap.free()
+		return
+	if not assert_true(content_library.get_item("portable_radio").has("cold_hint"), "Expanded utility item should expose cold_hint in live content library."):
+		bootstrap.free()
+		return
 
 	var location_strip := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/LocationStrip") as Control
 	if not assert_true(location_strip != null and location_strip.visible, "Indoor mode should expose a visible location strip."):
@@ -224,7 +230,9 @@ func _run_test() -> void:
 	if not assert_true(summary_label != null, "Indoor mode should expose a current-zone summary label."):
 		bootstrap.free()
 		return
-	assert_eq(summary_label.text, "깨진 자동문과 쓰러진 장바구니가 보인다.", "Indoor mode should describe the current entrance zone.")
+	assert_true(summary_label.text.find("깨진 자동문과 쓰러진 장바구니가 보인다.") != -1, "Indoor mode should describe the current entrance zone.")
+	assert_true(summary_label.text.find("남아 있는 물건 0개") != -1, "Indoor mode should surface current-room loot status.")
+	assert_true(summary_label.text.find("설치물 0개") != -1, "Indoor mode should surface current-room deployment status.")
 	var inline_minimap_card := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/MiniMapCard") as Control
 	if not assert_true(inline_minimap_card != null and inline_minimap_card.visible, "Indoor mode should keep a small inline minimap visible."):
 		bootstrap.free()
@@ -236,7 +244,7 @@ func _run_test() -> void:
 	var sleep_preview_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/SleepPreviewLabel") as Label
 	assert_true(sleep_preview_label == null, "Indoor mode should not expose sleep preview in the main layout.")
 
-	var action_buttons := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ActionButtons") as VBoxContainer
+	var action_buttons := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ActionScroll/ActionButtons") as VBoxContainer
 	if not assert_true(action_buttons != null, "Indoor action buttons should be mounted in the UI tree."):
 		bootstrap.free()
 		return
@@ -326,7 +334,7 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 	assert_eq(indoor_time_label.text, "시각: 1일차 10:30", "Indoor mode should update the visible time after moving.")
-	assert_eq(summary_label.text, "계산대 뒤쪽에는 직원 출입문이 있다.", "Indoor mode should update the summary for the checkout zone.")
+	assert_true(summary_label.text.find("계산대 뒤쪽에는 직원 출입문이 있다.") != -1, "Indoor mode should update the summary for the checkout zone.")
 
 	assert_true(
 		_buttons_include_text(action_buttons, "계산대를 탐색한다 (30분)"),
@@ -540,6 +548,31 @@ func _run_test() -> void:
 		"The entrance zone should restore the contextual leave-building action."
 	)
 
+	assert_true(run_shell.run_state.inventory.add_item(content_library.get_item("newspaper")), "Smoke test should seed crafting paper.")
+	assert_true(run_shell.run_state.inventory.add_item(content_library.get_item("cooking_oil")), "Smoke test should seed crafting oil.")
+	assert_true(run_shell.run_state.inventory.add_item(content_library.get_item("steel_food_can")), "Smoke test should seed a can stove shell.")
+	assert_true(run_shell.run_state.inventory.add_item(content_library.get_item("bottled_water")), "Smoke test should seed water for heating.")
+	assert_true(run_shell.run_state.inventory.add_item(content_library.get_item("tea_bag")), "Smoke test should seed tea for the warmth chain.")
+	var dense_fuel_result: Dictionary = run_shell.run_state.attempt_craft("newspaper", "cooking_oil", "indoor")
+	assert_eq(String(dense_fuel_result.get("result_item_id", "")), "dense_fuel", "Indoor chain crafting should make dense fuel first.")
+	var can_stove_result: Dictionary = run_shell.run_state.attempt_craft("steel_food_can", "dense_fuel", "indoor")
+	assert_eq(String(can_stove_result.get("result_item_id", "")), "can_stove", "Indoor chain crafting should make a can stove second.")
+	var hot_water_result: Dictionary = run_shell.run_state.attempt_craft("bottled_water", "can_stove", "indoor")
+	assert_eq(String(hot_water_result.get("result_item_id", "")), "hot_water", "Indoor chain crafting should heat water.")
+	var warm_tea_result: Dictionary = run_shell.run_state.attempt_craft("hot_water", "tea_bag", "indoor")
+	assert_eq(String(warm_tea_result.get("result_item_id", "")), "warm_tea", "Indoor chain crafting should finish with warm tea.")
+	assert_eq(run_shell.run_state.inventory.count_item_by_id("can_stove"), 1, "Heating water should keep the can stove for later use.")
+	assert_eq(run_shell.run_state.inventory.count_item_by_id("warm_tea"), 1, "Indoor chain crafting should leave warm tea in inventory.")
+
+	assert_true(run_shell.run_state.inventory.add_item(content_library.get_item("window_cover_patch")), "Smoke test should seed a deployable insulation patch.")
+	assert_true(run_shell.run_state.deploy_item_in_current_site("window_cover_patch"), "Indoor smoke loop should allow installing a patch in the current room.")
+	assert_true(run_shell.run_state.inventory.add_item(content_library.get_item("newspaper")), "Smoke test should seed a dropped item for persistence checks.")
+	assert_true(director.apply_action("drop_inventory_newspaper"), "Indoor smoke loop should allow dropping an item into the room memory.")
+	indoor_mode.refresh_view()
+	await process_frame
+	assert_true(summary_label.text.find("남아 있는 물건 1개") != -1, "Indoor summary should show dropped room loot.")
+	assert_true(summary_label.text.find("설치물 1개") != -1, "Indoor summary should show installed room deployments.")
+
 	var exit_action_button := _find_button_by_text(action_buttons, "건물 밖으로 나간다")
 	if not assert_true(exit_action_button != null, "Indoor mode should expose a leave-building action at the entrance."):
 		bootstrap.free()
@@ -578,6 +611,103 @@ func _run_test() -> void:
 		player_sprite.position.distance_to(pre_entry_player_position) <= 0.01,
 		"Exiting the building should restore the previous outdoor player position."
 	)
+
+	var office_position: Vector2 = _building_position(content_library.get_building("office_01"))
+	var to_office: Vector2 = office_position - outdoor_mode.get_player_position()
+	var outdoor_speed: float = max(run_shell.run_state.get_outdoor_move_speed(), 1.0)
+	outdoor_mode.move_player(to_office, (to_office.length() / outdoor_speed) + 0.1)
+	assert_true(outdoor_mode.get_player_position().distance_to(office_position) <= 72.0, "Outdoor mode should be able to reach the office entry range.")
+	outdoor_mode.try_enter_building("office_01")
+	if not await _await_transition_completion(
+		run_shell,
+		hud,
+		hud_title_label,
+		fade_rect,
+		"indoor",
+		false,
+		"",
+		"IndoorMode",
+		"Timed out waiting for the office enter transition."
+	):
+		bootstrap.free()
+		return
+
+	indoor_mode = run_shell.get_node_or_null("ModeHost/IndoorMode")
+	location_label = indoor_mode.get_node_or_null("Panel/Layout/MainColumn/LocationStrip/HBox/LocationValueLabel") as Label
+	action_buttons = indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ActionScroll/ActionButtons") as VBoxContainer
+	if not assert_true(indoor_mode != null and location_label != null and action_buttons != null, "Office indoor mode should expose stable nodes after transition."):
+		bootstrap.free()
+		return
+	assert_eq(location_label.text, "출입구", "Office should open at its entry zone.")
+
+	exit_action_button = _find_button_by_text(action_buttons, "건물 밖으로 나간다")
+	if not assert_true(exit_action_button != null, "Office entrance should expose a leave-building action."):
+		bootstrap.free()
+		return
+	exit_action_button.emit_signal("pressed")
+	if not await _await_transition_completion(
+		run_shell,
+		hud,
+		hud_title_label,
+		fade_rect,
+		"outdoor",
+		true,
+		"외부 생존 정보",
+		"OutdoorMode",
+		"Timed out waiting for the office exit transition."
+	):
+		bootstrap.free()
+		return
+
+	outdoor_mode = run_shell.get_node_or_null("ModeHost/OutdoorMode")
+	player_sprite = outdoor_mode.get_node_or_null("PlayerSprite") as Polygon2D
+	if not assert_true(outdoor_mode != null and player_sprite != null, "Outdoor mode should restore after leaving the office."):
+		bootstrap.free()
+		return
+
+	var back_to_mart: Vector2 = mart_position - outdoor_mode.get_player_position()
+	outdoor_speed = max(run_shell.run_state.get_outdoor_move_speed(), 1.0)
+	outdoor_mode.move_player(back_to_mart, (back_to_mart.length() / outdoor_speed) + 0.1)
+	assert_true(player_sprite.position.distance_to(mart_position) <= 72.0, "Outdoor mode should return to mart entry range for persistence checks.")
+	outdoor_mode.try_enter_building("mart_01")
+	if not await _await_transition_completion(
+		run_shell,
+		hud,
+		hud_title_label,
+		fade_rect,
+		"indoor",
+		false,
+		"",
+		"IndoorMode",
+		"Timed out waiting for the mart re-entry transition."
+	):
+		bootstrap.free()
+		return
+
+	indoor_mode = run_shell.get_node_or_null("ModeHost/IndoorMode")
+	location_label = indoor_mode.get_node_or_null("Panel/Layout/MainColumn/LocationStrip/HBox/LocationValueLabel") as Label
+	summary_label = indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/ReadingCard/VBox/SummaryLabel") as Label
+	action_buttons = indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ActionScroll/ActionButtons") as VBoxContainer
+	if not assert_true(indoor_mode != null and location_label != null and summary_label != null and action_buttons != null, "Mart re-entry should rebuild the indoor nodes."):
+		bootstrap.free()
+		return
+	assert_eq(location_label.text, "정문 진입부", "Mart re-entry should still start from the entry zone.")
+	assert_true(summary_label.text.find("남아 있는 물건 1개") != -1, "Mart re-entry should remember dropped room loot.")
+	assert_true(summary_label.text.find("설치물 1개") != -1, "Mart re-entry should remember installed room deployments.")
+	assert_true(_buttons_include_text(action_buttons, "신문지 챙긴다"), "Mart re-entry should surface the dropped newspaper as floor loot.")
+
+	move_checkout_button = _find_button_by_prefix(action_buttons, "계산대로 이동한다")
+	if not assert_true(move_checkout_button != null, "Mart re-entry should still allow moving to checkout."):
+		bootstrap.free()
+		return
+	move_checkout_button.emit_signal("pressed")
+	if not await _wait_until(
+		Callable(self, "_label_text_is").bind(location_label, "계산대"),
+		"Timed out waiting for mart re-entry checkout movement."
+	):
+		bootstrap.free()
+		return
+	assert_true(not _buttons_include_text(action_buttons, "라이터 챙긴다"), "Already-looted checkout items should not respawn after leaving and coming back.")
 
 	bootstrap.free()
 	bootstrap = null
@@ -705,9 +835,17 @@ func _label_text_is(label: Label, expected_text: String) -> bool:
 	return label != null and label.text == expected_text
 
 
+func _building_position(building_data: Dictionary) -> Vector2:
+	var outdoor_position: Dictionary = building_data.get("outdoor_position", {})
+	return Vector2(
+		float(outdoor_position.get("x", 0.0)),
+		float(outdoor_position.get("y", 0.0))
+	)
+
+
 func _await_transition_completion(
 	run_shell: Node,
-	hud: Control,
+	hud: CanvasLayer,
 	hud_title_label: Label,
 	fade_rect: ColorRect,
 	expected_mode_name: String,
@@ -781,7 +919,7 @@ func _map_labels(container: Control) -> Array[String]:
 
 func _is_transition_settled(
 	run_shell: Node,
-	hud: Control,
+	hud: CanvasLayer,
 	hud_title_label: Label,
 	fade_rect: ColorRect,
 	expected_mode_name: String,
