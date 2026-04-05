@@ -202,6 +202,17 @@
           },
           "outcomes": {
             "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "shopping_bag", "weight": 4 },
+                { "id": "newspaper", "weight": 4 },
+                { "id": "wet_wipes", "weight": 3 },
+                { "id": "paper_bag", "weight": 3 },
+                { "id": "zip_bag", "weight": 2 }
+              ]
+            },
             "consume_on_use": true
           }
         }
@@ -239,6 +250,17 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "newspaper", "weight": 4 },
+                { "id": "shopping_bag", "weight": 4 },
+                { "id": "zip_bag", "weight": 3 },
+                { "id": "rubber_band", "weight": 3 },
+                { "id": "memo_pad", "weight": 2 }
+              ]
+            },
             "consume_on_use": true
           }
         }
@@ -276,6 +298,18 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "laundry_detergent", "weight": 5 },
+                { "id": "dish_soap", "weight": 4 },
+                { "id": "scrub_sponge", "weight": 4 },
+                { "id": "towel", "weight": 4 },
+                { "id": "dishcloth", "weight": 4 },
+                { "id": "trash_bag_roll", "weight": 3 }
+              ]
+            },
             "consume_on_use": true
           }
         }
@@ -318,6 +352,18 @@
                 "bulk": 2
               }
             ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "old_blanket", "weight": 4 },
+                { "id": "hoodie", "weight": 4 },
+                { "id": "tea_bag", "weight": 3 },
+                { "id": "food_storage_container", "weight": 3 },
+                { "id": "cardboard_box", "weight": 3 },
+                { "id": "paper_bag", "weight": 2 }
+              ]
+            },
             "consume_on_use": true
           }
         }
@@ -355,6 +401,18 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "laundry_detergent", "weight": 5 },
+                { "id": "sleep_socks", "weight": 4 },
+                { "id": "towel", "weight": 4 },
+                { "id": "dishcloth", "weight": 4 },
+                { "id": "scrub_sponge", "weight": 3 },
+                { "id": "hoodie", "weight": 2 }
+              ]
+            },
             "consume_on_use": true
           }
         }
@@ -392,6 +450,18 @@
                 "bulk": 1
               }
             ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "hoodie", "weight": 5 },
+                { "id": "sleep_socks", "weight": 4 },
+                { "id": "cardboard_box", "weight": 4 },
+                { "id": "laundry_detergent", "weight": 4 },
+                { "id": "sweater", "weight": 3 },
+                { "id": "food_storage_container", "weight": 2 }
+              ]
+            },
             "consume_on_use": true
           }
         }
