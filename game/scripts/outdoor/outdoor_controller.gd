@@ -4,10 +4,12 @@ class_name OutdoorController
 signal state_changed
 signal building_entered(building_id: String)
 signal craft_requested
+signal codex_requested
 
 const EXPOSURE_MODEL_SCRIPT := preload("res://scripts/outdoor/exposure_model.gd")
 const DEFAULT_BUILDING_ID := "mart_01"
 const DEFAULT_PLAYER_POSITION := Vector2(240.0, 360.0)
+const PORTRAIT_CAMERA_OFFSET := Vector2(0.0, -220.0)
 const ENTER_RADIUS := 72.0
 const WORLD_BOUNDS := Rect2(0.0, 0.0, 1200.0, 1092.0)
 const MOVE_LEFT_ACTION := "move_left"
@@ -34,6 +36,7 @@ var _building_rows: Array[Dictionary] = []
 var _building_positions: Dictionary = {}
 var _player_sprite: Polygon2D = null
 var _camera: Camera2D = null
+var _top_ribbon: PanelContainer = null
 var _ground_host: Node2D = null
 var _building_host: Node2D = null
 var _obstacle_host: Node2D = null
@@ -41,6 +44,7 @@ var _building_markers: Dictionary = {}
 var _exposure_label: Label = null
 var _hint_label: Label = null
 var _craft_button: Button = null
+var _codex_button: Button = null
 
 
 func _ready() -> void:
@@ -61,6 +65,19 @@ func bind_run_state(value, building_id: String = DEFAULT_BUILDING_ID, player_pos
 	_refresh_obstacles()
 	_sync_view()
 	state_changed.emit()
+
+
+func attempt_craft(primary_item_id: String, secondary_item_id: String) -> Dictionary:
+	if run_state == null or not run_state.has_method("attempt_craft"):
+		return {
+			"ok": false,
+			"result_type": "invalid",
+			"result_item_id": "",
+			"result_text": "런 상태를 찾지 못했다.",
+			"minutes_elapsed": 0,
+		}
+
+	return run_state.attempt_craft(primary_item_id, secondary_item_id, "outdoor")
 
 
 func simulate_seconds(seconds_elapsed: float) -> void:
@@ -205,6 +222,7 @@ func _sync_view() -> void:
 		_player_sprite.position = _player_position
 	if _camera != null:
 		_camera.position = _player_position
+		_camera.offset = PORTRAIT_CAMERA_OFFSET
 
 	var nearby_building_id := _get_nearby_building_id()
 	for building_data in _building_rows:
@@ -228,23 +246,31 @@ func _sync_view() -> void:
 
 
 func _cache_nodes() -> void:
+	_top_ribbon = get_node_or_null("CanvasLayer/TopRibbon") as PanelContainer
 	_ground_host = get_node_or_null("Ground") as Node2D
 	_player_sprite = get_node_or_null("PlayerSprite") as Polygon2D
 	_camera = get_node_or_null("WorldCamera") as Camera2D
 	_building_host = get_node_or_null("Buildings") as Node2D
 	_obstacle_host = get_node_or_null("Obstacles") as Node2D
-	_exposure_label = get_node_or_null("CanvasLayer/StatusPanel/VBox/ExposureLabel") as Label
-	_hint_label = get_node_or_null("CanvasLayer/StatusPanel/VBox/HintLabel") as Label
-	_craft_button = get_node_or_null("CanvasLayer/StatusPanel/VBox/CraftButton") as Button
+	_exposure_label = get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/HeaderRow/ExposureLabel") as Label
+	_hint_label = get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/HintLabel") as Label
+	_craft_button = get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/ToolsRow/CraftButton") as Button
+	_codex_button = get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/ToolsRow/CodexButton") as Button
 
 
 func _bind_ui_buttons() -> void:
 	if _craft_button != null and not _craft_button.pressed.is_connected(Callable(self, "_on_craft_button_pressed")):
 		_craft_button.pressed.connect(Callable(self, "_on_craft_button_pressed"))
+	if _codex_button != null and not _codex_button.pressed.is_connected(Callable(self, "_on_codex_button_pressed")):
+		_codex_button.pressed.connect(Callable(self, "_on_codex_button_pressed"))
 
 
 func _on_craft_button_pressed() -> void:
 	craft_requested.emit()
+
+
+func _on_codex_button_pressed() -> void:
+	codex_requested.emit()
 
 
 func _get_nearby_building_id() -> String:

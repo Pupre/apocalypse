@@ -635,6 +635,8 @@
                 { "id": "zip_bag", "weight": 4 },
                 { "id": "shopping_bag", "weight": 3 },
                 { "id": "memo_pad", "weight": 3 },
+                { "id": "improvised_heat_note_01", "weight": 2 },
+                { "id": "survival_cooking_note_01", "weight": 2 },
                 { "id": "spare_batteries", "weight": 2 }
               ]
             },

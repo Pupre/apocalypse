@@ -39,6 +39,9 @@ func _run_test() -> void:
 		"trait_ids": PackedStringArray(["athlete", "unlucky"]),
 		"remaining_points": 0,
 	})
+	if not assert_true(run_shell.run_state != null, "Run shell should create a run state before transition tests."):
+		run_shell.free()
+		return
 
 	var transition_layer := run_shell.get_node_or_null("TransitionLayer")
 	var mode_host := run_shell.get_node_or_null("ModeHost")
@@ -66,6 +69,12 @@ func _run_test() -> void:
 	):
 		run_shell.free()
 		return
+	var top_ribbon := hud.get_node_or_null("TopRibbon") as PanelContainer
+	if not assert_true(top_ribbon != null, "HUD should mount the portrait top ribbon."):
+		run_shell.free()
+		return
+	assert_eq(top_ribbon.anchor_left, 0.0, "HUD TopRibbon should stretch from the left edge.")
+	assert_eq(top_ribbon.anchor_right, 1.0, "HUD TopRibbon should stretch to the right edge.")
 	assert_true(hud.get_index() > mode_host.get_index(), "HUD should render above the mode host so indoor panels do not hide it.")
 
 	transition_layer.set_duration_for_tests(0.1)

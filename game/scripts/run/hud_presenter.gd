@@ -4,7 +4,7 @@ const OUTDOOR_TITLE := "외부 생존 정보"
 const INDOOR_TITLE := "실내 생존 정보"
 
 var run_state = null
-var _panel: PanelContainer
+var _top_ribbon: PanelContainer
 var _title_label: Label
 var _clock_label: Label
 var _fatigue_label: Label
@@ -21,7 +21,7 @@ func set_run_state(state) -> void:
 
 func set_mode_presentation(mode_name: String) -> void:
 	_cache_nodes()
-	if _panel == null or _title_label == null:
+	if _top_ribbon == null or _title_label == null:
 		return
 
 	if mode_name == "indoor":
@@ -29,13 +29,15 @@ func set_mode_presentation(mode_name: String) -> void:
 		return
 
 	visible = true
-	_panel.anchor_left = 1.0
-	_panel.anchor_right = 1.0
-	_panel.offset_left = -336.0
-	_panel.offset_top = 16.0
-	_panel.offset_right = -16.0
-	_panel.offset_bottom = 228.0
-	_panel.modulate = Color(1, 1, 1, 1.0)
+	_top_ribbon.anchor_left = 0.0
+	_top_ribbon.anchor_top = 0.0
+	_top_ribbon.anchor_right = 1.0
+	_top_ribbon.anchor_bottom = 0.0
+	_top_ribbon.offset_left = 12.0
+	_top_ribbon.offset_top = 12.0
+	_top_ribbon.offset_right = -12.0
+	_top_ribbon.offset_bottom = 116.0
+	_top_ribbon.modulate = Color(1, 1, 1, 1.0)
 	_title_label.text = OUTDOOR_TITLE
 
 
@@ -65,14 +67,14 @@ func refresh() -> void:
 
 
 func _cache_nodes() -> void:
-	_panel = get_node_or_null("Panel") as PanelContainer
-	_title_label = get_node_or_null("Panel/VBox/TitleLabel") as Label
-	_clock_label = get_node_or_null("Panel/VBox/ClockLabel") as Label
-	_fatigue_label = get_node_or_null("Panel/VBox/FatigueLabel") as Label
-	_hunger_label = get_node_or_null("Panel/VBox/HungerLabel") as Label
-	_thirst_label = get_node_or_null("Panel/VBox/ThirstLabel") as Label
-	_health_label = get_node_or_null("Panel/VBox/HealthLabel") as Label
-	_carry_label = get_node_or_null("Panel/VBox/CarryLabel") as Label
+	_top_ribbon = get_node_or_null("TopRibbon") as PanelContainer
+	_title_label = get_node_or_null("TopRibbon/Margin/Stack/HeaderRow/TitleLabel") as Label
+	_clock_label = get_node_or_null("TopRibbon/Margin/Stack/HeaderRow/ClockLabel") as Label
+	_fatigue_label = get_node_or_null("TopRibbon/Margin/Stack/StatsRow/FatigueLabel") as Label
+	_hunger_label = get_node_or_null("TopRibbon/Margin/Stack/StatsRow/HungerLabel") as Label
+	_thirst_label = get_node_or_null("TopRibbon/Margin/Stack/StatsRow/ThirstLabel") as Label
+	_health_label = get_node_or_null("TopRibbon/Margin/Stack/StatsRow/HealthLabel") as Label
+	_carry_label = get_node_or_null("TopRibbon/Margin/Stack/StatsRow/CarryLabel") as Label
 
 
 func _set_empty_state() -> void:

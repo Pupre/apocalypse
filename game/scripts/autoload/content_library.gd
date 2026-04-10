@@ -51,6 +51,32 @@ func get_crafting_combination(primary_item_id: String, secondary_item_id: String
 	return crafting_combinations.get(_crafting_pair_key(primary_item_id, secondary_item_id), {})
 
 
+func get_crafting_combination_rows() -> Array[Dictionary]:
+	var rows: Array[Dictionary] = []
+	var recipe_ids: Array[String] = []
+	for combination_variant in crafting_combinations.values():
+		if typeof(combination_variant) != TYPE_DICTIONARY:
+			continue
+		var combination := combination_variant as Dictionary
+		var recipe_id := String(combination.get("id", ""))
+		if recipe_id.is_empty():
+			continue
+		recipe_ids.append(recipe_id)
+
+	recipe_ids.sort()
+	for recipe_id in recipe_ids:
+		for combination_variant in crafting_combinations.values():
+			if typeof(combination_variant) != TYPE_DICTIONARY:
+				continue
+			var combination := combination_variant as Dictionary
+			if String(combination.get("id", "")) != recipe_id:
+				continue
+			rows.append(combination.duplicate(true))
+			break
+
+	return rows
+
+
 func _load_indexed_array(path: String) -> Dictionary:
 	var file := FileAccess.open(path, FileAccess.READ)
 	if file == null:
@@ -125,6 +151,20 @@ func _normalize_item_row(source_row: Dictionary) -> Dictionary:
 	if cold_hint.is_empty():
 		row["cold_hint"] = _default_item_cold_hint(row)
 
+	row["readable"] = bool(row.get("readable", false))
+	row["knowledge_title"] = String(row.get("knowledge_title", ""))
+	var knowledge_recipe_ids_variant: Variant = row.get("knowledge_recipe_ids", [])
+	row["knowledge_recipe_ids"] = (knowledge_recipe_ids_variant as Array).duplicate(true) if typeof(knowledge_recipe_ids_variant) == TYPE_ARRAY else []
+
+	var charges_max := int(row.get("charges_max", row.get("max_charges", 0)))
+	row["charges_max"] = charges_max
+	row["max_charges"] = charges_max
+	var initial_charges := int(row.get("initial_charges", row.get("charges_current", charges_max)))
+	row["initial_charges"] = initial_charges
+	if charges_max > 0:
+		row["charges_current"] = int(row.get("charges_current", initial_charges))
+	row["charge_label"] = String(row.get("charge_label", ""))
+
 	return row
 
 
@@ -174,15 +214,23 @@ func _load_crafting_combinations(path: String) -> Dictionary:
 			continue
 
 		var normalized_row := row.duplicate(true)
+		normalized_row["codex_category"] = String(normalized_row.get("codex_category", ""))
 		var required_tags_variant: Variant = normalized_row.get("required_tags", [])
 		if typeof(required_tags_variant) != TYPE_ARRAY:
 			normalized_row["required_tags"] = []
+		var required_tool_ids_variant: Variant = normalized_row.get("required_tool_ids", [])
+		if typeof(required_tool_ids_variant) != TYPE_ARRAY:
+			normalized_row["required_tool_ids"] = []
+		var tool_charge_costs_variant: Variant = normalized_row.get("tool_charge_costs", {})
+		if typeof(tool_charge_costs_variant) != TYPE_DICTIONARY:
+			normalized_row["tool_charge_costs"] = {}
+		normalized_row["codex_order"] = int(normalized_row.get("codex_order", 0))
 
 		var minutes := int(normalized_row.get("minutes", normalized_row.get("indoor_minutes", 0)))
 		normalized_row["minutes"] = minutes
 		normalized_row["indoor_minutes"] = int(normalized_row.get("indoor_minutes", minutes))
 
-		var result_item_id_present := normalized_row.has("result_item_id") and typeof(normalized_row.get("result_item_id")) == TYPE_STRING and not String(normalized_row.get("result_item_id", "")).is_empty()
+		var result_item_id_present: bool = normalized_row.has("result_item_id") and typeof(normalized_row.get("result_item_id")) == TYPE_STRING and not String(normalized_row.get("result_item_id", "")).is_empty()
 		var first_result_id := String(first_result_id_variant)
 		if result_item_id_present:
 			if String(normalized_row.get("result_item_id", "")) != first_result_id:

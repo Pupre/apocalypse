@@ -51,11 +51,17 @@ func _run_test() -> void:
 	survivor_creator.survivor_confirmed.connect(Callable(self, "_on_survivor_confirmed"))
 
 	var courier_button := survivor_creator.get_node_or_null("Center/Panel/VBox/JobButtons/CourierButton") as Button
+	var easy_button := survivor_creator.get_node_or_null("Center/Panel/VBox/DifficultyButtons/EasyButton") as Button
+	var hard_button := survivor_creator.get_node_or_null("Center/Panel/VBox/DifficultyButtons/HardButton") as Button
+	var difficulty_status_label := survivor_creator.get_node_or_null("Center/Panel/VBox/DifficultyStatusLabel") as Label
 	var athlete_button := survivor_creator.get_node_or_null("Center/Panel/VBox/TraitButtons/AthleteButton") as CheckButton
 	var unlucky_button := survivor_creator.get_node_or_null("Center/Panel/VBox/TraitButtons/UnluckyButton") as CheckButton
 	var confirm_button := survivor_creator.get_node_or_null("Center/Panel/VBox/ConfirmButton") as Button
 
 	if not assert_true(courier_button != null, "Courier button is missing."):
+		bootstrap.free()
+		return
+	if not assert_true(easy_button != null and hard_button != null and difficulty_status_label != null, "Difficulty controls are missing."):
 		bootstrap.free()
 		return
 	if not assert_true(athlete_button != null, "Athlete trait button is missing."):
@@ -69,14 +75,22 @@ func _run_test() -> void:
 		return
 
 	assert_true(confirm_button.disabled, "Confirm should be gated until the selection is valid.")
+	assert_true(easy_button.disabled, "Easy should be selected by default.")
+	assert_true(not hard_button.disabled, "Hard should be available when the creator opens.")
+	assert_eq(difficulty_status_label.text, "난이도: 이지", "Creator should describe the default difficulty.")
 
 	courier_button.emit_signal("pressed")
+	hard_button.emit_signal("pressed")
 	athlete_button.button_pressed = true
 	unlucky_button.button_pressed = true
 
 	assert_eq(survivor_creator.job_id, "courier", "Expected courier to be the selected job.")
+	assert_eq(survivor_creator.difficulty_id, "hard", "Difficulty selection should update the creator state.")
 	assert_eq(survivor_creator.trait_ids, ["athlete", "unlucky"], "Traits should preserve selection order.")
 	assert_eq(survivor_creator.remaining_points, 0, "Expected selected traits to spend all points.")
+	assert_true(not easy_button.disabled and hard_button.disabled, "Pressing hard should flip the selected difficulty button.")
+	assert_eq(difficulty_status_label.text, "난이도: 하드", "Creator should refresh the visible difficulty status after selection.")
+	assert_eq(String(survivor_creator.get_survivor_config().get("difficulty", "")), "hard", "Survivor config should preserve the selected difficulty.")
 	assert_true(not confirm_button.disabled, "Confirm should enable once the selection is valid.")
 
 	confirm_button.emit_signal("pressed")
@@ -93,6 +107,8 @@ func _run_test() -> void:
 	if not assert_true(bootstrap.get_node_or_null("SurvivorCreator") == null, "Survivor creator should be replaced by the run shell."):
 		bootstrap.free()
 		return
+
+	assert_eq(run_shell.run_state.get_difficulty_id(), "hard", "Confirmed creator difficulty should carry into the run state.")
 
 	var hud = run_shell.get_node_or_null("HUD")
 	var mode_host = run_shell.get_node_or_null("ModeHost")
@@ -127,7 +143,7 @@ func _run_test() -> void:
 
 	transition_layer.set_duration_for_tests(0.0)
 
-	var hud_clock_label := hud.get_node_or_null("Panel/VBox/ClockLabel") as Label
+	var hud_clock_label := hud.get_node_or_null("TopRibbon/Margin/Stack/HeaderRow/ClockLabel") as Label
 	var content_library := root.get_node_or_null("ContentLibrary")
 	if not assert_true(hud_clock_label != null, "HUD clock label should be present."):
 		bootstrap.free()
@@ -165,7 +181,7 @@ func _run_test() -> void:
 	if not assert_true(indoor_mode != null, "Entering a building should swap to the indoor mode."):
 		bootstrap.free()
 		return
-	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/ReadingCard/VBox/ResultLabel") as Label
+	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/ResultLabel") as Label
 	var action_buttons := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ActionScroll/ActionButtons") as VBoxContainer
 	if not assert_true(result_label != null, "Indoor result label should be present."):
 		bootstrap.free()
@@ -211,7 +227,7 @@ func _run_test() -> void:
 			hud_clock_label,
 			result_label,
 			action_buttons,
-			0,
+			7,
 			"1일차 09:00",
 			expected_feedback,
 			-1

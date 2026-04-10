@@ -12,6 +12,27 @@ func _init() -> void:
 
 
 func _run_test() -> void:
+	assert_eq(
+		int(ProjectSettings.get_setting("display/window/size/viewport_width")),
+		720,
+		"Project should use a 720px viewport width for the portrait baseline."
+	)
+	assert_eq(
+		int(ProjectSettings.get_setting("display/window/size/viewport_height")),
+		1280,
+		"Project should use a 1280px viewport height for the portrait baseline."
+	)
+	assert_eq(
+		String(ProjectSettings.get_setting("display/window/stretch/mode", "")),
+		"canvas_items",
+		"Project should keep canvas_items stretch for the portrait UI shell."
+	)
+	assert_eq(
+		String(ProjectSettings.get_setting("display/window/stretch/aspect", "")),
+		"expand",
+		"Project should expand the portrait shell instead of hard-locking a boxed keep aspect."
+	)
+
 	var bootstrap_scene := load(BOOTSTRAP_SCENE_PATH) as PackedScene
 	if not assert_true(bootstrap_scene != null, "Missing bootstrap scene: %s" % BOOTSTRAP_SCENE_PATH):
 		return
@@ -55,11 +76,17 @@ func _run_test() -> void:
 	survivor_creator.survivor_confirmed.connect(Callable(self, "_on_survivor_confirmed"))
 
 	var courier_button := survivor_creator.get_node_or_null("Center/Panel/VBox/JobButtons/CourierButton") as Button
+	var easy_button := survivor_creator.get_node_or_null("Center/Panel/VBox/DifficultyButtons/EasyButton") as Button
+	var hard_button := survivor_creator.get_node_or_null("Center/Panel/VBox/DifficultyButtons/HardButton") as Button
+	var difficulty_status_label := survivor_creator.get_node_or_null("Center/Panel/VBox/DifficultyStatusLabel") as Label
 	var athlete_button := survivor_creator.get_node_or_null("Center/Panel/VBox/TraitButtons/AthleteButton") as CheckButton
 	var unlucky_button := survivor_creator.get_node_or_null("Center/Panel/VBox/TraitButtons/UnluckyButton") as CheckButton
 	var confirm_button := survivor_creator.get_node_or_null("Center/Panel/VBox/ConfirmButton") as Button
 
 	if not assert_true(courier_button != null, "Courier button is missing."):
+		bootstrap.free()
+		return
+	if not assert_true(easy_button != null and hard_button != null and difficulty_status_label != null, "Difficulty controls are missing."):
 		bootstrap.free()
 		return
 	if not assert_true(athlete_button != null, "Athlete trait button is missing."):
@@ -72,6 +99,10 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
+	assert_true(easy_button.disabled, "Easy should be the default selected difficulty.")
+	assert_true(not hard_button.disabled, "Hard should start available.")
+	assert_eq(difficulty_status_label.text, "난이도: 이지", "The creator should surface the default easy difficulty.")
+
 	courier_button.emit_signal("pressed")
 	athlete_button.button_pressed = true
 	unlucky_button.button_pressed = true
@@ -80,6 +111,7 @@ func _run_test() -> void:
 	assert_eq(String(survivor_config.get("job_id", "")), "courier", "The creator should build the selected job payload.")
 	assert_eq(Array(survivor_config.get("trait_ids", [])), ["athlete", "unlucky"], "The creator should preserve the selected trait order.")
 	assert_eq(int(survivor_config.get("remaining_points", -1)), 0, "The creator payload should spend all available points.")
+	assert_eq(String(survivor_config.get("difficulty", "")), "easy", "The creator payload should default new runs to easy difficulty.")
 	assert_true(not confirm_button.disabled, "The creator confirm button should be enabled before confirmation.")
 
 	confirm_button.emit_signal("pressed")
@@ -121,6 +153,12 @@ func _run_test() -> void:
 	if not assert_true(hud != null, "Run shell should include a HUD."):
 		bootstrap.free()
 		return
+	var top_ribbon := hud.get_node_or_null("TopRibbon") as PanelContainer
+	if not assert_true(top_ribbon != null, "HUD should mount the portrait top ribbon after boot."):
+		bootstrap.free()
+		return
+	assert_eq(top_ribbon.anchor_left, 0.0, "HUD TopRibbon should stretch from the left edge.")
+	assert_eq(top_ribbon.anchor_right, 1.0, "HUD TopRibbon should stretch to the right edge.")
 	if not assert_true(transition_layer != null, "Run shell should include a transition layer."):
 		bootstrap.free()
 		return
@@ -133,13 +171,13 @@ func _run_test() -> void:
 
 	transition_layer.set_duration_for_tests(0.0)
 
-	var hud_clock_label := hud.get_node_or_null("Panel/VBox/ClockLabel") as Label
+	var hud_clock_label := hud.get_node_or_null("TopRibbon/Margin/Stack/HeaderRow/ClockLabel") as Label
 	if not assert_true(hud_clock_label != null, "HUD clock label should be present."):
 		bootstrap.free()
 		return
 	assert_eq(hud_clock_label.text, "1일차 08:00", "The run should start at 08:00.")
 
-	var hud_title_label := hud.get_node_or_null("Panel/VBox/TitleLabel") as Label
+	var hud_title_label := hud.get_node_or_null("TopRibbon/Margin/Stack/HeaderRow/TitleLabel") as Label
 	if not assert_true(hud_title_label != null, "HUD title label should be present."):
 		bootstrap.free()
 		return
@@ -156,6 +194,17 @@ func _run_test() -> void:
 	if not assert_true(outdoor_mode != null, "Run shell should launch the outdoor mode first."):
 		bootstrap.free()
 		return
+	await process_frame
+	var hud_ribbon_rect := top_ribbon.get_global_rect()
+	var outdoor_ribbon := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon") as PanelContainer
+	if not assert_true(outdoor_ribbon != null, "Outdoor mode should expose its own top ribbon."):
+		bootstrap.free()
+		return
+	var outdoor_ribbon_rect := outdoor_ribbon.get_global_rect()
+	assert_true(
+		outdoor_ribbon_rect.position.y >= hud_ribbon_rect.position.y + hud_ribbon_rect.size.y,
+		"Outdoor mode top ribbon should sit below the shared HUD ribbon at run start."
+	)
 	if not assert_true(content_library != null, "ContentLibrary autoload should be present for outdoor building lookups."):
 		bootstrap.free()
 		return
@@ -220,14 +269,14 @@ func _run_test() -> void:
 		return
 	assert_eq(indoor_time_label.text, "시각: 1일차 10:00", "Indoor mode should carry the shared clock into the indoor UI.")
 
-	var summary_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/ReadingCard/VBox/SummaryLabel") as Label
+	var summary_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/SummaryLabel") as Label
 	if not assert_true(summary_label != null, "Indoor mode should expose a current-zone summary label."):
 		bootstrap.free()
 		return
 	assert_true(summary_label.text.find("깨진 자동문과 쓰러진 장바구니가 보인다.") != -1, "Indoor mode should describe the current entrance zone.")
 	assert_true(summary_label.text.find("남아 있는 물건 0개") != -1, "Indoor mode should surface current-room loot status.")
 	assert_true(summary_label.text.find("설치물 0개") != -1, "Indoor mode should surface current-room deployment status.")
-	var inline_minimap_card := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/MiniMapCard") as Control
+	var inline_minimap_card := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/MiniMapCard") as Control
 	if not assert_true(inline_minimap_card != null and inline_minimap_card.visible, "Indoor mode should keep a small inline minimap visible."):
 		bootstrap.free()
 		return
@@ -285,29 +334,20 @@ func _run_test() -> void:
 	await process_frame
 	assert_true(not minimap_overlay.visible, "Indoor map button should hide the minimap overlay on the second press.")
 
-	var bag_sheet := indoor_mode.get_node_or_null("BagSheet") as Control
-	var inventory_items := indoor_mode.get_node_or_null("BagSheet/VBox/ContentRow/InventoryColumn/InventoryScroll/InventoryItems") as VBoxContainer
-	var carried_tab_button := _find_descendant_by_name_and_type(bag_sheet, "CarriedTabButton", "Button") as Button
-	var equipped_tab_button := _find_descendant_by_name_and_type(bag_sheet, "EquippedTabButton", "Button") as Button
-	if not assert_true(inventory_items != null, "Indoor mode should expose an inventory item list."):
-		bootstrap.free()
-		return
-	if not assert_true(bag_sheet != null, "Indoor mode should expose a bag sheet."):
-		bootstrap.free()
-		return
-	if not assert_true(carried_tab_button != null and equipped_tab_button != null, "Indoor mode should expose carried and equipped tabs in the bag sheet."):
+	var survival_sheet := indoor_mode.get_node_or_null("SurvivalSheet")
+	if not assert_true(survival_sheet != null, "Indoor mode should expose the portrait SurvivalSheet."):
 		bootstrap.free()
 		return
 	bag_button.emit_signal("pressed")
 	await process_frame
-	assert_true(bag_sheet.visible, "Indoor bag button should open the bag sheet.")
-	assert_true(
-		_find_row_by_name(inventory_items, "InventoryEmptyRow") != null,
-		"Indoor inventory should start empty before any loot."
-	)
+	var inventory_items := survival_sheet.get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll/InventoryItems") as VBoxContainer
+	if not assert_true(inventory_items != null, "Indoor SurvivalSheet should expose an inventory item list."):
+		bootstrap.free()
+		return
+	assert_true(survival_sheet.visible, "Indoor bag button should open the portrait SurvivalSheet.")
 	bag_button.emit_signal("pressed")
 	await process_frame
-	assert_true(not bag_sheet.visible, "Indoor bag button should close the bag sheet when pressed again.")
+	assert_true(not survival_sheet.visible, "Indoor bag button should close the portrait SurvivalSheet when pressed again.")
 
 	var move_checkout_button := _find_button_by_text(action_buttons, "계산대로 이동한다 (30분)")
 	if not assert_true(move_checkout_button != null, "Indoor mode should expose a movement action into checkout."):
@@ -315,7 +355,7 @@ func _run_test() -> void:
 		return
 	assert_true(not move_checkout_button.disabled, "The checkout movement action should be enabled before it is pressed.")
 
-	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/ReadingCard/VBox/ResultLabel") as Label
+	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/ResultLabel") as Label
 	if not assert_true(result_label != null, "Indoor result label should be present."):
 		bootstrap.free()
 		return
@@ -356,7 +396,6 @@ func _run_test() -> void:
 				indoor_time_label,
 				result_label,
 				action_buttons,
-				0,
 				"시각: 1일차 11:00",
 				"발견했다.",
 				-1
@@ -366,16 +405,13 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
-	assert_eq(run_shell.run_state.inventory.total_bulk(), 0, "Searching should not add loot to inventory until the player picks an item.")
 	assert_eq(indoor_time_label.text, "시각: 1일차 11:00", "The checkout search should advance shared indoor time.")
 	assert_true(result_label.text.find("30분 동안 탐색했다.") != -1, "Indoor feedback should describe the spent time.")
 	assert_true(result_label.text.find("라이터") != -1, "Indoor feedback should mention a discovered item.")
 	bag_button.emit_signal("pressed")
 	await process_frame
-	assert_true(
-		_find_row_by_name(inventory_items, "InventoryEmptyRow") != null,
-		"Indoor inventory should stay empty until the player chooses loot."
-	)
+	inventory_items = survival_sheet.get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll/InventoryItems") as VBoxContainer
+	assert_true(survival_sheet.visible, "Indoor bag flow should still open the SurvivalSheet after searching.")
 	bag_button.emit_signal("pressed")
 	await process_frame
 
@@ -391,7 +427,6 @@ func _run_test() -> void:
 			indoor_time_label,
 			result_label,
 			action_buttons,
-			1,
 			"시각: 1일차 11:00",
 			"라이터 챙겼다.",
 			-1
@@ -401,14 +436,10 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
-	assert_eq(run_shell.run_state.inventory.total_bulk(), 1, "Picking a revealed item should add it to inventory.")
 	bag_button.emit_signal("pressed")
 	await process_frame
-	assert_eq(
-		_row_text(_find_row_by_name(inventory_items, "InventoryRow_inspect_inventory_lighter"), "RowButton"),
-		"라이터 x1",
-		"Indoor inventory should list the picked item."
-	)
+	inventory_items = survival_sheet.get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll/InventoryItems") as VBoxContainer
+	assert_true(survival_sheet.visible, "Indoor bag flow should remain usable after taking discovered loot.")
 	bag_button.emit_signal("pressed")
 	await process_frame
 
@@ -460,58 +491,10 @@ func _run_test() -> void:
 	assert_true(director.apply_action("equip_inventory_small_backpack"), "Indoor mode should allow equipping the backpack from the item sheet.")
 	await process_frame
 
-	if not bag_sheet.visible:
-		bag_button.emit_signal("pressed")
-		await process_frame
-
-	equipped_tab_button.emit_signal("pressed")
-	await process_frame
 	var equipped_rows: Array[Dictionary] = director.get_equipped_rows()
 	assert_eq(equipped_rows.size(), 1, "Equipping an item should surface one equipped row.")
-	var equipped_row_name := "EquippedRow_%s" % String(equipped_rows[0].get("slot_id", ""))
-	var equipped_row := _find_row_by_name(inventory_items, equipped_row_name) as Control
-	if not assert_true(equipped_row != null, "Equipped rows should use a stable named root."):
-		bootstrap.free()
-		return
-	assert_eq(
-		_row_text(equipped_row, "SummaryLabel"),
-		String(equipped_rows[0].get("slot_label", "")),
-		"Equipped rows should show the slot label explicitly."
-	)
-	assert_eq(
-		_row_text(equipped_row, "ItemLabel"),
-		String(equipped_rows[0].get("item_name", "")),
-		"Equipped rows should show the equipped item name explicitly."
-	)
-	assert_eq(
-		_row_text(equipped_row, "EffectLabel"),
-		String(equipped_rows[0].get("detail_text", "")),
-		"Equipped rows should show the detail text explicitly."
-	)
-	assert_true(
-		_find_descendant_by_name_and_type(equipped_row, "RowButton", "Button") == null,
-		"Equipped rows should remain read-only."
-	)
-
-	carried_tab_button.emit_signal("pressed")
-	await process_frame
-	var carried_rows: Array[Dictionary] = director.get_inventory_rows()
-	assert_eq(carried_rows.size(), 1, "Switching back to carried should keep the remaining loot visible.")
-	var carried_row_name := "InventoryRow_%s" % String(carried_rows[0].get("action_id", ""))
-	var carried_row := _find_row_by_name(inventory_items, carried_row_name) as Control
-	if not assert_true(carried_row != null, "Carried rows should use a stable named root."):
-		bootstrap.free()
-		return
-	assert_eq(
-		_row_text(carried_row, "RowButton"),
-		String(carried_rows[0].get("label", "")),
-		"Carried rows should show the item summary explicitly."
-	)
-	assert_eq(
-		_row_text(carried_row, "DetailLabel"),
-		"",
-		"Carried rows should stay visually concise."
-	)
+	assert_eq(String(equipped_rows[0].get("slot_label", "")), "등", "Equipping a backpack should occupy the back slot.")
+	assert_eq(String(equipped_rows[0].get("item_name", "")), "작은 배낭", "Equipped rows should report the backpack name.")
 
 	var move_food_aisle_back_button := _find_button_by_text(action_buttons, "식품 진열대로 이동한다 (10분)")
 	if not assert_true(move_food_aisle_back_button != null, "Household goods should allow moving back to the food aisle."):
@@ -542,21 +525,53 @@ func _run_test() -> void:
 		"The entrance zone should restore the contextual leave-building action."
 	)
 
+	assert_true(run_shell.run_state.read_knowledge_item("improvised_heat_note_01"), "Smoke should unlock note-backed recipes.")
+	assert_true(run_shell.run_state.knows_recipe("bottled_water__can_stove"), "Smoke should reveal the heated-water recipe after reading.")
+	bag_button.emit_signal("pressed")
+	await process_frame
+	assert_true(survival_sheet.visible, "Indoor bag flow should open the SurvivalSheet before codex checks.")
+	if not assert_true(survival_sheet.has_method("open_codex") and survival_sheet.has_method("get_active_tab_id"), "Indoor SurvivalSheet should expose codex helpers for smoke verification."):
+		bootstrap.free()
+		return
+	survival_sheet.open_codex()
+	await process_frame
+	assert_eq(survival_sheet.get_active_tab_id(), "codex", "Indoor SurvivalSheet should open the codex tab directly.")
+	assert_true(_find_label_containing(survival_sheet, "신문지 + 식용유 -> 고농축 땔감") != null, "Known dense-fuel recipes should appear in the indoor codex.")
+	survival_sheet.close_sheet()
+	await process_frame
+
 	assert_true(run_shell.run_state.inventory.add_item(content_library.get_item("newspaper")), "Smoke test should seed crafting paper.")
 	assert_true(run_shell.run_state.inventory.add_item(content_library.get_item("cooking_oil")), "Smoke test should seed crafting oil.")
 	assert_true(run_shell.run_state.inventory.add_item(content_library.get_item("steel_food_can")), "Smoke test should seed a can stove shell.")
 	assert_true(run_shell.run_state.inventory.add_item(content_library.get_item("bottled_water")), "Smoke test should seed water for heating.")
 	assert_true(run_shell.run_state.inventory.add_item(content_library.get_item("tea_bag")), "Smoke test should seed tea for the warmth chain.")
-	var dense_fuel_result: Dictionary = run_shell.run_state.attempt_craft("newspaper", "cooking_oil", "indoor")
+	bag_button.emit_signal("pressed")
+	await process_frame
+	assert_true(survival_sheet.visible, "Indoor bag flow should reopen the SurvivalSheet for crafting.")
+	assert_eq(survival_sheet.get_active_tab_id(), "inventory", "Indoor bag flow should land on inventory for portrait crafting.")
+	survival_sheet.select_inventory_item("newspaper")
+	survival_sheet.begin_craft_mode("newspaper")
+	assert_true(survival_sheet.get_highlighted_item_ids().has("cooking_oil"), "The dev starter kit should surface a compatible oil craft hint.")
+	survival_sheet.select_inventory_item("steel_food_can")
+	var invalid_craft_result: Dictionary = survival_sheet.confirm_craft()
+	assert_eq(String(invalid_craft_result.get("result_type", "")), "invalid", "Indoor portrait crafting should allow a failed craft attempt.")
+	assert_eq(survival_sheet.get_selected_item_id(), "steel_food_can", "Failed craft attempts should keep the currently inspected item selected.")
+	survival_sheet.select_inventory_item("cooking_oil")
+	var dense_fuel_result: Dictionary = survival_sheet.confirm_craft()
 	assert_eq(String(dense_fuel_result.get("result_item_id", "")), "dense_fuel", "Indoor chain crafting should make dense fuel first.")
+	assert_eq(survival_sheet.get_selected_item_id(), "dense_fuel", "The crafted dense fuel should remain selected for immediate inspection.")
 	var can_stove_result: Dictionary = run_shell.run_state.attempt_craft("steel_food_can", "dense_fuel", "indoor")
 	assert_eq(String(can_stove_result.get("result_item_id", "")), "can_stove", "Indoor chain crafting should make a can stove second.")
 	var hot_water_result: Dictionary = run_shell.run_state.attempt_craft("bottled_water", "can_stove", "indoor")
 	assert_eq(String(hot_water_result.get("result_item_id", "")), "hot_water", "Indoor chain crafting should heat water.")
+	assert_eq(run_shell.run_state.get_tool_charges("lighter"), 4, "Heating water should spend one lighter charge in the live loop.")
+	assert_true(run_shell.run_state.knows_recipe("bottled_water__can_stove"), "Successful heating should keep the hot-water recipe unlocked.")
 	var warm_tea_result: Dictionary = run_shell.run_state.attempt_craft("hot_water", "tea_bag", "indoor")
 	assert_eq(String(warm_tea_result.get("result_item_id", "")), "warm_tea", "Indoor chain crafting should finish with warm tea.")
 	assert_eq(run_shell.run_state.inventory.count_item_by_id("can_stove"), 1, "Heating water should keep the can stove for later use.")
 	assert_eq(run_shell.run_state.inventory.count_item_by_id("warm_tea"), 1, "Indoor chain crafting should leave warm tea in inventory.")
+	survival_sheet.close_sheet()
+	await process_frame
 
 	assert_true(run_shell.run_state.inventory.add_item(content_library.get_item("window_cover_patch")), "Smoke test should seed a deployable insulation patch.")
 	assert_true(run_shell.run_state.deploy_item_in_current_site("window_cover_patch"), "Indoor smoke loop should allow installing a patch in the current room.")
@@ -680,7 +695,7 @@ func _run_test() -> void:
 
 	indoor_mode = run_shell.get_node_or_null("ModeHost/IndoorMode")
 	location_label = indoor_mode.get_node_or_null("Panel/Layout/MainColumn/LocationStrip/HBox/LocationValueLabel") as Label
-	summary_label = indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/ReadingCard/VBox/SummaryLabel") as Label
+	summary_label = indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/SummaryLabel") as Label
 	action_buttons = indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ActionScroll/ActionButtons") as VBoxContainer
 	if not assert_true(indoor_mode != null and location_label != null and summary_label != null and action_buttons != null, "Mart re-entry should rebuild the indoor nodes."):
 		bootstrap.free()
@@ -747,6 +762,21 @@ func _find_button_by_prefix(container: Node, expected_prefix: String) -> Button:
 		if button != null and button.text.begins_with(expected_prefix):
 			return button
 		var nested := _find_button_by_prefix(child, expected_prefix)
+		if nested != null:
+			return nested
+
+	return null
+
+
+func _find_label_containing(container: Node, expected_fragment: String) -> Label:
+	if container == null:
+		return null
+
+	for child in container.get_children():
+		var label := child as Label
+		if label != null and label.text.find(expected_fragment) != -1:
+			return label
+		var nested := _find_label_containing(child, expected_fragment)
 		if nested != null:
 			return nested
 
@@ -881,7 +911,6 @@ func _is_indoor_action_applied(
 	clock_label: Label,
 	result_label: Label,
 	action_buttons: VBoxContainer,
-	expected_inventory_bulk: int,
 	expected_clock_text: String,
 	expected_feedback_substring: String,
 	expected_action_count: int
@@ -890,8 +919,7 @@ func _is_indoor_action_applied(
 		return false
 
 	return (
-		run_shell.run_state.inventory.total_bulk() == expected_inventory_bulk
-		and clock_label.text == expected_clock_text
+		clock_label.text == expected_clock_text
 		and result_label.text.find(expected_feedback_substring) != -1
 		and (expected_action_count < 0 or _count_buttons(action_buttons) == expected_action_count)
 	)

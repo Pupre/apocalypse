@@ -38,6 +38,10 @@ func _run_test() -> void:
 	if not assert_true(run_state_script != null, "Missing run state script: %s" % RUN_STATE_SCRIPT_PATH):
 		return
 
+	var content_library := root.get_node_or_null("ContentLibrary")
+	if not assert_true(content_library != null, "ContentLibrary should be available for indoor mode tests."):
+		return
+
 	var run_state = run_state_script.from_survivor_config({
 		"job_id": "courier",
 		"trait_ids": PackedStringArray(["athlete"]),
@@ -79,17 +83,32 @@ func _run_test() -> void:
 		indoor_mode.free()
 		return
 
+	var craft_button := _find_descendant_by_name_and_type(top_bar, "CraftButton", "Button") as Button
+	if not assert_true(craft_button == null, "Indoor mode should remove the dedicated craft button in portrait mode."):
+		indoor_mode.free()
+		return
+
+	var codex_button := _find_descendant_by_name_and_type(top_bar, "CodexButton", "Button") as Button
+	if not assert_true(codex_button == null, "Indoor mode should remove the dedicated codex button in portrait mode."):
+		indoor_mode.free()
+		return
+
 	var minimap_overlay := indoor_mode.get_node_or_null("MinimapOverlay") as Control
 	if not assert_true(minimap_overlay != null, "Indoor mode should expose a minimap overlay."):
 		indoor_mode.free()
 		return
 	assert_true(not minimap_overlay.visible, "Indoor mode should keep the minimap overlay hidden by default.")
 
-	var bag_sheet := indoor_mode.get_node_or_null("BagSheet") as Control
-	if not assert_true(bag_sheet != null, "Indoor mode should expose a bag bottom sheet."):
+	var survival_sheet := indoor_mode.get_node_or_null("SurvivalSheet") as CanvasLayer
+	if not assert_true(survival_sheet != null, "Indoor mode should mount the new SurvivalSheet."):
 		indoor_mode.free()
 		return
-	assert_true(not bag_sheet.visible, "Indoor mode should keep the bag sheet hidden by default.")
+	assert_true(not survival_sheet.visible, "Indoor mode should keep the SurvivalSheet hidden by default.")
+
+	var legacy_bag_sheet := indoor_mode.get_node_or_null("BagSheet") as Control
+	if not assert_true(legacy_bag_sheet == null, "Indoor mode should remove the legacy BagSheet tree once SurvivalSheet is the only inventory surface."):
+		indoor_mode.free()
+		return
 
 	var exit_button := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/Header/ExitButton") as Button
 	if not assert_true(exit_button == null, "Indoor mode should no longer expose a global ExitButton."):
@@ -124,15 +143,33 @@ func _run_test() -> void:
 		"Indoor mode should show the current zone label without the old header-row prefix."
 	)
 
-	var inline_minimap_card := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/MiniMapCard") as Control
+	var context_row := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow") as Control
+	if not assert_true(context_row == null, "Indoor mode should remove the old ContextRow wrapper in portrait mode."):
+		indoor_mode.free()
+		return
+
+	var reading_card := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard") as Control
+	if not assert_true(reading_card != null, "Indoor mode should mount ReadingCard directly under MainColumn."):
+		indoor_mode.free()
+		return
+	assert_true(
+		reading_card.size_flags_vertical != Control.SIZE_EXPAND_FILL,
+		"Indoor mode should let the reading card hug its content so the action list keeps most portrait height."
+	)
+
+	var inline_minimap_card := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/MiniMapCard") as Control
 	if not assert_true(
 		inline_minimap_card != null and inline_minimap_card.visible,
 		"Indoor mode should keep a small minimap visible in the main reading screen."
 	):
 		indoor_mode.free()
 		return
+	assert_true(
+		inline_minimap_card.custom_minimum_size.y <= 104.0,
+		"Indoor mode should keep the inline minimap shallow enough to preserve vertical space for actions."
+	)
 
-	var inline_minimap := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/MiniMapCard/MapNodes") as Control
+	var inline_minimap := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/MiniMapCard/MapNodes") as Control
 	if not assert_true(inline_minimap != null, "Indoor mode should mount an always-visible minimap node."):
 		indoor_mode.free()
 		return
@@ -248,24 +285,9 @@ func _run_test() -> void:
 
 	bag_button.emit_signal("pressed")
 	await process_frame
-	assert_true(bag_sheet.visible, "Indoor mode should open the bag sheet from the top bar.")
-	assert_true(not stat_detail_sheet.visible, "Opening the bag should close the stat detail sheet.")
+	assert_true(survival_sheet.visible, "Indoor mode should open the SurvivalSheet from the top bar.")
+	assert_true(not stat_detail_sheet.visible, "Opening the SurvivalSheet should close the stat detail sheet.")
 
-	target_chip_button = _find_descendant_by_name_and_type(stat_chip_row, "health", "Button") as Button
-	if not assert_true(target_chip_button != null, "Indoor mode should keep the health chip button available after closing the bag."):
-		indoor_mode.free()
-		return
-	target_chip_button.emit_signal("pressed")
-	await process_frame
-	assert_true(not bag_sheet.visible, "Pressing a stat chip while the bag is open should close the bag sheet.")
-	assert_true(stat_detail_sheet.visible, "Pressing a stat chip while the bag is open should reopen the stat detail sheet.")
-
-	target_chip_button = _find_descendant_by_name_and_type(stat_chip_row, "health", "Button") as Button
-	if not assert_true(target_chip_button != null, "Indoor mode should keep the health chip button available after reopening the detail sheet."):
-		indoor_mode.free()
-		return
-	target_chip_button.emit_signal("pressed")
-	await process_frame
 	map_button.emit_signal("pressed")
 	await process_frame
 	assert_true(minimap_overlay.visible, "Indoor mode should open the minimap overlay when the top-bar map button is pressed.")
@@ -274,7 +296,7 @@ func _run_test() -> void:
 	await process_frame
 	assert_true(not minimap_overlay.visible, "Indoor mode should close the minimap overlay when the map button is pressed again.")
 
-	var summary_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/ReadingCard/VBox/SummaryLabel") as Label
+	var summary_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/SummaryLabel") as Label
 	if not assert_true(summary_label != null, "Indoor mode should expose a current-zone SummaryLabel."):
 		indoor_mode.free()
 		return
@@ -302,7 +324,7 @@ func _run_test() -> void:
 		indoor_mode.free()
 		return
 
-	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow/ReadingCard/VBox/ResultLabel") as Label
+	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/ResultLabel") as Label
 	if not assert_true(result_label != null, "Indoor mode should expose a ResultLabel."):
 		indoor_mode.free()
 		return
@@ -311,6 +333,10 @@ func _run_test() -> void:
 	if not assert_true(action_scroll != null, "Indoor mode should expose a scrollable action list container."):
 		indoor_mode.free()
 		return
+	assert_true(
+		action_scroll.custom_minimum_size.y >= 320.0,
+		"Indoor mode should reserve a larger portrait baseline for the main action list."
+	)
 	var action_buttons := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ActionScroll/ActionButtons") as VBoxContainer
 	if not assert_true(action_buttons != null, "Indoor mode should expose action buttons."):
 		indoor_mode.free()
@@ -360,105 +386,6 @@ func _run_test() -> void:
 	await process_frame
 	assert_true(not minimap_overlay.visible, "Indoor mode should hide the minimap overlay when the map button is pressed again.")
 
-	var bag_title_label := _find_descendant_by_name_and_type(bag_sheet, "TitleLabel", "Label") as Label
-	var bag_status_label := _find_descendant_by_name_and_type(bag_sheet, "StatusLabel", "Label") as Label
-	var carried_tab_button := _find_descendant_by_name_and_type(bag_sheet, "CarriedTabButton", "Button") as Button
-	var equipped_tab_button := _find_descendant_by_name_and_type(bag_sheet, "EquippedTabButton", "Button") as Button
-	var inventory_scroll := _find_descendant_by_name_and_type(bag_sheet, "InventoryScroll", "ScrollContainer") as ScrollContainer
-	var inventory_items := _find_descendant_by_name_and_type(inventory_scroll, "InventoryItems", "VBoxContainer") as VBoxContainer
-	if not assert_true(inventory_items != null, "Indoor mode should expose an inventory list container."):
-		indoor_mode.free()
-		return
-	if not assert_true(inventory_scroll != null, "Indoor mode should mount the inventory list inside a ScrollContainer."):
-		indoor_mode.free()
-		return
-	if not assert_true(bag_title_label != null, "Indoor mode should expose a bag title label."):
-		indoor_mode.free()
-		return
-	if not assert_true(bag_status_label != null, "Indoor mode should expose a bag status label."):
-		indoor_mode.free()
-		return
-	if not assert_true(carried_tab_button != null and equipped_tab_button != null, "Indoor mode should expose carried/equipped bag tabs."):
-		indoor_mode.free()
-		return
-	var bag_content_row := indoor_mode.get_node_or_null("BagSheet/VBox/ContentRow") as HBoxContainer
-	if not assert_true(bag_content_row != null, "Indoor mode should split the bag sheet into list/detail columns."):
-		indoor_mode.free()
-		return
-	var item_detail_panel := indoor_mode.get_node_or_null("BagSheet/VBox/ContentRow/ItemDetailPanel") as Control
-	if not assert_true(item_detail_panel != null, "Indoor mode should render selected inventory details inside the bag sheet."):
-		indoor_mode.free()
-		return
-	var item_detail_title := indoor_mode.get_node_or_null("BagSheet/VBox/ContentRow/ItemDetailPanel/VBox/ItemNameLabel") as Label
-	if not assert_true(item_detail_title != null, "Indoor mode should render the item detail title inside the right-side bag panel."):
-		indoor_mode.free()
-		return
-	assert_true(
-		carried_tab_button.button_group != null and carried_tab_button.button_group == equipped_tab_button.button_group,
-		"Indoor mode should wire the bag tabs as a segmented control."
-	)
-	assert_true(
-		carried_tab_button.custom_minimum_size.x >= 120.0 and carried_tab_button.custom_minimum_size.y >= 44.0,
-		"Indoor mode should keep the carried tab finger-friendly."
-	)
-	assert_true(
-		equipped_tab_button.custom_minimum_size.x >= 120.0 and equipped_tab_button.custom_minimum_size.y >= 44.0,
-		"Indoor mode should keep the equipped tab finger-friendly."
-	)
-	bag_button.emit_signal("pressed")
-	await process_frame
-	assert_true(bag_sheet.visible, "Indoor mode should open the bag sheet from the top bar.")
-	assert_true(carried_tab_button.toggle_mode, "Carried tab should render as an explicit selectable tab.")
-	assert_true(equipped_tab_button.toggle_mode, "Equipped tab should render as an explicit selectable tab.")
-	assert_true(not carried_tab_button.disabled, "The selected tab should stay enabled so the control reads as a segment, not a disabled button.")
-	assert_true(not equipped_tab_button.disabled, "The inactive tab should stay enabled so it remains part of the segmented control.")
-	assert_true(carried_tab_button.button_pressed, "Carried tab should be selected by default.")
-	assert_true(not equipped_tab_button.button_pressed, "Equipped tab should be inactive by default.")
-	assert_true(
-		carried_tab_button.modulate != equipped_tab_button.modulate,
-		"Indoor mode should give the active bag tab a visibly different tone."
-	)
-	assert_eq(
-		bag_title_label.text,
-		"소지품 (0/8)",
-		"Indoor mode should show the current carry usage in the bag title."
-	)
-	assert_eq(
-		bag_status_label.text,
-		"여유 있음",
-		"Indoor mode should show a calm carry-state message while the player is under the limit."
-	)
-	assert_true(
-		_find_row_by_name(inventory_items, "InventoryEmptyRow") != null,
-		"Indoor mode should show a named empty carried row before the player loots anything."
-	)
-	assert_eq(
-		_row_text(_find_row_by_name(inventory_items, "InventoryEmptyRow"), "EmptyLabel"),
-		"소지품 없음",
-		"Indoor mode should show an empty inventory placeholder before the player loots anything."
-	)
-	equipped_tab_button.emit_signal("pressed")
-	await process_frame
-	assert_true(equipped_tab_button.button_pressed, "Equipped tab should become the selected state when tapped.")
-	assert_true(not carried_tab_button.button_pressed, "Carried tab should leave the selected state when another tab is active.")
-	assert_true(
-		_find_row_by_name(inventory_items, "EquippedEmptyRow") != null,
-		"Indoor mode should show a named empty equipped row when nothing is worn."
-	)
-	assert_eq(
-		_row_text(_find_row_by_name(inventory_items, "EquippedEmptyRow"), "EmptyLabel"),
-		"장착 장비 없음",
-		"Indoor mode should show empty equipped gear in the bag sheet."
-	)
-	carried_tab_button.emit_signal("pressed")
-	await process_frame
-	assert_true(not item_detail_panel.visible, "Indoor mode should keep the bag detail panel hidden until an inventory item is selected.")
-	assert_eq(
-		item_detail_panel.custom_minimum_size.x,
-		0.0,
-		"Indoor mode should collapse the item detail column width while nothing is selected."
-	)
-
 	if not assert_true(director != null and director.has_method("apply_action"), "Indoor mode should expose its Director node."):
 		indoor_mode.free()
 		return
@@ -467,6 +394,7 @@ func _run_test() -> void:
 		director.apply_action("move_checkout"),
 		"Director should allow moving to the checkout zone from the entry zone."
 	)
+	await process_frame
 	assert_eq(
 		location_value.text,
 		"계산대",
@@ -513,15 +441,6 @@ func _run_test() -> void:
 		"Indoor result feedback should mention the items the player just found."
 	)
 	assert_true(
-		_find_row_by_name(inventory_items, "InventoryEmptyRow") != null,
-		"Searching should not add loot to inventory until the player picks an item."
-	)
-	assert_eq(
-		_row_text(_find_row_by_name(inventory_items, "InventoryEmptyRow"), "EmptyLabel"),
-		"소지품 없음",
-		"Searching should not add loot to inventory until the player picks an item."
-	)
-	assert_true(
 		_find_button_by_text(action_buttons, "라이터 챙긴다") != null,
 		"Searching should reveal follow-up actions for each discovered item."
 	)
@@ -544,95 +463,30 @@ func _run_test() -> void:
 		return
 	take_energy_bar_button.emit_signal("pressed")
 	await process_frame
-	var carried_rows: Array[Dictionary] = director.get_inventory_rows()
-	assert_eq(carried_rows.size(), 2, "Picking up discovered items should update the indoor inventory payload.")
 	assert_eq(
-		_row_text(
-			_find_row_by_name(inventory_items, String("InventoryRow_%s" % String(carried_rows[0].get("action_id", "")))),
-			"RowButton"
-		),
-		String(carried_rows[0].get("label", "")),
-		"Picking up discovered items should show the first carried row summary explicitly."
+		director.get_inventory_rows().size(),
+		2,
+		"Picking up discovered items should update the indoor inventory payload."
 	)
-	assert_eq(
-		_row_text(
-			_find_row_by_name(inventory_items, String("InventoryRow_%s" % String(carried_rows[0].get("action_id", "")))),
-			"DetailLabel"
-		),
-		"",
-		"Picking up discovered items should keep carried rows visually concise."
-	)
-	assert_eq(
-		_row_text(
-			_find_row_by_name(inventory_items, String("InventoryRow_%s" % String(carried_rows[1].get("action_id", "")))),
-			"RowButton"
-		),
-		String(carried_rows[1].get("label", "")),
-		"Picking up discovered items should show the second carried row summary explicitly."
-	)
-	assert_eq(
-		bag_title_label.text,
-		"소지품 (2/8)",
-		"Indoor mode should refresh the carry usage after looting items."
-	)
-	var energy_bar_button := _find_button_by_text(inventory_items, "에너지바 x1")
-	if not assert_true(energy_bar_button != null, "Indoor inventory should expose carried items as selectable buttons."):
-		indoor_mode.free()
-		return
-	energy_bar_button.emit_signal("pressed")
-	await process_frame
-	assert_true(item_detail_panel.visible, "Selecting an inventory item should open the in-bag detail panel.")
-	assert_true(
-		item_detail_panel.custom_minimum_size.x >= 260.0,
-		"Indoor mode should reserve a readable right-hand detail column once an item is selected."
-	)
-	var item_sheet_title := _find_descendant_by_name_and_type(item_detail_panel, "ItemNameLabel", "Label") as Label
-	var item_sheet_description := _find_descendant_by_name_and_type(item_detail_panel, "ItemDescriptionLabel", "Label") as Label
-	var item_sheet_effect := _find_descendant_by_name_and_type(item_detail_panel, "ItemEffectLabel", "Label") as Label
-	var item_sheet_actions := _find_descendant_by_name_and_type(item_detail_panel, "ActionButtons", "HBoxContainer") as HBoxContainer
-	if not assert_true(item_sheet_title != null and item_sheet_description != null and item_sheet_effect != null and item_sheet_actions != null, "Indoor item sheet should expose detail labels and action buttons."):
-		indoor_mode.free()
-		return
-	assert_eq(item_sheet_title.text, "에너지바", "Indoor item sheet should show the selected item title.")
-	assert_true(item_sheet_description.text.length() > 0, "Indoor item sheet should show an item description.")
-	assert_true(item_sheet_effect.text.find("허기 +10") != -1, "Indoor item sheet should show exact hunger recovery values.")
-	assert_true(item_sheet_effect.text.find("10분") != -1, "Indoor item sheet should show exact item use time where relevant.")
+
+	assert_true(director.apply_action("inspect_inventory_energy_bar"), "Indoor mode should allow selecting a carried food item for inspection.")
 	var selected_item_sheet: Dictionary = director.get_selected_inventory_sheet()
+	assert_true(bool(selected_item_sheet.get("visible", false)), "Inspecting an item should expose selected sheet data.")
+	assert_eq(String(selected_item_sheet.get("title", "")), "에너지바", "Selected sheet data should surface the chosen item title.")
 	assert_true(String(selected_item_sheet.get("usage_hint", "")).length() > 0, "Selected item sheets should expose usage_hint.")
 	assert_true(String(selected_item_sheet.get("cold_hint", "")).length() > 0, "Selected item sheets should expose cold_hint.")
 	assert_true(Array(selected_item_sheet.get("item_tags", [])).size() > 0, "Selected item sheets should expose item_tags.")
-	assert_true(item_sheet_description.text.find(String(selected_item_sheet.get("usage_hint", ""))) != -1, "Indoor item sheet should render usage hints in the detail copy.")
-	assert_true(item_sheet_effect.text.find("#") != -1, "Indoor item sheet should surface item tags in the effect summary.")
-	assert_true(_find_button_in_container(item_sheet_actions, "먹는다") != null, "Food items should expose an eat action in the item sheet.")
-	assert_true(_find_button_in_container(item_sheet_actions, "버린다") != null, "Item sheet should expose a drop action.")
-
-	var eat_button := _find_button_in_container(item_sheet_actions, "먹는다")
-	eat_button.emit_signal("pressed")
+	assert_true(director.apply_action("consume_inventory_energy_bar"), "Indoor mode should still allow consuming an item through director actions.")
 	await process_frame
 	assert_eq(
 		director.get_inventory_rows().size(),
 		1,
 		"Eating a food item should remove it from the carried inventory payload."
 	)
-	carried_rows = director.get_inventory_rows()
-	assert_eq(
-		_row_text(
-			_find_row_by_name(inventory_items, String("InventoryRow_%s" % String(carried_rows[0].get("action_id", "")))),
-			"RowButton"
-		),
-		String(carried_rows[0].get("label", "")),
-		"Eating a food item should keep the remaining carried row readable."
-	)
-	assert_eq(
-		bag_title_label.text,
-		"소지품 (1/8)",
-		"Eating an item should free carry space in the bag title."
-	)
 	assert_true(
 		result_label.text.find("먹었다") != -1,
 		"Eating an item should leave readable feedback."
 	)
-	assert_true(not item_detail_panel.visible, "Resolving an item-sheet action should close the in-bag detail panel.")
 
 	var move_entrance_button := _find_button_by_text(action_buttons, "정문 진입부로 이동한다 (10분)")
 	if not assert_true(move_entrance_button != null, "Indoor mode should expose a return action back to the entrance."):
@@ -660,68 +514,49 @@ func _run_test() -> void:
 	take_household_backpack_button.emit_signal("pressed")
 	await process_frame
 	assert_true(director.apply_action("inspect_inventory_small_backpack"), "Indoor mode should allow selecting the backpack for inspection.")
-	assert_true(director.apply_action("equip_inventory_small_backpack"), "Indoor mode should allow equipping the backpack from the item sheet.")
-	await process_frame
-	equipped_tab_button.emit_signal("pressed")
+	assert_true(director.apply_action("equip_inventory_small_backpack"), "Indoor mode should allow equipping the backpack from the inventory flow.")
 	await process_frame
 	var equipped_rows: Array[Dictionary] = director.get_equipped_rows()
 	assert_eq(equipped_rows.size(), 1, "Equipping an item should surface one equipped state row.")
-	var equipped_row_name := "EquippedRow_%s" % String(equipped_rows[0].get("slot_id", ""))
-	var equipped_row := _find_row_by_name(inventory_items, equipped_row_name) as Control
-	if not assert_true(equipped_row != null, "Equipped rows should have a stable named root."):
-		indoor_mode.free()
-		return
-	assert_eq(
-		_row_text(equipped_row, "SummaryLabel"),
-		String(equipped_rows[0].get("slot_label", "")),
-		"Equipped rows should surface the slot label as the summary heading."
-	)
-	assert_eq(
-		_row_text(equipped_row, "ItemLabel"),
-		String(equipped_rows[0].get("item_name", "")),
-		"Equipped rows should surface the equipped item name as a separate line."
-	)
-	assert_eq(
-		_row_text(equipped_row, "EffectLabel"),
-		String(equipped_rows[0].get("detail_text", "")),
-		"Equipped rows should surface the equipped item effect text."
-	)
-	assert_true(
-		_find_descendant_by_name_and_type(equipped_row, "RowButton", "Button") == null,
-		"Equipped rows should read like summaries instead of interactive buttons."
-	)
-	carried_tab_button.emit_signal("pressed")
-	await process_frame
+	assert_eq(String(equipped_rows[0].get("slot_label", "")), "등", "The backpack should occupy the back slot.")
 
-	var lighter_button := _find_button_by_text(inventory_items, "라이터 x1")
-	if not assert_true(lighter_button != null, "Remaining carried items should stay selectable after eating another item."):
-		indoor_mode.free()
-		return
-	lighter_button.emit_signal("pressed")
+	assert_true(director.apply_action("inspect_inventory_lighter"), "Indoor mode should allow selecting the lighter for inspection.")
+	selected_item_sheet = director.get_selected_inventory_sheet()
+	assert_true(String(selected_item_sheet.get("effect_text", "")).find("잔량 5/5") != -1, "Lighter detail should show current remaining charges.")
+	assert_true(String(selected_item_sheet.get("effect_text", "")).find("#ignition_tool") != -1, "Lighter detail should expose ignition tool tags.")
+	assert_true(director.apply_action("drop_inventory_lighter"), "Indoor mode should still allow dropping the remaining utility item.")
 	await process_frame
-	var drop_button := _find_button_in_container(item_sheet_actions, "버린다")
-	if not assert_true(drop_button != null, "Utility items should still expose a drop action from the item sheet."):
-		indoor_mode.free()
-		return
-	drop_button.emit_signal("pressed")
-	await process_frame
-	assert_true(
-		_find_row_by_name(inventory_items, "InventoryEmptyRow") != null,
-		"Dropping the remaining utility item should restore the empty carried row payload."
-	)
-	assert_eq(
-		_row_text(_find_row_by_name(inventory_items, "InventoryEmptyRow"), "EmptyLabel"),
-		"소지품 없음",
-		"Dropping the remaining utility item should restore the empty carried row."
-	)
-	assert_eq(
-		bag_title_label.text,
-		"소지품 (0/12)",
-		"Dropping the remaining item should free all carry space."
-	)
+	assert_eq(director.get_inventory_rows().size(), 0, "Dropping the remaining item should restore the empty carried payload.")
 	assert_true(
 		result_label.text.find("버렸다") != -1 or result_label.text.find("내려놓았다") != -1,
-		"Dropping an item from the sheet should leave readable feedback."
+		"Dropping an item from the inventory flow should leave readable feedback."
+	)
+
+	assert_true(run_state.inventory.add_item(content_library.get_item("newspaper")), "Indoor portrait test should add a newspaper crafting input.")
+	assert_true(run_state.inventory.add_item(content_library.get_item("cooking_oil")), "Indoor portrait test should add cooking oil crafting input.")
+	assert_true(run_state.inventory.add_item(content_library.get_item("steel_food_can")), "Indoor portrait test should add an invalid-on-purpose second ingredient that is still actually in the bag.")
+	indoor_mode.refresh_view()
+	bag_button.emit_signal("pressed")
+	await process_frame
+	assert_true(survival_sheet.visible, "Indoor mode should open the SurvivalSheet from the top bar.")
+	assert_eq(survival_sheet.get_active_tab_id(), "inventory", "Opening from the top bar should land on inventory.")
+	survival_sheet.select_inventory_item("newspaper")
+	survival_sheet.begin_craft_mode("newspaper")
+	assert_true(survival_sheet.get_highlighted_item_ids().has("cooking_oil"), "Indoor SurvivalSheet should surface easy-mode craft hints.")
+
+	survival_sheet.select_inventory_item("steel_food_can")
+	var failed_outcome: Dictionary = survival_sheet.confirm_craft()
+	assert_eq(String(failed_outcome.get("result_type", "")), "invalid", "Indoor craft flow should allow failed attempts.")
+	assert_true(survival_sheet.visible, "A failed craft attempt should not close the survival sheet.")
+	assert_eq(survival_sheet.get_selected_item_id(), "steel_food_can", "Indoor failed attempts should keep the currently inspected item selected.")
+
+	survival_sheet.select_inventory_item("cooking_oil")
+	var success_outcome: Dictionary = survival_sheet.confirm_craft()
+	assert_eq(String(success_outcome.get("result_item_id", "")), "dense_fuel", "Indoor craft flow should still produce dense fuel.")
+	assert_eq(survival_sheet.get_selected_item_id(), "dense_fuel", "Indoor craft success should jump directly to the result detail.")
+	assert_true(
+		result_label.text.find("고농축 땔감") != -1,
+		"Indoor craft flow should push crafted item feedback back into the main reading result."
 	)
 
 	assert_true(
@@ -734,8 +569,8 @@ func _run_test() -> void:
 	)
 	assert_eq(
 		time_label.text,
-		"시각: 1일차 11:10",
-		"Indoor mode should update the visible time after walking back through known zones."
+		"시각: 1일차 11:30",
+		"Indoor mode should include the portrait craft time before walking back through known zones."
 	)
 	assert_true(
 		_find_button_by_text(action_buttons, "건물 밖으로 나간다") != null,

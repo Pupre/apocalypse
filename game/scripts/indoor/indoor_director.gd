@@ -245,12 +245,7 @@ func get_inventory_status_text() -> String:
 
 func get_inventory_rows() -> Array[Dictionary]:
 	if _run_state == null or _run_state.inventory == null:
-		return [{
-			"kind": "empty",
-			"label": "소지품 없음",
-			"action_id": "",
-			"detail_text": "",
-		}]
+		return []
 
 	var rows: Array[Dictionary] = []
 	var counts := {}
@@ -269,18 +264,17 @@ func get_inventory_rows() -> Array[Dictionary]:
 		counts[item_id] = int(counts[item_id]) + 1
 
 	if order.is_empty():
-		return [{
-			"kind": "empty",
-			"label": "소지품 없음",
-			"action_id": "",
-			"detail_text": "",
-		}]
+		return []
 
 	for item_id in order:
 		var item_data := _item_definition(item_id)
 		rows.append({
 			"kind": "carried",
+			"item_id": item_id,
+			"count": int(counts[item_id]),
 			"label": "%s x%d" % [_item_name(item_data, item_id), int(counts[item_id])],
+			"tag_texts": _item_tags(item_data),
+			"charges_text": _item_charges_text(item_id, item_data),
 			"action_id": "inspect_inventory_%s" % item_id,
 			"detail_text": "",
 		})
@@ -340,9 +334,14 @@ func get_selected_inventory_sheet() -> Dictionary:
 		"usage_hint": String(item_data.get("usage_hint", "")),
 		"cold_hint": String(item_data.get("cold_hint", "")),
 		"item_tags": item_data.get("item_tags", []),
-		"effect_text": _item_effect_text(item_data),
+		"effect_text": _item_sheet_effect_text(item_data),
 		"actions": _inventory_sheet_actions(item_data, _selected_inventory_item_id),
 	}
+
+
+func set_feedback_message(message: String) -> void:
+	_event_state["last_feedback_message"] = message
+	state_changed.emit()
 
 
 func get_map_snapshot() -> Dictionary:
@@ -482,6 +481,16 @@ func apply_action(action_id: String) -> bool:
 		]
 		if use_minutes > 0:
 			_event_state["last_feedback_message"] += " %d분이 지났다." % use_minutes
+		state_changed.emit()
+		return true
+
+	if action_id.begins_with("read_inventory_"):
+		var read_item_id := action_id.trim_prefix("read_inventory_")
+		var read_item_data: Dictionary = _item_definition(read_item_id)
+		if read_item_data.is_empty() or not bool(read_item_data.get("readable", false)) or _run_state == null or not _run_state.has_method("read_knowledge_item"):
+			return false
+		var read_result := bool(_run_state.read_knowledge_item(read_item_id))
+		_event_state["last_feedback_message"] = "%s에서 새로운 조합법을 익혔다." % _item_name(read_item_data, read_item_id) if read_result else "%s는 이미 아는 내용이다." % _item_name(read_item_data, read_item_id)
 		state_changed.emit()
 		return true
 
@@ -661,18 +670,26 @@ func _item_definition(item_id: String) -> Dictionary:
 	if item_id.is_empty():
 		return {}
 
-	if ContentLibrary != null and ContentLibrary.has_method("get_item"):
-		var item_data: Variant = ContentLibrary.get_item(item_id)
-		if typeof(item_data) == TYPE_DICTIONARY and not (item_data as Dictionary).is_empty():
-			return item_data
-
 	if _run_state != null and _run_state.inventory != null:
 		for item_variant in _run_state.inventory.items:
 			if typeof(item_variant) != TYPE_DICTIONARY:
 				continue
 			var item := item_variant as Dictionary
 			if String(item.get("id", "")) == item_id:
-				return item
+				var merged_item := item.duplicate(true)
+				if ContentLibrary != null and ContentLibrary.has_method("get_item"):
+					var item_data: Variant = ContentLibrary.get_item(item_id)
+					if typeof(item_data) == TYPE_DICTIONARY and not (item_data as Dictionary).is_empty():
+						var content_item := (item_data as Dictionary).duplicate(true)
+						for key in merged_item.keys():
+							content_item[key] = merged_item[key]
+						return content_item
+				return merged_item
+
+	if ContentLibrary != null and ContentLibrary.has_method("get_item"):
+		var fallback_item_data: Variant = ContentLibrary.get_item(item_id)
+		if typeof(fallback_item_data) == TYPE_DICTIONARY and not (fallback_item_data as Dictionary).is_empty():
+			return fallback_item_data
 
 	return {}
 
@@ -710,12 +727,54 @@ func _item_effect_text(item_data: Dictionary) -> String:
 	var use_minutes := int(item_data.get("use_minutes", 0))
 	if use_minutes > 0:
 		parts.append("소요 시간 %d분" % use_minutes)
+	var charges_max := int(item_data.get("charges_max", item_data.get("max_charges", 0)))
+	var charges_current := int(item_data.get("charges_current", item_data.get("charges", charges_max)))
+	if charges_max > 0:
+		var charge_label := String(item_data.get("charge_label", "잔량"))
+		parts.append("%s %d/%d" % [charge_label, charges_current, charges_max])
 
 	return "효과 없음" if parts.is_empty() else " / ".join(parts)
 
 
+func _item_sheet_effect_text(item_data: Dictionary) -> String:
+	var lines: Array[String] = []
+	var tag_texts := _item_tags(item_data)
+	if not tag_texts.is_empty():
+		lines.append(" ".join(tag_texts))
+	lines.append(_item_effect_text(item_data))
+	return "\n".join(lines)
+
+
+func _item_tags(item_data: Dictionary) -> Array[String]:
+	var tags: Array[String] = []
+	var item_tags_variant: Variant = item_data.get("item_tags", [])
+	if typeof(item_tags_variant) != TYPE_ARRAY:
+		return tags
+	for tag_variant in item_tags_variant:
+		var tag_text := String(tag_variant)
+		if tag_text.is_empty():
+			continue
+		tags.append("#%s" % tag_text)
+	return tags
+
+
+func _item_charges_text(item_id: String, item_data: Dictionary) -> String:
+	if _run_state == null or not _run_state.has_method("get_tool_charges"):
+		return ""
+	var max_charges := int(item_data.get("charges_max", item_data.get("max_charges", 0)))
+	if max_charges <= 0:
+		return ""
+	var charge_label := String(item_data.get("charge_label", "잔량"))
+	return "%s %d / %d" % [charge_label, _run_state.get_tool_charges(item_id), max_charges]
+
+
 func _inventory_sheet_actions(item_data: Dictionary, item_id: String) -> Array[Dictionary]:
 	var actions: Array[Dictionary] = []
+	if bool(item_data.get("readable", false)):
+		actions.append({
+			"id": "read_inventory_%s" % item_id,
+			"label": "읽는다",
+		})
 	if _is_consumable(item_data):
 		actions.append({
 			"id": "consume_inventory_%s" % item_id,

@@ -1,74 +1,9 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/indoor/indoor_mode.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/indoor/indoor_director.gd" id="2"]
 [ext_resource type="Script" path="res://scripts/indoor/indoor_minimap.gd" id="3"]
-
-[sub_resource type="ButtonGroup" id="1"]
-
-[sub_resource type="StyleBoxFlat" id="2"]
-bg_color = Color(0.101961, 0.121569, 0.14902, 0.98)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.25098, 0.298039, 0.364706, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-content_margin_left = 10.0
-content_margin_top = 8.0
-content_margin_right = 10.0
-content_margin_bottom = 8.0
-
-[sub_resource type="StyleBoxFlat" id="3"]
-bg_color = Color(0.231373, 0.345098, 0.47451, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.717647, 0.858824, 1, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-content_margin_left = 10.0
-content_margin_top = 8.0
-content_margin_right = 10.0
-content_margin_bottom = 8.0
-
-[sub_resource type="StyleBoxFlat" id="4"]
-bg_color = Color(0.0509804, 0.0627451, 0.0823529, 0.98)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.270588, 0.317647, 0.388235, 1)
-corner_radius_top_left = 14
-corner_radius_top_right = 14
-corner_radius_bottom_right = 14
-corner_radius_bottom_left = 14
-content_margin_left = 16.0
-content_margin_top = 16.0
-content_margin_right = 16.0
-content_margin_bottom = 16.0
-
-[sub_resource type="StyleBoxFlat" id="5"]
-bg_color = Color(0.0823529, 0.101961, 0.129412, 0.98)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.25098, 0.341176, 0.470588, 1)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
-content_margin_left = 14.0
-content_margin_top = 14.0
-content_margin_right = 14.0
-content_margin_bottom = 14.0
+[ext_resource type="PackedScene" path="res://scenes/shared/survival_sheet.tscn" id="4"]
 
 [node name="IndoorMode" type="Control"]
 anchors_preset = 15
@@ -89,10 +24,10 @@ script = ExtResource("2")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 48.0
-offset_top = 36.0
-offset_right = -48.0
-offset_bottom = -36.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
 
 [node name="Layout" type="VBoxContainer" parent="Panel"]
 theme_override_constants/separation = 12
@@ -135,9 +70,6 @@ text = "구조도"
 [node name="BagButton" type="Button" parent="Panel/Layout/MainColumn/TopBar/StatusRow/Tools"]
 text = "가방"
 
-[node name="CraftButton" type="Button" parent="Panel/Layout/MainColumn/TopBar/StatusRow/Tools"]
-text = "조합"
-
 [node name="LocationStrip" type="PanelContainer" parent="Panel/Layout/MainColumn"]
 
 [node name="HBox" type="HBoxContainer" parent="Panel/Layout/MainColumn/LocationStrip"]
@@ -150,29 +82,29 @@ text = "현재 위치"
 size_flags_horizontal = 3
 text = "확인 중"
 
-[node name="ContextRow" type="HBoxContainer" parent="Panel/Layout/MainColumn"]
-theme_override_constants/separation = 12
-
-[node name="ReadingCard" type="PanelContainer" parent="Panel/Layout/MainColumn/ContextRow"]
+[node name="ReadingCard" type="PanelContainer" parent="Panel/Layout/MainColumn"]
 size_flags_horizontal = 3
-size_flags_vertical = 3
 
-[node name="VBox" type="VBoxContainer" parent="Panel/Layout/MainColumn/ContextRow/ReadingCard"]
+[node name="VBox" type="VBoxContainer" parent="Panel/Layout/MainColumn/ReadingCard"]
 theme_override_constants/separation = 10
 
-[node name="SummaryLabel" type="Label" parent="Panel/Layout/MainColumn/ContextRow/ReadingCard/VBox"]
+[node name="SummaryLabel" type="Label" parent="Panel/Layout/MainColumn/ReadingCard/VBox"]
 autowrap_mode = 3
 text = "방 안을 살펴 단서를 찾아본다."
 
-[node name="ResultLabel" type="Label" parent="Panel/Layout/MainColumn/ContextRow/ReadingCard/VBox"]
+[node name="ResultLabel" type="Label" parent="Panel/Layout/MainColumn/ReadingCard/VBox"]
 autowrap_mode = 3
 text = ""
+
+[node name="MiniMapCard" type="PanelContainer" parent="Panel/Layout/MainColumn"]
+custom_minimum_size = Vector2(200, 96)
+size_flags_horizontal = 3
 
 [node name="ActionHeadingLabel" type="Label" parent="Panel/Layout/MainColumn"]
 text = "행동"
 
 [node name="ActionScroll" type="ScrollContainer" parent="Panel/Layout/MainColumn"]
-custom_minimum_size = Vector2(0, 220)
+custom_minimum_size = Vector2(0, 360)
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
@@ -182,11 +114,8 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 
-[node name="MiniMapCard" type="PanelContainer" parent="Panel/Layout/MainColumn/ContextRow"]
-custom_minimum_size = Vector2(200, 132)
-
-[node name="MapNodes" type="Control" parent="Panel/Layout/MainColumn/ContextRow/MiniMapCard"]
-custom_minimum_size = Vector2(200, 132)
+[node name="MapNodes" type="Control" parent="Panel/Layout/MainColumn/MiniMapCard"]
+custom_minimum_size = Vector2(200, 96)
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("3")
@@ -221,106 +150,7 @@ custom_minimum_size = Vector2(440, 260)
 size_flags_vertical = 3
 script = ExtResource("3")
 
-[node name="BagSheet" type="PanelContainer" parent="."]
-visible = false
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 40.0
-offset_top = -360.0
-offset_right = -40.0
-offset_bottom = -24.0
-theme_override_styles/panel = SubResource("4")
-
-[node name="VBox" type="VBoxContainer" parent="BagSheet"]
-theme_override_constants/separation = 8
-
-[node name="Header" type="HBoxContainer" parent="BagSheet/VBox"]
-theme_override_constants/separation = 8
-
-[node name="TitleLabel" type="Label" parent="BagSheet/VBox/Header"]
-size_flags_horizontal = 1
-text = "가방"
-
-[node name="StatusLabel" type="Label" parent="BagSheet/VBox/Header"]
-size_flags_horizontal = 3
-horizontal_alignment = 2
-text = ""
-
-[node name="CloseButton" type="Button" parent="BagSheet/VBox/Header"]
-text = "닫기"
-
-[node name="Tabs" type="HBoxContainer" parent="BagSheet/VBox"]
-theme_override_constants/separation = 0
-
-[node name="CarriedTabButton" type="Button" parent="BagSheet/VBox/Tabs"]
-custom_minimum_size = Vector2(136, 48)
-size_flags_horizontal = 3
-toggle_mode = true
-button_group = SubResource("1")
-button_pressed = true
-text = "소지품"
-theme_override_styles/normal = SubResource("2")
-theme_override_styles/hover = SubResource("2")
-theme_override_styles/focus = SubResource("2")
-theme_override_styles/pressed = SubResource("3")
-theme_override_styles/hover_pressed = SubResource("3")
-
-[node name="EquippedTabButton" type="Button" parent="BagSheet/VBox/Tabs"]
-custom_minimum_size = Vector2(136, 48)
-size_flags_horizontal = 3
-toggle_mode = true
-button_group = SubResource("1")
-text = "장착중"
-theme_override_styles/normal = SubResource("2")
-theme_override_styles/hover = SubResource("2")
-theme_override_styles/focus = SubResource("2")
-theme_override_styles/pressed = SubResource("3")
-theme_override_styles/hover_pressed = SubResource("3")
-
-[node name="ContentRow" type="HBoxContainer" parent="BagSheet/VBox"]
-theme_override_constants/separation = 12
-
-[node name="InventoryColumn" type="VBoxContainer" parent="BagSheet/VBox/ContentRow"]
-custom_minimum_size = Vector2(340, 0)
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/separation = 8
-
-[node name="InventoryScroll" type="ScrollContainer" parent="BagSheet/VBox/ContentRow/InventoryColumn"]
-custom_minimum_size = Vector2(0, 220)
-size_flags_horizontal = 3
-size_flags_vertical = 3
-horizontal_scroll_mode = 0
-
-[node name="InventoryItems" type="VBoxContainer" parent="BagSheet/VBox/ContentRow/InventoryColumn/InventoryScroll"]
-size_flags_horizontal = 3
-theme_override_constants/separation = 6
-
-[node name="ItemDetailPanel" type="PanelContainer" parent="BagSheet/VBox/ContentRow"]
-visible = false
-custom_minimum_size = Vector2(300, 0)
-size_flags_horizontal = 2
-size_flags_vertical = 3
-theme_override_styles/panel = SubResource("5")
-
-[node name="VBox" type="VBoxContainer" parent="BagSheet/VBox/ContentRow/ItemDetailPanel"]
-theme_override_constants/separation = 10
-
-[node name="ItemNameLabel" type="Label" parent="BagSheet/VBox/ContentRow/ItemDetailPanel/VBox"]
-text = "아이템"
-
-[node name="ItemDescriptionLabel" type="Label" parent="BagSheet/VBox/ContentRow/ItemDetailPanel/VBox"]
-autowrap_mode = 3
-text = ""
-
-[node name="ItemEffectLabel" type="Label" parent="BagSheet/VBox/ContentRow/ItemDetailPanel/VBox"]
-autowrap_mode = 3
-text = ""
-
-[node name="ActionButtons" type="HBoxContainer" parent="BagSheet/VBox/ContentRow/ItemDetailPanel/VBox"]
-theme_override_constants/separation = 8
+[node name="SurvivalSheet" parent="." instance=ExtResource("4")]
 
 [node name="StatDetailSheet" type="PanelContainer" parent="."]
 visible = false

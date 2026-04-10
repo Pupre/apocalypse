@@ -1,31 +1,27 @@
 # Project Documentation
 
-This repository is docs-first during pre-production.
+This repository uses a routing layer on top of the existing `docs/` tree.
 
-## Approved Documents
+## What Lives Where
 
-- `specs/`: approved design documents that define accepted parts of the project direction
-- `setup/`: machine and tool setup guides for local development
+- `docs/INDEX.md`: the document hub and main map for current, active, background, history, and setup docs
+- `docs/CURRENT_STATE.md`: the short snapshot of what the project is right now
+- `../AGENTS.md`: the repo entrypoint and reading-order guide for agents
 
-## Document Lifecycle
+## Document Roles
 
-- Approved documents live in this repository
-- Draft ideas should live in `drafts/` until they are intentionally reviewed and promoted
-- The current repository state is intentionally documentation-only; code and engine decisions come later
-- Each approved spec should declare its status and last-updated date near the top of the file
-- A draft becomes approved when it is moved from [drafts/](drafts/README.md) into `specs/`, merged into the repository, and marked with `Status: approved`
-- Approved specs may exist in parallel for different scopes such as core gameplay, combat, economy, or narrative
-- A spec supersedes another one only when the newer merged document explicitly says so and covers the same scope
+- Active specs in `docs/superpowers/specs/` define the current feature direction.
+- Active plans in `docs/superpowers/plans/` define the current implementation sequence.
+- Background docs in `docs/specs/` capture durable product and technical context.
+- History docs in `docs/handoffs/`, `docs/worklogs/`, and legacy `docs/plans/` preserve how decisions evolved.
+- Setup docs in `docs/setup/` cover environment and export details.
+- Drafts in `docs/drafts/` stay unapproved until they are intentionally promoted.
 
-## Current Documents
+## Lifecycle
 
-- [Core Gameplay Design](specs/core-gameplay-design.md)
-- [Godot Technical Architecture](specs/godot-technical-architecture.md)
-- [Mart Indoor Content Design](specs/mart-indoor-content-design.md)
-- [Indoor UI Restructure Design](specs/indoor-ui-restructure-design.md)
-- [Indoor UI Clarity Follow-up Design](specs/indoor-ui-clarity-follow-up-design.md)
-- [Knowledge-Driven Crafting Design](specs/knowledge-driven-crafting-design.md)
-- [Mode Transition Presentation Design](specs/mode-transition-presentation-design.md)
-- [Outdoor Visual Refresh Design](specs/outdoor-visual-refresh-design.md)
-- [Survival Stats First Pass Design](specs/survival-stats-first-pass-design.md)
-- [Godot Android Development Setup](setup/godot-android-development-setup.md)
+- Start with `docs/INDEX.md` when you need the current map.
+- Read `docs/CURRENT_STATE.md` when you need the newest snapshot of direction, baseline systems, and near-term priorities.
+- Use active specs and plans for in-flight work.
+- Use background docs for stable context that still matters.
+- Use history docs to reconstruct decisions, not to decide current direction.
+- Use setup docs when the task depends on local tooling or export configuration.

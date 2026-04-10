@@ -20,28 +20,32 @@ func show_title() -> void:
 
 func show_survivor_creator() -> void:
 	var survivor_creator := SURVIVOR_CREATOR_SCENE.instantiate()
-	survivor_creator.survivor_confirmed.connect(Callable(self, "_on_survivor_confirmed"))
+	survivor_creator.survivor_confirmed.connect(Callable(self, "_on_survivor_confirmed").bind(survivor_creator))
 	_swap_screen(survivor_creator)
 
 
-func launch_run_shell(job_id: String, trait_ids: Array[String]) -> void:
+func launch_run_shell(survivor_config: Dictionary) -> void:
 	var run_shell := RUN_SHELL_SCENE.instantiate()
 	_swap_screen(run_shell)
 
 	if run_shell.has_method("start_run"):
-		run_shell.start_run({
-			"job_id": job_id,
-			"trait_ids": trait_ids.duplicate(),
-			"remaining_points": 0,
-		}, "mart_01")
+		run_shell.start_run(survivor_config, "mart_01")
 
 
 func _on_start_requested() -> void:
 	show_survivor_creator()
 
 
-func _on_survivor_confirmed(job_id: String, trait_ids: Array[String]) -> void:
-	launch_run_shell(job_id, trait_ids)
+func _on_survivor_confirmed(job_id: String, trait_ids: Array[String], survivor_creator: Node = null) -> void:
+	var survivor_config := {
+		"job_id": job_id,
+		"trait_ids": trait_ids.duplicate(),
+		"difficulty": "easy",
+		"remaining_points": 0,
+	}
+	if survivor_creator != null and survivor_creator.has_method("get_survivor_config"):
+		survivor_config = survivor_creator.get_survivor_config()
+	launch_run_shell(survivor_config)
 
 
 func _swap_screen(screen: Node) -> void:

@@ -9,10 +9,18 @@ config/name="아포칼립스"
 run/main_scene="res://scenes/bootstrap/main.tscn"
 config/icon="res://icon.svg"
 
+[display]
+
+window/size/viewport_width=720
+window/size/viewport_height=1280
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
 [autoload]
 
 AppRouter="*res://scripts/autoload/app_router.gd"
 ContentLibrary="*res://scripts/autoload/content_library.gd"
+KnowledgeCodex="*res://scripts/autoload/knowledge_codex.gd"
 
 [gui]
 

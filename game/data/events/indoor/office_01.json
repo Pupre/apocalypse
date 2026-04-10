@@ -373,6 +373,7 @@
                 { "id": "binder_clip_box", "weight": 4 },
                 { "id": "notebook", "weight": 4 },
                 { "id": "staples_box", "weight": 4 },
+                { "id": "field_hygiene_note_01", "weight": 2 },
                 { "id": "cardboard_box", "weight": 3 }
               ]
             },

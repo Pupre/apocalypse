@@ -3,6 +3,7 @@
     "id": "newspaper__cooking_oil",
     "ingredients": ["newspaper", "cooking_oil"],
     "contexts": ["indoor", "outdoor"],
+    "codex_category": "fire_heat",
     "required_tags": [],
     "minutes": 15,
     "ingredient_rules": {
@@ -15,6 +16,8 @@
     "result_type": "success",
     "result_item_id": "dense_fuel",
     "indoor_minutes": 15,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
     "result_text": "신문지가 기름을 머금으면서 천천히 오래 타는 땔감으로 변했다."
   },
   {
@@ -93,6 +96,7 @@
     "id": "steel_food_can__dense_fuel",
     "ingredients": ["steel_food_can", "dense_fuel"],
     "contexts": ["indoor", "outdoor"],
+    "codex_category": "fire_heat",
     "required_tags": [],
     "minutes": 15,
     "ingredient_rules": {
@@ -453,6 +457,7 @@
     "id": "bottled_water__can_stove",
     "ingredients": ["bottled_water", "can_stove"],
     "contexts": ["indoor"],
+    "codex_category": "food_drink",
     "required_tags": ["heat_source"],
     "minutes": 12,
     "ingredient_rules": {
@@ -465,12 +470,17 @@
     "result_type": "success",
     "result_item_id": "hot_water",
     "indoor_minutes": 12,
+    "required_tool_ids": ["lighter"],
+    "tool_charge_costs": {
+      "lighter": 1
+    },
     "result_text": "물을 데워 따뜻한 물을 만들었다."
   },
   {
     "id": "bottled_water__candle_lantern",
     "ingredients": ["bottled_water", "candle_lantern"],
     "contexts": ["indoor"],
+    "codex_category": "food_drink",
     "required_tags": ["heat_source"],
     "minutes": 16,
     "ingredient_rules": {
@@ -483,12 +493,17 @@
     "result_type": "success",
     "result_item_id": "hot_water",
     "indoor_minutes": 16,
+    "required_tool_ids": ["lighter"],
+    "tool_charge_costs": {
+      "lighter": 1
+    },
     "result_text": "작은 랜턴 열로 시간이 걸렸지만 물을 데우는 데 성공했다."
   },
   {
     "id": "bottled_water__shielded_candle",
     "ingredients": ["bottled_water", "shielded_candle"],
     "contexts": ["indoor"],
+    "codex_category": "food_drink",
     "required_tags": ["heat_source"],
     "minutes": 18,
     "ingredient_rules": {
@@ -501,12 +516,17 @@
     "result_type": "success",
     "result_item_id": "hot_water",
     "indoor_minutes": 18,
+    "required_tool_ids": ["lighter"],
+    "tool_charge_costs": {
+      "lighter": 1
+    },
     "result_text": "약한 열원을 오래 붙잡아 겨우 따뜻한 물을 만들었다."
   },
   {
     "id": "hot_water__tea_bag",
     "ingredients": ["hot_water", "tea_bag"],
     "contexts": ["indoor", "outdoor"],
+    "codex_category": "food_drink",
     "required_tags": [],
     "minutes": 3,
     "ingredient_rules": {

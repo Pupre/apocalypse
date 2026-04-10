@@ -8,7 +8,7 @@ script = ExtResource("1")
 [node name="Ground" type="Node2D" parent="."]
 
 [node name="Asphalt" type="Polygon2D" parent="Ground"]
-polygon = PackedVector2Array(0, 0, 1200, 0, 1200, 1092, 0, 1092)
+polygon = PackedVector2Array(0, -1440, 1200, -1440, 1200, 1092, 0, 1092)
 color = Color(0.16, 0.17, 0.18, 1)
 
 [node name="RoadBand" type="Polygon2D" parent="Ground"]
@@ -69,24 +69,44 @@ z_index = 8
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="StatusPanel" type="PanelContainer" parent="CanvasLayer"]
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 320.0
-offset_bottom = 132.0
+[node name="TopRibbon" type="PanelContainer" parent="CanvasLayer"]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+offset_left = 12.0
+offset_top = 132.0
+offset_right = -12.0
+offset_bottom = 240.0
 
-[node name="VBox" type="VBoxContainer" parent="CanvasLayer/StatusPanel"]
-theme_override_constants/separation = 6
+[node name="Margin" type="MarginContainer" parent="CanvasLayer/TopRibbon"]
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
 
-[node name="TitleLabel" type="Label" parent="CanvasLayer/StatusPanel/VBox"]
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/TopRibbon/Margin"]
+theme_override_constants/separation = 8
+
+[node name="HeaderRow" type="HBoxContainer" parent="CanvasLayer/TopRibbon/Margin/VBox"]
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="CanvasLayer/TopRibbon/Margin/VBox/HeaderRow"]
+size_flags_horizontal = 3
 text = "외부"
 
-[node name="ExposureLabel" type="Label" parent="CanvasLayer/StatusPanel/VBox"]
+[node name="ExposureLabel" type="Label" parent="CanvasLayer/TopRibbon/Margin/VBox/HeaderRow"]
 text = "노출: 100"
 
-[node name="HintLabel" type="Label" parent="CanvasLayer/StatusPanel/VBox"]
-text = "WASD로 이동"
+[node name="HintLabel" type="Label" parent="CanvasLayer/TopRibbon/Margin/VBox"]
 autowrap_mode = 3
+text = "WASD로 이동"
 
-[node name="CraftButton" type="Button" parent="CanvasLayer/StatusPanel/VBox"]
+[node name="ToolsRow" type="HBoxContainer" parent="CanvasLayer/TopRibbon/Margin/VBox"]
+theme_override_constants/separation = 8
+
+[node name="CraftButton" type="Button" parent="CanvasLayer/TopRibbon/Margin/VBox/ToolsRow"]
 text = "조합"
+
+[node name="CodexButton" type="Button" parent="CanvasLayer/TopRibbon/Margin/VBox/ToolsRow"]
+text = "도감"

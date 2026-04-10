@@ -27,6 +27,11 @@ const MAX_SURVIVAL_VALUE := 100.0
 const BASE_CARRY_LIMIT := 8
 const MIN_OVERLOADED_MOVE_MULTIPLIER := 0.45
 const OVERFLOW_MOVE_PENALTY_PER_BULK := 0.12
+const DEFAULT_DIFFICULTY := "easy"
+const VALID_DIFFICULTY_IDS := {
+	"easy": true,
+	"hard": true,
+}
 
 var clock = TIME_CLOCK_SCRIPT.new()
 var fatigue_model = FATIGUE_MODEL_SCRIPT.new()
@@ -35,6 +40,8 @@ var crafting_resolver = CRAFTING_RESOLVER_SCRIPT.new()
 var warmth_model = WARMTH_MODEL_SCRIPT.new()
 var survivor_config: Dictionary = {}
 var equipped_items: Dictionary = {}
+var known_recipe_ids: Dictionary = {}
+var read_knowledge_item_ids: Dictionary = {}
 var active_warmth_effects: Array[Dictionary] = []
 var indoor_site_memories: Dictionary = {}
 var current_indoor_building_id := ""
@@ -169,9 +176,23 @@ func get_indoor_action_minutes(base_minutes: int) -> int:
 	return int(ceili(float(base_minutes) * multiplier))
 
 
+func get_difficulty_id() -> String:
+	return String(survivor_config.get("difficulty", DEFAULT_DIFFICULTY))
+
+
+func is_easy_mode() -> bool:
+	return get_difficulty_id() == "easy"
+
+
+func is_hard_mode() -> bool:
+	return get_difficulty_id() == "hard"
+
+
 func _apply_survivor_config(config: Dictionary) -> void:
-	survivor_config = config.duplicate(true)
+	survivor_config = _normalized_survivor_config(config)
 	equipped_items = {}
+	known_recipe_ids = {}
+	read_knowledge_item_ids = {}
 	move_speed = BASE_MOVE_SPEED
 	fatigue_gain_multiplier = BASE_FATIGUE_GAIN_MULTIPLIER
 	world_seed = int(survivor_config.get("world_seed", 0))
@@ -234,9 +255,10 @@ func use_inventory_item(item_id: String) -> bool:
 
 
 func attempt_craft(primary_item_id: String, secondary_item_id: String, context: String = "indoor") -> Dictionary:
-	var outcome: Dictionary = crafting_resolver.resolve(primary_item_id, secondary_item_id, context, _get_content_source())
+	var outcome: Dictionary = crafting_resolver.resolve(primary_item_id, secondary_item_id, context, _crafting_content_source())
 	if String(outcome.get("result_type", "")) == "invalid":
 		_apply_crafting_minutes(outcome, context)
+		_record_crafting_attempt(primary_item_id, secondary_item_id, outcome)
 		return outcome
 
 	if not inventory.has_items_for_pair(primary_item_id, secondary_item_id):
@@ -246,6 +268,19 @@ func attempt_craft(primary_item_id: String, secondary_item_id: String, context: 
 			"result_item_id": "",
 			"result_item_data": {},
 			"result_text": "필요한 재료가 부족하다.",
+			"minutes_elapsed": 0,
+		}
+
+	var tool_validation := _validate_crafting_tools(outcome)
+	if not bool(tool_validation.get("ok", false)):
+		return {
+			"ok": false,
+			"reason": String(tool_validation.get("reason", "")),
+			"tool_item_id": String(tool_validation.get("tool_item_id", "")),
+			"result_type": "invalid",
+			"result_item_id": "",
+			"result_item_data": {},
+			"result_text": _crafting_tool_failure_text(String(tool_validation.get("reason", "")), String(tool_validation.get("tool_item_id", ""))),
 			"minutes_elapsed": 0,
 		}
 
@@ -271,7 +306,7 @@ func attempt_craft(primary_item_id: String, secondary_item_id: String, context: 
 		var result_item := result_item_variant as Dictionary
 		var result_item_id := String(result_item.get("id", ""))
 		var result_count: int = max(1, int(result_item.get("count", 1)))
-		var item_data: Dictionary = _get_content_source().get_item(result_item_id)
+		var item_data: Dictionary = _item_content_source().get_item(result_item_id)
 		var merged_item: Dictionary = _merge_item_data(item_data, {"id": result_item_id, "bulk": int(item_data.get("bulk", 1))})
 		for _index in range(result_count):
 			if not inventory.add_item(merged_item):
@@ -287,8 +322,68 @@ func attempt_craft(primary_item_id: String, secondary_item_id: String, context: 
 				}
 			added_result_item_ids.append(result_item_id)
 
+	var tool_spend_result := _spend_crafting_tool_costs(outcome)
+	if not bool(tool_spend_result.get("ok", false)):
+		_remove_crafted_result_items(added_result_item_ids)
+		inventory.restore_items(removed_items)
+		return {
+			"ok": false,
+			"reason": String(tool_spend_result.get("reason", "")),
+			"tool_item_id": String(tool_spend_result.get("tool_item_id", "")),
+			"result_type": "invalid",
+			"result_item_id": "",
+			"result_item_data": {},
+			"result_text": _crafting_tool_failure_text(String(tool_spend_result.get("reason", "")), String(tool_spend_result.get("tool_item_id", ""))),
+			"minutes_elapsed": 0,
+			}
+
+	if String(outcome.get("result_type", "")) == "success":
+		unlock_recipe(String(outcome.get("recipe_id", "")))
+
 	_apply_crafting_minutes(outcome, context)
+	_record_crafting_attempt(primary_item_id, secondary_item_id, outcome)
 	return outcome
+
+
+func knows_recipe(recipe_id: String) -> bool:
+	return known_recipe_ids.has(recipe_id)
+
+
+func unlock_recipe(recipe_id: String) -> void:
+	if recipe_id.is_empty():
+		return
+	known_recipe_ids[recipe_id] = true
+
+
+func get_tool_charges(item_id: String) -> int:
+	var tool_item := inventory.get_first_item_by_id(item_id)
+	if tool_item.is_empty():
+		return 0
+	return int(tool_item.get("charges", tool_item.get("charges_current", tool_item.get("initial_charges", tool_item.get("max_charges", tool_item.get("charges_max", 0))))))
+
+
+func read_knowledge_item(item_id: String) -> bool:
+	if item_id.is_empty() or read_knowledge_item_ids.has(item_id):
+		return false
+
+	var item_data := _lookup_item_data(item_id)
+	if item_data.is_empty() or not bool(item_data.get("readable", false)):
+		return false
+
+	var knowledge_recipe_ids_variant: Variant = item_data.get("knowledge_recipe_ids", [])
+	if typeof(knowledge_recipe_ids_variant) != TYPE_ARRAY:
+		return false
+
+	var added_knowledge := false
+	for recipe_id_variant in knowledge_recipe_ids_variant:
+		var recipe_id := String(recipe_id_variant)
+		if recipe_id.is_empty() or knows_recipe(recipe_id):
+			continue
+		unlock_recipe(recipe_id)
+		added_knowledge = true
+
+	read_knowledge_item_ids[item_id] = true
+	return added_knowledge
 
 
 func equip_inventory_item(item_id: String, item_data: Dictionary) -> Dictionary:
@@ -529,6 +624,18 @@ func _get_content_source():
 	return ContentLibrary if _content_source == null else _content_source
 
 
+func _crafting_content_source():
+	if _content_source != null and _content_source.has_method("get_crafting_combination") and _content_source.has_method("get_item"):
+		return _content_source
+	return ContentLibrary
+
+
+func _item_content_source():
+	if _content_source != null and _content_source.has_method("get_item"):
+		return _content_source
+	return ContentLibrary
+
+
 func _validate_survivor_config(config: Dictionary) -> bool:
 	var job_id := String(config.get("job_id", ""))
 	if job_id.is_empty():
@@ -543,6 +650,15 @@ func _validate_survivor_config(config: Dictionary) -> bool:
 			return false
 
 	return true
+
+
+func _normalized_survivor_config(config: Dictionary) -> Dictionary:
+	var normalized := config.duplicate(true)
+	var requested_difficulty := String(normalized.get("difficulty", DEFAULT_DIFFICULTY)).to_lower()
+	if not VALID_DIFFICULTY_IDS.has(requested_difficulty):
+		requested_difficulty = DEFAULT_DIFFICULTY
+	normalized["difficulty"] = requested_difficulty
+	return normalized
 
 
 func _require_job_data(job_id: String) -> Dictionary:
@@ -666,6 +782,81 @@ func _remove_crafted_result_items(result_item_ids: Array[String]) -> void:
 		inventory.remove_first_item_by_id(result_item_id)
 
 
+func _validate_crafting_tools(outcome: Dictionary) -> Dictionary:
+	var required_tool_ids_variant: Variant = outcome.get("required_tool_ids", [])
+	if typeof(required_tool_ids_variant) == TYPE_ARRAY:
+		for tool_item_id_variant in required_tool_ids_variant:
+			var tool_item_id := String(tool_item_id_variant)
+			if tool_item_id.is_empty():
+				continue
+			if inventory.count_item_by_id(tool_item_id) < 1:
+				return {"ok": false, "reason": "missing_tool", "tool_item_id": tool_item_id}
+
+	var tool_charge_costs_variant: Variant = outcome.get("tool_charge_costs", {})
+	if typeof(tool_charge_costs_variant) != TYPE_DICTIONARY:
+		return {"ok": true}
+
+	var tool_charge_costs := tool_charge_costs_variant as Dictionary
+	for tool_item_id_variant in tool_charge_costs.keys():
+		var tool_item_id := String(tool_item_id_variant)
+		var charge_cost := int(tool_charge_costs.get(tool_item_id_variant, 0))
+		if tool_item_id.is_empty():
+			continue
+		if inventory.count_item_by_id(tool_item_id) < 1:
+			return {"ok": false, "reason": "missing_tool", "tool_item_id": tool_item_id}
+		var available_charges := get_tool_charges(tool_item_id)
+		if charge_cost > 0 and available_charges < charge_cost:
+			return {"ok": false, "reason": "depleted_tool", "tool_item_id": tool_item_id}
+
+	return {"ok": true}
+
+
+func _spend_crafting_tool_costs(outcome: Dictionary) -> Dictionary:
+	var tool_charge_costs_variant: Variant = outcome.get("tool_charge_costs", {})
+	if typeof(tool_charge_costs_variant) != TYPE_DICTIONARY:
+		return {"ok": true}
+
+	var tool_charge_costs := tool_charge_costs_variant as Dictionary
+	for tool_item_id_variant in tool_charge_costs.keys():
+		var tool_item_id := String(tool_item_id_variant)
+		var charge_cost := int(tool_charge_costs.get(tool_item_id_variant, 0))
+		if tool_item_id.is_empty() or charge_cost <= 0:
+			continue
+
+		var spend_result := inventory.spend_item_charges(tool_item_id, charge_cost)
+		if not bool(spend_result.get("ok", false)):
+			return {"ok": false, "reason": String(spend_result.get("reason", "depleted_tool")), "tool_item_id": tool_item_id}
+
+	return {"ok": true}
+
+
+func _crafting_tool_failure_text(reason: String, tool_item_id: String) -> String:
+	var tool_name := _item_display_name(tool_item_id)
+	match reason:
+		"missing_tool":
+			return "%s이(가) 필요하다." % tool_name
+		"depleted_tool", "insufficient_charges":
+			return "%s 잔량이 부족하다." % tool_name
+		_:
+			return "필요한 도구를 준비하지 못했다."
+
+
+func _record_crafting_attempt(primary_item_id: String, secondary_item_id: String, outcome: Dictionary) -> void:
+	if primary_item_id.is_empty() or secondary_item_id.is_empty():
+		return
+
+	var knowledge_codex = _get_knowledge_codex()
+	if knowledge_codex == null or not knowledge_codex.has_method("record_attempt"):
+		return
+
+	var payload := {
+		"result_type": String(outcome.get("result_type", "invalid")),
+		"result_item_id": String(outcome.get("result_item_id", "")),
+		"result_label": String(outcome.get("result_item_data", {}).get("name", outcome.get("result_item_id", ""))),
+	}
+	knowledge_codex.record_attempt(primary_item_id, secondary_item_id, payload)
+
+
 func _combined_use_effects(item_data: Dictionary) -> Dictionary:
 	var combined: Dictionary = {}
 	var use_effects_variant: Variant = item_data.get("use_effects", {})
@@ -718,3 +909,17 @@ func _lookup_item_data(item_id: String) -> Dictionary:
 			return inventory_item
 
 	return {}
+
+
+func _item_display_name(item_id: String) -> String:
+	var item_data := _lookup_item_data(item_id)
+	if not item_data.is_empty():
+		return String(item_data.get("name", item_id))
+	return item_id
+
+
+func _get_knowledge_codex():
+	var tree := Engine.get_main_loop() as SceneTree
+	if tree == null or tree.root == null:
+		return null
+	return tree.root.get_node_or_null("KnowledgeCodex")

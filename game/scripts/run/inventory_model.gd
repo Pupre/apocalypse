@@ -22,7 +22,16 @@ func add_item(item: Dictionary) -> bool:
 	if not can_add(item):
 		return false
 
-	items.append(item.duplicate(true))
+	var stored_item := item.duplicate(true)
+	var max_charges := int(stored_item.get("max_charges", stored_item.get("charges_max", 0)))
+	if max_charges > 0:
+		stored_item["max_charges"] = max_charges
+		stored_item["charges_max"] = max_charges
+		var current_charges := int(stored_item.get("charges", stored_item.get("charges_current", stored_item.get("initial_charges", max_charges))))
+		stored_item["charges"] = current_charges
+		stored_item["charges_current"] = current_charges
+
+	items.append(stored_item)
 	return true
 
 
@@ -52,6 +61,21 @@ func take_first_item_by_id(item_id: String) -> Dictionary:
 
 		items.remove_at(index)
 		return item
+
+	return {}
+
+
+func get_first_item_by_id(item_id: String) -> Dictionary:
+	if item_id.is_empty():
+		return {}
+
+	for item_variant in items:
+		if typeof(item_variant) != TYPE_DICTIONARY:
+			continue
+
+		var item := item_variant as Dictionary
+		if String(item.get("id", "")) == item_id:
+			return item
 
 	return {}
 
@@ -111,6 +135,33 @@ func restore_items(restored_items: Array[Dictionary]) -> void:
 		if typeof(item_variant) != TYPE_DICTIONARY:
 			continue
 		items.append((item_variant as Dictionary).duplicate(true))
+
+
+func spend_item_charges(item_id: String, amount: int) -> Dictionary:
+	if item_id.is_empty():
+		return {"ok": false, "reason": "missing_item"}
+	if amount <= 0:
+		return {"ok": true, "item": get_first_item_by_id(item_id)}
+
+	for index in range(items.size()):
+		var item_variant = items[index]
+		if typeof(item_variant) != TYPE_DICTIONARY:
+			continue
+
+		var item := item_variant as Dictionary
+		if String(item.get("id", "")) != item_id:
+			continue
+
+		var available_charges := int(item.get("charges", item.get("charges_current", item.get("initial_charges", item.get("max_charges", item.get("charges_max", 0))))))
+		if available_charges < amount:
+			return {"ok": false, "reason": "insufficient_charges", "item": item}
+
+		item["charges"] = available_charges - amount
+		item["charges_current"] = available_charges - amount
+		items[index] = item
+		return {"ok": true, "item": item}
+
+	return {"ok": false, "reason": "missing_item"}
 
 
 func max_bulk() -> int:

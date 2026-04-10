@@ -1,0 +1,116 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/survival_sheet.gd" id="1"]
+
+[node name="SurvivalSheet" type="CanvasLayer"]
+script = ExtResource("1")
+
+[node name="Sheet" type="PanelContainer" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = -620.0
+offset_right = -18.0
+offset_bottom = -18.0
+
+[node name="VBox" type="VBoxContainer" parent="Sheet"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="Header" type="HBoxContainer" parent="Sheet/VBox"]
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="Sheet/VBox/Header"]
+size_flags_horizontal = 1
+text = "가방"
+
+[node name="StatusLabel" type="Label" parent="Sheet/VBox/Header"]
+size_flags_horizontal = 3
+horizontal_alignment = 2
+text = ""
+
+[node name="CloseButton" type="Button" parent="Sheet/VBox/Header"]
+text = "닫기"
+
+[node name="Tabs" type="HBoxContainer" parent="Sheet/VBox"]
+theme_override_constants/separation = 8
+
+[node name="InventoryTabButton" type="Button" parent="Sheet/VBox/Tabs"]
+size_flags_horizontal = 3
+toggle_mode = true
+text = "가방"
+
+[node name="CodexTabButton" type="Button" parent="Sheet/VBox/Tabs"]
+size_flags_horizontal = 3
+toggle_mode = true
+text = "도감"
+
+[node name="CraftContextStrip" type="HBoxContainer" parent="Sheet/VBox"]
+visible = false
+theme_override_constants/separation = 8
+
+[node name="CraftContextLabel" type="Label" parent="Sheet/VBox/CraftContextStrip"]
+size_flags_horizontal = 3
+text = ""
+
+[node name="CancelCraftButton" type="Button" parent="Sheet/VBox/CraftContextStrip"]
+text = "취소"
+
+[node name="InventoryPane" type="VBoxContainer" parent="Sheet/VBox"]
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="InventoryScroll" type="ScrollContainer" parent="Sheet/VBox/InventoryPane"]
+custom_minimum_size = Vector2(0, 250)
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="InventoryItems" type="VBoxContainer" parent="Sheet/VBox/InventoryPane/InventoryScroll"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="ItemDetailCard" type="PanelContainer" parent="Sheet/VBox/InventoryPane"]
+size_flags_vertical = 3
+
+[node name="VBox" type="VBoxContainer" parent="Sheet/VBox/InventoryPane/ItemDetailCard"]
+theme_override_constants/separation = 8
+
+[node name="ItemNameLabel" type="Label" parent="Sheet/VBox/InventoryPane/ItemDetailCard/VBox"]
+text = "아이템"
+
+[node name="ItemDescriptionLabel" type="Label" parent="Sheet/VBox/InventoryPane/ItemDetailCard/VBox"]
+autowrap_mode = 3
+text = "아이템을 선택하면 설명이 나타난다."
+
+[node name="ItemEffectLabel" type="Label" parent="Sheet/VBox/InventoryPane/ItemDetailCard/VBox"]
+autowrap_mode = 3
+text = ""
+
+[node name="ModeMessageLabel" type="Label" parent="Sheet/VBox/InventoryPane/ItemDetailCard/VBox"]
+autowrap_mode = 3
+text = ""
+
+[node name="DetailActions" type="VBoxContainer" parent="Sheet/VBox/InventoryPane/ItemDetailCard/VBox"]
+theme_override_constants/separation = 8
+
+[node name="PrimaryActions" type="HBoxContainer" parent="Sheet/VBox/InventoryPane/ItemDetailCard/VBox/DetailActions"]
+theme_override_constants/separation = 8
+
+[node name="SecondaryActions" type="HBoxContainer" parent="Sheet/VBox/InventoryPane/ItemDetailCard/VBox/DetailActions"]
+theme_override_constants/separation = 8
+
+[node name="CodexPane" type="VBoxContainer" parent="Sheet/VBox"]
+visible = false
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="CodexScroll" type="ScrollContainer" parent="Sheet/VBox/CodexPane"]
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="CodexRows" type="VBoxContainer" parent="Sheet/VBox/CodexPane/CodexScroll"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 8

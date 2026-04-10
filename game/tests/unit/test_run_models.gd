@@ -72,7 +72,26 @@ func _run_test() -> void:
 	assert_eq(state.get_thirst_stage(), "수분 충분", "Fresh runs should start hydrated.")
 	assert_eq(state.get_health_stage(), "안정", "Fresh runs should start healthy.")
 	assert_eq(state.get_fatigue_stage(), "양호", "Fatigue stage helper should mirror the fatigue model band.")
+	assert_true(state.has_method("get_difficulty_id"), "RunState should expose a difficulty helper.")
+	assert_true(state.has_method("is_easy_mode"), "RunState should expose easy-mode helper.")
+	assert_true(state.has_method("is_hard_mode"), "RunState should expose hard-mode helper.")
+	assert_eq(state.get_difficulty_id(), "easy", "Runs without an explicit difficulty should default to easy.")
+	assert_true(state.is_easy_mode(), "Default difficulty should enable easy mode.")
+	assert_true(not state.is_hard_mode(), "Default difficulty should not enable hard mode.")
 	assert_eq(state.inventory.carry_limit, 8, "This build should keep the default carry limit.")
+	assert_true(state.known_recipe_ids.is_empty(), "A fresh run should start with no known recipes.")
+	assert_true(state.read_knowledge_item_ids.is_empty(), "A fresh run should start with no read knowledge items.")
+
+	var hard_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+		"difficulty": "hard",
+	}, content_source)
+	assert_true(hard_state != null, "RunState should accept explicit hard difficulty.")
+	assert_eq(hard_state.get_difficulty_id(), "hard", "RunState should preserve explicit hard difficulty.")
+	assert_true(not hard_state.is_easy_mode(), "Hard difficulty should disable easy-mode helpers.")
+	assert_true(hard_state.is_hard_mode(), "Hard difficulty should be queryable.")
 
 	var before_hunger_after_spawn: float = state.hunger
 	var before_thirst_after_spawn: float = state.thirst
@@ -236,6 +255,7 @@ func _run_test() -> void:
 	assert_true(crafting_state.inventory.count_item_by_id("newspaper") == 0, "Successful crafting should consume the first ingredient.")
 	assert_true(crafting_state.inventory.count_item_by_id("cooking_oil") == 0, "Successful crafting should consume the second ingredient.")
 	assert_true(crafting_state.inventory.count_item_by_id("dense_fuel") == 1, "Successful crafting should add the result item to the inventory.")
+	assert_true(crafting_state.known_recipe_ids.has("newspaper__cooking_oil"), "Successful crafting should unlock the recipe in the run-state codex.")
 
 	var heating_state = run_state_script.from_survivor_config({
 		"job_id": "courier",
@@ -245,9 +265,15 @@ func _run_test() -> void:
 	assert_true(heating_state != null, "RunState should build for richer recipe checks.")
 	assert_true(heating_state.inventory.add_item({"id": "bottled_water", "name": "생수", "bulk": 1}), "Heating tests should hold bottled water.")
 	assert_true(heating_state.inventory.add_item({"id": "can_stove", "name": "깡통 화로", "bulk": 2}), "Heating tests should hold a reusable heat source.")
+	var missing_heat_tool: Dictionary = heating_state.attempt_craft("bottled_water", "can_stove", "indoor")
+	assert_true(not bool(missing_heat_tool.get("ok", false)), "Heating water should fail cleanly when the lighter tool is missing.")
+	assert_eq(String(missing_heat_tool.get("reason", "")), "missing_tool", "Heating water should explain that the lighter tool is missing.")
+	assert_true(heating_state.inventory.add_item({"id": "lighter", "name": "라이터", "bulk": 1, "charges_current": 5, "charges_max": 5}), "Heating tests should hold a lighter tool.")
 	var hot_water_outcome: Dictionary = heating_state.attempt_craft("bottled_water", "can_stove", "indoor")
 	assert_eq(String(hot_water_outcome.get("result_item_id", "")), "hot_water", "Heating water should produce hot_water.")
 	assert_eq(heating_state.inventory.count_item_by_id("can_stove"), 1, "Heating water should keep the can stove.")
+	assert_true(heating_state.known_recipe_ids.has("bottled_water__can_stove"), "Successful heating should unlock the hot-water recipe.")
+	assert_eq(heating_state.get_tool_charges("lighter"), 4, "Heating water should spend one lighter charge.")
 
 	var insulation_state = run_state_script.from_survivor_config({
 		"job_id": "courier",
@@ -259,6 +285,32 @@ func _run_test() -> void:
 	assert_true(insulation_state.inventory.add_item({"id": "duct_tape", "name": "덕트테이프", "bulk": 1}), "Insulation tests should hold duct tape.")
 	var patch_outcome: Dictionary = insulation_state.attempt_craft("bubble_wrap_roll", "duct_tape", "indoor")
 	assert_eq(String(patch_outcome.get("result_item_id", "")), "window_cover_patch", "Insulation recipes should produce patch items.")
+
+	var indoor_craft_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, live_content_library)
+	assert_true(indoor_craft_state != null, "RunState should build for indoor lighter-gated crafting checks.")
+	assert_true(indoor_craft_state.inventory.add_item(live_content_library.get_item("newspaper")), "Indoor crafting tests should add newspaper.")
+	assert_true(indoor_craft_state.inventory.add_item(live_content_library.get_item("cooking_oil")), "Indoor crafting tests should add cooking oil.")
+	var before_indoor_craft_minute: int = indoor_craft_state.clock.minute_of_day
+	var indoor_craft_result: Dictionary = indoor_craft_state.attempt_craft("newspaper", "cooking_oil", "indoor")
+	assert_true(bool(indoor_craft_result.get("ok", false)), "Indoor dense-fuel crafting should succeed without a lighter tool.")
+	assert_eq(String(indoor_craft_result.get("result_item_id", "")), "dense_fuel", "Indoor crafting should still produce dense_fuel.")
+	assert_eq(indoor_craft_state.clock.minute_of_day, before_indoor_craft_minute + 15, "Indoor crafting should spend the configured explicit minute cost.")
+	assert_true(indoor_craft_state.known_recipe_ids.has("newspaper__cooking_oil"), "Indoor crafting should unlock the dense-fuel recipe.")
+
+	var knowledge_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, live_content_library)
+	assert_true(knowledge_state != null, "RunState should build for knowledge-note checks.")
+	assert_true(knowledge_state.read_knowledge_item("improvised_heat_note_01"), "Knowledge notes should be readable.")
+	assert_true(knowledge_state.known_recipe_ids.has("newspaper__cooking_oil"), "Reading a heat note should unlock its mapped recipes.")
+	assert_true(knowledge_state.read_knowledge_item_ids.has("improvised_heat_note_01"), "Reading should mark the note as already read.")
+	assert_true(not knowledge_state.read_knowledge_item("improvised_heat_note_01"), "Reading the same note twice should not unlock anything new.")
 
 	var blocked_state = run_state_script.from_survivor_config({
 		"job_id": "courier",

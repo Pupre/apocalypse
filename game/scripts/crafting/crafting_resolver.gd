@@ -4,6 +4,10 @@ class_name CraftingResolver
 const INVALID_INDOOR_MINUTES := 5
 
 
+func resolve_attempt(primary_item_id: String, secondary_item_id: String, content_source = null) -> Dictionary:
+	return resolve(primary_item_id, secondary_item_id, "indoor", content_source)
+
+
 func resolve(primary_item_id: String, secondary_item_id: String, context: String = "indoor", content_source = null) -> Dictionary:
 	if primary_item_id.is_empty() or secondary_item_id.is_empty():
 		return _invalid_result("재료 두 개를 모두 골라야 한다.", context)
@@ -32,6 +36,14 @@ func resolve(primary_item_id: String, secondary_item_id: String, context: String
 	var required_tags: Array = []
 	if typeof(required_tags_variant) == TYPE_ARRAY:
 		required_tags = (required_tags_variant as Array).duplicate(true)
+	var required_tool_ids_variant: Variant = combination.get("required_tool_ids", [])
+	var required_tool_ids: Array = []
+	if typeof(required_tool_ids_variant) == TYPE_ARRAY:
+		required_tool_ids = (required_tool_ids_variant as Array).duplicate(true)
+	var tool_charge_costs_variant: Variant = combination.get("tool_charge_costs", {})
+	var tool_charge_costs: Dictionary = {}
+	if typeof(tool_charge_costs_variant) == TYPE_DICTIONARY:
+		tool_charge_costs = (tool_charge_costs_variant as Dictionary).duplicate(true)
 
 	var result_items_variant: Variant = combination.get("result_items", [])
 	var result_items: Array = []
@@ -54,10 +66,13 @@ func resolve(primary_item_id: String, secondary_item_id: String, context: String
 		"result_item_data": result_item_data,
 		"ingredient_rules": ingredient_rules,
 		"required_tags": required_tags,
+		"required_tool_ids": required_tool_ids,
+		"tool_charge_costs": tool_charge_costs,
 		"contexts": contexts,
 		"result_text": String(combination.get("result_text", _default_result_text(result_type, result_item_data, result_item_id))),
 		"minutes_elapsed": _minutes_for_context(int(combination.get("minutes", combination.get("indoor_minutes", INVALID_INDOOR_MINUTES))), context),
 		"consumes_ingredients": result_type != "invalid",
+		"returns_inputs": result_type == "invalid",
 		"recipe_id": String(combination.get("id", "")),
 	}
 
@@ -71,10 +86,13 @@ func _invalid_result(message: String, context: String) -> Dictionary:
 		"result_item_data": {},
 		"ingredient_rules": {},
 		"required_tags": [],
+		"required_tool_ids": [],
+		"tool_charge_costs": {},
 		"contexts": [],
 		"result_text": message,
 		"minutes_elapsed": _minutes_for_context(INVALID_INDOOR_MINUTES, context),
 		"consumes_ingredients": false,
+		"returns_inputs": true,
 		"recipe_id": "",
 	}
 

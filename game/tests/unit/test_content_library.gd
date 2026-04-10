@@ -236,10 +236,20 @@ func _run_test() -> void:
 	assert_true(content_library.has_method("get_crafting_combination"), "ContentLibrary should expose crafting lookup helpers.")
 	_assert_item_contract("matchbox")
 	_assert_item_contract("paper_bag")
+	_assert_item_contract("lighter")
+	_assert_item_contract("improvised_heat_note_01")
+	_assert_item_contract("survival_cooking_note_01")
+	_assert_item_contract("field_hygiene_note_01")
+	if not assert_true(items.has("improvised_heat_note_01"), "Knowledge note items should load into the shared item library."):
+		return
 	_assert_item_contract("hot_water")
 	_assert_item_contract("window_cover_patch")
 	_assert_recipe_contract("bottled_water", "can_stove", "hot_water")
 	_assert_recipe_contract("bubble_wrap_roll", "duct_tape", "window_cover_patch")
+	assert_true(bool(items["improvised_heat_note_01"].get("readable", false)), "Knowledge notes should expose readable=true.")
+	assert_true(Array(items["improvised_heat_note_01"].get("knowledge_recipe_ids", [])).size() > 0, "Knowledge notes should unlock at least one recipe.")
+	assert_eq(int(items["lighter"].get("charges_max", 0)), 5, "Lighter should expose a default charge capacity of 5.")
+	assert_eq(String(items["lighter"].get("charge_label", "")), "잔량", "Lighter should expose a readable charge label.")
 
 	var dense_fuel_combo: Dictionary = content_library.get_crafting_combination("newspaper", "cooking_oil")
 	assert_eq(String(dense_fuel_combo.get("result_type", "")), "success", "Newspaper plus cooking oil should resolve to a success recipe.")
@@ -249,6 +259,17 @@ func _run_test() -> void:
 	var dense_fuel_first_result: Variant = (dense_fuel_results_variant as Array)[0]
 	assert_true(typeof(dense_fuel_first_result) == TYPE_DICTIONARY, "Newspaper plus cooking oil should expose a dictionary first result payload.")
 	assert_eq(String((dense_fuel_first_result as Dictionary).get("id", "")), "dense_fuel", "Newspaper plus cooking oil should point at dense_fuel in the first result payload.")
+	var dense_fuel_required_tool_ids: Variant = dense_fuel_combo.get("required_tool_ids", [])
+	assert_true(typeof(dense_fuel_required_tool_ids) == TYPE_ARRAY and (dense_fuel_required_tool_ids as Array).is_empty(), "Assembly recipes should not require a lighter tool.")
+	var dense_fuel_tool_charge_costs: Variant = dense_fuel_combo.get("tool_charge_costs", {})
+	assert_true(typeof(dense_fuel_tool_charge_costs) == TYPE_DICTIONARY, "Dense fuel should expose tool charge costs.")
+	assert_eq(int((dense_fuel_tool_charge_costs as Dictionary).get("lighter", 0)), 0, "Assembly recipes should not spend lighter charges.")
+	assert_true(not String(dense_fuel_combo.get("codex_category", "")).is_empty(), "Crafting codex recipes should expose codex_category.")
+
+	var hot_water_combo: Dictionary = content_library.get_crafting_combination("bottled_water", "can_stove")
+	assert_true(not String(hot_water_combo.get("codex_category", "")).is_empty(), "Heating recipes should expose codex_category.")
+	assert_eq(Array(hot_water_combo.get("required_tool_ids", [])), ["lighter"], "Heating water should require a lighter.")
+	assert_eq(int(Dictionary(hot_water_combo.get("tool_charge_costs", {})).get("lighter", 0)), 1, "Heating water should spend one lighter charge.")
 
 	var reverse_lookup: Dictionary = content_library.get_crafting_combination("cooking_oil", "newspaper")
 	assert_eq(String(reverse_lookup.get("result_item_id", "")), "dense_fuel", "Crafting lookup should be canonical regardless of ingredient order.")

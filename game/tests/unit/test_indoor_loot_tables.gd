@@ -73,6 +73,12 @@ func _run_test() -> void:
 		return
 	var food_outcomes: Dictionary = food_option.get("outcomes", {})
 	assert_true(food_outcomes.has("loot_table"), "Food aisle search should define a weighted loot table.")
+	assert_true(_loot_table_has_entry(event_data, "search_office_drawer", "improvised_heat_note_01"), "Mart office loot should include a first-pass heat knowledge note.")
+	assert_true(_loot_table_has_entry(event_data, "search_office_drawer", "survival_cooking_note_01"), "Mart office loot should include a first-pass cooking knowledge note.")
+
+	var office_event_data: Dictionary = resolver.load_event("res://data/events/indoor/office_01.json")
+	assert_true(not office_event_data.is_empty(), "Office event data should load for note-placement checks.")
+	assert_true(_loot_table_has_entry(office_event_data, "search_records_room", "field_hygiene_note_01"), "Office records loot should include a field hygiene note.")
 
 	var first_run = _build_run_state(run_state_script, 111)
 	var second_run = _build_run_state(run_state_script, 111)
@@ -234,6 +240,22 @@ func _option_by_id(event_data: Dictionary, option_id: String) -> Dictionary:
 			if String(option.get("id", "")) == option_id:
 				return option
 	return {}
+
+
+func _loot_table_has_entry(event_data: Dictionary, option_id: String, item_id: String) -> bool:
+	var option := _option_by_id(event_data, option_id)
+	if option.is_empty():
+		return false
+	var outcomes: Dictionary = option.get("outcomes", {})
+	var loot_table_variant: Variant = outcomes.get("loot_table", {})
+	if typeof(loot_table_variant) != TYPE_DICTIONARY:
+		return false
+	for entry_variant in (loot_table_variant as Dictionary).get("entries", []):
+		if typeof(entry_variant) != TYPE_DICTIONARY:
+			continue
+		if String((entry_variant as Dictionary).get("id", "")) == item_id:
+			return true
+	return false
 
 
 func get_job(job_id: String) -> Dictionary:

@@ -2,7 +2,6 @@ extends "res://tests/support/test_case.gd"
 
 const OUTDOOR_MODE_SCENE_PATH := "res://scenes/outdoor/outdoor_mode.tscn"
 const RUN_STATE_SCRIPT_PATH := "res://scripts/run/run_state.gd"
-
 var _test_jobs: Dictionary = {
 	"courier": {
 		"id": "courier",
@@ -25,6 +24,7 @@ var _test_traits: Dictionary = {
 
 var _building_entered_count := 0
 var _entered_building_id := ""
+var _codex_requested_count := 0
 
 
 func _init() -> void:
@@ -54,6 +54,7 @@ func _run_test() -> void:
 
 	root.add_child(outdoor_mode)
 	outdoor_mode.building_entered.connect(Callable(self, "_on_building_entered"))
+	outdoor_mode.codex_requested.connect(Callable(self, "_on_codex_requested"))
 
 	if not assert_true(outdoor_mode.has_method("bind_run_state"), "Outdoor mode should expose bind_run_state()."):
 		outdoor_mode.free()
@@ -103,6 +104,40 @@ func _run_test() -> void:
 	assert_true(player_sprite.polygon.size() >= 3, "Outdoor player marker should render a visible polygon.")
 	assert_eq(building_markers.get_child_count(), 4, "Outdoor mode should render four building markers.")
 	assert_true(obstacles.get_child_count() > 0, "Outdoor mode should render at least one obstacle prop.")
+
+	var asphalt := outdoor_mode.get_node_or_null("Ground/Asphalt") as Polygon2D
+	if not assert_true(asphalt != null, "Outdoor mode should expose the asphalt backdrop polygon."):
+		outdoor_mode.free()
+		return
+	assert_true(
+		_polygon_min_y(asphalt.polygon) <= -float(ProjectSettings.get_setting("display/window/size/viewport_height")),
+		"Outdoor asphalt should extend at least one portrait viewport above the original world top so the lead stays covered."
+	)
+
+	var top_ribbon := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon") as PanelContainer
+	var exposure_label := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/HeaderRow/ExposureLabel") as Label
+	var hint_label := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/HintLabel") as Label
+	var craft_button := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/ToolsRow/CraftButton") as Button
+	var codex_button := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/ToolsRow/CodexButton") as Button
+	var world_camera := outdoor_mode.get_node_or_null("WorldCamera") as Camera2D
+	if not assert_true(top_ribbon != null, "Outdoor mode should expose a portrait TopRibbon panel."):
+		outdoor_mode.free()
+		return
+	if not assert_true(exposure_label != null, "Outdoor mode should expose an exposure label in the top ribbon."):
+		outdoor_mode.free()
+		return
+	if not assert_true(hint_label != null, "Outdoor mode should expose a hint label in the top ribbon."):
+		outdoor_mode.free()
+		return
+	if not assert_true(craft_button != null and codex_button != null, "Outdoor mode should expose craft and codex buttons in the top ribbon."):
+		outdoor_mode.free()
+		return
+	if not assert_true(world_camera != null, "Outdoor mode should expose a world camera."):
+		outdoor_mode.free()
+		return
+	assert_eq(top_ribbon.anchor_left, 0.0, "Outdoor TopRibbon should stretch from the left edge.")
+	assert_eq(top_ribbon.anchor_right, 1.0, "Outdoor TopRibbon should stretch to the right edge.")
+	assert_true(world_camera.offset.y < 0.0, "Portrait outdoor camera should lead upward with a negative Y offset.")
 
 	var content_library := root.get_node_or_null("ContentLibrary")
 	if not assert_true(content_library != null, "ContentLibrary autoload should be available for building lookups."):
@@ -191,6 +226,29 @@ func _run_test() -> void:
 	outdoor_mode.move_player(Vector2.RIGHT, 1.0)
 	assert_true(outdoor_mode.get_player_position().x < fresh_x, "Higher fatigue should reduce outdoor movement speed.")
 
+	codex_button.emit_signal("pressed")
+	assert_eq(_codex_requested_count, 1, "Pressing the outdoor codex button should request the shared crafting codex.")
+
+	var craft_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, content_library)
+	if not assert_true(craft_state != null, "Outdoor controller should build a craft-specific run state."):
+		outdoor_mode.free()
+		return
+	assert_true(craft_state.inventory.add_item(content_library.get_item("newspaper")), "Outdoor crafting tests should add newspaper.")
+	assert_true(craft_state.inventory.add_item(content_library.get_item("cooking_oil")), "Outdoor crafting tests should add cooking oil.")
+	outdoor_mode.bind_run_state(craft_state, "mart_01", Vector2(0.0, 0.0))
+	if not assert_true(outdoor_mode.has_method("attempt_craft"), "Outdoor mode should expose attempt_craft(...) for the shared crafting sheet."):
+		outdoor_mode.free()
+		return
+	var before_craft_minute: int = craft_state.clock.minute_of_day
+	var craft_result: Dictionary = outdoor_mode.attempt_craft("newspaper", "cooking_oil")
+	assert_true(bool(craft_result.get("ok", false)), "Outdoor assembly crafting should succeed without a lighter tool.")
+	assert_eq(craft_state.clock.minute_of_day, before_craft_minute, "Outdoor crafting should not add an explicit minute cost.")
+	assert_true(craft_state.known_recipe_ids.has("newspaper__cooking_oil"), "Outdoor crafting should unlock recipes in the run-state codex.")
+
 	outdoor_mode.free()
 	pass_test("OUTDOOR_CONTROLLER_OK")
 
@@ -200,9 +258,20 @@ func _on_building_entered(building_id: String) -> void:
 	_entered_building_id = building_id
 
 
+func _on_codex_requested() -> void:
+	_codex_requested_count += 1
+
+
 func get_job(job_id: String) -> Dictionary:
 	return _test_jobs.get(job_id, {})
 
 
 func get_trait(trait_id: String) -> Dictionary:
 	return _test_traits.get(trait_id, {})
+
+
+func _polygon_min_y(points: PackedVector2Array) -> float:
+	var min_y := INF
+	for point in points:
+		min_y = minf(min_y, point.y)
+	return min_y

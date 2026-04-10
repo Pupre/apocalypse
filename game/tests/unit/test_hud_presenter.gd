@@ -48,31 +48,34 @@ func _run_test() -> void:
 		hud.free()
 		return
 
-	var panel := hud.get_node_or_null("Panel") as PanelContainer
-	var title_label := hud.get_node_or_null("Panel/VBox/TitleLabel") as Label
-	var clock_label := hud.get_node_or_null("Panel/VBox/ClockLabel") as Label
-	var fatigue_label := hud.get_node_or_null("Panel/VBox/FatigueLabel") as Label
-	var hunger_label := hud.get_node_or_null("Panel/VBox/HungerLabel") as Label
-	var thirst_label := hud.get_node_or_null("Panel/VBox/ThirstLabel") as Label
-	var health_label := hud.get_node_or_null("Panel/VBox/HealthLabel") as Label
-	if not assert_true(panel != null, "HUD should expose Panel."):
+	var top_ribbon := hud.get_node_or_null("TopRibbon") as PanelContainer
+	var title_label := hud.get_node_or_null("TopRibbon/Margin/Stack/HeaderRow/TitleLabel") as Label
+	var clock_label := hud.get_node_or_null("TopRibbon/Margin/Stack/HeaderRow/ClockLabel") as Label
+	var fatigue_label := hud.get_node_or_null("TopRibbon/Margin/Stack/StatsRow/FatigueLabel") as Label
+	var hunger_label := hud.get_node_or_null("TopRibbon/Margin/Stack/StatsRow/HungerLabel") as Label
+	var thirst_label := hud.get_node_or_null("TopRibbon/Margin/Stack/StatsRow/ThirstLabel") as Label
+	var health_label := hud.get_node_or_null("TopRibbon/Margin/Stack/StatsRow/HealthLabel") as Label
+	var carry_label := hud.get_node_or_null("TopRibbon/Margin/Stack/StatsRow/CarryLabel") as Label
+	if not assert_true(top_ribbon != null, "HUD should expose TopRibbon."):
 		hud.free()
 		return
 	if not assert_true(title_label != null, "HUD should expose TitleLabel."):
 		hud.free()
 		return
-	if not assert_true(clock_label != null and fatigue_label != null and hunger_label != null and thirst_label != null and health_label != null, "HUD should expose the first-pass survival labels."):
+	if not assert_true(clock_label != null and fatigue_label != null and hunger_label != null and thirst_label != null and health_label != null and carry_label != null, "HUD should expose the first-pass survival labels."):
 		hud.free()
 		return
 
 	hud.set_mode_presentation("outdoor")
-	assert_eq(panel.anchor_left, 1.0, "Outdoor mode should anchor the HUD to the right edge.")
-	assert_eq(panel.anchor_right, 1.0, "Outdoor mode should keep the HUD right-anchored.")
-	assert_eq(panel.offset_left, -336.0, "Outdoor mode should keep the HUD 16px from the right edge.")
-	assert_eq(panel.offset_top, 16.0, "Outdoor mode should pin the HUD top offset to 16.")
-	assert_eq(panel.offset_right, -16.0, "Outdoor mode should keep the HUD right margin at 16.")
-	assert_eq(panel.offset_bottom, 228.0, "Outdoor mode should leave room for the added survival rows.")
-	assert_true(is_equal_approx(panel.modulate.a, 1.0), "Outdoor mode should keep the HUD fully opaque.")
+	assert_eq(top_ribbon.anchor_left, 0.0, "Outdoor mode should stretch the HUD from the left edge.")
+	assert_eq(top_ribbon.anchor_top, 0.0, "Outdoor mode should pin the HUD to the top edge.")
+	assert_eq(top_ribbon.anchor_right, 1.0, "Outdoor mode should stretch the HUD to the right edge.")
+	assert_eq(top_ribbon.anchor_bottom, 0.0, "Outdoor mode should keep the HUD top-aligned instead of depending on scene defaults.")
+	assert_eq(top_ribbon.offset_left, 12.0, "Outdoor mode should keep the HUD 12px from the left edge.")
+	assert_eq(top_ribbon.offset_top, 12.0, "Outdoor mode should keep the HUD 12px from the top edge.")
+	assert_eq(top_ribbon.offset_right, -12.0, "Outdoor mode should keep the HUD 12px from the right edge.")
+	assert_eq(top_ribbon.offset_bottom, 116.0, "Outdoor mode should leave room for the shared ribbon rows.")
+	assert_true(is_equal_approx(top_ribbon.modulate.a, 1.0), "Outdoor mode should keep the HUD fully opaque.")
 	assert_eq(title_label.text, "외부 생존 정보", "Outdoor mode should use the outdoor HUD title.")
 
 	hud.set_mode_presentation("indoor")

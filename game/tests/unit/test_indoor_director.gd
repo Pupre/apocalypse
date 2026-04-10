@@ -144,6 +144,23 @@ func _run_test() -> void:
 	assert_true(director.apply_action("drop_inventory_newspaper"), "Dropping an inventory item should succeed.")
 	assert_true(not _action_id_by_label_prefix(director.get_actions(), "신문지 챙긴다").is_empty(), "Dropped items should appear in the room loot list.")
 
+	var content_library := root.get_node_or_null("ContentLibrary")
+	if not assert_true(content_library != null, "Indoor director tests should have access to the ContentLibrary autoload."):
+		director.free()
+		return
+	assert_true(run_state.inventory.add_item(content_library.get_item("improvised_heat_note_01")), "Inventory should accept a readable knowledge note.")
+	assert_true(director.apply_action("inspect_inventory_improvised_heat_note_01"), "Director should allow selecting a knowledge note.")
+	selected_item_sheet = director.get_selected_inventory_sheet()
+	var selected_action_ids := _action_ids(selected_item_sheet.get("actions", []))
+	assert_true(selected_action_ids.has("read_inventory_improvised_heat_note_01"), "Knowledge notes should expose a read action.")
+	assert_true(selected_action_ids.has("drop_inventory_improvised_heat_note_01"), "Knowledge notes should keep a drop action.")
+	assert_true(selected_action_ids.has("close_inventory_sheet"), "Knowledge notes should keep a close action.")
+	assert_true(director.apply_action("read_inventory_improvised_heat_note_01"), "Director should allow reading the knowledge note.")
+	assert_true(run_state.known_recipe_ids.has("newspaper__cooking_oil"), "Reading should unlock mapped recipes.")
+	assert_eq(run_state.inventory.count_item_by_id("improvised_heat_note_01"), 1, "Reading a note should not consume the item.")
+	assert_true(director.apply_action("read_inventory_improvised_heat_note_01"), "Repeat reading should still resolve as an action.")
+	assert_true(director.get_feedback_message().find("이미") != -1, "Repeat reading should surface an already-known message.")
+
 	director.configure(run_state, "apartment_01")
 	assert_eq(director.get_current_zone_id(), "shared_entrance", "Director should initialize at the apartment entry zone.")
 	assert_eq(director.get_current_zone_label(), "공동 현관", "Director should expose the readable apartment entry label.")
