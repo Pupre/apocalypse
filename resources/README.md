@@ -12,7 +12,11 @@
 - `items/icons`
   - 아이템 아이콘
   - 사용처: `game/scripts/ui/item_icon_resolver.gd`
-  - 포함: `item_icons_manifest.json`, `icons_24_cutout`
+  - 포함: `item_icons_manifest.json`, `icons_24_cutout`, `icons_32_cutout`, `item_icons_batch29_sheet_{24,32}.png`
+  - 현재 정본 수량: `235`
+  - 기본 런타임 변형은 `24px cutout`
+  - `32px cutout`은 토스트/고밀도 UI용으로 같이 유지
+  - `frozen_inventory_item_pack_addon_29_v1` 원본 번들은 이 구조에 흡수한 뒤 제거한다
 
 - `ui/base`
   - 공용 UI fallback

@@ -60,6 +60,8 @@ func _relative_icon_path_for_variant(item_entry: Dictionary, variant: String) ->
 	match variant:
 		"cutout_24":
 			return "icons_24_cutout/%s.png" % String(item_entry.get("id", ""))
+		"cutout_32":
+			return "icons_32_cutout/%s.png" % String(item_entry.get("id", ""))
 		_:
 			return "icons_24_cutout/%s.png" % String(item_entry.get("id", ""))
 
