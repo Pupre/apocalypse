@@ -1,0 +1,87 @@
+{
+  "id": "chapel_01",
+  "name": "작은 예배당",
+  "summary": "예배 공간 뒤쪽으로 작은 준비실이 있어 초와 메모류가 나뉘어 남아 있다.",
+  "entry_zone_id": "small_hall",
+  "zones": [
+    {
+      "id": "small_hall",
+      "floor_id": "floor_1",
+      "label": "예배 공간",
+      "summary": "접이식 의자와 작은 탁자 사이에 종이류가 남아 있다.",
+      "connected_zone_ids": ["vestry"],
+      "event_ids": ["search_chapel_hall"],
+      "map_position": [0, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "vestry",
+      "floor_id": "floor_1",
+      "label": "준비실",
+      "summary": "안쪽 선반에 초와 작은 생활 물건이 남아 있다.",
+      "connected_zone_ids": ["small_hall"],
+      "event_ids": ["search_chapel_vestry"],
+      "map_position": [1, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [],
+  "events": [
+    {
+      "id": "search_chapel_hall",
+      "zone_id": "small_hall",
+      "type": "search",
+      "hint_text": "의자 밑과 탁자 위에 종이와 작은 메모가 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_chapel_hall_once",
+          "label": "예배 공간을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "newspaper", "weight": 2 },
+                { "id": "memo_pad", "weight": 2 },
+                { "id": "paper_bag", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_chapel_vestry",
+      "zone_id": "vestry",
+      "type": "search",
+      "hint_text": "작은 선반 안쪽엔 초와 천 조각이 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_chapel_vestry_once",
+          "label": "준비실을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "tea_light_candle", "weight": 3 },
+                { "id": "old_blanket", "weight": 1 },
+                { "id": "ballpoint_pen", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

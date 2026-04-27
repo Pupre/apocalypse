@@ -13,6 +13,18 @@ Start here if you are trying to understand what is current, what is active, and 
 
 Active specs live in `docs/superpowers/specs/` and define the current feature direction. Newest first.
 
+- [Toast Feedback System Design](superpowers/specs/2026-04-20-toast-feedback-system-design.md)
+- [Indoor Depth and Item Expansion Design](superpowers/specs/2026-04-20-indoor-depth-item-expansion-design.md)
+- [Outdoor 3x3 Authored Slice Design](superpowers/specs/2026-04-17-outdoor-3x3-authored-slice-design.md)
+- [Portrait UI Framework Design](superpowers/specs/2026-04-17-portrait-ui-framework-design.md)
+- [Outdoor Art Integration Pass 1 Design](superpowers/specs/2026-04-16-outdoor-art-integration-pass1-design.md)
+- [Inventory Craft Slot Bar Design](superpowers/specs/2026-04-16-inventory-craft-slot-bar-design.md)
+- [Inventory Bottom Sheet Redesign](superpowers/specs/2026-04-16-inventory-bottom-sheet-redesign.md)
+- [Outdoor Spatial Map UI Design](superpowers/specs/2026-04-15-outdoor-spatial-map-ui-design.md)
+- [Outdoor Map And Fog UI Design](superpowers/specs/2026-04-15-outdoor-map-and-fog-ui-design.md)
+- [Outdoor World Architecture Design](superpowers/specs/2026-04-15-outdoor-world-architecture-design.md)
+- [Outdoor 2x2 Block Expansion Design](superpowers/specs/2026-04-15-outdoor-2x2-block-expansion-design.md) (superseded by the outdoor world architecture and 3x3 authored slice specs)
+- [Outdoor Threat and Cold Feedback Design](superpowers/specs/2026-04-13-outdoor-threat-and-cold-feedback-design.md)
 - [Context Routing Docs Design](superpowers/specs/2026-04-10-context-routing-docs-design.md)
 - [Contextual Crafting UI Design](superpowers/specs/2026-04-09-contextual-crafting-ui-design.md)
 - [Portrait Phase 1 Shell Design](superpowers/specs/2026-04-07-portrait-phase1-shell-design.md)
@@ -23,6 +35,17 @@ Active specs live in `docs/superpowers/specs/` and define the current feature di
 
 Active plans live in `docs/superpowers/plans/` and define the current implementation sequence. Newest first.
 
+- [Toast Feedback System](superpowers/plans/2026-04-20-toast-feedback-system.md)
+- [Indoor Depth and Item Expansion](superpowers/plans/2026-04-20-indoor-depth-item-expansion.md)
+- [Outdoor 3x3 Authored Slice](superpowers/plans/2026-04-17-outdoor-3x3-authored-slice.md)
+- [Portrait UI Framework](superpowers/plans/2026-04-17-portrait-ui-framework.md)
+- [Outdoor Art Integration Pass 1](superpowers/plans/2026-04-16-outdoor-art-integration-pass1.md)
+- [Inventory Craft Slot Bar](superpowers/plans/2026-04-16-inventory-craft-slot-bar.md)
+- [Inventory Bottom Sheet Redesign](superpowers/plans/2026-04-16-inventory-bottom-sheet-redesign.md)
+- [Outdoor Map And Fog UI](superpowers/plans/2026-04-15-outdoor-map-and-fog-ui.md)
+- [Outdoor World Architecture](superpowers/plans/2026-04-15-outdoor-world-architecture.md)
+- [Outdoor 2x2 Block Expansion](superpowers/plans/2026-04-15-outdoor-2x2-block-expansion.md) (superseded by the outdoor world architecture plan)
+- [Outdoor Threat and Cold Feedback](superpowers/plans/2026-04-13-outdoor-threat-and-cold-feedback.md)
 - [Context Routing Docs](superpowers/plans/2026-04-10-context-routing-docs.md)
 - [Contextual Crafting UI](superpowers/plans/2026-04-09-contextual-crafting-ui.md)
 - [Portrait Phase 1 Shell](superpowers/plans/2026-04-07-portrait-phase1-shell.md)
@@ -91,5 +114,7 @@ Classify a new document by its job, then place it in the matching folder:
 - Put session handoffs and progress logs in `docs/handoffs/` or `docs/worklogs/`.
 
 When you add a new active spec or plan, update this index so readers can find it quickly.
+
+If an older active doc is superseded by a newer one, keep the older entry only as historical context and mark it as superseded in the surrounding docs rather than treating it as the current path.
 
 When project direction changes, update `docs/CURRENT_STATE.md` so the snapshot stays ahead of the deeper archive.

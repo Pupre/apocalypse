@@ -1,0 +1,72 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/survival_gauge_strip.gd" id="1"]
+
+[node name="SurvivalGaugeStrip" type="HBoxContainer"]
+theme_override_constants/separation = 6
+script = ExtResource("1")
+
+[node name="HealthGauge" type="VBoxContainer" parent="."]
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="StageLabel" type="Label" parent="HealthGauge"]
+text = "체력 --"
+horizontal_alignment = 1
+
+[node name="Bar" type="ProgressBar" parent="HealthGauge"]
+custom_minimum_size = Vector2(0, 14)
+show_percentage = false
+size_flags_horizontal = 3
+
+[node name="HungerGauge" type="VBoxContainer" parent="."]
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="StageLabel" type="Label" parent="HungerGauge"]
+text = "허기 --"
+horizontal_alignment = 1
+
+[node name="Bar" type="ProgressBar" parent="HungerGauge"]
+custom_minimum_size = Vector2(0, 14)
+show_percentage = false
+size_flags_horizontal = 3
+
+[node name="ThirstGauge" type="VBoxContainer" parent="."]
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="StageLabel" type="Label" parent="ThirstGauge"]
+text = "갈증 --"
+horizontal_alignment = 1
+
+[node name="Bar" type="ProgressBar" parent="ThirstGauge"]
+custom_minimum_size = Vector2(0, 14)
+show_percentage = false
+size_flags_horizontal = 3
+
+[node name="FatigueGauge" type="VBoxContainer" parent="."]
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="StageLabel" type="Label" parent="FatigueGauge"]
+text = "피로 --"
+horizontal_alignment = 1
+
+[node name="Bar" type="ProgressBar" parent="FatigueGauge"]
+custom_minimum_size = Vector2(0, 14)
+show_percentage = false
+size_flags_horizontal = 3
+
+[node name="ColdGauge" type="VBoxContainer" parent="."]
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="StageLabel" type="Label" parent="ColdGauge"]
+text = "추위 --"
+horizontal_alignment = 1
+
+[node name="Bar" type="ProgressBar" parent="ColdGauge"]
+custom_minimum_size = Vector2(0, 14)
+show_percentage = false
+size_flags_horizontal = 3

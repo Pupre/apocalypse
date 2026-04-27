@@ -1,0 +1,27 @@
+{
+  "block_coord": { "x": 1, "y": 1 },
+  "roads": [
+    { "id": "north_south", "rect": { "x": 360, "y": 0, "width": 240, "height": 960 } },
+    { "id": "east_west", "rect": { "x": 0, "y": 320, "width": 960, "height": 280 } }
+  ],
+  "snow_fields": [
+    { "id": "central_snow", "rect": { "x": 640, "y": 640, "width": 320, "height": 320 } },
+    { "id": "warehouse_snow", "rect": { "x": 0, "y": 0, "width": 260, "height": 240 } }
+  ],
+  "obstacles": [
+    { "kind": "vehicle", "rect": { "x": 780, "y": 440, "width": 56, "height": 56 } },
+    { "kind": "rubble", "rect": { "x": 180, "y": 700, "width": 120, "height": 90 } }
+  ],
+  "building_anchors": {
+    "laundry_anchor": { "x": 180, "y": 180 },
+    "hardware_anchor": { "x": 760, "y": 220 },
+    "warehouse_anchor": { "x": 720, "y": 720 },
+    "repair_shop_anchor": { "x": 220, "y": 720 }
+  },
+  "threat_spawns": [
+    { "id": "pack_11_a", "position": { "x": 860, "y": 860 }, "forward": { "x": -1, "y": 0 } }
+  ],
+  "landmarks": [
+    { "id": "warehouse_yard", "label": "창고 야적장", "position": { "x": 500, "y": 520 } }
+  ]
+}

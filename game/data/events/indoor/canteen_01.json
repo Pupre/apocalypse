@@ -1,0 +1,87 @@
+{
+  "id": "canteen_01",
+  "name": "구내 식당",
+  "summary": "배식대와 안쪽 식재 보관 선반이 분리돼 있어 앞뒤를 따로 봐야 한다.",
+  "entry_zone_id": "serving_line",
+  "zones": [
+    {
+      "id": "serving_line",
+      "floor_id": "floor_1",
+      "label": "배식대",
+      "summary": "빈 tray와 종이포장만 남은 배식대다.",
+      "connected_zone_ids": ["pantry_shelf"],
+      "event_ids": ["search_canteen_serving_line"],
+      "map_position": [0, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "pantry_shelf",
+      "floor_id": "floor_1",
+      "label": "안쪽 식재 선반",
+      "summary": "즉석 재료와 작은 캔류가 아직 선반 아래 남아 있다.",
+      "connected_zone_ids": ["serving_line"],
+      "event_ids": ["search_canteen_pantry_shelf"],
+      "map_position": [1, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [],
+  "events": [
+    {
+      "id": "search_canteen_serving_line",
+      "zone_id": "serving_line",
+      "type": "search",
+      "hint_text": "배식대 아래에 일회용 용기와 작은 식품이 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_canteen_serving_line_once",
+          "label": "배식대를 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "paper_bag", "weight": 2 },
+                { "id": "foil_tray_pack", "weight": 3 },
+                { "id": "crackers", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_canteen_pantry_shelf",
+      "zone_id": "pantry_shelf",
+      "type": "search",
+      "hint_text": "안쪽 선반엔 수프 재료와 작은 캔이 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_canteen_pantry_shelf_once",
+          "label": "안쪽 식재 선반을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "instant_soup_powder", "weight": 3 },
+                { "id": "steel_food_can", "weight": 3 },
+                { "id": "tea_bag", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

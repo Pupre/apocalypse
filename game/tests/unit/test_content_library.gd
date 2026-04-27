@@ -38,6 +38,8 @@ func _assert_recipe_contract(primary: String, secondary: String, expected_result
 	var result_items_variant: Variant = recipe.get("result_items", [])
 	assert_true(typeof(result_items_variant) == TYPE_ARRAY and not (result_items_variant as Array).is_empty(), "Recipe '%s + %s' should expose a non-empty result_items array." % [primary, secondary])
 	var result_items := result_items_variant as Array
+	if result_items.is_empty():
+		return
 	var first_result: Variant = result_items[0]
 	assert_true(typeof(first_result) == TYPE_DICTIONARY, "Recipe '%s + %s' should expose a dictionary first result payload." % [primary, secondary])
 	var result_item_id_variant: Variant = recipe.get("result_item_id", "")
@@ -202,6 +204,9 @@ func _run_test() -> void:
 	var jobs: Dictionary = content_library.get("jobs")
 	var traits: Dictionary = content_library.get("traits")
 	var buildings: Dictionary = content_library.get("buildings")
+	var outdoor_world_layout: Dictionary = {}
+	if content_library.has_method("get_outdoor_world_layout"):
+		outdoor_world_layout = content_library.get_outdoor_world_layout()
 	var items: Dictionary = content_library.get("items")
 	var crafting_combinations_variant: Variant = content_library.get("crafting_combinations")
 	var crafting_combinations: Dictionary = {}
@@ -209,11 +214,44 @@ func _run_test() -> void:
 		crafting_combinations = crafting_combinations_variant
 	assert_eq(jobs.size(), 2, "Prototype jobs should load.")
 	assert_eq(traits.size(), 4, "Prototype traits should load.")
-	assert_eq(buildings.size(), 4, "Prototype should expose four outdoor buildings.")
+	assert_true(buildings.size() >= 28, "The authored outdoor slice should expose at least twenty-eight buildings after the 3x3 expansion.")
 	assert_true(buildings.has("mart_01"), "Prototype building should be indexed.")
 	assert_true(buildings.has("apartment_01"), "Apartment building should be indexed.")
 	assert_true(buildings.has("clinic_01"), "Clinic building should be indexed.")
 	assert_true(buildings.has("office_01"), "Office building should be indexed.")
+	assert_true(buildings.has("convenience_01"), "Convenience store should be indexed.")
+	assert_true(buildings.has("hardware_01"), "Hardware store should be indexed.")
+	assert_true(buildings.has("gas_station_01"), "Gas station should be indexed.")
+	assert_true(buildings.has("laundry_01"), "Laundry should be indexed.")
+	assert_true(content_library.has_method("get_outdoor_world_layout"), "ContentLibrary should expose outdoor world layout helpers.")
+	assert_true(content_library.has_method("get_outdoor_block"), "ContentLibrary should expose authored outdoor block helpers.")
+	assert_true(not outdoor_world_layout.is_empty(), "Outdoor world layout should load into the content library.")
+	var block_size: Dictionary = outdoor_world_layout.get("block_size", {})
+	var city_blocks: Dictionary = outdoor_world_layout.get("city_blocks", {})
+	assert_eq(int(block_size.get("width", 0)), 960, "Outdoor world layout should expose a fixed block width.")
+	assert_eq(int(block_size.get("height", 0)), 960, "Outdoor world layout should expose a fixed block height.")
+	assert_eq(int(city_blocks.get("width", 0)), 8, "Outdoor world layout should expose authored city width in blocks.")
+	assert_eq(int(city_blocks.get("height", 0)), 8, "Outdoor world layout should expose authored city height in blocks.")
+	var authored_block_coords := [
+		Vector2i(0, 0),
+		Vector2i(1, 0),
+		Vector2i(2, 0),
+		Vector2i(0, 1),
+		Vector2i(1, 1),
+		Vector2i(2, 1),
+		Vector2i(0, 2),
+		Vector2i(1, 2),
+		Vector2i(2, 2),
+	]
+	for block_coord in authored_block_coords:
+		var authored_block: Dictionary = content_library.get_outdoor_block(block_coord)
+		assert_true(not authored_block.is_empty(), "Outdoor authored block %s should exist." % [block_coord])
+	var block_0_0: Dictionary = content_library.get_outdoor_block(Vector2i(0, 0))
+	var block_1_1: Dictionary = content_library.get_outdoor_block(Vector2i(1, 1))
+	var block_0_0_anchors_variant: Variant = block_0_0.get("building_anchors", {})
+	var block_1_1_anchors_variant: Variant = block_1_1.get("building_anchors", {})
+	assert_true(typeof(block_0_0_anchors_variant) == TYPE_DICTIONARY, "Outdoor blocks should expose building anchors.")
+	assert_true(typeof(block_1_1_anchors_variant) == TYPE_DICTIONARY and (block_1_1_anchors_variant as Dictionary).size() >= 4, "The first authored southeast block should already contain several building anchors.")
 	assert_true(items.has("energy_bar"), "Prototype items should index consumables.")
 	assert_true(items.has("bottled_water"), "Prototype items should index thirst recovery items.")
 	assert_true(items.has("bandage"), "Prototype items should index health recovery items.")
@@ -246,6 +284,26 @@ func _run_test() -> void:
 	_assert_item_contract("window_cover_patch")
 	_assert_recipe_contract("bottled_water", "can_stove", "hot_water")
 	_assert_recipe_contract("bubble_wrap_roll", "duct_tape", "window_cover_patch")
+	for required_building_id in ["mart_01", "hardware_01", "apartment_01", "warehouse_01", "garage_01"]:
+		var building: Dictionary = content_library.get_building(required_building_id)
+		assert_true(not building.is_empty(), "Expected building '%s' to exist." % required_building_id)
+		assert_true(String(building.get("depth_tier", "")).begins_with("tier_"), "Building '%s' should expose a depth_tier." % required_building_id)
+		assert_true(not String(building.get("entry_briefing", "")).is_empty(), "Building '%s' should expose an outdoor entry briefing." % required_building_id)
+	for required_item_id in [
+		"butter_cookie_box",
+		"sealant_tube",
+		"sewing_kit",
+		"empty_jerrycan",
+		"sealed_window_patch",
+		"patched_blanket",
+	]:
+		_assert_item_contract(required_item_id)
+	_assert_recipe_contract("sealant_tube", "clear_plastic_sheet", "sealed_window_patch")
+	_assert_recipe_contract("hose_clamp", "siphon_hose", "transfer_hose")
+	_assert_recipe_contract("sewing_kit", "old_blanket", "patched_blanket")
+	_assert_recipe_contract("shop_towel_bundle", "rubbing_alcohol", "solvent_wipes")
+	_assert_recipe_contract("tarp_sheet", "old_blanket", "tarp_bedroll")
+	_assert_recipe_contract("foil_tray_pack", "tea_light_candle", "foil_tray_warmer")
 	assert_true(bool(items["improvised_heat_note_01"].get("readable", false)), "Knowledge notes should expose readable=true.")
 	assert_true(Array(items["improvised_heat_note_01"].get("knowledge_recipe_ids", [])).size() > 0, "Knowledge notes should unlock at least one recipe.")
 	assert_eq(int(items["lighter"].get("charges_max", 0)), 5, "Lighter should expose a default charge capacity of 5.")

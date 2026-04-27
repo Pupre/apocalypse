@@ -1,0 +1,87 @@
+{
+  "id": "school_gate_01",
+  "name": "폐교 정문",
+  "summary": "정문 경비실과 안쪽 보관 선반이 나뉘어 있어 문서와 소형 장비가 따로 남아 있다.",
+  "entry_zone_id": "guard_box",
+  "zones": [
+    {
+      "id": "guard_box",
+      "floor_id": "floor_1",
+      "label": "경비실",
+      "summary": "젖은 안내문과 끊긴 무전기 자리만 남아 있다.",
+      "connected_zone_ids": ["admin_shelf"],
+      "event_ids": ["search_school_gate_guard_box"],
+      "map_position": [0, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "admin_shelf",
+      "floor_id": "floor_1",
+      "label": "안쪽 보관 선반",
+      "summary": "문서함과 소형 전지, 필기 도구가 한쪽 선반에 남아 있다.",
+      "connected_zone_ids": ["guard_box"],
+      "event_ids": ["search_school_gate_admin_shelf"],
+      "map_position": [1, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [],
+  "events": [
+    {
+      "id": "search_school_gate_guard_box",
+      "zone_id": "guard_box",
+      "type": "search",
+      "hint_text": "경비실 안쪽엔 메모와 작은 종이류가 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_school_gate_guard_box_once",
+          "label": "경비실을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "memo_pad", "weight": 3 },
+                { "id": "ballpoint_pen", "weight": 3 },
+                { "id": "newspaper", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_school_gate_admin_shelf",
+      "zone_id": "admin_shelf",
+      "type": "search",
+      "hint_text": "안쪽 선반엔 건전지와 작은 비상물자가 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_school_gate_admin_shelf_once",
+          "label": "안쪽 선반을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "spare_batteries", "weight": 3 },
+                { "id": "bandage", "weight": 2 },
+                { "id": "paper_bag", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

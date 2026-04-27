@@ -1,0 +1,91 @@
+{
+  "pack_name": "Frozen UI Pack 6 - Feedback Micro",
+  "style_family": "Frozen-city survival UI compact family",
+  "source_rules": "Game-ready 2D sprite assets with transparent background outside intended shape only; no baked text; grounded frozen-city palette; 9-slice values when applicable.",
+  "assets": [
+    {
+      "filename": "toast_info.png",
+      "purpose": "Short info toast strip for minor pickups and neutral updates",
+      "size": "420x36",
+      "nine_slice": {
+        "left": 18,
+        "right": 18,
+        "top": 12,
+        "bottom": 12
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "toast_warning.png",
+      "purpose": "Short warning toast strip for risk, pursuit, or deteriorating conditions",
+      "size": "420x36",
+      "nine_slice": {
+        "left": 18,
+        "right": 18,
+        "top": 12,
+        "bottom": 12
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "toast_success.png",
+      "purpose": "Short success toast strip for crafted gear, completed actions, and recovered state",
+      "size": "420x36",
+      "nine_slice": {
+        "left": 18,
+        "right": 18,
+        "top": 12,
+        "bottom": 12
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "status_chip_fire.png",
+      "purpose": "Micro status chip for warmth / fire-related state",
+      "size": "228x36",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 12,
+        "bottom": 12
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "status_chip_cold.png",
+      "purpose": "Micro status chip for cold / exposure-related state",
+      "size": "228x36",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 12,
+        "bottom": 12
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "status_chip_danger.png",
+      "purpose": "Micro status chip for danger / pursuit state",
+      "size": "228x36",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 12,
+        "bottom": 12
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "status_chip_overweight.png",
+      "purpose": "Micro status chip for overweight / carry-load warning",
+      "size": "228x36",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 12,
+        "bottom": 12
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    }
+  ]
+}

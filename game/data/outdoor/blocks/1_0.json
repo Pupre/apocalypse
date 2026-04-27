@@ -1,0 +1,27 @@
+{
+  "block_coord": { "x": 1, "y": 0 },
+  "roads": [
+    { "id": "north_south", "rect": { "x": 360, "y": 0, "width": 240, "height": 960 } },
+    { "id": "east_west", "rect": { "x": 0, "y": 320, "width": 960, "height": 280 } }
+  ],
+  "snow_fields": [
+    { "id": "northeast_snow", "rect": { "x": 640, "y": 0, "width": 320, "height": 260 } },
+    { "id": "south_plaza_snow", "rect": { "x": 0, "y": 660, "width": 260, "height": 300 } }
+  ],
+  "obstacles": [
+    { "kind": "vehicle", "rect": { "x": 520, "y": 460, "width": 50, "height": 50 } },
+    { "kind": "rubble", "rect": { "x": 140, "y": 160, "width": 110, "height": 70 } }
+  ],
+  "building_anchors": {
+    "clinic_anchor": { "x": 180, "y": 220 },
+    "convenience_anchor": { "x": 760, "y": 240 },
+    "bakery_anchor": { "x": 720, "y": 700 },
+    "police_box_anchor": { "x": 220, "y": 700 }
+  },
+  "threat_spawns": [
+    { "id": "pack_10_a", "position": { "x": 840, "y": 140 }, "forward": { "x": -1, "y": 0 } }
+  ],
+  "landmarks": [
+    { "id": "clinic_crossing", "label": "의원 앞 사거리", "position": { "x": 480, "y": 460 } }
+  ]
+}

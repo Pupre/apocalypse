@@ -1,0 +1,64 @@
+{
+  "package": "Apocalypse UI Base Runtime",
+  "description": "Minimal fallback UI assets still referenced at runtime.",
+  "assets": [
+    {
+      "file": "indoor/indoor_action_row_compact_idle.png",
+      "group": "indoor",
+      "w": 320,
+      "h": 44,
+      "nine_slice": [
+        18,
+        18,
+        12,
+        12
+      ],
+      "notes": "Fallback idle action row for indoor buttons."
+    },
+    {
+      "file": "indoor/indoor_action_row_compact_pressed.png",
+      "group": "indoor",
+      "w": 320,
+      "h": 44,
+      "nine_slice": [
+        18,
+        18,
+        12,
+        12
+      ],
+      "notes": "Fallback pressed action row for indoor buttons."
+    },
+    {
+      "file": "icons/light_24/map.png",
+      "group": "icons",
+      "w": 24,
+      "h": 24,
+      "nine_slice": null,
+      "notes": "HUD map icon."
+    },
+    {
+      "file": "icons/light_24/bag.png",
+      "group": "icons",
+      "w": 24,
+      "h": 24,
+      "nine_slice": null,
+      "notes": "HUD bag icon."
+    },
+    {
+      "file": "icons/light_24/close.png",
+      "group": "icons",
+      "w": 24,
+      "h": 24,
+      "nine_slice": null,
+      "notes": "Close icon."
+    },
+    {
+      "file": "icons/light_24/structure.png",
+      "group": "icons",
+      "w": 24,
+      "h": 24,
+      "nine_slice": null,
+      "notes": "Indoor structure icon."
+    }
+  ]
+}

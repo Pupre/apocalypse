@@ -1,0 +1,288 @@
+{
+  "id": "hardware_01",
+  "name": "철물점",
+  "summary": "앞 매장보다 안쪽 자재실과 적재 코너가 더 중요하다. 잠긴 뒷방에 보수용 핵심 부품이 남아 있다.",
+  "entry_zone_id": "front_counter",
+  "zones": [
+    {
+      "id": "front_counter",
+      "floor_id": "floor_1",
+      "label": "입구",
+      "summary": "깨진 유리문 안쪽으로 공구 벽과 부품 선반이 보인다.",
+      "connected_zone_ids": ["tool_aisle", "parts_shelf"],
+      "event_ids": ["front_counter_search_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "tool_aisle",
+      "floor_id": "floor_1",
+      "label": "공구 진열대",
+      "summary": "손잡이 달린 공구와 철제 공구함이 줄지어 남아 있다.",
+      "connected_zone_ids": ["front_counter", "parts_shelf", "workbench", "backroom_door"],
+      "event_ids": ["tool_aisle_search_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "parts_shelf",
+      "floor_id": "floor_1",
+      "label": "부품 선반",
+      "summary": "작은 서랍장과 플라스틱 통 안에 패킹과 금속 부품이 남아 있다.",
+      "connected_zone_ids": ["front_counter", "tool_aisle"],
+      "event_ids": ["parts_shelf_search_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "workbench",
+      "floor_id": "floor_1",
+      "label": "작업대",
+      "summary": "분해한 난방기와 반쯤 비운 공구함이 놓여 있다.",
+      "connected_zone_ids": ["tool_aisle"],
+      "event_ids": ["workbench_search_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "backroom_door",
+      "floor_id": "floor_1",
+      "label": "뒷문 앞",
+      "summary": "자재실 문은 잠겨 있지만, 바닥에 최근 끌어낸 상자 자국이 남아 있다.",
+      "connected_zone_ids": ["tool_aisle", "backroom"],
+      "event_ids": ["backroom_door_event"],
+      "map_position": [2, 2],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "backroom",
+      "floor_id": "floor_1",
+      "label": "자재실",
+      "move_label": "잠긴 자재실로 들어간다",
+      "blocked_feedback": "뒷방 자재실 문이 잠겨 있다.",
+      "summary": "실리콘, 가스켓, 호스 밴드 같은 보수 부품이 정리된 채 남아 있다.",
+      "connected_zone_ids": ["backroom_door", "loading_corner"],
+      "event_ids": ["backroom_search_event"],
+      "map_position": [3, 2],
+      "first_visit_cost": 30,
+      "revisit_cost": 10,
+      "access_requirements": {
+        "required_item_ids": ["hardware_backroom_key"]
+      }
+    },
+    {
+      "id": "loading_corner",
+      "floor_id": "floor_1",
+      "label": "적재 코너",
+      "summary": "묶인 배관 자재와 포장재 상자가 벽 쪽에 밀려 있다.",
+      "connected_zone_ids": ["backroom"],
+      "event_ids": ["loading_corner_search_event"],
+      "map_position": [4, 2],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [
+    {
+      "id": "backroom_key_hint",
+      "text": "작업대 아래 쪽지에는 자재실 열쇠를 점검용 공구함에 숨겨둔다고 적혀 있다.",
+      "visible": false
+    }
+  ],
+  "events": [
+    {
+      "id": "front_counter_search_event",
+      "zone_id": "front_counter",
+      "type": "search",
+      "hint_text": "카운터 아래 계산서 상자와 작은 걸이판에 잡동사니가 남아 있다.",
+      "options": [
+        {
+          "id": "search_front_counter",
+          "label": "입구 주변을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "duct_tape", "weight": 4 },
+                { "id": "paper_bag", "weight": 2 },
+                { "id": "rubber_band", "weight": 3 },
+                { "id": "ballpoint_pen", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool_aisle_search_event",
+      "zone_id": "tool_aisle",
+      "type": "search",
+      "hint_text": "장갑, 배터리, 포장재처럼 바로 쓸 만한 물건이 듬성듬성 남아 있다.",
+      "options": [
+        {
+          "id": "search_tool_aisle",
+          "label": "공구 진열대를 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "work_gloves", "weight": 3 },
+                { "id": "bubble_wrap_roll", "weight": 3 },
+                { "id": "spare_batteries", "weight": 3 },
+                { "id": "epoxy_putty", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "parts_shelf_search_event",
+      "zone_id": "parts_shelf",
+      "type": "search",
+      "hint_text": "패킹과 클램프 같은 작은 부품이 아직 상자째 남아 있다.",
+      "options": [
+        {
+          "id": "search_parts_shelf",
+          "label": "부품 선반을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "hose_clamp", "weight": 4 },
+                { "id": "rubber_gasket", "weight": 4 },
+                { "id": "zip_bag", "weight": 2 },
+                { "id": "steel_wire", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "workbench_search_event",
+      "zone_id": "workbench",
+      "type": "search",
+      "hint_text": "점검용 공구함과 작업대 서랍 안에는 따로 숨긴 물건이 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_workbench",
+          "label": "작업대를 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [
+              { "id": "hardware_backroom_key", "bulk": 1 }
+            ],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "epoxy_putty", "weight": 3 },
+                { "id": "pliers", "weight": 2 },
+                { "id": "sealant_tube", "weight": 2 }
+              ]
+            },
+            "reveal_clue_ids": ["backroom_key_hint"],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "backroom_door_event",
+      "zone_id": "backroom_door",
+      "type": "search",
+      "hint_text": "문고리는 잠겨 있지만 문틈 아래로 아직 정리된 자재 선반이 보인다.",
+      "options": [
+        {
+          "id": "inspect_backroom_door",
+          "label": "잠긴 자재실 문을 확인한다",
+          "requirements": {},
+          "costs": { "minutes": 10, "noise": 0 },
+          "outcomes": {
+            "reveal_clue_ids": ["backroom_key_hint"],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "backroom_search_event",
+      "zone_id": "backroom",
+      "type": "search",
+      "hint_text": "정리된 자재 박스 속에 보수용 핵심 부품이 남아 있다.",
+      "options": [
+        {
+          "id": "search_backroom",
+          "label": "자재실을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 4,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "sealant_tube", "weight": 4 },
+                { "id": "hose_clamp", "weight": 4 },
+                { "id": "rubber_gasket", "weight": 4 },
+                { "id": "epoxy_putty", "weight": 3 },
+                { "id": "clear_plastic_sheet", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "loading_corner_search_event",
+      "zone_id": "loading_corner",
+      "type": "search",
+      "hint_text": "뒤쪽 상자에는 큰 포장재와 작업용 소모품이 섞여 있다.",
+      "options": [
+        {
+          "id": "search_loading_corner",
+          "label": "적재 코너를 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "bubble_wrap_roll", "weight": 3 },
+                { "id": "trash_bag_roll", "weight": 2 },
+                { "id": "steel_food_can", "weight": 2 },
+                { "id": "work_gloves", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

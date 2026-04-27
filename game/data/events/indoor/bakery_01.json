@@ -1,0 +1,87 @@
+{
+  "id": "bakery_01",
+  "name": "빵집",
+  "summary": "계산대와 안쪽 준비대가 나뉘어 있어 포장재와 남은 간식이 따로 흩어져 있다.",
+  "entry_zone_id": "counter",
+  "zones": [
+    {
+      "id": "counter",
+      "floor_id": "floor_1",
+      "label": "계산대",
+      "summary": "진열장 앞에 종이봉투와 작은 잔돈통이 남아 있다.",
+      "connected_zone_ids": ["prep_room"],
+      "event_ids": ["search_bakery_counter_event"],
+      "map_position": [0, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "prep_room",
+      "floor_id": "floor_1",
+      "label": "안쪽 준비대",
+      "summary": "식은 작업대 위에 남은 포장지와 건조 간식 상자가 놓여 있다.",
+      "connected_zone_ids": ["counter"],
+      "event_ids": ["search_bakery_prep_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [],
+  "events": [
+    {
+      "id": "search_bakery_counter_event",
+      "zone_id": "counter",
+      "type": "search",
+      "hint_text": "계산대 아래에 포장재와 간단한 먹을거리가 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_bakery_counter",
+          "label": "계산대를 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "paper_bag", "weight": 4 },
+                { "id": "crackers", "weight": 3 },
+                { "id": "tea_bag", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_bakery_prep_event",
+      "zone_id": "prep_room",
+      "type": "search",
+      "hint_text": "작업대 안쪽에는 포장재와 남은 간식 상자가 있다.",
+      "options": [
+        {
+          "id": "search_bakery_prep",
+          "label": "안쪽 준비대를 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "butter_cookie_box", "weight": 3 },
+                { "id": "cling_wrap_roll", "weight": 2 },
+                { "id": "paper_bag", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

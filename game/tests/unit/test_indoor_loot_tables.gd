@@ -8,6 +8,18 @@ const INDOOR_EVENT_PATHS := [
 	"res://data/events/indoor/apartment_01.json",
 	"res://data/events/indoor/clinic_01.json",
 	"res://data/events/indoor/office_01.json",
+	"res://data/events/indoor/convenience_01.json",
+	"res://data/events/indoor/hardware_01.json",
+	"res://data/events/indoor/gas_station_01.json",
+	"res://data/events/indoor/laundry_01.json",
+	"res://data/events/indoor/pharmacy_01.json",
+	"res://data/events/indoor/restaurant_01.json",
+	"res://data/events/indoor/bakery_01.json",
+	"res://data/events/indoor/warehouse_01.json",
+	"res://data/events/indoor/cafe_01.json",
+	"res://data/events/indoor/police_box_01.json",
+	"res://data/events/indoor/repair_shop_01.json",
+	"res://data/events/indoor/residence_01.json",
 ]
 const MART_DETERMINISM_CASES := [
 	{
@@ -63,6 +75,12 @@ func _run_test() -> void:
 	var resolver = resolver_script.new()
 	for event_path in INDOOR_EVENT_PATHS:
 		_assert_all_search_actions_have_loot_tables(resolver, event_path)
+
+	var content_library := root.get_node_or_null("ContentLibrary")
+	if not assert_true(content_library != null, "ContentLibrary autoload should be available for indoor loot-table coverage."):
+		return
+	for building_id in ["pharmacy_01", "restaurant_01", "bakery_01", "warehouse_01", "cafe_01", "police_box_01", "repair_shop_01", "residence_01"]:
+		assert_true(content_library.get_building(building_id).size() > 0, "Expanded authored slice should include '%s'." % building_id)
 
 	var event_data: Dictionary = resolver.load_event(MART_EVENT_PATH)
 	if not assert_true(not event_data.is_empty(), "Mart event data should load."):

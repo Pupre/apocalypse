@@ -3,6 +3,8 @@ extends Node
 var jobs: Dictionary = {}
 var traits: Dictionary = {}
 var buildings: Dictionary = {}
+var outdoor_world_layout: Dictionary = {}
+var outdoor_blocks: Dictionary = {}
 var items: Dictionary = {}
 var crafting_combinations: Dictionary = {}
 
@@ -14,7 +16,9 @@ func _ready() -> void:
 func load_all() -> void:
 	jobs = _load_indexed_array("res://data/jobs.json")
 	traits = _load_indexed_array("res://data/traits.json")
-	buildings = _load_indexed_array("res://data/buildings.json")
+	outdoor_world_layout = _load_dictionary("res://data/outdoor/world_layout.json")
+	outdoor_blocks = _load_outdoor_blocks("res://data/outdoor/blocks")
+	buildings = _load_buildings("res://data/buildings.json")
 	items = _load_items("res://data/items.json")
 	crafting_combinations = _load_crafting_combinations("res://data/crafting_combinations.json")
 
@@ -41,6 +45,14 @@ func get_building_rows() -> Array[Dictionary]:
 	for building_id in building_ids:
 		rows.append(buildings.get(building_id, {}))
 	return rows
+
+
+func get_outdoor_world_layout() -> Dictionary:
+	return outdoor_world_layout.duplicate(true)
+
+
+func get_outdoor_block(block_coord: Vector2i) -> Dictionary:
+	return (outdoor_blocks.get(_outdoor_block_key(block_coord), {}) as Dictionary).duplicate(true)
 
 
 func get_item(item_id: String) -> Dictionary:
@@ -116,6 +128,26 @@ func _load_indexed_array(path: String) -> Dictionary:
 	return indexed
 
 
+func _load_dictionary(path: String) -> Dictionary:
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		push_error("%s: could not open content file." % path)
+		return {}
+
+	var json := JSON.new()
+	var parse_error := json.parse(file.get_as_text())
+	if parse_error != OK:
+		push_error("%s: invalid JSON at line %d: %s" % [path, json.get_error_line(), json.get_error_message()])
+		return {}
+
+	var parsed: Variant = json.data
+	if typeof(parsed) != TYPE_DICTIONARY:
+		push_error("%s: expected a top-level object, got %s." % [path, type_string(typeof(parsed))])
+		return {}
+
+	return (parsed as Dictionary).duplicate(true)
+
+
 func _load_items(path: String) -> Dictionary:
 	var indexed_rows := _load_indexed_array(path)
 	var normalized_rows: Dictionary = {}
@@ -126,6 +158,73 @@ func _load_items(path: String) -> Dictionary:
 			continue
 		normalized_rows[row_id] = _normalize_item_row(row_variant as Dictionary)
 	return normalized_rows
+
+
+func _load_buildings(path: String) -> Dictionary:
+	var indexed_rows := _load_indexed_array(path)
+	var normalized_rows: Dictionary = {}
+	for row_id_variant in indexed_rows.keys():
+		var row_id := String(row_id_variant)
+		var row_variant: Variant = indexed_rows.get(row_id, {})
+		if typeof(row_variant) != TYPE_DICTIONARY:
+			continue
+		normalized_rows[row_id] = _normalize_building_row(row_variant as Dictionary)
+	return normalized_rows
+
+
+func _normalize_building_row(source_row: Dictionary) -> Dictionary:
+	var row := source_row.duplicate(true)
+	var block_coord_variant: Variant = row.get("outdoor_block_coord", {})
+	var block_coord := block_coord_variant as Dictionary if typeof(block_coord_variant) == TYPE_DICTIONARY else {}
+	var anchor_id := String(row.get("outdoor_anchor_id", ""))
+	if not block_coord.is_empty() and not anchor_id.is_empty():
+		row["outdoor_position"] = _resolve_building_outdoor_position(block_coord, anchor_id)
+	return row
+
+
+func _resolve_building_outdoor_position(block_coord: Dictionary, anchor_id: String) -> Dictionary:
+	var block_key := "%d_%d" % [int(block_coord.get("x", 0)), int(block_coord.get("y", 0))]
+	var block_row_variant: Variant = outdoor_blocks.get(block_key, {})
+	if typeof(block_row_variant) != TYPE_DICTIONARY:
+		return {}
+	var block_row := block_row_variant as Dictionary
+	var anchors_variant: Variant = block_row.get("building_anchors", {})
+	if typeof(anchors_variant) != TYPE_DICTIONARY:
+		return {}
+	var anchors := anchors_variant as Dictionary
+	var local_anchor_variant: Variant = anchors.get(anchor_id, {})
+	if typeof(local_anchor_variant) != TYPE_DICTIONARY:
+		return {}
+	var local_anchor := local_anchor_variant as Dictionary
+	var block_size_variant: Variant = outdoor_world_layout.get("block_size", {})
+	var block_size := block_size_variant as Dictionary if typeof(block_size_variant) == TYPE_DICTIONARY else {}
+	return {
+		"x": int(block_coord.get("x", 0)) * int(block_size.get("width", 0)) + int(local_anchor.get("x", 0)),
+		"y": int(block_coord.get("y", 0)) * int(block_size.get("height", 0)) + int(local_anchor.get("y", 0)),
+	}
+
+
+func _load_outdoor_blocks(path: String) -> Dictionary:
+	var indexed: Dictionary = {}
+	var dir := DirAccess.open(path)
+	if dir == null:
+		push_error("%s: could not open outdoor blocks directory." % path)
+		return indexed
+
+	dir.list_dir_begin()
+	var file_name := dir.get_next()
+	while not file_name.is_empty():
+		if not dir.current_is_dir() and file_name.ends_with(".json"):
+			var row := _load_dictionary("%s/%s" % [path, file_name])
+			var block_coord_variant: Variant = row.get("block_coord", {})
+			if typeof(block_coord_variant) != TYPE_DICTIONARY:
+				file_name = dir.get_next()
+				continue
+			var block_coord := block_coord_variant as Dictionary
+			indexed["%d_%d" % [int(block_coord.get("x", 0)), int(block_coord.get("y", 0))]] = row
+		file_name = dir.get_next()
+	dir.list_dir_end()
+	return indexed
 
 
 func _normalize_item_row(source_row: Dictionary) -> Dictionary:
@@ -341,3 +440,7 @@ func _crafting_pair_key(primary_item_id: String, secondary_item_id: String) -> S
 	var ids := [primary_item_id, secondary_item_id]
 	ids.sort()
 	return "%s__%s" % ids
+
+
+func _outdoor_block_key(block_coord: Vector2i) -> String:
+	return "%d_%d" % [block_coord.x, block_coord.y]

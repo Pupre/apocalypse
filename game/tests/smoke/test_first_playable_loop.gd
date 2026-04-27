@@ -149,12 +149,25 @@ func _run_test() -> void:
 	)
 
 	var hud := run_shell.get_node_or_null("HUD") as CanvasLayer
+	var toast_presenter := run_shell.get_node_or_null("ToastPresenter") as CanvasLayer
+	var shared_survival_sheet := run_shell.get_node_or_null("SurvivalSheet") as CanvasLayer
 	var transition_layer: Node = run_shell.get_node_or_null("TransitionLayer")
 	if not assert_true(hud != null, "Run shell should include a HUD."):
 		bootstrap.free()
 		return
+	if not assert_true(toast_presenter != null, "The playable loop should mount the shared toast presenter."):
+		bootstrap.free()
+		return
+	if not assert_true(shared_survival_sheet != null, "Run shell should mount the shared SurvivalSheet for outdoor bag flow."):
+		bootstrap.free()
+		return
 	var top_ribbon := hud.get_node_or_null("TopRibbon") as PanelContainer
 	if not assert_true(top_ribbon != null, "HUD should mount the portrait top ribbon after boot."):
+		bootstrap.free()
+		return
+	var outdoor_bag_button := hud.get_node_or_null("TopRibbon/Margin/Stack/HeaderShell/HeaderMargin/HeaderRow/BagButton") as Button
+	var outdoor_map_button := hud.get_node_or_null("TopRibbon/Margin/Stack/HeaderShell/HeaderMargin/HeaderRow/MapButton") as Button
+	if not assert_true(outdoor_bag_button != null and outdoor_map_button != null, "Outdoor HUD should expose bag and map buttons in smoke coverage."):
 		bootstrap.free()
 		return
 	assert_eq(top_ribbon.anchor_left, 0.0, "HUD TopRibbon should stretch from the left edge.")
@@ -171,17 +184,24 @@ func _run_test() -> void:
 
 	transition_layer.set_duration_for_tests(0.0)
 
-	var hud_clock_label := hud.get_node_or_null("TopRibbon/Margin/Stack/HeaderRow/ClockLabel") as Label
+	var hud_clock_label := hud.get_node_or_null("TopRibbon/Margin/Stack/HeaderShell/HeaderMargin/HeaderRow/ClockLabel") as Label
 	if not assert_true(hud_clock_label != null, "HUD clock label should be present."):
 		bootstrap.free()
 		return
 	assert_eq(hud_clock_label.text, "1일차 08:00", "The run should start at 08:00.")
 
-	var hud_title_label := hud.get_node_or_null("TopRibbon/Margin/Stack/HeaderRow/TitleLabel") as Label
+	var hud_title_label := hud.get_node_or_null("TopRibbon/Margin/Stack/HeaderShell/HeaderMargin/HeaderRow/TitleLabel") as Label
 	if not assert_true(hud_title_label != null, "HUD title label should be present."):
 		bootstrap.free()
 		return
 	assert_eq(hud_title_label.text, "외부 생존 정보", "Outdoor mode should use the outdoor HUD title.")
+	assert_true(not shared_survival_sheet.visible, "Outdoor shared SurvivalSheet should stay hidden until the bag button is pressed.")
+	outdoor_bag_button.emit_signal("pressed")
+	await process_frame
+	assert_true(shared_survival_sheet.visible, "Outdoor bag button should open the shared SurvivalSheet in smoke coverage.")
+	outdoor_bag_button.emit_signal("pressed")
+	await process_frame
+	assert_true(not shared_survival_sheet.visible, "Outdoor bag button should close the shared SurvivalSheet on the second press.")
 
 	var fade_rect := transition_layer.get_node_or_null("FadeRect") as ColorRect
 	if not assert_true(fade_rect != null, "Transition layer should expose a FadeRect node."):
@@ -194,29 +214,90 @@ func _run_test() -> void:
 	if not assert_true(outdoor_mode != null, "Run shell should launch the outdoor mode first."):
 		bootstrap.free()
 		return
-	await process_frame
-	var hud_ribbon_rect := top_ribbon.get_global_rect()
-	var outdoor_ribbon := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon") as PanelContainer
-	if not assert_true(outdoor_ribbon != null, "Outdoor mode should expose its own top ribbon."):
+	if not assert_true(outdoor_mode.has_method("get_world_bounds"), "Outdoor mode should expose get_world_bounds() for smoke verification."):
 		bootstrap.free()
 		return
-	var outdoor_ribbon_rect := outdoor_ribbon.get_global_rect()
-	assert_true(
-		outdoor_ribbon_rect.position.y >= hud_ribbon_rect.position.y + hud_ribbon_rect.size.y,
-		"Outdoor mode top ribbon should sit below the shared HUD ribbon at run start."
-	)
+	if not assert_true(outdoor_mode.has_method("get_active_block_coords"), "Outdoor mode should expose active block coordinates for smoke verification."):
+		bootstrap.free()
+		return
+	await process_frame
+	var hud_ribbon_rect := top_ribbon.get_global_rect()
+	var outdoor_ribbon := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon") as Control
+	if not assert_true(outdoor_ribbon != null, "Outdoor mode should expose its own compact status ribbon."):
+		bootstrap.free()
+		return
+	var hint_label := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/HintLabel") as Label
+	var threat_label := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/ThreatLabel") as Label
+	var frost_overlay := outdoor_mode.get_node_or_null("CanvasLayer/FrostOverlay") as ColorRect
+	var map_overlay := outdoor_mode.get_node_or_null("MapOverlay") as CanvasLayer
+	var full_map_view := outdoor_mode.get_node_or_null("MapOverlay/Panel/VBox/Margin/MapView") as Control
+	var map_overlay_panel := outdoor_mode.get_node_or_null("MapOverlay/Panel") as PanelContainer
+	if not assert_true(hint_label != null, "Outdoor mode should expose a hint label in smoke coverage."):
+		bootstrap.free()
+		return
+	if not assert_true(threat_label != null, "Outdoor mode should expose a threat label in smoke coverage."):
+		bootstrap.free()
+		return
+	if not assert_true(frost_overlay != null, "Outdoor mode should mount a frost overlay in smoke coverage."):
+		bootstrap.free()
+		return
+	if not assert_true(map_overlay != null, "Outdoor smoke coverage should include the full-screen map overlay."):
+		bootstrap.free()
+		return
+	if not assert_true(full_map_view != null, "Outdoor smoke coverage should include the full-screen spatial map view."):
+		bootstrap.free()
+		return
+	var map_overlay_style := map_overlay_panel.get_theme_stylebox("panel") as StyleBoxTexture
+	if not assert_true(map_overlay_style != null and map_overlay_style.texture != null, "Outdoor smoke coverage should skin the full-screen map overlay with a compact texture-backed panel."):
+		bootstrap.free()
+		return
+	assert_eq(map_overlay_style.texture.get_width(), 680, "Outdoor full-screen map should use the master overlay map panel asset.")
+	assert_eq(map_overlay_style.texture.get_height(), 1140, "Outdoor full-screen map should use the master overlay map panel height.")
+	assert_true(threat_label.text.length() > 0, "Outdoor mode should show a readable threat line at boot.")
+	assert_true(not map_overlay.visible, "Outdoor map overlay should stay hidden until the player opens it.")
+	assert_true(outdoor_mode.has_method("show_map_overlay"), "Outdoor mode should expose show_map_overlay() in smoke coverage.")
+	assert_true(outdoor_mode.has_method("hide_map_overlay"), "Outdoor mode should expose hide_map_overlay() in smoke coverage.")
+	assert_eq(String(full_map_view.get_script().resource_path), "res://scripts/outdoor/outdoor_map_view.gd", "Outdoor smoke coverage should use the spatial full-map renderer.")
+	var minute_before_map: int = run_shell.run_state.clock.minute_of_day
+	outdoor_map_button.emit_signal("pressed")
+	assert_true(map_overlay.visible, "Outdoor smoke coverage should be able to open the full-screen map.")
+	outdoor_mode.simulate_seconds(60.0)
+	assert_eq(run_shell.run_state.clock.minute_of_day, minute_before_map, "Smoke coverage should prove the full-screen map pauses outdoor simulation.")
+	outdoor_map_button.emit_signal("pressed")
+	assert_true(not map_overlay.visible, "Outdoor smoke coverage should be able to close the full-screen map.")
+	var world_rect: Rect2 = outdoor_mode.get_world_bounds()
+	assert_true(world_rect.size.x >= 7680.0, "Smoke coverage should prove the fixed-city outdoor world is mounted.")
+	var active_blocks: Array = outdoor_mode.get_active_block_coords()
+	assert_eq(active_blocks.size(), 9, "Outdoor smoke coverage should boot a 3x3 streamed block window.")
+	var authored_coords := [
+		Vector2i(0, 0),
+		Vector2i(1, 0),
+		Vector2i(2, 0),
+		Vector2i(0, 1),
+		Vector2i(1, 1),
+		Vector2i(2, 1),
+		Vector2i(0, 2),
+		Vector2i(1, 2),
+		Vector2i(2, 2),
+	]
+	for block_coord in authored_coords:
+		var block: Dictionary = content_library.get_outdoor_block(block_coord)
+		assert_true(not block.is_empty(), "Smoke coverage expects authored outdoor block %s to exist." % [block_coord])
+	assert_true(hint_label.text.length() > 0, "Outdoor status hint should be readable at run start.")
 	if not assert_true(content_library != null, "ContentLibrary autoload should be present for outdoor building lookups."):
 		bootstrap.free()
 		return
+	for building_id in ["convenience_01", "hardware_01", "gas_station_01", "laundry_01"]:
+		assert_true(content_library.get_building(building_id).size() > 0, "Smoke coverage should prove '%s' is mounted in the expanded district." % building_id)
 
-	var player_sprite := outdoor_mode.get_node_or_null("PlayerSprite") as Polygon2D
+	var player_sprite := outdoor_mode.get_node_or_null("PlayerVisual") as Sprite2D
 	var mart_data: Dictionary = content_library.get_building("mart_01")
 	var mart_position_data: Dictionary = mart_data.get("outdoor_position", {})
 	var mart_position := Vector2(
 		float(mart_position_data.get("x", 640.0)),
 		float(mart_position_data.get("y", 360.0))
 	)
-	if not assert_true(player_sprite != null, "Outdoor player marker should be present."):
+	if not assert_true(player_sprite != null, "Outdoor player visual should be present."):
 		bootstrap.free()
 		return
 
@@ -257,7 +338,7 @@ func _run_test() -> void:
 	if not assert_true(location_strip != null and location_strip.visible, "Indoor mode should expose a visible location strip."):
 		bootstrap.free()
 		return
-	var location_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/LocationStrip/HBox/LocationValueLabel") as Label
+	var location_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/LocationStrip/Padding/HBox/LocationValueLabel") as Label
 	if not assert_true(location_label != null, "Indoor mode should expose the current zone inside the location strip."):
 		bootstrap.free()
 		return
@@ -269,11 +350,11 @@ func _run_test() -> void:
 		return
 	assert_eq(indoor_time_label.text, "시각: 1일차 10:00", "Indoor mode should carry the shared clock into the indoor UI.")
 
-	var summary_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/SummaryLabel") as Label
+	var summary_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/Padding/VBox/SummaryLabel") as Label
 	if not assert_true(summary_label != null, "Indoor mode should expose a current-zone summary label."):
 		bootstrap.free()
 		return
-	assert_true(summary_label.text.find("깨진 자동문과 쓰러진 장바구니가 보인다.") != -1, "Indoor mode should describe the current entrance zone.")
+	assert_true(summary_label.text.find("깨진 자동문과 쓰러진 장바구니가") != -1, "Indoor mode should describe the current entrance zone.")
 	assert_true(summary_label.text.find("남아 있는 물건 0개") != -1, "Indoor mode should surface current-room loot status.")
 	assert_true(summary_label.text.find("설치물 0개") != -1, "Indoor mode should surface current-room deployment status.")
 	var inline_minimap_card := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/MiniMapCard") as Control
@@ -301,22 +382,25 @@ func _run_test() -> void:
 		"The entrance zone should show move actions with their time cost."
 	)
 	assert_true(
-		_buttons_include_text(action_buttons, "건물 밖으로 나간다"),
-		"The entrance zone should expose leaving the building as a contextual action."
-	)
-	assert_true(
 		not _buttons_include_text(action_buttons, "한 시간 쉰다 (60분)"),
 		"Indoor mode should not expose the removed flat rest action."
 	)
+	var move_section_header := _find_section_header_panel_by_text(action_buttons, "이동")
+	var exit_button := _find_descendant_by_name_and_type(move_section_header, "ExitShortcutButton", "Button") as Button
+	if not assert_true(exit_button != null, "Indoor mode should expose the leave-building shortcut in the move section header."):
+		bootstrap.free()
+		return
+	assert_eq(exit_button.tooltip_text, "건물 밖으로 나간다", "Indoor entrance should expose leaving the building through the move-section shortcut.")
 
-	var map_button := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/StatusRow/Tools/MapButton") as Button
-	var bag_button := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/StatusRow/Tools/BagButton") as Button
+	var map_button := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/MapButton") as Button
+	var bag_button := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/BagButton") as Button
 	var minimap_overlay := indoor_mode.get_node_or_null("MinimapOverlay") as Control
-	var minimap_nodes := indoor_mode.get_node_or_null("MinimapOverlay/VBox/MapNodes") as Control
+	var minimap_nodes := indoor_mode.get_node_or_null("MinimapOverlay/Padding/VBox/MapNodes") as Control
 	var director := indoor_mode.get_node_or_null("Director") as Node
 	if not assert_true(map_button != null and bag_button != null, "Indoor mode should expose map and bag buttons in the top bar."):
 		bootstrap.free()
 		return
+	assert_true(indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/ExitButton") == null, "Indoor mode should remove the exit button from the top-right tool cluster.")
 	if not assert_true(director != null and director.has_method("get_equipped_rows"), "Indoor mode should expose the indoor director for payload checks."):
 		bootstrap.free()
 		return
@@ -340,7 +424,7 @@ func _run_test() -> void:
 		return
 	bag_button.emit_signal("pressed")
 	await process_frame
-	var inventory_items := survival_sheet.get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll/InventoryItems") as VBoxContainer
+	var inventory_items := survival_sheet.get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll/InventoryContent/InventoryItems") as VBoxContainer
 	if not assert_true(inventory_items != null, "Indoor SurvivalSheet should expose an inventory item list."):
 		bootstrap.free()
 		return
@@ -355,7 +439,7 @@ func _run_test() -> void:
 		return
 	assert_true(not move_checkout_button.disabled, "The checkout movement action should be enabled before it is pressed.")
 
-	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/ResultLabel") as Label
+	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/Padding/VBox/ResultLabel") as Label
 	if not assert_true(result_label != null, "Indoor result label should be present."):
 		bootstrap.free()
 		return
@@ -368,7 +452,7 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 	assert_eq(indoor_time_label.text, "시각: 1일차 10:30", "Indoor mode should update the visible time after moving.")
-	assert_true(summary_label.text.find("계산대 뒤쪽에는 직원 출입문이 있다.") != -1, "Indoor mode should update the summary for the checkout zone.")
+	assert_true(summary_label.text.find("직원 통로") != -1, "Indoor mode should update the summary for the checkout zone.")
 
 	assert_true(
 		_buttons_include_text(action_buttons, "계산대를 탐색한다 (30분)"),
@@ -376,13 +460,14 @@ func _run_test() -> void:
 	)
 	map_button.emit_signal("pressed")
 	await process_frame
-	assert_eq(_map_labels(minimap_nodes), ["?", "계산대", "정문 진입부"], "Indoor minimap should keep visited zones visible after moving.")
+	var checkout_map_labels := _map_labels(minimap_nodes)
+	assert_true(checkout_map_labels.has("계산대"), "Indoor minimap should show the current checkout zone after moving.")
+	assert_true(checkout_map_labels.has("정문 진입부"), "Indoor minimap should keep the visited entrance visible after moving.")
 	map_button.emit_signal("pressed")
 	await process_frame
-	assert_true(
-		not _buttons_include_text(action_buttons, "건물 밖으로 나간다"),
-		"Leaving the building should not stay visible away from the entrance."
-	)
+	move_section_header = _find_section_header_panel_by_text(action_buttons, "이동")
+	exit_button = _find_descendant_by_name_and_type(move_section_header, "ExitShortcutButton", "Button") as Button
+	assert_eq(exit_button.tooltip_text, "건물 밖으로 나간다 (10분)", "Leaving the building away from the entrance should update the move-section exit shortcut tooltip.")
 
 	var checkout_search_button := _find_button_by_text(action_buttons, "계산대를 탐색한다 (30분)")
 	if not assert_true(checkout_search_button != null, "Checkout search action should be selectable."):
@@ -410,7 +495,7 @@ func _run_test() -> void:
 	assert_true(result_label.text.find("라이터") != -1, "Indoor feedback should mention a discovered item.")
 	bag_button.emit_signal("pressed")
 	await process_frame
-	inventory_items = survival_sheet.get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll/InventoryItems") as VBoxContainer
+	inventory_items = survival_sheet.get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll/InventoryContent/InventoryItems") as VBoxContainer
 	assert_true(survival_sheet.visible, "Indoor bag flow should still open the SurvivalSheet after searching.")
 	bag_button.emit_signal("pressed")
 	await process_frame
@@ -438,7 +523,7 @@ func _run_test() -> void:
 
 	bag_button.emit_signal("pressed")
 	await process_frame
-	inventory_items = survival_sheet.get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll/InventoryItems") as VBoxContainer
+	inventory_items = survival_sheet.get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll/InventoryContent/InventoryItems") as VBoxContainer
 	assert_true(survival_sheet.visible, "Indoor bag flow should remain usable after taking discovered loot.")
 	bag_button.emit_signal("pressed")
 	await process_frame
@@ -520,10 +605,9 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 	assert_eq(indoor_time_label.text, "시각: 1일차 13:00", "Indoor mode should keep the visible time in sync after returning to the entrance.")
-	assert_true(
-		_buttons_include_text(action_buttons, "건물 밖으로 나간다"),
-		"The entrance zone should restore the contextual leave-building action."
-	)
+	move_section_header = _find_section_header_panel_by_text(action_buttons, "이동")
+	exit_button = _find_descendant_by_name_and_type(move_section_header, "ExitShortcutButton", "Button") as Button
+	assert_eq(exit_button.tooltip_text, "건물 밖으로 나간다", "Returning to the entrance should restore the zero-cost move-section exit shortcut tooltip.")
 
 	assert_true(run_shell.run_state.read_knowledge_item("improvised_heat_note_01"), "Smoke should unlock note-backed recipes.")
 	assert_true(run_shell.run_state.knows_recipe("bottled_water__can_stove"), "Smoke should reveal the heated-water recipe after reading.")
@@ -551,6 +635,14 @@ func _run_test() -> void:
 	assert_eq(survival_sheet.get_active_tab_id(), "inventory", "Indoor bag flow should land on inventory for portrait crafting.")
 	survival_sheet.select_inventory_item("newspaper")
 	survival_sheet.begin_craft_mode("newspaper")
+	var craft_card := survival_sheet.get_node_or_null("CraftCard") as Control
+	if not assert_true(craft_card != null and craft_card.visible, "Craft mode should expose the explicit craft card in the playable loop."):
+		bootstrap.free()
+		return
+	var craft_confirm_button := survival_sheet.get_node_or_null("CraftCard/Padding/VBox/ActionsRow/CraftConfirmButton") as Button
+	if not assert_true(craft_confirm_button != null, "The playable loop should expose the craft confirm button inside the craft card."):
+		bootstrap.free()
+		return
 	assert_true(survival_sheet.get_highlighted_item_ids().has("cooking_oil"), "The dev starter kit should surface a compatible oil craft hint.")
 	survival_sheet.select_inventory_item("steel_food_can")
 	var invalid_craft_result: Dictionary = survival_sheet.confirm_craft()
@@ -582,12 +674,12 @@ func _run_test() -> void:
 	assert_true(summary_label.text.find("남아 있는 물건 1개") != -1, "Indoor summary should show dropped room loot.")
 	assert_true(summary_label.text.find("설치물 1개") != -1, "Indoor summary should show installed room deployments.")
 
-	var exit_action_button := _find_button_by_text(action_buttons, "건물 밖으로 나간다")
-	if not assert_true(exit_action_button != null, "Indoor mode should expose a leave-building action at the entrance."):
+	move_section_header = _find_section_header_panel_by_text(action_buttons, "이동")
+	exit_button = _find_descendant_by_name_and_type(move_section_header, "ExitShortcutButton", "Button") as Button
+	if not assert_true(exit_button != null, "Indoor move section should continue exposing an exit shortcut after later view refreshes."):
 		bootstrap.free()
 		return
-
-	exit_action_button.emit_signal("pressed")
+	exit_button.emit_signal("pressed")
 	if not await _await_transition_completion(
 		run_shell,
 		hud,
@@ -612,8 +704,8 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
-	player_sprite = outdoor_mode.get_node_or_null("PlayerSprite") as Polygon2D
-	if not assert_true(player_sprite != null, "Outdoor mode should restore the player marker after exit."):
+	player_sprite = outdoor_mode.get_node_or_null("PlayerVisual") as Sprite2D
+	if not assert_true(player_sprite != null, "Outdoor mode should restore the player visual after exit."):
 		bootstrap.free()
 		return
 	assert_true(
@@ -642,18 +734,20 @@ func _run_test() -> void:
 		return
 
 	indoor_mode = run_shell.get_node_or_null("ModeHost/IndoorMode")
-	location_label = indoor_mode.get_node_or_null("Panel/Layout/MainColumn/LocationStrip/HBox/LocationValueLabel") as Label
+	location_label = indoor_mode.get_node_or_null("Panel/Layout/MainColumn/LocationStrip/Padding/HBox/LocationValueLabel") as Label
 	action_buttons = indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ActionScroll/ActionButtons") as VBoxContainer
 	if not assert_true(indoor_mode != null and location_label != null and action_buttons != null, "Office indoor mode should expose stable nodes after transition."):
 		bootstrap.free()
 		return
 	assert_eq(location_label.text, "출입구", "Office should open at its entry zone.")
 
-	exit_action_button = _find_button_by_text(action_buttons, "건물 밖으로 나간다")
-	if not assert_true(exit_action_button != null, "Office entrance should expose a leave-building action."):
+	move_section_header = _find_section_header_panel_by_text(action_buttons, "이동")
+	exit_button = _find_descendant_by_name_and_type(move_section_header, "ExitShortcutButton", "Button") as Button
+	if not assert_true(exit_button != null, "Office entrance should expose the move-section leave-building button."):
 		bootstrap.free()
 		return
-	exit_action_button.emit_signal("pressed")
+	assert_eq(exit_button.tooltip_text, "건물 밖으로 나간다", "Office entrance should also route exit through the move-section button.")
+	exit_button.emit_signal("pressed")
 	if not await _await_transition_completion(
 		run_shell,
 		hud,
@@ -669,7 +763,7 @@ func _run_test() -> void:
 		return
 
 	outdoor_mode = run_shell.get_node_or_null("ModeHost/OutdoorMode")
-	player_sprite = outdoor_mode.get_node_or_null("PlayerSprite") as Polygon2D
+	player_sprite = outdoor_mode.get_node_or_null("PlayerVisual") as Sprite2D
 	if not assert_true(outdoor_mode != null and player_sprite != null, "Outdoor mode should restore after leaving the office."):
 		bootstrap.free()
 		return
@@ -694,8 +788,8 @@ func _run_test() -> void:
 		return
 
 	indoor_mode = run_shell.get_node_or_null("ModeHost/IndoorMode")
-	location_label = indoor_mode.get_node_or_null("Panel/Layout/MainColumn/LocationStrip/HBox/LocationValueLabel") as Label
-	summary_label = indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/SummaryLabel") as Label
+	location_label = indoor_mode.get_node_or_null("Panel/Layout/MainColumn/LocationStrip/Padding/HBox/LocationValueLabel") as Label
+	summary_label = indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/Padding/VBox/SummaryLabel") as Label
 	action_buttons = indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ActionScroll/ActionButtons") as VBoxContainer
 	if not assert_true(indoor_mode != null and location_label != null and summary_label != null and action_buttons != null, "Mart re-entry should rebuild the indoor nodes."):
 		bootstrap.free()
@@ -744,7 +838,7 @@ func _find_button_by_text(container: Node, text: String) -> Button:
 
 	for child in container.get_children():
 		var button := child as Button
-		if button != null and button.text == text:
+		if button != null and _button_label_text(button) == text:
 			return button
 		var nested := _find_button_by_text(child, text)
 		if nested != null:
@@ -759,7 +853,7 @@ func _find_button_by_prefix(container: Node, expected_prefix: String) -> Button:
 
 	for child in container.get_children():
 		var button := child as Button
-		if button != null and button.text.begins_with(expected_prefix):
+		if button != null and _button_label_text(button).begins_with(expected_prefix):
 			return button
 		var nested := _find_button_by_prefix(child, expected_prefix)
 		if nested != null:
@@ -783,6 +877,15 @@ func _find_label_containing(container: Node, expected_fragment: String) -> Label
 	return null
 
 
+func _button_label_text(button: Button) -> String:
+	if button == null:
+		return ""
+	if not button.text.strip_edges().is_empty():
+		return button.text
+	var nested_label := _find_first_label(button)
+	return nested_label.text.strip_edges() if nested_label != null else ""
+
+
 func _find_descendant_by_name_and_type(container: Node, expected_name: String, type_name: String = "") -> Node:
 	if container == null:
 		return null
@@ -794,6 +897,19 @@ func _find_descendant_by_name_and_type(container: Node, expected_name: String, t
 		if nested != null:
 			return nested
 
+	return null
+
+
+func _find_first_label(container: Node) -> Label:
+	if container == null:
+		return null
+	for child in container.get_children():
+		var label := child as Label
+		if label != null:
+			return label
+		var nested := _find_first_label(child)
+		if nested != null:
+			return nested
 	return null
 
 
@@ -853,6 +969,21 @@ func _section_labels(container: Node) -> Array[String]:
 		labels.append_array(_section_labels(child))
 
 	return labels
+
+
+func _find_section_header_panel_by_text(container: Node, expected_text: String) -> PanelContainer:
+	if container == null:
+		return null
+	for child in container.get_children():
+		var panel := child as PanelContainer
+		if panel != null:
+			var nested_label := _find_first_label(panel)
+			if nested_label != null and nested_label.text.strip_edges() == expected_text:
+				return panel
+		var nested := _find_section_header_panel_by_text(child, expected_text)
+		if nested != null:
+			return nested
+	return null
 
 
 func _label_text_is(label: Label, expected_text: String) -> bool:

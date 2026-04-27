@@ -24,7 +24,6 @@ var _test_traits: Dictionary = {
 
 var _building_entered_count := 0
 var _entered_building_id := ""
-var _codex_requested_count := 0
 
 
 func _init() -> void:
@@ -54,12 +53,127 @@ func _run_test() -> void:
 
 	root.add_child(outdoor_mode)
 	outdoor_mode.building_entered.connect(Callable(self, "_on_building_entered"))
-	outdoor_mode.codex_requested.connect(Callable(self, "_on_codex_requested"))
 
 	if not assert_true(outdoor_mode.has_method("bind_run_state"), "Outdoor mode should expose bind_run_state()."):
 		outdoor_mode.free()
 		return
 
+	outdoor_mode.bind_run_state(run_state)
+
+	var ground := outdoor_mode.get_node_or_null("Ground") as Node2D
+	var player_sprite := outdoor_mode.get_node_or_null("PlayerVisual") as Sprite2D
+	var building_markers := outdoor_mode.get_node_or_null("Buildings") as Node2D
+	var obstacles := outdoor_mode.get_node_or_null("Obstacles") as Node2D
+	if not assert_true(ground != null, "Outdoor mode should expose a ground host."):
+		outdoor_mode.free()
+		return
+	if not assert_true(player_sprite != null, "Outdoor mode should expose a player visual."):
+		outdoor_mode.free()
+		return
+	if not assert_true(building_markers != null, "Outdoor mode should expose a building marker host."):
+		outdoor_mode.free()
+		return
+	if not assert_true(obstacles != null, "Outdoor mode should expose an obstacle host."):
+		outdoor_mode.free()
+		return
+	assert_true(ground.get_child_count() > 0, "Outdoor ground should render at least one visual layer.")
+	assert_true(player_sprite.texture != null, "Outdoor player visual should mount a sprite texture.")
+	assert_true(player_sprite.scale.x > 1.0, "Outdoor player visual should be scaled up beyond the raw source sprite for readability.")
+	assert_true(building_markers.get_child_count() >= 28, "The authored outdoor slice should expose at least twenty-eight building markers after the 3x3 expansion.")
+	assert_true(obstacles.get_child_count() > 0, "Outdoor mode should render at least one obstacle prop.")
+
+	var tile_host := outdoor_mode.get_node_or_null("Ground/Tiles") as Node2D
+	if not assert_true(tile_host != null, "Outdoor mode should expose a terrain tile host."):
+		outdoor_mode.free()
+		return
+	assert_true(tile_host.get_child_count() > 0, "Outdoor terrain should place at least one runtime tile sprite.")
+	assert_true(_children_named_with(tile_host, "road_cracked").size() > 0 or _children_named_with(tile_host, "slush_road").size() > 0, "Outdoor terrain should mix cracked or slushy road variants instead of a single repeated lane texture.")
+	assert_true(_max_visual_scale(obstacles) > 1.0, "Outdoor obstacle props should be scaled up to fit the authored city block better.")
+	assert_true(outdoor_mode.has_method("_effective_obstacle_rect"), "Outdoor controller should expose an internal obstacle hitbox helper for collision debugging.")
+	var sample_obstacle := {"kind": "rubble", "rect": {"x": 710.0, "y": 180.0, "width": 120.0, "height": 80.0}}
+	var collision_rect: Rect2 = outdoor_mode._effective_obstacle_rect(sample_obstacle)
+	assert_true(collision_rect.size.x < 120.0 and collision_rect.size.y < 80.0, "Outdoor obstacle collision should be smaller than the authored staging rect.")
+	assert_true(is_equal_approx(collision_rect.end.y, 260.0), "Outdoor obstacle collision should stay anchored to the bottom edge of the authored rect.")
+
+	var top_ribbon := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon") as Control
+	var hint_label := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/HintLabel") as Label
+	var threat_label := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/ThreatLabel") as Label
+	var world_camera := outdoor_mode.get_node_or_null("WorldCamera") as Camera2D
+	var frost_overlay := outdoor_mode.get_node_or_null("CanvasLayer/FrostOverlay") as ColorRect
+	var map_overlay := outdoor_mode.get_node_or_null("MapOverlay") as CanvasLayer
+	var full_map_view := outdoor_mode.get_node_or_null("MapOverlay/Panel/VBox/Margin/MapView") as Control
+	var overlay_close := outdoor_mode.get_node_or_null("MapOverlay/Panel/VBox/Header/CloseButton") as Button
+	if not assert_true(top_ribbon != null, "Outdoor mode should expose a compact outdoor status ribbon."):
+		outdoor_mode.free()
+		return
+	if not assert_true(hint_label != null, "Outdoor mode should expose a hint label in the top ribbon."):
+		outdoor_mode.free()
+		return
+	if not assert_true(threat_label != null, "Outdoor mode should expose a threat label in the top ribbon."):
+		outdoor_mode.free()
+		return
+	if not assert_true(world_camera != null, "Outdoor mode should expose a world camera."):
+		outdoor_mode.free()
+		return
+	if not assert_true(frost_overlay != null, "Outdoor mode should expose a full-screen frost overlay."):
+		outdoor_mode.free()
+		return
+	if not assert_true(map_overlay != null, "Outdoor mode should expose a full-screen map overlay."):
+		outdoor_mode.free()
+		return
+	if not assert_true(full_map_view != null, "Outdoor overlay should mount a full-map renderer."):
+		outdoor_mode.free()
+		return
+	if not assert_true(overlay_close != null, "Outdoor map overlay should expose a close button above the HUD."):
+		outdoor_mode.free()
+		return
+	if not assert_true(outdoor_mode.has_method("get_world_bounds"), "Outdoor mode should expose get_world_bounds() for district-scale verification."):
+		outdoor_mode.free()
+		return
+	assert_eq(top_ribbon.anchor_left, 0.0, "Outdoor TopRibbon should stretch from the left edge.")
+	assert_eq(top_ribbon.anchor_right, 1.0, "Outdoor TopRibbon should stretch to the right edge.")
+	assert_true(world_camera.offset.y < 0.0, "Portrait outdoor camera should lead upward with a negative Y offset.")
+	assert_true(frost_overlay.color.a <= 0.05, "Healthy outdoor exposure should start with almost no frost overlay.")
+	assert_true(not map_overlay.visible, "Outdoor map overlay should start closed.")
+	assert_eq(String(full_map_view.get_script().resource_path), "res://scripts/outdoor/outdoor_map_view.gd", "Outdoor overlay should use the full-screen spatial map renderer.")
+	assert_true(outdoor_mode.has_method("show_map_overlay"), "Outdoor mode should expose show_map_overlay().")
+	assert_true(outdoor_mode.has_method("hide_map_overlay"), "Outdoor mode should expose hide_map_overlay().")
+	outdoor_mode.show_map_overlay()
+	assert_true(map_overlay.visible, "show_map_overlay() should reveal the full-screen map.")
+	var minute_before_pause: int = run_state.clock.minute_of_day
+	outdoor_mode.simulate_seconds(60.0)
+	assert_eq(run_state.clock.minute_of_day, minute_before_pause, "Outdoor simulation should pause while the full map overlay is open.")
+	outdoor_mode.hide_map_overlay()
+	assert_true(not map_overlay.visible, "hide_map_overlay() should dismiss the full-screen map.")
+	if not assert_true(map_overlay.has_method("show_building_detail"), "Outdoor map overlay should expose building-detail inspection."):
+		outdoor_mode.free()
+		return
+	if not assert_true(map_overlay.has_method("hide_building_detail"), "Outdoor map overlay should expose building-detail dismissal."):
+		outdoor_mode.free()
+		return
+	run_state.enter_indoor_site("mart_01", "mart_entrance")
+	map_overlay.show_building_detail("mart_01")
+	var detail_layer := outdoor_mode.get_node_or_null("MapOverlay/BuildingDetailLayer") as Control
+	var detail_title := outdoor_mode.get_node_or_null("MapOverlay/BuildingDetailLayer/Panel/VBox/Header/TitleLabel") as Label
+	var detail_message := outdoor_mode.get_node_or_null("MapOverlay/BuildingDetailLayer/Panel/VBox/MessageLabel") as Label
+	if not assert_true(detail_layer != null and detail_title != null and detail_message != null, "Outdoor map overlay should expose a dedicated building detail layer."):
+		outdoor_mode.free()
+		return
+	assert_true(detail_layer.visible, "Entered buildings should open the building detail layer from the outdoor map.")
+	assert_true(detail_title.text.find("동네 마트") >= 0, "Known building detail should show the building title.")
+	assert_true(detail_message.text.find("정문 진입부") >= 0, "Known building detail should expose remembered indoor structure labels.")
+	map_overlay.hide_building_detail()
+	map_overlay.show_building_detail("office_01")
+	assert_true(detail_message.text.find("아직 내부 구조를 모른다") >= 0, "Unentered buildings should refuse to reveal indoor structure.")
+	var world_rect: Rect2 = outdoor_mode.get_world_bounds()
+	assert_true(world_rect.size.x >= 7680.0, "Outdoor world width should reflect the larger fixed-city authoring grid, not just a one-off district rectangle.")
+	assert_true(world_rect.size.y >= 7680.0, "Outdoor world height should reflect the larger fixed-city authoring grid.")
+
+	var start_position: Vector2 = outdoor_mode.get_player_position()
+	outdoor_mode.move_player(Vector2.RIGHT, 8.0)
+	outdoor_mode.move_player(Vector2.DOWN, 8.0)
+	var traveled_distance: float = start_position.distance_to(outdoor_mode.get_player_position())
+	assert_true(traveled_distance >= 1400.0, "Outdoor travel should support materially longer continuous movement inside the streamed city grid.")
 	outdoor_mode.bind_run_state(run_state)
 
 	var before_clock_minute_of_day: int = run_state.clock.minute_of_day
@@ -84,65 +198,20 @@ func _run_test() -> void:
 	assert_true(run_state.thirst < before_thirst, "Outdoor time should reduce thirst reserves.")
 	assert_true(run_state.fatigue > before_fatigue, "Outdoor time should build fatigue.")
 
-	var ground := outdoor_mode.get_node_or_null("Ground") as Node2D
-	var player_sprite := outdoor_mode.get_node_or_null("PlayerSprite") as Polygon2D
-	var building_markers := outdoor_mode.get_node_or_null("Buildings") as Node2D
-	var obstacles := outdoor_mode.get_node_or_null("Obstacles") as Node2D
-	if not assert_true(ground != null, "Outdoor mode should expose a ground host."):
-		outdoor_mode.free()
-		return
-	if not assert_true(player_sprite != null, "Outdoor mode should expose a player marker."):
-		outdoor_mode.free()
-		return
-	if not assert_true(building_markers != null, "Outdoor mode should expose a building marker host."):
-		outdoor_mode.free()
-		return
-	if not assert_true(obstacles != null, "Outdoor mode should expose an obstacle host."):
-		outdoor_mode.free()
-		return
-	assert_true(ground.get_child_count() > 0, "Outdoor ground should render at least one visual layer.")
-	assert_true(player_sprite.polygon.size() >= 3, "Outdoor player marker should render a visible polygon.")
-	assert_eq(building_markers.get_child_count(), 4, "Outdoor mode should render four building markers.")
-	assert_true(obstacles.get_child_count() > 0, "Outdoor mode should render at least one obstacle prop.")
-
-	var asphalt := outdoor_mode.get_node_or_null("Ground/Asphalt") as Polygon2D
-	if not assert_true(asphalt != null, "Outdoor mode should expose the asphalt backdrop polygon."):
-		outdoor_mode.free()
-		return
-	assert_true(
-		_polygon_min_y(asphalt.polygon) <= -float(ProjectSettings.get_setting("display/window/size/viewport_height")),
-		"Outdoor asphalt should extend at least one portrait viewport above the original world top so the lead stays covered."
-	)
-
-	var top_ribbon := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon") as PanelContainer
-	var exposure_label := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/HeaderRow/ExposureLabel") as Label
-	var hint_label := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/HintLabel") as Label
-	var craft_button := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/ToolsRow/CraftButton") as Button
-	var codex_button := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/ToolsRow/CodexButton") as Button
-	var world_camera := outdoor_mode.get_node_or_null("WorldCamera") as Camera2D
-	if not assert_true(top_ribbon != null, "Outdoor mode should expose a portrait TopRibbon panel."):
-		outdoor_mode.free()
-		return
-	if not assert_true(exposure_label != null, "Outdoor mode should expose an exposure label in the top ribbon."):
-		outdoor_mode.free()
-		return
-	if not assert_true(hint_label != null, "Outdoor mode should expose a hint label in the top ribbon."):
-		outdoor_mode.free()
-		return
-	if not assert_true(craft_button != null and codex_button != null, "Outdoor mode should expose craft and codex buttons in the top ribbon."):
-		outdoor_mode.free()
-		return
-	if not assert_true(world_camera != null, "Outdoor mode should expose a world camera."):
-		outdoor_mode.free()
-		return
-	assert_eq(top_ribbon.anchor_left, 0.0, "Outdoor TopRibbon should stretch from the left edge.")
-	assert_eq(top_ribbon.anchor_right, 1.0, "Outdoor TopRibbon should stretch to the right edge.")
-	assert_true(world_camera.offset.y < 0.0, "Portrait outdoor camera should lead upward with a negative Y offset.")
-
 	var content_library := root.get_node_or_null("ContentLibrary")
 	if not assert_true(content_library != null, "ContentLibrary autoload should be available for building lookups."):
 		outdoor_mode.free()
 		return
+	for building_id in [
+		"mart_01", "apartment_01", "clinic_01", "office_01",
+		"convenience_01", "hardware_01", "gas_station_01", "laundry_01",
+		"bookstore_01", "deli_01", "hostel_01",
+		"storage_depot_01", "garage_01", "canteen_01",
+		"church_01", "corner_store_01",
+		"school_gate_01", "butcher_01", "row_house_01",
+		"chapel_01", "tea_shop_01"
+	]:
+		assert_true(content_library.get_building(building_id).size() > 0, "Building '%s' should exist in the expanded district." % building_id)
 
 	var mart_data: Dictionary = content_library.get_building("mart_01")
 	var mart_position := Vector2(
@@ -168,6 +237,8 @@ func _run_test() -> void:
 
 	var near_distance := player_sprite.position.distance_to(mart_position)
 	assert_true(near_distance <= 72.0, "Moving toward the building should place the player in entry range.")
+	assert_true(hint_label.text.find("동네 마트") >= 0, "Nearby building hints should name the target building.")
+	assert_true(hint_label.text.find("직원 구역과 재고실") >= 0, "Nearby building hints should surface the authored entry briefing.")
 
 	outdoor_mode.try_enter_building("wrong_building")
 	assert_eq(_building_entered_count, 0, "The wrong building id should not emit building_entered.")
@@ -204,6 +275,10 @@ func _run_test() -> void:
 		outdoor_mode.get_player_position().x < overloaded_run_state.move_speed,
 		"Outdoor movement should slow down when the player is carrying more than the soft limit."
 	)
+	overloaded_run_state.exposure = 18.0
+	outdoor_mode.refresh_view()
+	assert_true(threat_label.text.length() > 0, "Outdoor top ribbon should always show a readable threat-state line.")
+	assert_true(frost_overlay.color.a >= 0.35, "Low exposure should visibly intensify the frost overlay.")
 
 	var fresh_state = run_state_script.from_survivor_config({
 		"job_id": "courier",
@@ -226,8 +301,12 @@ func _run_test() -> void:
 	outdoor_mode.move_player(Vector2.RIGHT, 1.0)
 	assert_true(outdoor_mode.get_player_position().x < fresh_x, "Higher fatigue should reduce outdoor movement speed.")
 
-	codex_button.emit_signal("pressed")
-	assert_eq(_codex_requested_count, 1, "Pressing the outdoor codex button should request the shared crafting codex.")
+	var before_contact_exposure: float = tired_state.exposure
+	var before_contact_fatigue: float = tired_state.fatigue
+	assert_true(outdoor_mode.has_method("debug_force_threat_contact"), "Outdoor mode should expose a narrow debug_force_threat_contact() hook for deterministic threat tests.")
+	outdoor_mode.debug_force_threat_contact()
+	assert_true(tired_state.exposure < before_contact_exposure, "Threat contact should reduce exposure.")
+	assert_true(tired_state.fatigue > before_contact_fatigue, "Threat contact should increase fatigue.")
 
 	var craft_state = run_state_script.from_survivor_config({
 		"job_id": "courier",
@@ -258,10 +337,6 @@ func _on_building_entered(building_id: String) -> void:
 	_entered_building_id = building_id
 
 
-func _on_codex_requested() -> void:
-	_codex_requested_count += 1
-
-
 func get_job(job_id: String) -> Dictionary:
 	return _test_jobs.get(job_id, {})
 
@@ -275,3 +350,24 @@ func _polygon_min_y(points: PackedVector2Array) -> float:
 	for point in points:
 		min_y = minf(min_y, point.y)
 	return min_y
+
+
+func _children_named_with(container: Node, fragment: String) -> Array[Node]:
+	var matches: Array[Node] = []
+	if container == null:
+		return matches
+	for child in container.get_children():
+		if String(child.name).find(fragment) >= 0:
+			matches.append(child)
+	return matches
+
+
+func _max_visual_scale(container: Node) -> float:
+	var max_scale := 0.0
+	if container == null:
+		return max_scale
+	for child in container.get_children():
+		var visual := child.get_node_or_null("Visual") as Node2D
+		if visual != null:
+			max_scale = maxf(max_scale, visual.scale.x)
+	return max_scale

@@ -1,5 +1,8 @@
 extends CanvasLayer
 
+const ItemIconResolver = preload("res://scripts/ui/item_icon_resolver.gd")
+const UiKitResolver = preload("res://scripts/ui/ui_kit_resolver.gd")
+
 signal close_requested
 signal inventory_action_requested(action_id: String)
 signal craft_applied(outcome: Dictionary)
@@ -17,13 +20,18 @@ const CODEX_CATEGORY_LABELS := {
 	"repair_fortify": "수리 / 보강",
 }
 
-const DEFAULT_BUTTON_MODULATE := Color(1, 1, 1, 1)
-const SELECTED_BUTTON_MODULATE := Color(0.74, 0.9, 1.0, 1.0)
-const CRAFT_BASE_BUTTON_MODULATE := Color(0.7, 0.84, 1.0, 1.0)
-const DIM_BUTTON_MODULATE := Color(0.56, 0.58, 0.64, 0.9)
-const HINT_PULSE_BASE := Color(1.18, 0.97, 0.46, 1.0)
-const HINT_PULSE_TARGET := Color(1.42, 1.08, 0.56, 1.0)
-const HINT_PULSE_SPEED := 5.4
+const INVENTORY_SCROLL_MIN_HEIGHT_BROWSE := 420.0
+const DETAIL_LIST_INSET_HEIGHT := 300.0
+const CRAFT_BAR_GAP := 10.0
+const CRAFT_BAR_HEIGHT := 154.0
+const INVENTORY_ICON_SLOT_STYLE := {
+	"bg": Color(0.16, 0.18, 0.22, 0.96),
+	"border": Color(0.34, 0.38, 0.44, 0.92),
+}
+const TEXT_PRIMARY_COLOR := Color(0.96, 0.98, 1.0, 0.98)
+const TEXT_SECONDARY_COLOR := Color(0.88, 0.92, 0.97, 0.96)
+const TEXT_MUTED_COLOR := Color(0.82, 0.86, 0.9, 0.96)
+const TEXT_OUTLINE_COLOR := Color(0.04, 0.06, 0.09, 0.94)
 
 var run_state = null
 var _mode_name := "indoor"
@@ -33,6 +41,7 @@ var _selected_item_id := ""
 var _craft_base_item_id := ""
 var _last_craft_feedback_text := ""
 var _highlighted_item_ids: Array[String] = []
+var _item_badges: Dictionary = {}
 var _inventory_payload := {
 	"title": "가방",
 	"status_text": "",
@@ -40,41 +49,113 @@ var _inventory_payload := {
 	"selected_sheet": {"visible": false},
 	"feedback_message": "",
 }
-var _pulse_time := 0.0
 var _item_buttons: Dictionary = {}
+var _item_row_panels: Dictionary = {}
 var _title_label: Label = null
 var _status_label: Label = null
 var _inventory_tab_button: Button = null
 var _codex_tab_button: Button = null
 var _close_button: Button = null
-var _craft_context_strip: HBoxContainer = null
-var _craft_context_label: Label = null
-var _cancel_craft_button: Button = null
+var _craft_card: Control = null
+var _material_one_icon_rect: TextureRect = null
+var _material_one_value_label: Label = null
+var _material_two_icon_rect: TextureRect = null
+var _material_two_value_label: Label = null
+var _craft_result_icon_rect: TextureRect = null
+var _craft_result_value_label: Label = null
+var _craft_result_hint_label: Label = null
+var _craft_confirm_button: Button = null
+var _craft_cancel_button: Button = null
+var _craft_actions_row: HBoxContainer = null
 var _inventory_pane: Control = null
+var _inventory_scroll: ScrollContainer = null
+var _detail_inset: Control = null
 var _inventory_items: VBoxContainer = null
-var _item_detail_card: Control = null
+var _browse_hint_label: Label = null
+var _item_detail_sheet: Control = null
+var _detail_close_button: Button = null
 var _item_name_label: Label = null
 var _item_description_label: Label = null
 var _item_effect_label: Label = null
 var _mode_message_label: Label = null
-var _primary_actions: HBoxContainer = null
-var _secondary_actions: HBoxContainer = null
+var _primary_actions: VBoxContainer = null
+var _secondary_actions: VBoxContainer = null
 var _codex_pane: Control = null
 var _codex_rows: VBoxContainer = null
+var _item_icon_rect: TextureRect = null
+var _item_icon_resolver = ItemIconResolver.new()
+var _ui_kit_resolver = UiKitResolver.new()
+var _skin_applied := false
+var _highlight_pulse_time := 0.0
 
 
 func _ready() -> void:
 	_cache_nodes()
 	_bind_buttons()
+	_apply_ui_skin()
 	visible = false
-	set_process(true)
 	_render()
 
 
 func _process(delta: float) -> void:
-	_pulse_time += delta
-	if visible and not _highlighted_item_ids.is_empty():
-		_refresh_item_button_states()
+	_highlight_pulse_time += delta
+	var pulse_alpha := 0.72 + (sin(_highlight_pulse_time * 4.2) + 1.0) * 0.14
+	var row_lift := 1.10 + (sin(_highlight_pulse_time * 4.2) + 1.0) * 0.10
+	for item_id_variant in _item_row_panels.keys():
+		var item_id := String(item_id_variant)
+		var row_panel := _item_row_panels.get(item_id) as Control
+		if row_panel == null:
+			continue
+		if _highlighted_item_ids.has(item_id) and item_id != _craft_base_item_id:
+			row_panel.modulate = Color(1.05, row_lift + 0.10, row_lift + 0.18, 1.0)
+		elif item_id == _selected_item_id or (_sheet_state == STATE_INVENTORY_CRAFT_SELECT and item_id == _craft_base_item_id):
+			row_panel.modulate = Color(1.08, 1.18, 1.28, 1.0)
+		else:
+			row_panel.modulate = Color(1, 1, 1, 1)
+	for badge_variant in _item_badges.values():
+		var badge := badge_variant as Control
+		if badge == null or not badge.visible:
+			continue
+		badge.modulate = Color(1, 1, 1, pulse_alpha)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not visible:
+		return
+	if event.is_action_pressed("ui_cancel"):
+		close_sheet()
+		get_viewport().set_input_as_handled()
+		return
+	if event is InputEventMouseButton:
+		var mouse_event := event as InputEventMouseButton
+		if mouse_event.button_index == MOUSE_BUTTON_LEFT and mouse_event.pressed and not _is_pointer_inside_active_surface(mouse_event.position):
+			close_sheet()
+			get_viewport().set_input_as_handled()
+			return
+	if event is InputEventScreenTouch:
+		var touch_event := event as InputEventScreenTouch
+		if touch_event.pressed and not _is_pointer_inside_active_surface(touch_event.position):
+			close_sheet()
+			get_viewport().set_input_as_handled()
+
+
+func _is_pointer_inside_active_surface(position: Vector2) -> bool:
+	if _rect_contains_point(_sheet_rect(), position):
+		return true
+	if _craft_card != null and _craft_card.visible and _rect_contains_point(_craft_card.get_global_rect(), position):
+		return true
+	if _item_detail_sheet != null and _item_detail_sheet.visible and _rect_contains_point(_item_detail_sheet.get_global_rect(), position):
+		return true
+	return false
+
+
+func _sheet_rect() -> Rect2:
+	var sheet := get_node_or_null("Sheet") as Control
+	return sheet.get_global_rect() if sheet != null else Rect2()
+
+
+func _rect_contains_point(rect: Rect2, position: Vector2) -> bool:
+	return rect.size.x > 0.0 and rect.size.y > 0.0 and rect.has_point(position)
 
 
 func bind_run_state(value) -> void:
@@ -92,6 +173,7 @@ func open_inventory() -> void:
 	visible = true
 	_active_tab = "inventory"
 	_sheet_state = STATE_INVENTORY_BROWSE
+	_selected_item_id = ""
 	_last_craft_feedback_text = ""
 	_refresh_highlights()
 	_render()
@@ -101,6 +183,7 @@ func open_codex() -> void:
 	visible = true
 	_active_tab = "codex"
 	_sheet_state = STATE_CODEX_BROWSE
+	_selected_item_id = ""
 	_last_craft_feedback_text = ""
 	_render()
 
@@ -144,6 +227,10 @@ func get_highlighted_item_ids() -> Array[String]:
 	return _highlighted_item_ids.duplicate()
 
 
+func is_detail_open() -> bool:
+	return _item_detail_sheet != null and _item_detail_sheet.visible
+
+
 func select_inventory_item(item_id: String) -> void:
 	if _sheet_state == STATE_INVENTORY_CRAFT_SELECT and item_id != _selected_item_id:
 		_last_craft_feedback_text = ""
@@ -156,7 +243,7 @@ func begin_craft_mode(item_id: String) -> void:
 		return
 	visible = true
 	_active_tab = "inventory"
-	_selected_item_id = item_id
+	_selected_item_id = ""
 	_craft_base_item_id = item_id
 	_last_craft_feedback_text = ""
 	_sheet_state = STATE_INVENTORY_CRAFT_SELECT
@@ -220,23 +307,36 @@ func confirm_craft() -> Dictionary:
 
 
 func _cache_nodes() -> void:
-	_title_label = get_node_or_null("Sheet/VBox/Header/TitleLabel") as Label
+	_title_label = get_node_or_null("Sheet/VBox/Header/TitleRow/TitleLabel") as Label
 	_status_label = get_node_or_null("Sheet/VBox/Header/StatusLabel") as Label
 	_inventory_tab_button = get_node_or_null("Sheet/VBox/Tabs/InventoryTabButton") as Button
 	_codex_tab_button = get_node_or_null("Sheet/VBox/Tabs/CodexTabButton") as Button
-	_close_button = get_node_or_null("Sheet/VBox/Header/CloseButton") as Button
-	_craft_context_strip = get_node_or_null("Sheet/VBox/CraftContextStrip") as HBoxContainer
-	_craft_context_label = get_node_or_null("Sheet/VBox/CraftContextStrip/CraftContextLabel") as Label
-	_cancel_craft_button = get_node_or_null("Sheet/VBox/CraftContextStrip/CancelCraftButton") as Button
+	_close_button = get_node_or_null("Sheet/VBox/Header/TitleRow/CloseButton") as Button
+	_craft_card = get_node_or_null("CraftCard") as Control
+	_material_one_icon_rect = get_node_or_null("CraftCard/Padding/VBox/SlotsRow/MaterialOneCard/Padding/VBox/ValueRow/MaterialOneIconSlot/IconCenter/MaterialOneIconRect") as TextureRect
+	_material_one_value_label = get_node_or_null("CraftCard/Padding/VBox/SlotsRow/MaterialOneCard/Padding/VBox/ValueRow/MaterialOneValueLabel") as Label
+	_material_two_icon_rect = get_node_or_null("CraftCard/Padding/VBox/SlotsRow/MaterialTwoCard/Padding/VBox/ValueRow/MaterialTwoIconSlot/IconCenter/MaterialTwoIconRect") as TextureRect
+	_material_two_value_label = get_node_or_null("CraftCard/Padding/VBox/SlotsRow/MaterialTwoCard/Padding/VBox/ValueRow/MaterialTwoValueLabel") as Label
+	_craft_confirm_button = get_node_or_null("CraftCard/Padding/VBox/ActionsRow/CraftConfirmButton") as Button
+	_craft_cancel_button = get_node_or_null("CraftCard/Padding/VBox/ActionsRow/CraftCancelButton") as Button
 	_inventory_pane = get_node_or_null("Sheet/VBox/InventoryPane") as Control
-	_inventory_items = get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll/InventoryItems") as VBoxContainer
-	_item_detail_card = get_node_or_null("Sheet/VBox/InventoryPane/ItemDetailCard") as Control
-	_item_name_label = get_node_or_null("Sheet/VBox/InventoryPane/ItemDetailCard/VBox/ItemNameLabel") as Label
-	_item_description_label = get_node_or_null("Sheet/VBox/InventoryPane/ItemDetailCard/VBox/ItemDescriptionLabel") as Label
-	_item_effect_label = get_node_or_null("Sheet/VBox/InventoryPane/ItemDetailCard/VBox/ItemEffectLabel") as Label
-	_mode_message_label = get_node_or_null("Sheet/VBox/InventoryPane/ItemDetailCard/VBox/ModeMessageLabel") as Label
-	_primary_actions = get_node_or_null("Sheet/VBox/InventoryPane/ItemDetailCard/VBox/DetailActions/PrimaryActions") as HBoxContainer
-	_secondary_actions = get_node_or_null("Sheet/VBox/InventoryPane/ItemDetailCard/VBox/DetailActions/SecondaryActions") as HBoxContainer
+	_inventory_scroll = get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll") as ScrollContainer
+	_detail_inset = get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll/InventoryContent/DetailInset") as Control
+	_browse_hint_label = get_node_or_null("Sheet/VBox/InventoryPane/BrowseHintLabel") as Label
+	_inventory_items = get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll/InventoryContent/InventoryItems") as VBoxContainer
+	_item_detail_sheet = get_node_or_null("ItemDetailSheet") as Control
+	_detail_close_button = get_node_or_null("ItemDetailSheet/VBox/Header/DetailCloseButton") as Button
+	_item_icon_rect = get_node_or_null("ItemDetailSheet/VBox/Header/ItemIconRect") as TextureRect
+	_item_name_label = get_node_or_null("ItemDetailSheet/VBox/Header/ItemNameLabel") as Label
+	_item_description_label = get_node_or_null("ItemDetailSheet/VBox/DetailScroll/DetailBody/ItemDescriptionLabel") as Label
+	_item_effect_label = get_node_or_null("ItemDetailSheet/VBox/DetailScroll/DetailBody/ItemEffectLabel") as Label
+	_mode_message_label = get_node_or_null("ItemDetailSheet/VBox/DetailScroll/DetailBody/ModeMessageLabel") as Label
+	_craft_result_icon_rect = null
+	_craft_result_value_label = null
+	_craft_result_hint_label = null
+	_primary_actions = get_node_or_null("ItemDetailSheet/VBox/DetailActions/PrimaryActions") as VBoxContainer
+	_secondary_actions = get_node_or_null("ItemDetailSheet/VBox/DetailActions/SecondaryActions") as VBoxContainer
+	_craft_actions_row = get_node_or_null("ItemDetailSheet/VBox/DetailActions/CraftActionsRow") as HBoxContainer
 	_codex_pane = get_node_or_null("Sheet/VBox/CodexPane") as Control
 	_codex_rows = get_node_or_null("Sheet/VBox/CodexPane/CodexScroll/CodexRows") as VBoxContainer
 
@@ -248,14 +348,18 @@ func _bind_buttons() -> void:
 		_codex_tab_button.pressed.connect(Callable(self, "_on_codex_tab_pressed"))
 	if _close_button != null and not _close_button.pressed.is_connected(Callable(self, "_on_close_pressed")):
 		_close_button.pressed.connect(Callable(self, "_on_close_pressed"))
-	if _cancel_craft_button != null and not _cancel_craft_button.pressed.is_connected(Callable(self, "_on_cancel_craft_pressed")):
-		_cancel_craft_button.pressed.connect(Callable(self, "_on_cancel_craft_pressed"))
+	if _craft_cancel_button != null and not _craft_cancel_button.pressed.is_connected(Callable(self, "_on_cancel_craft_pressed")):
+		_craft_cancel_button.pressed.connect(Callable(self, "_on_cancel_craft_pressed"))
+	if _craft_confirm_button != null and not _craft_confirm_button.pressed.is_connected(Callable(self, "_on_craft_confirm_pressed")):
+		_craft_confirm_button.pressed.connect(Callable(self, "_on_craft_confirm_pressed"))
+	if _detail_close_button != null and not _detail_close_button.pressed.is_connected(Callable(self, "_on_detail_close_pressed")):
+		_detail_close_button.pressed.connect(Callable(self, "_on_detail_close_pressed"))
 
 
 func _render() -> void:
 	_render_header()
 	_render_tabs()
-	_render_craft_context_strip()
+	_render_craft_card()
 	_render_inventory()
 	_render_codex()
 
@@ -273,28 +377,50 @@ func _render_tabs() -> void:
 		_inventory_pane.visible = _active_tab == "inventory"
 	if _codex_pane != null:
 		_codex_pane.visible = _active_tab == "codex"
+	if _browse_hint_label != null:
+		_browse_hint_label.visible = _active_tab == "inventory"
 	if _inventory_tab_button != null:
 		_inventory_tab_button.button_pressed = _active_tab == "inventory"
-		_inventory_tab_button.modulate = DEFAULT_BUTTON_MODULATE if _active_tab == "inventory" else DIM_BUTTON_MODULATE
+		_style_sheet_tab(_inventory_tab_button, _active_tab == "inventory")
 	if _codex_tab_button != null:
 		_codex_tab_button.button_pressed = _active_tab == "codex"
-		_codex_tab_button.modulate = DEFAULT_BUTTON_MODULATE if _active_tab == "codex" else DIM_BUTTON_MODULATE
+		_style_sheet_tab(_codex_tab_button, _active_tab == "codex")
 
 
-func _render_craft_context_strip() -> void:
+func _render_craft_card() -> void:
 	var craft_active := _sheet_state == STATE_INVENTORY_CRAFT_SELECT and not _craft_base_item_id.is_empty()
-	if _craft_context_strip != null:
-		_craft_context_strip.visible = craft_active
-	if _craft_context_label != null:
-		_craft_context_label.text = "조합 중: %s" % _display_name_for_item(_craft_base_item_id) if craft_active else ""
+	if _craft_card != null:
+		_craft_card.visible = craft_active
+		if craft_active:
+			_layout_craft_card()
+	if _material_one_icon_rect != null:
+		_material_one_icon_rect.texture = _item_icon_for(_craft_base_item_id) if craft_active else null
+		_material_one_icon_rect.visible = _material_one_icon_rect.texture != null
+	if _material_one_value_label != null:
+		_material_one_value_label.text = _display_name_for_item(_craft_base_item_id) if craft_active else ""
+	if _material_two_icon_rect != null:
+		var second_icon_item_id := ""
+		if craft_active and not _selected_item_id.is_empty() and _selected_item_id != _craft_base_item_id:
+			second_icon_item_id = _selected_item_id
+		_material_two_icon_rect.texture = _item_icon_for(second_icon_item_id)
+		_material_two_icon_rect.visible = _material_two_icon_rect.texture != null
+	if _material_two_value_label != null:
+		var second_item_id := ""
+		if craft_active and not _selected_item_id.is_empty() and _selected_item_id != _craft_base_item_id:
+			second_item_id = _selected_item_id
+		_material_two_value_label.text = _display_name_for_item(second_item_id) if not second_item_id.is_empty() else "비어 있음"
+	if _craft_confirm_button != null:
+		_craft_confirm_button.disabled = not can_attempt_craft()
 
 
 func _render_inventory() -> void:
-	if _inventory_items == null or _item_detail_card == null:
+	if _inventory_items == null:
 		return
 
 	_clear_children(_inventory_items)
 	_item_buttons.clear()
+	_item_row_panels.clear()
+	_item_badges.clear()
 
 	var inventory_rows := _inventory_rows_for_render()
 	for row in inventory_rows:
@@ -302,42 +428,115 @@ func _render_inventory() -> void:
 
 	_refresh_item_button_states()
 	_render_item_detail()
+	_apply_inventory_scroll_height()
+	_render_craft_card()
+
+
+func _layout_craft_card() -> void:
+	if _craft_card == null:
+		return
+	var sheet := get_node_or_null("Sheet") as Control
+	if sheet == null:
+		return
+	var sheet_rect := sheet.get_global_rect()
+	_craft_card.offset_left = sheet_rect.position.x
+	_craft_card.offset_right = sheet_rect.position.x + sheet_rect.size.x
+	_craft_card.offset_bottom = sheet_rect.position.y - CRAFT_BAR_GAP
+	_craft_card.offset_top = _craft_card.offset_bottom - CRAFT_BAR_HEIGHT
+
+
+func _apply_inventory_scroll_height() -> void:
+	if _inventory_scroll == null:
+		return
+
+	_inventory_scroll.custom_minimum_size = Vector2(0.0, INVENTORY_SCROLL_MIN_HEIGHT_BROWSE)
+	if _detail_inset == null:
+		return
+
+	var inset_height := 0.0
+	if is_detail_open():
+		inset_height = DETAIL_LIST_INSET_HEIGHT
+	_detail_inset.custom_minimum_size = Vector2(0.0, inset_height)
 
 
 func _create_inventory_row(row: Dictionary) -> Control:
 	var item_id := String(row.get("item_id", ""))
 	var label_text := String(row.get("label", ""))
-	var tag_texts_variant: Variant = row.get("tag_texts", [])
 	var charges_text := String(row.get("charges_text", ""))
 
 	var panel := PanelContainer.new()
 	panel.name = "InventoryRow_%s" % item_id
+	panel.set_meta("item_id", item_id)
 	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_ui_kit_resolver.apply_panel(panel, "sheet_set/item_row_idle.png")
+	_item_row_panels[item_id] = panel
 
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 4)
 	panel.add_child(box)
 
+	var row_line := HBoxContainer.new()
+	row_line.add_theme_constant_override("separation", 12)
+	box.add_child(row_line)
+
+	var icon_slot := PanelContainer.new()
+	icon_slot.custom_minimum_size = Vector2(42, 42)
+	icon_slot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_ui_kit_resolver.apply_panel(icon_slot, "sheet/inventory_icon_slot.png")
+	row_line.add_child(icon_slot)
+
+	var icon_holder := CenterContainer.new()
+	icon_holder.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	icon_holder.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	icon_slot.add_child(icon_holder)
+
+	var icon_rect := TextureRect.new()
+	icon_rect.custom_minimum_size = Vector2(20, 20)
+	icon_rect.texture = _item_icon_for(item_id)
+	icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	icon_holder.add_child(icon_rect)
+
+	var compatibility_badge := PanelContainer.new()
+	compatibility_badge.name = "CompatibilityBadge"
+	compatibility_badge.custom_minimum_size = Vector2(34, 14)
+	compatibility_badge.position = Vector2(4, 26)
+	compatibility_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	compatibility_badge.visible = false
+	compatibility_badge.add_theme_stylebox_override("panel", _compatibility_badge_style())
+	icon_slot.add_child(compatibility_badge)
+	_item_badges[item_id] = compatibility_badge
+
+	var compatibility_label := Label.new()
+	compatibility_label.text = "조합"
+	compatibility_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	compatibility_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_apply_label_style(compatibility_label, 9, TEXT_SECONDARY_COLOR, 1)
+	compatibility_badge.add_child(compatibility_label)
+
 	var button := Button.new()
 	button.name = "RowButton"
 	button.text = label_text
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	button.flat = false
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	button.custom_minimum_size = Vector2(0, 48)
+	button.mouse_filter = Control.MOUSE_FILTER_PASS
+	button.mouse_force_pass_scroll_events = true
+	button.focus_mode = Control.FOCUS_NONE
+	_ui_kit_resolver.apply_button(
+		button,
+		"sheet/inventory_row_compact_idle.png",
+		"sheet/inventory_row_compact_selected.png"
+	)
+	_apply_button_text_style(button, 15, TEXT_PRIMARY_COLOR, 2)
 	button.pressed.connect(Callable(self, "_on_inventory_item_pressed").bind(item_id))
-	box.add_child(button)
+	row_line.add_child(button)
 	_item_buttons[item_id] = button
 
 	var meta_lines: Array[String] = []
-	if typeof(tag_texts_variant) == TYPE_ARRAY:
-		var tag_labels: Array[String] = []
-		for tag_variant in tag_texts_variant:
-			var tag_text := String(tag_variant)
-			if tag_text.is_empty():
-				continue
-			tag_labels.append(tag_text)
-		if not tag_labels.is_empty():
-			meta_lines.append(" ".join(tag_labels))
 	if not charges_text.is_empty():
 		meta_lines.append(charges_text)
 
@@ -346,7 +545,7 @@ func _create_inventory_row(row: Dictionary) -> Control:
 		meta_label.name = "MetaLabel"
 		meta_label.text = "\n".join(meta_lines)
 		meta_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		meta_label.modulate = Color(0.82, 0.86, 0.9, 0.96)
+		_apply_label_style(meta_label, 13, TEXT_MUTED_COLOR, 1)
 		box.add_child(meta_label)
 
 	return panel
@@ -354,10 +553,19 @@ func _create_inventory_row(row: Dictionary) -> Control:
 
 func _render_item_detail() -> void:
 	var sheet := _selected_item_sheet()
+	if _item_detail_sheet != null:
+		_item_detail_sheet.visible = _active_tab == "inventory" \
+			and bool(sheet.get("visible", false)) \
+			and _sheet_state != STATE_INVENTORY_CRAFT_SELECT
 	if _item_name_label != null:
 		_item_name_label.text = String(sheet.get("title", "아이템"))
+	if _item_icon_rect != null:
+		var detail_item_id := _selected_item_id if bool(sheet.get("visible", false)) else ""
+		_item_icon_rect.texture = _item_icon_for(detail_item_id)
+		_item_icon_rect.visible = _item_icon_rect.texture != null
 	if _item_description_label != null:
 		_item_description_label.text = String(sheet.get("description", "아이템을 선택하면 설명이 나타난다."))
+		_item_description_label.visible = not _item_description_label.text.is_empty()
 	if _item_effect_label != null:
 		_item_effect_label.text = String(sheet.get("effect_text", ""))
 		_item_effect_label.visible = not _item_effect_label.text.is_empty()
@@ -374,6 +582,12 @@ func _render_item_actions(selected_sheet: Dictionary) -> void:
 
 	_clear_children(_primary_actions)
 	_clear_children(_secondary_actions)
+	if _sheet_state == STATE_INVENTORY_CRAFT_SELECT:
+		if _craft_actions_row != null:
+			_craft_actions_row.visible = false
+		return
+	if _craft_actions_row != null:
+		_craft_actions_row.visible = false
 	var visible := bool(selected_sheet.get("visible", false))
 	if not visible:
 		return
@@ -390,24 +604,43 @@ func _render_item_actions(selected_sheet: Dictionary) -> void:
 			or action_id.begins_with("drop_inventory_"):
 			var button := Button.new()
 			button.text = action_label
+			button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			_apply_button_text_style(button, 14, TEXT_PRIMARY_COLOR, 1)
+			_ui_kit_resolver.apply_button(
+				button,
+				"sheet_set/action_button_primary_normal.png",
+				"sheet_set/action_button_primary_pressed.png"
+			)
 			button.pressed.connect(func() -> void:
 				inventory_action_requested.emit(action_id)
 			)
 			_primary_actions.add_child(button)
 
 	var craft_button := Button.new()
-	craft_button.text = "조합" if _sheet_state == STATE_INVENTORY_CRAFT_SELECT else "조합 시작"
-	craft_button.disabled = (_sheet_state == STATE_INVENTORY_CRAFT_SELECT and not can_attempt_craft()) or (_sheet_state != STATE_INVENTORY_CRAFT_SELECT and _selected_item_id.is_empty())
+	craft_button.text = "조합 시작"
+	craft_button.disabled = _sheet_state == STATE_INVENTORY_CRAFT_SELECT or _selected_item_id.is_empty()
+	craft_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_apply_button_text_style(craft_button, 14, TEXT_PRIMARY_COLOR, 1)
+	_ui_kit_resolver.apply_button(
+		craft_button,
+		"sheet_set/action_button_secondary_normal.png",
+		"sheet_set/action_button_secondary_pressed.png"
+	)
 	craft_button.pressed.connect(func() -> void:
-		if _sheet_state == STATE_INVENTORY_CRAFT_SELECT:
-			confirm_craft()
-		else:
-			begin_craft_mode(_selected_item_id)
+		begin_craft_mode(_selected_item_id)
 	)
 	_secondary_actions.add_child(craft_button)
 
 
 func _selected_item_sheet() -> Dictionary:
+	if _active_tab != "inventory":
+		return {
+			"visible": false,
+			"title": "아이템",
+			"description": "아이템을 선택하면 설명이 나타난다.",
+			"effect_text": "",
+			"actions": [],
+		}
 	if _selected_item_id.is_empty():
 		return {
 			"visible": false,
@@ -451,9 +684,8 @@ func _mode_message_text(selected_sheet: Dictionary) -> String:
 		if not _last_craft_feedback_text.is_empty():
 			return _last_craft_feedback_text
 		return "다른 재료를 고른 뒤 조합을 시도한다."
-
 	if bool(selected_sheet.get("visible", false)):
-		return String(_inventory_payload.get("feedback_message", ""))
+		return String(selected_sheet.get("mode_message", ""))
 	return ""
 
 
@@ -490,7 +722,6 @@ func _inventory_rows_for_render() -> Array[Dictionary]:
 			"count": int(grouped.get(item_id, 0)),
 			"label": "%s x%d" % [_display_name_for_item(item_id), int(grouped.get(item_id, 0))],
 			"action_id": "inspect_inventory_%s" % item_id,
-			"tag_texts": _item_tags(item_data),
 			"charges_text": _item_charges_text(item_id, item_data),
 		})
 
@@ -518,20 +749,24 @@ func _refresh_highlights() -> void:
 	_highlighted_item_ids.clear()
 	if _sheet_state != STATE_INVENTORY_CRAFT_SELECT or _craft_base_item_id.is_empty():
 		return
-	if run_state != null and run_state.has_method("is_hard_mode") and run_state.is_hard_mode():
-		return
-	_highlighted_item_ids = _compatible_secondary_item_ids(_craft_base_item_id)
+	var only_known_recipes: bool = run_state != null and run_state.has_method("is_hard_mode") and run_state.is_hard_mode()
+	_highlighted_item_ids = _compatible_secondary_item_ids(_craft_base_item_id, only_known_recipes)
 
 
-func _compatible_secondary_item_ids(primary_item_id: String) -> Array[String]:
+func _compatible_secondary_item_ids(primary_item_id: String, only_known_recipes: bool = false) -> Array[String]:
 	var candidate_ids: Array[String] = []
+	if run_state == null or run_state.inventory == null:
+		return candidate_ids
 	var grouped := _group_inventory_rows_by_item_id()
 	for item_id_variant in grouped.keys():
 		var item_id := String(item_id_variant)
 		if item_id == primary_item_id and int(grouped[item_id]) < 2:
 			continue
 		var preview: Dictionary = run_state.crafting_resolver.resolve(primary_item_id, item_id, _mode_name, ContentLibrary)
-		if String(preview.get("recipe_id", "")).is_empty():
+		var recipe_id := String(preview.get("recipe_id", ""))
+		if recipe_id.is_empty():
+			continue
+		if only_known_recipes and not _recipe_is_known(recipe_id):
 			continue
 		candidate_ids.append(item_id)
 	return candidate_ids
@@ -543,16 +778,29 @@ func _refresh_item_button_states() -> void:
 		var button := _item_buttons.get(item_id) as Button
 		if button == null:
 			continue
+		var panel := _item_row_panels.get(item_id) as PanelContainer
 
-		var button_color := DEFAULT_BUTTON_MODULATE
+		var panel_path := "sheet_set/item_row_idle.png"
 		if _sheet_state == STATE_INVENTORY_CRAFT_SELECT and item_id == _craft_base_item_id:
-			button_color = CRAFT_BASE_BUTTON_MODULATE
+			panel_path = "sheet_set/item_row_selected.png"
 		elif item_id == _selected_item_id:
-			button_color = SELECTED_BUTTON_MODULATE
+			panel_path = "sheet_set/item_row_selected.png"
 		elif _highlighted_item_ids.has(item_id):
-			var pulse := 0.5 + (0.5 * sin(_pulse_time * HINT_PULSE_SPEED))
-			button_color = HINT_PULSE_BASE.lerp(HINT_PULSE_TARGET, pulse)
-		button.modulate = button_color
+			panel_path = "sheet_set/item_row_highlighted.png"
+		button.modulate = Color(1, 1, 1, 1)
+		if _highlighted_item_ids.has(item_id) and item_id != _craft_base_item_id:
+			panel.modulate = Color(1.06, 1.22, 1.34, 1.0)
+		elif item_id == _selected_item_id or (_sheet_state == STATE_INVENTORY_CRAFT_SELECT and item_id == _craft_base_item_id):
+			panel.modulate = Color(1.10, 1.20, 1.30, 1.0)
+		else:
+			panel.modulate = Color(1, 1, 1, 1)
+		_ui_kit_resolver.apply_panel(panel, panel_path)
+		_ui_kit_resolver.apply_button(button, panel_path, panel_path)
+		var badge := _item_badges.get(item_id) as Control
+		if badge != null:
+			badge.visible = _highlighted_item_ids.has(item_id) and item_id != _craft_base_item_id
+			if badge.visible:
+				badge.modulate = Color(1, 1, 1, 0.9)
 
 
 func _current_recipe_outcome() -> Dictionary:
@@ -611,16 +859,6 @@ func _formatted_payload_description(payload_sheet: Dictionary) -> String:
 
 func _formatted_payload_effect(payload_sheet: Dictionary) -> String:
 	var lines: Array[String] = []
-	var item_tags_variant: Variant = payload_sheet.get("item_tags", [])
-	if typeof(item_tags_variant) == TYPE_ARRAY:
-		var tag_labels: Array[String] = []
-		for tag_variant in item_tags_variant:
-			var tag_text := String(tag_variant)
-			if tag_text.is_empty():
-				continue
-			tag_labels.append("#%s" % tag_text)
-		if not tag_labels.is_empty():
-			lines.append(" ".join(tag_labels))
 	var effect_text := String(payload_sheet.get("effect_text", ""))
 	if not effect_text.is_empty():
 		lines.append(effect_text)
@@ -643,9 +881,6 @@ func _formatted_item_description(item_data: Dictionary) -> String:
 
 func _formatted_item_effect(item_data: Dictionary) -> String:
 	var parts: Array[String] = []
-	var item_tags := _item_tags(item_data)
-	if not item_tags.is_empty():
-		parts.append(" ".join(item_tags))
 	var effect_text := _item_effect_text(item_data)
 	if not effect_text.is_empty():
 		parts.append(effect_text)
@@ -818,7 +1053,7 @@ func _render_codex() -> void:
 
 		var heading := Label.new()
 		heading.text = "%s %d/%d" % [_codex_category_label(category_id), discovered_count, category_rows.size()]
-		heading.modulate = Color(0.92, 0.92, 0.92, 0.96)
+		_apply_label_style(heading, 13, TEXT_PRIMARY_COLOR, 1)
 		_codex_rows.add_child(heading)
 
 		for row in category_rows:
@@ -884,25 +1119,41 @@ func _recipe_is_known(recipe_id: String) -> bool:
 func _create_unknown_codex_row() -> Control:
 	var label := Label.new()
 	label.text = "???"
-	label.modulate = Color(0.78, 0.78, 0.78, 0.92)
+	_apply_label_style(label, 13, Color(0.8, 0.82, 0.86, 0.94), 1)
 	return label
 
 
 func _create_known_codex_row(row: Dictionary) -> Control:
 	var card := PanelContainer.new()
+	_ui_kit_resolver.apply_panel(card, "overlay/map_info_chip.png")
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 4)
 	card.add_child(box)
 
+	var top_row := HBoxContainer.new()
+	top_row.add_theme_constant_override("separation", 8)
+	box.add_child(top_row)
+
+	var icon_rect := TextureRect.new()
+	icon_rect.custom_minimum_size = Vector2(20, 20)
+	icon_rect.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon_rect.texture = _item_icon_for(String(row.get("result_item_id", "")))
+	icon_rect.visible = icon_rect.texture != null
+	top_row.add_child(icon_rect)
+
 	var summary := Label.new()
 	summary.text = _codex_summary_text(row)
 	summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	box.add_child(summary)
+	summary.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_apply_label_style(summary, 14, TEXT_PRIMARY_COLOR, 1)
+	top_row.add_child(summary)
 
 	var details := Label.new()
 	details.text = _codex_detail_text(row)
 	details.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	details.modulate = Color(0.86, 0.88, 0.92, 0.94)
+	_apply_label_style(details, 12, TEXT_SECONDARY_COLOR, 1)
 	box.add_child(details)
 
 	return card
@@ -929,6 +1180,47 @@ func _codex_detail_text(row: Dictionary) -> String:
 	if not conditions.is_empty():
 		lines.append(conditions)
 	return "\n".join(lines)
+
+
+func _item_icon_for(item_id: String) -> Texture2D:
+	if item_id.is_empty():
+		return null
+	return _item_icon_resolver.get_item_icon(item_id)
+
+
+func _inventory_icon_slot_style() -> StyleBox:
+	var stylebox := _ui_kit_resolver.get_stylebox("sheet/inventory_icon_slot.png")
+	if stylebox != null:
+		return stylebox.duplicate()
+	var style := StyleBoxFlat.new()
+	style.bg_color = INVENTORY_ICON_SLOT_STYLE["bg"]
+	style.border_width_left = 1
+	style.border_width_top = 1
+	style.border_width_right = 1
+	style.border_width_bottom = 1
+	style.border_color = INVENTORY_ICON_SLOT_STYLE["border"]
+	style.corner_radius_top_left = 10
+	style.corner_radius_top_right = 10
+	style.corner_radius_bottom_right = 10
+	style.corner_radius_bottom_left = 10
+	return style
+
+
+func _compatibility_badge_style() -> StyleBox:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.14, 0.24, 0.30, 0.94)
+	style.border_width_left = 1
+	style.border_width_top = 1
+	style.border_width_right = 1
+	style.border_width_bottom = 1
+	style.border_color = Color(0.48, 0.76, 0.90, 0.95)
+	style.corner_radius_top_left = 7
+	style.corner_radius_top_right = 7
+	style.corner_radius_bottom_right = 7
+	style.corner_radius_bottom_left = 7
+	style.content_margin_left = 4
+	style.content_margin_right = 4
+	return style
 
 
 func _codex_conditions_text(row: Dictionary) -> String:
@@ -1001,11 +1293,164 @@ func _on_cancel_craft_pressed() -> void:
 	_render()
 
 
+func _on_craft_confirm_pressed() -> void:
+	confirm_craft()
+
+
 func _on_inventory_item_pressed(item_id: String) -> void:
 	select_inventory_item(item_id)
+
+
+func _on_detail_close_pressed() -> void:
+	_selected_item_id = ""
+	if _sheet_state == STATE_INVENTORY_CRAFT_SELECT:
+		_craft_base_item_id = ""
+		_last_craft_feedback_text = ""
+		_sheet_state = STATE_INVENTORY_BROWSE
+	_refresh_highlights()
+	_render()
 
 
 func _clear_children(container: Node) -> void:
 	for child in container.get_children():
 		container.remove_child(child)
 		child.queue_free()
+
+
+func _apply_ui_skin() -> void:
+	if _skin_applied:
+		return
+	_skin_applied = true
+
+	var sheet := get_node_or_null("Sheet") as PanelContainer
+	var craft_card := get_node_or_null("CraftCard") as PanelContainer
+	var item_detail_sheet := get_node_or_null("ItemDetailSheet") as PanelContainer
+	var material_one_card := get_node_or_null("CraftCard/Padding/VBox/SlotsRow/MaterialOneCard") as PanelContainer
+	var material_two_card := get_node_or_null("CraftCard/Padding/VBox/SlotsRow/MaterialTwoCard") as PanelContainer
+	var result_card := get_node_or_null("CraftCard/Padding/VBox/ResultCard") as PanelContainer
+	var material_one_icon_slot := get_node_or_null("CraftCard/Padding/VBox/SlotsRow/MaterialOneCard/Padding/VBox/ValueRow/MaterialOneIconSlot") as PanelContainer
+	var material_two_icon_slot := get_node_or_null("CraftCard/Padding/VBox/SlotsRow/MaterialTwoCard/Padding/VBox/ValueRow/MaterialTwoIconSlot") as PanelContainer
+	var result_icon_slot := get_node_or_null("CraftCard/Padding/VBox/ResultCard/Padding/VBox/ValueRow/ResultIconSlot") as PanelContainer
+	_ui_kit_resolver.apply_panel(sheet, "sheet/sheet_bg_compact.png")
+	_ui_kit_resolver.apply_panel(craft_card, "sheet/detail_panel_compact.png")
+	_ui_kit_resolver.apply_panel(item_detail_sheet, "sheet/detail_panel_compact.png")
+	_ui_kit_resolver.apply_panel(material_one_card, "sheet/inventory_row_compact_idle.png")
+	_ui_kit_resolver.apply_panel(material_two_card, "sheet/inventory_row_compact_idle.png")
+	_ui_kit_resolver.apply_panel(result_card, "sheet/inventory_row_compact_selected.png")
+	_ui_kit_resolver.apply_panel(material_one_icon_slot, "sheet/inventory_icon_slot.png")
+	_ui_kit_resolver.apply_panel(material_two_icon_slot, "sheet/inventory_icon_slot.png")
+	_ui_kit_resolver.apply_panel(result_icon_slot, "sheet/inventory_icon_slot.png")
+	_style_sheet_tab(_inventory_tab_button, true)
+	_style_sheet_tab(_codex_tab_button, false)
+	_ui_kit_resolver.apply_button(
+		_close_button,
+		"hud/hud_icon_button_compact_normal.png",
+		"hud/hud_icon_button_compact_pressed.png",
+		"hud/hud_icon_button_compact_normal.png",
+		"hud/hud_icon_button_compact_disabled.png"
+	)
+	_ui_kit_resolver.apply_button(
+		_detail_close_button,
+		"hud/hud_icon_button_compact_normal.png",
+		"hud/hud_icon_button_compact_pressed.png",
+		"hud/hud_icon_button_compact_normal.png",
+		"hud/hud_icon_button_compact_disabled.png"
+	)
+	_ui_kit_resolver.apply_button(
+		_craft_confirm_button,
+		"sheet/sheet_button_secondary_normal.png",
+		"sheet/sheet_button_secondary_pressed.png"
+	)
+	_ui_kit_resolver.apply_button(
+		_craft_cancel_button,
+		"sheet/sheet_button_secondary_normal.png",
+		"sheet/sheet_button_secondary_pressed.png"
+	)
+	if _title_label != null:
+		_apply_label_style(_title_label, 19, TEXT_PRIMARY_COLOR, 2)
+	if _status_label != null:
+		_apply_label_style(_status_label, 14, TEXT_SECONDARY_COLOR, 2)
+	if _browse_hint_label != null:
+		_apply_label_style(_browse_hint_label, 14, TEXT_SECONDARY_COLOR, 2)
+	if _inventory_tab_button != null:
+		_apply_button_text_style(_inventory_tab_button, 15, TEXT_PRIMARY_COLOR, 2)
+	if _codex_tab_button != null:
+		_apply_button_text_style(_codex_tab_button, 15, TEXT_PRIMARY_COLOR, 2)
+	var craft_header_label := get_node_or_null("CraftCard/Padding/VBox/HeaderLabel") as Label
+	if craft_header_label != null:
+		_apply_label_style(craft_header_label, 13, TEXT_SECONDARY_COLOR, 1)
+	var material_one_title := get_node_or_null("CraftCard/Padding/VBox/SlotsRow/MaterialOneCard/Padding/VBox/MaterialOneTitleLabel") as Label
+	if material_one_title != null:
+		_apply_label_style(material_one_title, 13, TEXT_SECONDARY_COLOR, 1)
+	var material_two_title := get_node_or_null("CraftCard/Padding/VBox/SlotsRow/MaterialTwoCard/Padding/VBox/MaterialTwoTitleLabel") as Label
+	if material_two_title != null:
+		_apply_label_style(material_two_title, 13, TEXT_SECONDARY_COLOR, 1)
+	var result_title := get_node_or_null("CraftCard/Padding/VBox/ResultCard/Padding/VBox/ResultTitleLabel") as Label
+	if result_title != null:
+		_apply_label_style(result_title, 13, TEXT_SECONDARY_COLOR, 1)
+	if _material_one_value_label != null:
+		_apply_label_style(_material_one_value_label, 15, TEXT_PRIMARY_COLOR, 2)
+	if _material_two_value_label != null:
+		_apply_label_style(_material_two_value_label, 15, TEXT_PRIMARY_COLOR, 2)
+	if _craft_result_value_label != null:
+		_apply_label_style(_craft_result_value_label, 15, TEXT_PRIMARY_COLOR, 2)
+	if _craft_result_hint_label != null:
+		_apply_label_style(_craft_result_hint_label, 13, TEXT_SECONDARY_COLOR, 1)
+	if _craft_confirm_button != null:
+		_apply_button_text_style(_craft_confirm_button, 15, TEXT_PRIMARY_COLOR, 2)
+	if _craft_cancel_button != null:
+		_apply_button_text_style(_craft_cancel_button, 15, TEXT_PRIMARY_COLOR, 2)
+	if _item_name_label != null:
+		_apply_label_style(_item_name_label, 17, TEXT_PRIMARY_COLOR, 2)
+	if _item_description_label != null:
+		_apply_label_style(_item_description_label, 15, TEXT_PRIMARY_COLOR, 2)
+	if _item_effect_label != null:
+		_apply_label_style(_item_effect_label, 14, TEXT_SECONDARY_COLOR, 2)
+	if _mode_message_label != null:
+		_apply_label_style(_mode_message_label, 14, TEXT_SECONDARY_COLOR, 2)
+	if _close_button != null:
+		_close_button.text = ""
+		_close_button.tooltip_text = "닫기"
+		_close_button.custom_minimum_size = Vector2(36, 36)
+		_close_button.icon = _ui_kit_resolver.get_texture("icons/light_24/close.png")
+		_close_button.expand_icon = false
+	if _detail_close_button != null:
+		_detail_close_button.text = ""
+		_detail_close_button.tooltip_text = "접기"
+		_detail_close_button.custom_minimum_size = Vector2(36, 36)
+		_detail_close_button.icon = _ui_kit_resolver.get_texture("icons/light_24/close.png")
+		_detail_close_button.expand_icon = false
+
+
+func _style_sheet_tab(button: Button, active: bool) -> void:
+	if button == null:
+		return
+	var normal_path := "sheet/sheet_tab_compact_active.png" if active else "sheet/sheet_tab_compact_idle.png"
+	var pressed_path := normal_path
+	_ui_kit_resolver.apply_button(button, normal_path, pressed_path)
+	_apply_button_text_style(button, 15, TEXT_PRIMARY_COLOR if active else TEXT_SECONDARY_COLOR, 2)
+	button.button_pressed = active
+	button.modulate = Color(1.08, 1.16, 1.24, 1.0) if active else Color(0.76, 0.80, 0.88, 0.94)
+
+
+func _apply_label_style(label: Label, font_size: int, font_color: Color, outline_size: int = 1) -> void:
+	if label == null:
+		return
+	label.modulate = font_color
+	label.add_theme_font_size_override("font_size", font_size)
+	label.add_theme_color_override("font_color", font_color)
+	label.add_theme_color_override("font_outline_color", TEXT_OUTLINE_COLOR)
+	label.add_theme_constant_override("outline_size", outline_size)
+
+
+func _apply_button_text_style(button: Button, font_size: int, font_color: Color, outline_size: int = 1) -> void:
+	if button == null:
+		return
+	button.add_theme_font_size_override("font_size", font_size)
+	button.add_theme_color_override("font_color", font_color)
+	button.add_theme_color_override("font_hover_color", font_color)
+	button.add_theme_color_override("font_pressed_color", font_color)
+	button.add_theme_color_override("font_focus_color", font_color)
+	button.add_theme_color_override("font_disabled_color", Color(font_color.r, font_color.g, font_color.b, 0.55))
+	button.add_theme_color_override("font_outline_color", TEXT_OUTLINE_COLOR)
+	button.add_theme_constant_override("outline_size", outline_size)

@@ -1,0 +1,210 @@
+{
+  "id": "warehouse_01",
+  "name": "창고",
+  "summary": "상하차 구역은 시작일 뿐이다. 안쪽 셔터 너머 적재 공간에 더 좋은 자원이 남아 있다.",
+  "entry_zone_id": "loading",
+  "zones": [
+    {
+      "id": "loading",
+      "floor_id": "floor_1",
+      "label": "상하차 구역",
+      "summary": "화물대 주변에 포장 자재와 빈 용기가 흩어져 있다.",
+      "connected_zone_ids": ["pallet_lane", "office_cage"],
+      "event_ids": ["search_loading_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "pallet_lane",
+      "floor_id": "floor_1",
+      "label": "팔레트 통로",
+      "summary": "무너진 팔레트 사이로 안쪽 셔터와 적재 상자가 이어진다.",
+      "connected_zone_ids": ["loading", "shutter_gate"],
+      "event_ids": ["search_pallet_lane_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "office_cage",
+      "floor_id": "floor_1",
+      "label": "망사 사무 케이지",
+      "summary": "출고 전표와 자물쇠 열쇠 꾸러미가 보관된 작은 케이지다.",
+      "connected_zone_ids": ["loading"],
+      "event_ids": ["search_office_cage_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "shutter_gate",
+      "floor_id": "floor_1",
+      "label": "내부 셔터 앞",
+      "summary": "내부 셔터는 절반쯤 내려와 있고, 안쪽 적재 구역으로 이어진다.",
+      "connected_zone_ids": ["pallet_lane", "deep_storage"],
+      "event_ids": ["inspect_shutter_gate_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "deep_storage",
+      "floor_id": "floor_1",
+      "label": "안쪽 적재 구역",
+      "move_label": "안쪽 적재 구역으로 들어간다",
+      "blocked_feedback": "셔터가 잠겨 있어 안쪽 적재 구역으로 들어갈 수 없다.",
+      "summary": "연료용 용기와 대형 덮개, 작업용 천 뭉치가 남아 있다.",
+      "connected_zone_ids": ["shutter_gate"],
+      "event_ids": ["search_deep_storage_event"],
+      "map_position": [3, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10,
+      "access_requirements": {
+        "required_item_ids": ["warehouse_shutter_key"]
+      }
+    }
+  ],
+  "clues": [
+    {
+      "id": "shutter_key_hint",
+      "text": "출고 장부 한쪽에 셔터 열쇠를 케이지 안에 보관한다는 메모가 적혀 있다.",
+      "visible": false
+    }
+  ],
+  "events": [
+    {
+      "id": "search_loading_event",
+      "zone_id": "loading",
+      "type": "search",
+      "hint_text": "입구 쪽에 남은 큰 용기와 포장 자재부터 챙길 수 있다.",
+      "options": [
+        {
+          "id": "search_warehouse_loading",
+          "label": "상하차 구역을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "empty_jerrycan", "weight": 3 },
+                { "id": "bubble_wrap_roll", "weight": 3 },
+                { "id": "zip_bag", "weight": 2 },
+                { "id": "trash_bag_roll", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_pallet_lane_event",
+      "zone_id": "pallet_lane",
+      "type": "search",
+      "hint_text": "팔레트 틈새엔 덮개와 자원 이송에 쓸 수 있는 소형 부품이 남아 있다.",
+      "options": [
+        {
+          "id": "search_pallet_lane",
+          "label": "팔레트 통로를 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "tarp_sheet", "weight": 4 },
+                { "id": "drain_funnel", "weight": 3 },
+                { "id": "shopping_bag", "weight": 2 },
+                { "id": "steel_wire", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_office_cage_event",
+      "zone_id": "office_cage",
+      "type": "search",
+      "hint_text": "출고 장부와 열쇠 걸이대가 아직 정리된 채 남아 있다.",
+      "options": [
+        {
+          "id": "search_office_cage",
+          "label": "케이지 사무 공간을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [
+              { "id": "warehouse_shutter_key", "bulk": 1 }
+            ],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "memo_pad", "weight": 2 },
+                { "id": "ballpoint_pen", "weight": 2 },
+                { "id": "siphon_hose", "weight": 2 }
+              ]
+            },
+            "reveal_clue_ids": ["shutter_key_hint"],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "inspect_shutter_gate_event",
+      "zone_id": "shutter_gate",
+      "type": "search",
+      "hint_text": "셔터 아래 틈으로 더 큰 용기와 작업용 천이 보인다.",
+      "options": [
+        {
+          "id": "inspect_shutter_gate",
+          "label": "잠긴 셔터를 확인한다",
+          "requirements": {},
+          "costs": { "minutes": 10, "noise": 0 },
+          "outcomes": {
+            "reveal_clue_ids": ["shutter_key_hint"],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_deep_storage_event",
+      "zone_id": "deep_storage",
+      "type": "search",
+      "hint_text": "안쪽 적재 구역엔 큰 용기와 세척용 천, 이송 부품이 상자째 남아 있다.",
+      "options": [
+        {
+          "id": "search_deep_storage",
+          "label": "안쪽 적재 구역을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 4,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "empty_jerrycan", "weight": 3 },
+                { "id": "siphon_hose", "weight": 4 },
+                { "id": "shop_towel_bundle", "weight": 4 },
+                { "id": "tarp_sheet", "weight": 3 },
+                { "id": "drain_funnel", "weight": 3 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

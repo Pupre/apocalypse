@@ -1,0 +1,27 @@
+{
+  "block_coord": { "x": 0, "y": 1 },
+  "roads": [
+    { "id": "north_south", "rect": { "x": 360, "y": 0, "width": 240, "height": 960 } },
+    { "id": "east_west", "rect": { "x": 0, "y": 320, "width": 960, "height": 280 } }
+  ],
+  "snow_fields": [
+    { "id": "southwest_snow", "rect": { "x": 0, "y": 640, "width": 320, "height": 320 } },
+    { "id": "mid_snow", "rect": { "x": 660, "y": 0, "width": 280, "height": 220 } }
+  ],
+  "obstacles": [
+    { "kind": "vehicle", "rect": { "x": 120, "y": 460, "width": 52, "height": 52 } },
+    { "kind": "rubble", "rect": { "x": 760, "y": 720, "width": 120, "height": 90 } }
+  ],
+  "building_anchors": {
+    "apartment_anchor": { "x": 180, "y": 180 },
+    "gas_station_anchor": { "x": 760, "y": 240 },
+    "restaurant_anchor": { "x": 760, "y": 700 },
+    "residence_anchor": { "x": 220, "y": 720 }
+  },
+  "threat_spawns": [
+    { "id": "pack_01_a", "position": { "x": 140, "y": 820 }, "forward": { "x": 1, "y": 0 } }
+  ],
+  "landmarks": [
+    { "id": "service_lane", "label": "남쪽 서비스 도로", "position": { "x": 500, "y": 460 } }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "pack_name": "Frozen UI Pack 4 - Overlay Map",
+  "style_family": "Frozen-city survival UI compact family",
+  "source_rules": "Game-ready 2D sprite assets with transparent background outside intended shape only; no baked text; grounded frozen-city palette; 9-slice values when applicable.",
+  "assets": [
+    {
+      "filename": "overlay_bg_dim.png",
+      "purpose": "Fullscreen dim layer for pausing gameplay behind world map / structure overlays",
+      "size": "720x1280",
+      "nine_slice": null,
+      "alpha_policy": "full-frame semi-transparent dim layer"
+    },
+    {
+      "filename": "overlay_map_panel_clean.png",
+      "purpose": "Large cold cartographic map panel background for drag / zoom overlays",
+      "size": "680x1140",
+      "nine_slice": {
+        "left": 30,
+        "right": 30,
+        "top": 30,
+        "bottom": 30
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "overlay_building_detail_panel.png",
+      "purpose": "Detail card for selected building / structure summary in overlays",
+      "size": "420x220",
+      "nine_slice": {
+        "left": 24,
+        "right": 24,
+        "top": 24,
+        "bottom": 24
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "overlay_close_button_compact_normal.png",
+      "purpose": "Compact close button for overlays",
+      "size": "38x38",
+      "nine_slice": {
+        "left": 12,
+        "right": 12,
+        "top": 12,
+        "bottom": 12
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "overlay_close_button_compact_pressed.png",
+      "purpose": "Pressed compact close button for overlays",
+      "size": "38x38",
+      "nine_slice": {
+        "left": 12,
+        "right": 12,
+        "top": 12,
+        "bottom": 12
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "overlay_zoom_plus.png",
+      "purpose": "Compact zoom-plus control for map overlay",
+      "size": "34x34",
+      "nine_slice": {
+        "left": 10,
+        "right": 10,
+        "top": 10,
+        "bottom": 10
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "overlay_zoom_minus.png",
+      "purpose": "Compact zoom-minus control for map overlay",
+      "size": "34x34",
+      "nine_slice": {
+        "left": 10,
+        "right": 10,
+        "top": 10,
+        "bottom": 10
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "map_info_chip.png",
+      "purpose": "Small info chip for current location, building name, or short overlay status",
+      "size": "220x36",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 12,
+        "bottom": 12
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    }
+  ]
+}

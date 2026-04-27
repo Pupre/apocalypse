@@ -1,0 +1,64 @@
+{
+  "pack_name": "Frozen UI Pack 5 - Structure",
+  "style_family": "Frozen-city survival UI compact family",
+  "source_rules": "Game-ready 2D sprite assets with transparent background outside intended shape only; no baked text; grounded frozen-city palette; 9-slice values when applicable.",
+  "assets": [
+    {
+      "filename": "structure_panel_bg.png",
+      "purpose": "Indoor structure panel background for room-node diagrams and known routes",
+      "size": "360x220",
+      "nine_slice": {
+        "left": 22,
+        "right": 22,
+        "top": 22,
+        "bottom": 22
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "structure_room_node_known.png",
+      "purpose": "Known room node marker for discovered indoor spaces",
+      "size": "24x24",
+      "nine_slice": null,
+      "alpha_policy": "transparent outside node only"
+    },
+    {
+      "filename": "structure_room_node_current.png",
+      "purpose": "Current room node marker with restrained warm focus",
+      "size": "24x24",
+      "nine_slice": null,
+      "alpha_policy": "transparent outside node only"
+    },
+    {
+      "filename": "structure_room_node_unknown.png",
+      "purpose": "Unknown room node marker for undiscovered indoor spaces",
+      "size": "24x24",
+      "nine_slice": null,
+      "alpha_policy": "transparent outside node only"
+    },
+    {
+      "filename": "structure_room_link_line.png",
+      "purpose": "Room connection line for known traversable indoor routes",
+      "size": "112x12",
+      "nine_slice": {
+        "left": 6,
+        "right": 6,
+        "top": 4,
+        "bottom": 4
+      },
+      "alpha_policy": "transparent outside line only"
+    },
+    {
+      "filename": "structure_room_link_locked.png",
+      "purpose": "Locked room connection line with blocked path indicator",
+      "size": "112x12",
+      "nine_slice": {
+        "left": 6,
+        "right": 6,
+        "top": 4,
+        "bottom": 4
+      },
+      "alpha_policy": "transparent outside line only"
+    }
+  ]
+}

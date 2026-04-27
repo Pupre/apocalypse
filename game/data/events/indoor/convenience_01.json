@@ -1,0 +1,170 @@
+{
+  "id": "convenience_01",
+  "name": "편의점",
+  "summary": "입구를 지나면 진열대와 냉장 코너, 안쪽 계산대가 일직선으로 이어진다.",
+  "entry_zone_id": "storefront",
+  "zones": [
+    {
+      "id": "storefront",
+      "floor_id": "floor_1",
+      "label": "출입문 앞",
+      "summary": "부서진 자동문과 전단지 더미 사이로 진열대가 이어진다.",
+      "connected_zone_ids": ["aisle", "fridge_row"],
+      "event_ids": ["storefront_search_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "aisle",
+      "floor_id": "floor_1",
+      "label": "진열대",
+      "summary": "빈 칸이 많지만 과자와 생활용품이 듬성듬성 남아 있다.",
+      "connected_zone_ids": ["storefront", "counter"],
+      "event_ids": ["aisle_search_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "fridge_row",
+      "floor_id": "floor_1",
+      "label": "냉장 코너",
+      "summary": "멈춘 냉장고 안쪽에 음료와 즉석식품 흔적이 남아 있다.",
+      "connected_zone_ids": ["storefront"],
+      "event_ids": ["fridge_row_search_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "counter",
+      "floor_id": "floor_1",
+      "label": "계산대",
+      "summary": "계산대 아래와 담배 진열장 주변에 챙길 만한 잡동사니가 보인다.",
+      "connected_zone_ids": ["aisle"],
+      "event_ids": ["counter_search_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [],
+  "events": [
+    {
+      "id": "storefront_search_event",
+      "zone_id": "storefront",
+      "type": "search",
+      "hint_text": "입구 매트와 우산통 주변엔 놓치고 간 물건이 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_storefront",
+          "label": "출입문 주변을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "newspaper", "weight": 4 },
+                { "id": "paper_bag", "weight": 4 },
+                { "id": "wet_wipes", "weight": 3 },
+                { "id": "zip_bag", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "aisle_search_event",
+      "zone_id": "aisle",
+      "type": "search",
+      "hint_text": "진열대 빈칸 사이에 아직 챙길 만한 식량과 소형 물품이 남아 있다.",
+      "options": [
+        {
+          "id": "search_aisle",
+          "label": "진열대를 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [
+              { "id": "energy_bar", "name": "에너지바", "bulk": 1 }
+            ],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "crackers", "weight": 4 },
+                { "id": "tea_bag", "weight": 4 },
+                { "id": "instant_soup_powder", "weight": 3 },
+                { "id": "lighter", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "fridge_row_search_event",
+      "zone_id": "fridge_row",
+      "type": "search",
+      "hint_text": "멈춘 냉장 진열대 안쪽에 음료와 포장 식품이 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_fridge_row",
+          "label": "냉장 코너를 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [
+              { "id": "bottled_water", "name": "생수", "bulk": 1 }
+            ],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "bottled_water", "weight": 4 },
+                { "id": "cooking_oil", "weight": 2 },
+                { "id": "tea_bag", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "counter_search_event",
+      "zone_id": "counter",
+      "type": "search",
+      "hint_text": "계산대 서랍과 카운터 뒤편에 작은 유용품이 남아 있다.",
+      "options": [
+        {
+          "id": "search_counter",
+          "label": "계산대를 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "lighter", "weight": 4 },
+                { "id": "memo_pad", "weight": 3 },
+                { "id": "ballpoint_pen", "weight": 3 },
+                { "id": "plastic_bag", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

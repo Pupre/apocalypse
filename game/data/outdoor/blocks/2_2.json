@@ -1,0 +1,25 @@
+{
+  "block_coord": { "x": 2, "y": 2 },
+  "roads": [
+    { "id": "north_south", "rect": { "x": 360, "y": 0, "width": 240, "height": 960 } },
+    { "id": "east_west", "rect": { "x": 0, "y": 320, "width": 960, "height": 280 } }
+  ],
+  "snow_fields": [
+    { "id": "north_open_snow", "rect": { "x": 0, "y": 0, "width": 280, "height": 240 } },
+    { "id": "east_open_snow", "rect": { "x": 680, "y": 640, "width": 280, "height": 320 } }
+  ],
+  "obstacles": [
+    { "kind": "vehicle", "rect": { "x": 120, "y": 450, "width": 56, "height": 56 } },
+    { "kind": "rubble", "rect": { "x": 760, "y": 720, "width": 120, "height": 90 } }
+  ],
+  "building_anchors": {
+    "church_anchor": { "x": 200, "y": 200 },
+    "corner_store_anchor": { "x": 760, "y": 240 }
+  },
+  "threat_spawns": [
+    { "id": "pack_22_a", "position": { "x": 860, "y": 860 }, "forward": { "x": -1, "y": -1 } }
+  ],
+  "landmarks": [
+    { "id": "snow_square", "label": "눈 쌓인 공터", "position": { "x": 500, "y": 500 } }
+  ]
+}

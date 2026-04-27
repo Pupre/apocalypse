@@ -1,7 +1,15 @@
 extends Control
 
+const ItemIconResolver = preload("res://scripts/ui/item_icon_resolver.gd")
+const UiKitResolver = preload("res://scripts/ui/ui_kit_resolver.gd")
+const TEXT_PRIMARY_COLOR := Color(0.96, 0.98, 1.0, 0.98)
+const TEXT_SECONDARY_COLOR := Color(0.88, 0.92, 0.97, 0.96)
+const TEXT_OUTLINE_COLOR := Color(0.04, 0.06, 0.09, 0.94)
+const ACTION_ICON_SIZE := 16
+
 signal state_changed
 signal exit_requested
+signal toast_requested(toast_type: String, message: String, duration: float, icon_item_id: String)
 
 const ACTION_SECTION_ORDER := ["move", "interaction", "loot", "locked"]
 const ACTION_SECTION_TITLES := {
@@ -19,11 +27,13 @@ const ACTION_ICON_PATHS := {
 }
 
 var _director: Node = null
+var _run_state = null
 var _title_label: Label = null
 var _location_label: Label = null
+var _location_caption_label: Label = null
 var _location_value_label: Label = null
 var _time_label: Label = null
-var _stat_chips: HBoxContainer = null
+var _gauge_row = null
 var _inline_minimap: Control = null
 var _summary_label: Label = null
 var _result_label: Label = null
@@ -34,19 +44,18 @@ var _survival_sheet: CanvasLayer = null
 var _minimap_overlay: Control = null
 var _minimap_close_button: Button = null
 var _minimap: Control = null
-var _stat_detail_sheet: Control = null
-var _stat_detail_title: Label = null
-var _stat_detail_value: Label = null
-var _stat_detail_rule: Label = null
-var _stat_detail_recovery: Label = null
-var _stat_detail_close_button: Button = null
-var _selected_chip_id := ""
 var _director_connected := false
 var _buttons_bound := false
 var _icon_cache: Dictionary = {}
+var _item_icon_resolver = ItemIconResolver.new()
+var _ui_kit_resolver = UiKitResolver.new()
+var _skin_applied := false
+var _last_toast_feedback_message := ""
 
 
 func configure(run_state, building_id: String = "mart_01") -> void:
+	_run_state = run_state
+	_last_toast_feedback_message = ""
 	_cache_nodes()
 	_bind_ui_buttons()
 	_bind_director()
@@ -87,14 +96,13 @@ func _bind_ui_buttons() -> void:
 		_survival_sheet.craft_applied.connect(Callable(self, "_on_survival_sheet_craft_applied"))
 	if _minimap_close_button != null and not _minimap_close_button.pressed.is_connected(Callable(self, "_on_minimap_close_pressed")):
 		_minimap_close_button.pressed.connect(Callable(self, "_on_minimap_close_pressed"))
-	if _stat_detail_close_button != null and not _stat_detail_close_button.pressed.is_connected(Callable(self, "_on_stat_detail_close_pressed")):
-		_stat_detail_close_button.pressed.connect(Callable(self, "_on_stat_detail_close_pressed"))
 
 	_buttons_bound = true
 
 
 func _on_director_state_changed() -> void:
 	_refresh_view()
+	_emit_feedback_toast_if_needed("info")
 	state_changed.emit()
 
 
@@ -107,7 +115,6 @@ func _refresh_view() -> void:
 	_push_inventory_payload_into_sheet()
 	_refresh_action_buttons()
 	_refresh_minimap()
-	_refresh_stat_detail_sheet()
 
 
 func refresh_view() -> void:
@@ -132,36 +139,8 @@ func _refresh_top_bar() -> void:
 			_time_label.text = "시각: %s" % (clock_label if not clock_label.is_empty() else "확인 중")
 		else:
 			_time_label.text = "시각: 확인 중"
-
-	_refresh_stat_chips()
-
-
-func _refresh_stat_chips() -> void:
-	if _stat_chips == null:
-		return
-
-	_clear_children(_stat_chips)
-	if _director == null or not _director.has_method("get_survival_chip_rows"):
-		return
-
-	for chip_variant in _director.get_survival_chip_rows():
-		if typeof(chip_variant) != TYPE_DICTIONARY:
-			continue
-
-		var chip := chip_variant as Dictionary
-		var chip_id := String(chip.get("id", ""))
-		var button := Button.new()
-		button.flat = false
-		button.toggle_mode = false
-		button.custom_minimum_size = Vector2(0, 44)
-		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		button.name = chip_id
-		button.icon = _load_icon(_survival_chip_icon_path(String(chip.get("icon_id", ""))))
-		button.text = String(chip.get("display_value_text", chip.get("stage", "")))
-		button.tooltip_text = "%s: %s" % [String(chip.get("label", "")), String(chip.get("stage", ""))]
-		button.pressed.connect(Callable(self, "_on_stat_chip_pressed").bind(chip_id))
-		_stat_chips.add_child(button)
+	if _gauge_row != null and _gauge_row.has_method("set_run_state"):
+		_gauge_row.set_run_state(_run_state)
 
 
 func _refresh_reading_area() -> void:
@@ -195,21 +174,49 @@ func _refresh_action_buttons() -> void:
 		if actions.is_empty():
 			continue
 
-		var section_panel := PanelContainer.new()
-		_action_buttons.add_child(section_panel)
-
 		var section_box := VBoxContainer.new()
 		section_box.add_theme_constant_override("separation", 6)
-		section_panel.add_child(section_box)
+		_action_buttons.add_child(section_box)
+
+		var heading_panel := PanelContainer.new()
+		_ui_kit_resolver.apply_panel(heading_panel, "indoor/indoor_section_header_plain_compact.png")
+		section_box.add_child(heading_panel)
+
+		var heading_padding := MarginContainer.new()
+		heading_padding.add_theme_constant_override("margin_left", 12)
+		heading_padding.add_theme_constant_override("margin_top", 6)
+		heading_padding.add_theme_constant_override("margin_right", 12)
+		heading_padding.add_theme_constant_override("margin_bottom", 6)
+		heading_panel.add_child(heading_padding)
+
+		var heading_row := HBoxContainer.new()
+		heading_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		heading_row.add_theme_constant_override("separation", 8)
+		heading_padding.add_child(heading_row)
 
 		var heading := Label.new()
 		heading.text = String(ACTION_SECTION_TITLES.get(section_id, section_id))
-		heading.modulate = Color(0.88, 0.88, 0.88, 0.95)
-		section_box.add_child(heading)
+		_apply_label_style(heading, 14, TEXT_PRIMARY_COLOR, 1)
+		heading.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		heading_row.add_child(heading)
+
+		var spacer := Control.new()
+		spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		heading_row.add_child(spacer)
+
+		if section_id == "move":
+			var exit_action: Dictionary = {}
+			if _director != null and _director.has_method("get_exit_action"):
+				exit_action = _director.get_exit_action()
+			if not exit_action.is_empty():
+				heading_row.add_child(_create_exit_shortcut_button(exit_action))
 
 		for action in actions:
 			var action_id := String(action.get("id", ""))
 			if action_id.is_empty():
+				continue
+			if String(action.get("type", "")) == "exit":
 				continue
 
 			var button := _create_action_button(action as Dictionary, section_id)
@@ -252,27 +259,110 @@ func _section_for_action(action: Dictionary) -> String:
 func _create_action_button(action: Dictionary, section_id: String) -> Button:
 	var action_id := String(action.get("id", ""))
 	var button := Button.new()
-	button.text = String(action.get("label", action_id))
-	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	button.custom_minimum_size = Vector2(0, 46)
-	button.icon = _action_icon(action, section_id)
-	button.expand_icon = true
+	button.text = ""
+	button.custom_minimum_size = Vector2(0, 50)
+	button.focus_mode = Control.FOCUS_NONE
+	_ui_kit_resolver.apply_button(
+		button,
+		"indoor/indoor_action_row_compact_idle.png",
+		"indoor/indoor_action_row_compact_pressed.png"
+	)
+	button.add_theme_constant_override("h_separation", 0)
 
-	match section_id:
-		"loot":
-			button.modulate = Color(0.92, 1.0, 0.92, 1.0)
-		"locked":
-			button.modulate = Color(0.72, 0.72, 0.72, 0.96)
-		"move":
-			button.modulate = Color(0.92, 0.96, 1.0, 1.0)
-		_:
-			button.modulate = Color(1.0, 1.0, 1.0, 1.0)
+	var padding := MarginContainer.new()
+	padding.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	padding.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	padding.add_theme_constant_override("margin_left", 10)
+	padding.add_theme_constant_override("margin_top", 8)
+	padding.add_theme_constant_override("margin_right", 12)
+	padding.add_theme_constant_override("margin_bottom", 8)
+	button.add_child(padding)
+
+	var row := HBoxContainer.new()
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.add_theme_constant_override("separation", 10)
+	padding.add_child(row)
+
+	var icon_holder := CenterContainer.new()
+	icon_holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	icon_holder.custom_minimum_size = Vector2(26, 0)
+	icon_holder.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	row.add_child(icon_holder)
+
+	var icon_slot := PanelContainer.new()
+	icon_slot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	icon_slot.custom_minimum_size = Vector2(24, 24)
+	_ui_kit_resolver.apply_panel(icon_slot, "sheet/inventory_icon_slot.png")
+	icon_holder.add_child(icon_slot)
+
+	var icon_center := CenterContainer.new()
+	icon_center.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	icon_center.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	icon_center.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	icon_slot.add_child(icon_center)
+
+	var icon_rect := TextureRect.new()
+	icon_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	icon_rect.custom_minimum_size = Vector2(ACTION_ICON_SIZE, ACTION_ICON_SIZE)
+	icon_rect.texture = _action_icon(action, section_id)
+	icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	icon_center.add_child(icon_rect)
+
+	var label := Label.new()
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	label.text = String(action.get("label", action_id))
+	_apply_label_style(label, 15, TEXT_PRIMARY_COLOR, 2)
+	row.add_child(label)
 
 	return button
 
 
+func _create_exit_shortcut_button(exit_action: Dictionary) -> Button:
+	var button := Button.new()
+	button.name = "ExitShortcutButton"
+	button.text = _compact_exit_button_label(exit_action)
+	button.tooltip_text = String(exit_action.get("label", "건물 밖으로 나간다"))
+	button.focus_mode = Control.FOCUS_NONE
+	button.custom_minimum_size = Vector2(108, 32)
+	button.icon = _load_icon(String(ACTION_ICON_PATHS.get("exit", "")))
+	button.expand_icon = false
+	button.add_theme_constant_override("h_separation", 6)
+	_ui_kit_resolver.apply_button(
+		button,
+		"sheet/sheet_button_secondary_normal.png",
+		"sheet/sheet_button_secondary_pressed.png"
+	)
+	_apply_button_text_style(button, 13, TEXT_PRIMARY_COLOR, 2)
+	button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	button.pressed.connect(Callable(self, "_on_exit_button_pressed"))
+	return button
+
+
+func _compact_exit_button_label(exit_action: Dictionary) -> String:
+	var minutes := int(exit_action.get("minute_cost", 0))
+	if minutes > 0:
+		return "나가기 (%d분)" % minutes
+	return "나가기"
+
+
 func _action_icon(action: Dictionary, section_id: String) -> Texture2D:
 	var action_type := String(action.get("type", ""))
+	if action_type == "take_loot":
+		var loot_variant: Variant = action.get("loot", {})
+		if typeof(loot_variant) == TYPE_DICTIONARY:
+			var loot := loot_variant as Dictionary
+			var loot_id := String(loot.get("id", ""))
+			var item_icon := _item_icon_resolver.get_item_icon(loot_id)
+			if item_icon != null:
+				return item_icon
 	if action_type == "exit":
 		return _load_icon(String(ACTION_ICON_PATHS.get("exit", "")))
 	return _load_icon(String(ACTION_ICON_PATHS.get(section_id, "")))
@@ -292,16 +382,12 @@ func _load_icon(path: String) -> Texture2D:
 	var err := image.load(absolute_path)
 	if err != OK:
 		return null
+	if image.get_width() != ACTION_ICON_SIZE or image.get_height() != ACTION_ICON_SIZE:
+		image.resize(ACTION_ICON_SIZE, ACTION_ICON_SIZE, Image.INTERPOLATE_LANCZOS)
 
 	var texture := ImageTexture.create_from_image(image)
 	_icon_cache[path] = texture
 	return texture
-
-
-func _survival_chip_icon_path(chip_id: String) -> String:
-	if _director != null and _director.has_method("get_survival_chip_icon_path"):
-		return String(_director.get_survival_chip_icon_path(chip_id))
-	return ""
 
 
 func _refresh_minimap() -> void:
@@ -315,36 +401,11 @@ func _refresh_minimap() -> void:
 		_minimap.set_snapshot(snapshot)
 
 
-func _refresh_stat_detail_sheet() -> void:
-	if _stat_detail_sheet == null:
-		return
-
-	if _director == null or _selected_chip_id.is_empty() or not _director.has_method("get_survival_chip_detail"):
-		_stat_detail_sheet.visible = false
-		return
-
-	var detail: Dictionary = _director.get_survival_chip_detail(_selected_chip_id)
-	if detail.is_empty():
-		_stat_detail_sheet.visible = false
-		return
-
-	_stat_detail_sheet.visible = true
-	if _stat_detail_title != null:
-		_stat_detail_title.text = String(detail.get("label", "상태"))
-	if _stat_detail_value != null:
-		_stat_detail_value.text = String(detail.get("detail_value_text", ""))
-	if _stat_detail_rule != null:
-		_stat_detail_rule.text = String(detail.get("rule_text", ""))
-	if _stat_detail_recovery != null:
-		_stat_detail_recovery.text = String(detail.get("recovery_text", ""))
-
-
 func _on_map_button_pressed() -> void:
 	if _minimap_overlay == null:
 		return
 	_minimap_overlay.visible = not _minimap_overlay.visible
 	if _minimap_overlay.visible:
-		_clear_stat_detail_selection()
 		_close_bag_sheet()
 
 
@@ -354,31 +415,41 @@ func _on_bag_button_pressed() -> void:
 	if _survival_sheet.visible:
 		_survival_sheet.close_sheet()
 		return
-	_clear_stat_detail_selection()
 	if _minimap_overlay != null:
 		_minimap_overlay.visible = false
 	_survival_sheet.open_inventory()
 	_push_inventory_payload_into_sheet()
 
 
+func _on_exit_button_pressed() -> void:
+	_request_exit()
+
+
+func _request_exit() -> void:
+	if _director == null or not _director.has_method("get_exit_action"):
+		return
+	var exit_action: Dictionary = _director.get_exit_action()
+	if exit_action.is_empty():
+		return
+	if _director.has_method("apply_action"):
+		_director.apply_action("exit_building")
+	exit_requested.emit()
+
+
 func _on_minimap_close_pressed() -> void:
 	if _minimap_overlay != null:
 		_minimap_overlay.visible = false
-	_clear_stat_detail_selection()
-
-
-func _on_stat_detail_close_pressed() -> void:
-	_clear_stat_detail_selection()
 
 
 func _close_bag_sheet() -> void:
 	if _survival_sheet != null and _survival_sheet.visible and _survival_sheet.has_method("close_sheet"):
 		_survival_sheet.close_sheet()
-	_clear_stat_detail_selection()
 
 
 func _on_action_pressed(action_id: String) -> void:
 	if action_id == "exit_building":
+		if _director != null and _director.has_method("apply_action"):
+			_director.apply_action(action_id)
 		exit_requested.emit()
 		return
 
@@ -386,48 +457,83 @@ func _on_action_pressed(action_id: String) -> void:
 		_director.apply_action(action_id)
 
 
-func _on_stat_chip_pressed(chip_id: String) -> void:
-	if _survival_sheet != null and _survival_sheet.visible:
-		_close_bag_sheet()
-	if _minimap_overlay != null and _minimap_overlay.visible:
-		_minimap_overlay.visible = false
-		_clear_stat_detail_selection()
-	if _selected_chip_id == chip_id and _stat_detail_sheet != null and _stat_detail_sheet.visible:
-		_clear_stat_detail_selection()
-		return
-	_selected_chip_id = chip_id
-	_refresh_stat_detail_sheet()
-
-
-func _clear_stat_detail_selection() -> void:
-	_selected_chip_id = ""
-	if _stat_detail_sheet != null:
-		_stat_detail_sheet.visible = false
-
-
 func _cache_nodes() -> void:
 	_director = get_node_or_null("Director")
 	_title_label = get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/TitleLabel") as Label
 	_location_label = get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/LocationLabel") as Label
-	_location_value_label = get_node_or_null("Panel/Layout/MainColumn/LocationStrip/HBox/LocationValueLabel") as Label
+	_location_caption_label = get_node_or_null("Panel/Layout/MainColumn/LocationStrip/Padding/HBox/LocationCaptionLabel") as Label
+	_location_value_label = get_node_or_null("Panel/Layout/MainColumn/LocationStrip/Padding/HBox/LocationValueLabel") as Label
 	_time_label = get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/TimeLabel") as Label
-	_stat_chips = get_node_or_null("Panel/Layout/MainColumn/TopBar/StatusRow/StatChips") as HBoxContainer
-	_inline_minimap = get_node_or_null("Panel/Layout/MainColumn/MiniMapCard/MapNodes") as Control
-	_summary_label = get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/SummaryLabel") as Label
-	_result_label = get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/ResultLabel") as Label
+	_gauge_row = get_node_or_null("Panel/Layout/MainColumn/TopBar/GaugeRow")
+	_inline_minimap = get_node_or_null("Panel/Layout/MainColumn/MiniMapCard/Padding/MapNodes") as Control
+	_summary_label = get_node_or_null("Panel/Layout/MainColumn/ReadingCard/Padding/VBox/SummaryLabel") as Label
+	_result_label = get_node_or_null("Panel/Layout/MainColumn/ReadingCard/Padding/VBox/ResultLabel") as Label
 	_action_buttons = get_node_or_null("Panel/Layout/MainColumn/ActionScroll/ActionButtons") as VBoxContainer
-	_map_button = get_node_or_null("Panel/Layout/MainColumn/TopBar/StatusRow/Tools/MapButton") as Button
-	_bag_button = get_node_or_null("Panel/Layout/MainColumn/TopBar/StatusRow/Tools/BagButton") as Button
+	_map_button = get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/MapButton") as Button
+	_bag_button = get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/BagButton") as Button
 	_survival_sheet = get_node_or_null("SurvivalSheet") as CanvasLayer
 	_minimap_overlay = get_node_or_null("MinimapOverlay") as Control
-	_minimap_close_button = get_node_or_null("MinimapOverlay/VBox/Header/CloseButton") as Button
-	_minimap = get_node_or_null("MinimapOverlay/VBox/MapNodes") as Control
-	_stat_detail_sheet = get_node_or_null("StatDetailSheet") as Control
-	_stat_detail_title = get_node_or_null("StatDetailSheet/VBox/Header/TitleLabel") as Label
-	_stat_detail_close_button = get_node_or_null("StatDetailSheet/VBox/Header/CloseButton") as Button
-	_stat_detail_value = get_node_or_null("StatDetailSheet/VBox/ValueLabel") as Label
-	_stat_detail_rule = get_node_or_null("StatDetailSheet/VBox/RuleLabel") as Label
-	_stat_detail_recovery = get_node_or_null("StatDetailSheet/VBox/RecoveryLabel") as Label
+	_minimap_close_button = get_node_or_null("MinimapOverlay/Padding/VBox/Header/CloseButton") as Button
+	_minimap = get_node_or_null("MinimapOverlay/Padding/VBox/MapNodes") as Control
+	_apply_ui_skin()
+
+
+func _apply_ui_skin() -> void:
+	if _skin_applied:
+		return
+	_skin_applied = true
+
+	var panel := get_node_or_null("Panel") as PanelContainer
+	var location_strip := get_node_or_null("Panel/Layout/MainColumn/LocationStrip") as PanelContainer
+	var reading_card := get_node_or_null("Panel/Layout/MainColumn/ReadingCard") as PanelContainer
+	var minimap_card := get_node_or_null("Panel/Layout/MainColumn/MiniMapCard") as PanelContainer
+	var minimap_panel := get_node_or_null("MinimapOverlay") as PanelContainer
+
+	_ui_kit_resolver.apply_panel(panel, "overlay/overlay_map_panel_clean.png")
+	_ui_kit_resolver.apply_panel(location_strip, "indoor/indoor_location_strip_compact.png")
+	_ui_kit_resolver.apply_panel(reading_card, "indoor/indoor_reading_panel_plain.png")
+	_ui_kit_resolver.apply_panel(minimap_card, "indoor/indoor_minimap_frame.png")
+	_ui_kit_resolver.apply_panel(minimap_panel, "structure/structure_panel_bg.png")
+	_ui_kit_resolver.apply_button(
+		_map_button,
+		"hud/hud_icon_button_compact_normal.png",
+		"hud/hud_icon_button_compact_pressed.png",
+		"hud/hud_icon_button_compact_normal.png",
+		"hud/hud_icon_button_compact_disabled.png"
+	)
+	_ui_kit_resolver.apply_button(
+		_bag_button,
+		"hud/hud_icon_button_compact_normal.png",
+		"hud/hud_icon_button_compact_pressed.png",
+		"hud/hud_icon_button_compact_normal.png",
+		"hud/hud_icon_button_compact_disabled.png"
+	)
+	if _title_label != null:
+		_apply_label_style(_title_label, 14, TEXT_PRIMARY_COLOR, 2)
+	if _time_label != null:
+		_apply_label_style(_time_label, 14, TEXT_SECONDARY_COLOR, 2)
+	if _location_caption_label != null:
+		_apply_label_style(_location_caption_label, 13, TEXT_SECONDARY_COLOR, 1)
+	if _location_value_label != null:
+		_apply_label_style(_location_value_label, 15, TEXT_PRIMARY_COLOR, 2)
+	if _summary_label != null:
+		_apply_label_style(_summary_label, 15, TEXT_PRIMARY_COLOR, 2)
+	if _result_label != null:
+		_apply_label_style(_result_label, 14, TEXT_SECONDARY_COLOR, 2)
+	if _map_button != null:
+		_map_button.text = ""
+		_map_button.tooltip_text = "구조도"
+		_map_button.custom_minimum_size = Vector2(36, 36)
+		_map_button.icon = _ui_kit_resolver.get_texture("icons/light_24/structure.png")
+		_map_button.expand_icon = false
+		_map_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	if _bag_button != null:
+		_bag_button.text = ""
+		_bag_button.tooltip_text = "가방"
+		_bag_button.custom_minimum_size = Vector2(36, 36)
+		_bag_button.icon = _ui_kit_resolver.get_texture("icons/light_24/bag.png")
+		_bag_button.expand_icon = false
+		_bag_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
 
 
 func _push_inventory_payload_into_sheet() -> void:
@@ -462,6 +568,8 @@ func _on_survival_sheet_craft_applied(outcome: Dictionary) -> void:
 		_director.set_feedback_message(feedback)
 	elif _result_label != null:
 		_result_label.text = feedback
+	_emit_feedback_toast(feedback, _craft_toast_type(outcome), 2.0, _craft_toast_icon_item_id(outcome))
+	_last_toast_feedback_message = feedback
 	_push_inventory_payload_into_sheet()
 	_refresh_reading_area()
 
@@ -481,7 +589,60 @@ func _formatted_craft_feedback(outcome: Dictionary) -> String:
 	return "\n".join(lines)
 
 
+func _emit_feedback_toast(message: String, toast_type: String = "info", duration: float = 2.0, icon_item_id: String = "") -> void:
+	if message.is_empty():
+		return
+	toast_requested.emit(toast_type, message, duration, icon_item_id)
+
+
+func _craft_toast_type(outcome: Dictionary) -> String:
+	match String(outcome.get("result_type", "invalid")):
+		"success":
+			return "success"
+		"failure", "invalid":
+			return "warning"
+		_:
+			return "info"
+
+
+func _craft_toast_icon_item_id(outcome: Dictionary) -> String:
+	return String(outcome.get("result_item_id", "")) if _craft_toast_type(outcome) == "success" else ""
+
+
+func _emit_feedback_toast_if_needed(toast_type: String = "info", duration: float = 2.0) -> void:
+	if _director == null or not _director.has_method("get_feedback_message"):
+		return
+	var message := String(_director.get_feedback_message())
+	if message.is_empty() or message == _last_toast_feedback_message:
+		return
+	_last_toast_feedback_message = message
+	_emit_feedback_toast(message, toast_type, duration, "")
+
+
 func _clear_children(container: Node) -> void:
 	for child in container.get_children():
 		container.remove_child(child)
 		child.queue_free()
+
+
+func _apply_label_style(label: Label, font_size: int, font_color: Color, outline_size: int = 1) -> void:
+	if label == null:
+		return
+	label.modulate = font_color
+	label.add_theme_font_size_override("font_size", font_size)
+	label.add_theme_color_override("font_color", font_color)
+	label.add_theme_color_override("font_outline_color", TEXT_OUTLINE_COLOR)
+	label.add_theme_constant_override("outline_size", outline_size)
+
+
+func _apply_button_text_style(button: Button, font_size: int, font_color: Color, outline_size: int = 1) -> void:
+	if button == null:
+		return
+	button.add_theme_font_size_override("font_size", font_size)
+	button.add_theme_color_override("font_color", font_color)
+	button.add_theme_color_override("font_hover_color", font_color)
+	button.add_theme_color_override("font_pressed_color", font_color)
+	button.add_theme_color_override("font_focus_color", font_color)
+	button.add_theme_color_override("font_disabled_color", Color(font_color.r, font_color.g, font_color.b, 0.55))
+	button.add_theme_color_override("font_outline_color", TEXT_OUTLINE_COLOR)
+	button.add_theme_constant_override("outline_size", outline_size)

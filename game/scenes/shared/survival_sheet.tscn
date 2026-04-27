@@ -1,6 +1,42 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/survival_sheet.gd" id="1"]
+
+[sub_resource type="StyleBoxFlat" id="1"]
+bg_color = Color(0.08, 0.09, 0.11, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.22, 0.24, 0.28, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="2"]
+bg_color = Color(0.1, 0.11, 0.13, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.28, 0.3, 0.34, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
+
+[sub_resource type="StyleBoxFlat" id="3"]
+bg_color = Color(0.12, 0.13, 0.16, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.34, 0.36, 0.4, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
 
 [node name="SurvivalSheet" type="CanvasLayer"]
 script = ExtResource("1")
@@ -11,29 +47,41 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 18.0
-offset_top = -620.0
+offset_top = -720.0
 offset_right = -18.0
 offset_bottom = -18.0
+theme_override_styles/panel = SubResource("1")
+
+[node name="Backdrop" type="ColorRect" parent="Sheet"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.08, 0.1, 0.12, 0.95)
 
 [node name="VBox" type="VBoxContainer" parent="Sheet"]
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 10
 
-[node name="Header" type="HBoxContainer" parent="Sheet/VBox"]
+[node name="Header" type="VBoxContainer" parent="Sheet/VBox"]
 theme_override_constants/separation = 8
 
-[node name="TitleLabel" type="Label" parent="Sheet/VBox/Header"]
+[node name="TitleRow" type="HBoxContainer" parent="Sheet/VBox/Header"]
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="Sheet/VBox/Header/TitleRow"]
 size_flags_horizontal = 1
 text = "가방"
 
-[node name="StatusLabel" type="Label" parent="Sheet/VBox/Header"]
-size_flags_horizontal = 3
-horizontal_alignment = 2
-text = ""
-
-[node name="CloseButton" type="Button" parent="Sheet/VBox/Header"]
+[node name="CloseButton" type="Button" parent="Sheet/VBox/Header/TitleRow"]
 text = "닫기"
+
+[node name="StatusLabel" type="Label" parent="Sheet/VBox/Header"]
+autowrap_mode = 3
+text = ""
 
 [node name="Tabs" type="HBoxContainer" parent="Sheet/VBox"]
 theme_override_constants/separation = 8
@@ -48,59 +96,191 @@ size_flags_horizontal = 3
 toggle_mode = true
 text = "도감"
 
-[node name="CraftContextStrip" type="HBoxContainer" parent="Sheet/VBox"]
+[node name="CraftCard" type="PanelContainer" parent="."]
 visible = false
+z_index = 11
+offset_left = 18.0
+offset_top = 0.0
+offset_right = 666.0
+offset_bottom = 128.0
+theme_override_styles/panel = SubResource("3")
+
+[node name="Backdrop" type="ColorRect" parent="CraftCard"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.11, 0.13, 0.16, 0.96)
+
+[node name="Padding" type="MarginContainer" parent="CraftCard"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="CraftCard/Padding"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="HeaderLabel" type="Label" parent="CraftCard/Padding/VBox"]
+text = "조합 재료"
+
+[node name="SlotsRow" type="HBoxContainer" parent="CraftCard/Padding/VBox"]
+size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="CraftContextLabel" type="Label" parent="Sheet/VBox/CraftContextStrip"]
+[node name="MaterialOneCard" type="PanelContainer" parent="CraftCard/Padding/VBox/SlotsRow"]
 size_flags_horizontal = 3
+
+[node name="Padding" type="MarginContainer" parent="CraftCard/Padding/VBox/SlotsRow/MaterialOneCard"]
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 6
+
+[node name="VBox" type="VBoxContainer" parent="CraftCard/Padding/VBox/SlotsRow/MaterialOneCard/Padding"]
+theme_override_constants/separation = 3
+
+[node name="MaterialOneTitleLabel" type="Label" parent="CraftCard/Padding/VBox/SlotsRow/MaterialOneCard/Padding/VBox"]
+text = "재료 1"
+
+[node name="ValueRow" type="HBoxContainer" parent="CraftCard/Padding/VBox/SlotsRow/MaterialOneCard/Padding/VBox"]
+theme_override_constants/separation = 8
+
+[node name="MaterialOneIconSlot" type="PanelContainer" parent="CraftCard/Padding/VBox/SlotsRow/MaterialOneCard/Padding/VBox/ValueRow"]
+custom_minimum_size = Vector2(30, 30)
+
+[node name="IconCenter" type="CenterContainer" parent="CraftCard/Padding/VBox/SlotsRow/MaterialOneCard/Padding/VBox/ValueRow/MaterialOneIconSlot"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MaterialOneIconRect" type="TextureRect" parent="CraftCard/Padding/VBox/SlotsRow/MaterialOneCard/Padding/VBox/ValueRow/MaterialOneIconSlot/IconCenter"]
+custom_minimum_size = Vector2(16, 16)
+texture_filter = 1
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MaterialOneValueLabel" type="Label" parent="CraftCard/Padding/VBox/SlotsRow/MaterialOneCard/Padding/VBox/ValueRow"]
+size_flags_horizontal = 3
+autowrap_mode = 0
+clip_text = true
+text = "비어 있음"
+
+[node name="MaterialTwoCard" type="PanelContainer" parent="CraftCard/Padding/VBox/SlotsRow"]
+size_flags_horizontal = 3
+
+[node name="Padding" type="MarginContainer" parent="CraftCard/Padding/VBox/SlotsRow/MaterialTwoCard"]
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 6
+
+[node name="VBox" type="VBoxContainer" parent="CraftCard/Padding/VBox/SlotsRow/MaterialTwoCard/Padding"]
+theme_override_constants/separation = 3
+
+[node name="MaterialTwoTitleLabel" type="Label" parent="CraftCard/Padding/VBox/SlotsRow/MaterialTwoCard/Padding/VBox"]
+text = "재료 2"
+
+[node name="ValueRow" type="HBoxContainer" parent="CraftCard/Padding/VBox/SlotsRow/MaterialTwoCard/Padding/VBox"]
+theme_override_constants/separation = 8
+
+[node name="MaterialTwoIconSlot" type="PanelContainer" parent="CraftCard/Padding/VBox/SlotsRow/MaterialTwoCard/Padding/VBox/ValueRow"]
+custom_minimum_size = Vector2(30, 30)
+
+[node name="IconCenter" type="CenterContainer" parent="CraftCard/Padding/VBox/SlotsRow/MaterialTwoCard/Padding/VBox/ValueRow/MaterialTwoIconSlot"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MaterialTwoIconRect" type="TextureRect" parent="CraftCard/Padding/VBox/SlotsRow/MaterialTwoCard/Padding/VBox/ValueRow/MaterialTwoIconSlot/IconCenter"]
+custom_minimum_size = Vector2(16, 16)
+texture_filter = 1
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MaterialTwoValueLabel" type="Label" parent="CraftCard/Padding/VBox/SlotsRow/MaterialTwoCard/Padding/VBox/ValueRow"]
+size_flags_horizontal = 3
+autowrap_mode = 0
+clip_text = true
+text = "비어 있음"
+
+[node name="ResultCard" type="PanelContainer" parent="CraftCard/Padding/VBox"]
+visible = false
+
+[node name="Padding" type="MarginContainer" parent="CraftCard/Padding/VBox/ResultCard"]
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 6
+
+[node name="VBox" type="VBoxContainer" parent="CraftCard/Padding/VBox/ResultCard/Padding"]
+theme_override_constants/separation = 3
+
+[node name="ResultTitleLabel" type="Label" parent="CraftCard/Padding/VBox/ResultCard/Padding/VBox"]
+text = "결과"
+
+[node name="ValueRow" type="HBoxContainer" parent="CraftCard/Padding/VBox/ResultCard/Padding/VBox"]
+theme_override_constants/separation = 8
+
+[node name="ResultIconSlot" type="PanelContainer" parent="CraftCard/Padding/VBox/ResultCard/Padding/VBox/ValueRow"]
+custom_minimum_size = Vector2(30, 30)
+
+[node name="IconCenter" type="CenterContainer" parent="CraftCard/Padding/VBox/ResultCard/Padding/VBox/ValueRow/ResultIconSlot"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ResultIconRect" type="TextureRect" parent="CraftCard/Padding/VBox/ResultCard/Padding/VBox/ValueRow/ResultIconSlot/IconCenter"]
+custom_minimum_size = Vector2(16, 16)
+texture_filter = 1
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ResultValueLabel" type="Label" parent="CraftCard/Padding/VBox/ResultCard/Padding/VBox/ValueRow"]
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = "결과 미확정"
+
+[node name="ResultHintLabel" type="Label" parent="CraftCard/Padding/VBox/ResultCard/Padding/VBox"]
+autowrap_mode = 3
 text = ""
 
-[node name="CancelCraftButton" type="Button" parent="Sheet/VBox/CraftContextStrip"]
+[node name="ActionsRow" type="HBoxContainer" parent="CraftCard/Padding/VBox"]
+theme_override_constants/separation = 8
+
+[node name="CraftCancelButton" type="Button" parent="CraftCard/Padding/VBox/ActionsRow"]
+size_flags_horizontal = 3
 text = "취소"
+
+[node name="CraftConfirmButton" type="Button" parent="CraftCard/Padding/VBox/ActionsRow"]
+size_flags_horizontal = 3
+text = "조합"
 
 [node name="InventoryPane" type="VBoxContainer" parent="Sheet/VBox"]
 size_flags_vertical = 3
-theme_override_constants/separation = 10
+theme_override_constants/separation = 8
+
+[node name="BrowseHintLabel" type="Label" parent="Sheet/VBox/InventoryPane"]
+autowrap_mode = 3
+text = "아이템을 고르면 아래에서 상세를 본다."
 
 [node name="InventoryScroll" type="ScrollContainer" parent="Sheet/VBox/InventoryPane"]
-custom_minimum_size = Vector2(0, 250)
+custom_minimum_size = Vector2(0, 420)
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="InventoryItems" type="VBoxContainer" parent="Sheet/VBox/InventoryPane/InventoryScroll"]
+[node name="InventoryContent" type="VBoxContainer" parent="Sheet/VBox/InventoryPane/InventoryScroll"]
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="ItemDetailCard" type="PanelContainer" parent="Sheet/VBox/InventoryPane"]
-size_flags_vertical = 3
-
-[node name="VBox" type="VBoxContainer" parent="Sheet/VBox/InventoryPane/ItemDetailCard"]
+[node name="InventoryItems" type="VBoxContainer" parent="Sheet/VBox/InventoryPane/InventoryScroll/InventoryContent"]
+size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="ItemNameLabel" type="Label" parent="Sheet/VBox/InventoryPane/ItemDetailCard/VBox"]
-text = "아이템"
-
-[node name="ItemDescriptionLabel" type="Label" parent="Sheet/VBox/InventoryPane/ItemDetailCard/VBox"]
-autowrap_mode = 3
-text = "아이템을 선택하면 설명이 나타난다."
-
-[node name="ItemEffectLabel" type="Label" parent="Sheet/VBox/InventoryPane/ItemDetailCard/VBox"]
-autowrap_mode = 3
-text = ""
-
-[node name="ModeMessageLabel" type="Label" parent="Sheet/VBox/InventoryPane/ItemDetailCard/VBox"]
-autowrap_mode = 3
-text = ""
-
-[node name="DetailActions" type="VBoxContainer" parent="Sheet/VBox/InventoryPane/ItemDetailCard/VBox"]
-theme_override_constants/separation = 8
-
-[node name="PrimaryActions" type="HBoxContainer" parent="Sheet/VBox/InventoryPane/ItemDetailCard/VBox/DetailActions"]
-theme_override_constants/separation = 8
-
-[node name="SecondaryActions" type="HBoxContainer" parent="Sheet/VBox/InventoryPane/ItemDetailCard/VBox/DetailActions"]
-theme_override_constants/separation = 8
+[node name="DetailInset" type="Control" parent="Sheet/VBox/InventoryPane/InventoryScroll/InventoryContent"]
+custom_minimum_size = Vector2(0, 0)
 
 [node name="CodexPane" type="VBoxContainer" parent="Sheet/VBox"]
 visible = false
@@ -113,4 +293,77 @@ horizontal_scroll_mode = 0
 
 [node name="CodexRows" type="VBoxContainer" parent="Sheet/VBox/CodexPane/CodexScroll"]
 size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="ItemDetailSheet" type="PanelContainer" parent="."]
+visible = false
+z_index = 10
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = -330.0
+offset_right = -18.0
+offset_bottom = -18.0
+mouse_filter = 0
+theme_override_styles/panel = SubResource("2")
+
+[node name="Backdrop" type="ColorRect" parent="ItemDetailSheet"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.09, 0.1, 0.12, 0.97)
+
+[node name="VBox" type="VBoxContainer" parent="ItemDetailSheet"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="Header" type="HBoxContainer" parent="ItemDetailSheet/VBox"]
+theme_override_constants/separation = 8
+
+[node name="ItemIconRect" type="TextureRect" parent="ItemDetailSheet/VBox/Header"]
+custom_minimum_size = Vector2(28, 28)
+texture_filter = 1
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ItemNameLabel" type="Label" parent="ItemDetailSheet/VBox/Header"]
+size_flags_horizontal = 3
+text = "아이템"
+
+[node name="DetailCloseButton" type="Button" parent="ItemDetailSheet/VBox/Header"]
+text = "접기"
+
+[node name="DetailScroll" type="ScrollContainer" parent="ItemDetailSheet/VBox"]
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="DetailBody" type="VBoxContainer" parent="ItemDetailSheet/VBox/DetailScroll"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="ItemDescriptionLabel" type="Label" parent="ItemDetailSheet/VBox/DetailScroll/DetailBody"]
+autowrap_mode = 3
+text = "아이템을 선택하면 설명이 나타난다."
+
+[node name="ItemEffectLabel" type="Label" parent="ItemDetailSheet/VBox/DetailScroll/DetailBody"]
+autowrap_mode = 3
+text = ""
+
+[node name="ModeMessageLabel" type="Label" parent="ItemDetailSheet/VBox/DetailScroll/DetailBody"]
+autowrap_mode = 3
+text = ""
+
+[node name="DetailActions" type="VBoxContainer" parent="ItemDetailSheet/VBox"]
+theme_override_constants/separation = 8
+
+[node name="PrimaryActions" type="VBoxContainer" parent="ItemDetailSheet/VBox/DetailActions"]
+theme_override_constants/separation = 8
+
+[node name="SecondaryActions" type="VBoxContainer" parent="ItemDetailSheet/VBox/DetailActions"]
 theme_override_constants/separation = 8

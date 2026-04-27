@@ -81,6 +81,15 @@ func _run_test() -> void:
 	assert_eq(state.inventory.carry_limit, 8, "This build should keep the default carry limit.")
 	assert_true(state.known_recipe_ids.is_empty(), "A fresh run should start with no known recipes.")
 	assert_true(state.read_knowledge_item_ids.is_empty(), "A fresh run should start with no read knowledge items.")
+	assert_true(state.has_method("mark_outdoor_block_visited"), "RunState should expose outdoor visited-block helpers.")
+	assert_true(state.has_method("is_outdoor_block_visited"), "RunState should expose outdoor visited-block lookup.")
+	assert_true(state.has_method("get_visited_outdoor_block_keys"), "RunState should expose a visited-block snapshot.")
+	assert_true(state.get_visited_outdoor_block_keys().is_empty(), "Fresh runs should start with no revealed outdoor blocks.")
+	state.mark_outdoor_block_visited(Vector2i(0, 0))
+	state.mark_outdoor_block_visited(Vector2i(1, 0))
+	assert_true(state.is_outdoor_block_visited(Vector2i(0, 0)), "Visited outdoor blocks should remain known for the current run.")
+	assert_true(state.is_outdoor_block_visited(Vector2i(1, 0)), "Multiple visited outdoor blocks should accumulate.")
+	assert_eq(state.get_visited_outdoor_block_keys().size(), 2, "Visited-block tracking should deduplicate repeated visits.")
 
 	var hard_state = run_state_script.from_survivor_config({
 		"job_id": "courier",

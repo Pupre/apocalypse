@@ -1,0 +1,87 @@
+{
+  "id": "residence_01",
+  "name": "다가구 주택",
+  "summary": "현관과 안쪽 생활 공간이 분리돼 있어 생활 흔적과 보온품이 뒤쪽에 더 남아 있다.",
+  "entry_zone_id": "foyer",
+  "zones": [
+    {
+      "id": "foyer",
+      "floor_id": "floor_1",
+      "label": "현관",
+      "summary": "신발장과 작은 장바구니가 현관 주변에 남아 있다.",
+      "connected_zone_ids": ["living_room"],
+      "event_ids": ["search_residence_foyer"],
+      "map_position": [0, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "living_room",
+      "floor_id": "floor_1",
+      "label": "안쪽 거실",
+      "summary": "낡은 담요와 실내용 물건이 소파 주변에 남아 있다.",
+      "connected_zone_ids": ["foyer"],
+      "event_ids": ["search_residence_living_room"],
+      "map_position": [1, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [],
+  "events": [
+    {
+      "id": "search_residence_foyer",
+      "zone_id": "foyer",
+      "type": "search",
+      "hint_text": "현관 주변에 작은 생활 물건이 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_residence_foyer_once",
+          "label": "현관을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "shopping_bag", "weight": 3 },
+                { "id": "paper_bag", "weight": 2 },
+                { "id": "slippers", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_residence_living_room",
+      "zone_id": "living_room",
+      "type": "search",
+      "hint_text": "안쪽 거실엔 담요와 위생용품이 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_residence_living_room_once",
+          "label": "안쪽 거실을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "old_blanket", "weight": 3 },
+                { "id": "soap", "weight": 2 },
+                { "id": "knit_cap", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

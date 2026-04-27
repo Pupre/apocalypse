@@ -1,0 +1,87 @@
+{
+  "id": "corner_store_01",
+  "name": "구멍가게",
+  "summary": "앞 선반 뒤쪽으로 작은 재고 구석이 있어 음료와 생활 소모품이 나뉘어 남아 있다.",
+  "entry_zone_id": "front_shelf",
+  "zones": [
+    {
+      "id": "front_shelf",
+      "floor_id": "floor_1",
+      "label": "앞 선반",
+      "summary": "잡과자와 음료 흔적이 남은 좁은 선반 앞이다.",
+      "connected_zone_ids": ["stock_nook"],
+      "event_ids": ["search_corner_store_front"],
+      "map_position": [0, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "stock_nook",
+      "floor_id": "floor_1",
+      "label": "재고 구석",
+      "summary": "안쪽 작은 재고 칸에 생수와 포장지가 밀려 있다.",
+      "connected_zone_ids": ["front_shelf"],
+      "event_ids": ["search_corner_store_stock"],
+      "map_position": [1, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [],
+  "events": [
+    {
+      "id": "search_corner_store_front",
+      "zone_id": "front_shelf",
+      "type": "search",
+      "hint_text": "앞 선반엔 과자와 작은 생활용품이 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_corner_store_front_once",
+          "label": "앞 선반을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "crackers", "weight": 3 },
+                { "id": "paper_bag", "weight": 2 },
+                { "id": "shopping_bag", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_corner_store_stock",
+      "zone_id": "stock_nook",
+      "type": "search",
+      "hint_text": "안쪽 재고 구석엔 생수와 포장지가 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_corner_store_stock_once",
+          "label": "재고 구석을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "bottled_water", "weight": 3 },
+                { "id": "zip_bag", "weight": 2 },
+                { "id": "trash_bag_roll", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

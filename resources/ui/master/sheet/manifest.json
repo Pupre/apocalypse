@@ -1,0 +1,175 @@
+{
+  "pack_name": "Frozen UI Pack 3 - Inventory Sheet",
+  "style_family": "Frozen-city survival UI compact family",
+  "source_rules": "Game-ready 2D sprite assets with transparent background outside intended shape only; no baked text; grounded frozen-city palette; 9-slice values when applicable.",
+  "assets": [
+    {
+      "filename": "sheet_bg_compact.png",
+      "purpose": "Main compact bottom-sheet background for bag, codex, and crafting surfaces",
+      "size": "648x980",
+      "nine_slice": {
+        "left": 30,
+        "right": 30,
+        "top": 30,
+        "bottom": 30
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "sheet_detail_panel_compact.png",
+      "purpose": "Inner detail surface for selected item description and actions",
+      "size": "600x264",
+      "nine_slice": {
+        "left": 24,
+        "right": 24,
+        "top": 24,
+        "bottom": 24
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "sheet_header_strip_compact.png",
+      "purpose": "Compact header strip for title row inside inventory/crafting sheets",
+      "size": "604x56",
+      "nine_slice": {
+        "left": 20,
+        "right": 20,
+        "top": 14,
+        "bottom": 14
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "sheet_tab_compact_idle.png",
+      "purpose": "Idle tab for bag / codex / crafting sections",
+      "size": "172x40",
+      "nine_slice": {
+        "left": 18,
+        "right": 18,
+        "top": 12,
+        "bottom": 12
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "sheet_tab_compact_active.png",
+      "purpose": "Active tab with restrained warm selection cue",
+      "size": "172x40",
+      "nine_slice": {
+        "left": 18,
+        "right": 18,
+        "top": 12,
+        "bottom": 12
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "inventory_icon_slot.png",
+      "purpose": "Compact icon slot background with no hollow center and no deep hole look",
+      "size": "44x44",
+      "nine_slice": {
+        "left": 12,
+        "right": 12,
+        "top": 12,
+        "bottom": 12
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "inventory_row_compact_idle.png",
+      "purpose": "Default compact inventory list row",
+      "size": "604x66",
+      "nine_slice": {
+        "left": 18,
+        "right": 18,
+        "top": 14,
+        "bottom": 14
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "inventory_row_compact_selected.png",
+      "purpose": "Selected compact inventory row with stronger cool border",
+      "size": "604x66",
+      "nine_slice": {
+        "left": 18,
+        "right": 18,
+        "top": 14,
+        "bottom": 14
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "inventory_row_compact_highlighted.png",
+      "purpose": "Highlighted inventory row with restrained warm hint",
+      "size": "604x66",
+      "nine_slice": {
+        "left": 18,
+        "right": 18,
+        "top": 14,
+        "bottom": 14
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "craft_card_attached.png",
+      "purpose": "Attached craft card surface that visually docks to the main bag sheet",
+      "size": "604x118",
+      "nine_slice": {
+        "left": 22,
+        "right": 22,
+        "top": 24,
+        "bottom": 20
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "sheet_button_primary_normal.png",
+      "purpose": "Primary full-width sheet button background",
+      "size": "286x56",
+      "nine_slice": {
+        "left": 20,
+        "right": 20,
+        "top": 16,
+        "bottom": 16
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "sheet_button_primary_pressed.png",
+      "purpose": "Pressed primary full-width sheet button background",
+      "size": "286x56",
+      "nine_slice": {
+        "left": 20,
+        "right": 20,
+        "top": 16,
+        "bottom": 16
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "sheet_button_secondary_normal.png",
+      "purpose": "Secondary full-width sheet button background",
+      "size": "286x56",
+      "nine_slice": {
+        "left": 20,
+        "right": 20,
+        "top": 16,
+        "bottom": 16
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "sheet_button_secondary_pressed.png",
+      "purpose": "Pressed secondary full-width sheet button background",
+      "size": "286x56",
+      "nine_slice": {
+        "left": 20,
+        "right": 20,
+        "top": 16,
+        "bottom": 16
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    }
+  ]
+}

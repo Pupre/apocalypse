@@ -1962,5 +1962,131 @@
     "result_item_id": "charging_kit",
     "indoor_minutes": 2,
     "result_text": "보조배터리와 충전기를 묶어 전력 키트처럼 한데 정리했다."
+  },
+  {
+    "id": "clear_plastic_sheet__sealant_tube",
+    "ingredients": ["clear_plastic_sheet", "sealant_tube"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "clear_plastic_sheet": "consume",
+      "sealant_tube": "consume"
+    },
+    "result_items": [
+      {"id": "sealed_window_patch", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "sealed_window_patch",
+    "indoor_minutes": 20,
+    "result_text": "플라스틱 막과 실링제를 이어 창문 틈을 막는 보수 패치로 만들었다."
+  },
+  {
+    "id": "hose_clamp__siphon_hose",
+    "ingredients": ["hose_clamp", "siphon_hose"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "hose_clamp": "consume",
+      "siphon_hose": "consume"
+    },
+    "result_items": [
+      {"id": "transfer_hose", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "transfer_hose",
+    "indoor_minutes": 20,
+    "result_text": "호스 밴드로 고정한 임시 이송 호스를 만들었다."
+  },
+  {
+    "id": "old_blanket__sewing_kit",
+    "ingredients": ["old_blanket", "sewing_kit"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 25,
+    "ingredient_rules": {
+      "old_blanket": "consume",
+      "sewing_kit": "keep"
+    },
+    "result_items": [
+      {"id": "patched_blanket", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "patched_blanket",
+    "indoor_minutes": 25,
+    "result_text": "헤진 담요를 꿰매 다시 쓸 수 있는 기운 담요로 만들었다."
+  },
+  {
+    "id": "rubbing_alcohol__shop_towel_bundle",
+    "ingredients": ["rubbing_alcohol", "shop_towel_bundle"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 15,
+    "ingredient_rules": {
+      "rubbing_alcohol": "consume",
+      "shop_towel_bundle": "consume"
+    },
+    "result_items": [
+      {"id": "solvent_wipes", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "solvent_wipes",
+    "indoor_minutes": 15,
+    "result_text": "작업용 천에 알코올을 적셔 세척용 천 꾸러미로 만들었다."
+  },
+  {
+    "id": "old_blanket__tarp_sheet",
+    "ingredients": ["old_blanket", "tarp_sheet"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 25,
+    "ingredient_rules": {
+      "old_blanket": "consume",
+      "tarp_sheet": "consume"
+    },
+    "result_items": [
+      {"id": "tarp_bedroll", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "tarp_bedroll",
+    "indoor_minutes": 25,
+    "result_text": "담요와 방수포를 묶어 방수 침낭 꾸러미처럼 정리했다."
+  },
+  {
+    "id": "foil_tray_pack__tea_light_candle",
+    "ingredients": ["foil_tray_pack", "tea_light_candle"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 15,
+    "ingredient_rules": {
+      "foil_tray_pack": "consume",
+      "tea_light_candle": "consume"
+    },
+    "result_items": [
+      {"id": "foil_tray_warmer", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "foil_tray_warmer",
+    "indoor_minutes": 15,
+    "result_text": "포일 트레이와 작은 초를 엮어 간이 보온기처럼 만들었다."
+  },
+  {
+    "id": "cling_wrap_roll__hot_water_bottle",
+    "ingredients": ["cling_wrap_roll", "hot_water_bottle"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 10,
+    "ingredient_rules": {
+      "cling_wrap_roll": "consume",
+      "hot_water_bottle": "keep"
+    },
+    "result_items": [
+      {"id": "wrapped_hot_water_bottle", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "wrapped_hot_water_bottle",
+    "indoor_minutes": 10,
+    "result_text": "물주머니 표면을 감싸 열이 오래 가는 보온 감싼 물주머니로 정리했다."
   }
 ]

@@ -1,0 +1,8 @@
+{
+  "block_size": { "width": 960, "height": 960 },
+  "city_blocks": { "width": 8, "height": 8 },
+  "spawn_block_coord": { "x": 0, "y": 0 },
+  "spawn_local_position": { "x": 240, "y": 360 },
+  "stream_radius_blocks": 1,
+  "block_path_pattern": "res://data/outdoor/blocks/%d_%d.json"
+}

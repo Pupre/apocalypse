@@ -1,0 +1,36 @@
+{
+  "bundle_name": "Frozen UI Master Bundle v1",
+  "style_family": "Frozen-city survival UI compact family",
+  "packs": [
+    {
+      "pack_folder": "hud",
+      "manifest": "manifest.json",
+      "png_asset_count": 14
+    },
+    {
+      "pack_folder": "indoor",
+      "manifest": "manifest.json",
+      "png_asset_count": 6
+    },
+    {
+      "pack_folder": "sheet",
+      "manifest": "manifest.json",
+      "png_asset_count": 13
+    },
+    {
+      "pack_folder": "overlay",
+      "manifest": "manifest.json",
+      "png_asset_count": 8
+    },
+    {
+      "pack_folder": "structure",
+      "manifest": "manifest.json",
+      "png_asset_count": 6
+    },
+    {
+      "pack_folder": "feedback",
+      "manifest": "manifest.json",
+      "png_asset_count": 7
+    }
+  ]
+}

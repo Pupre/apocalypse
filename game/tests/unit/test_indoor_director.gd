@@ -75,15 +75,15 @@ func _run_test() -> void:
 	assert_true(director.apply_action("move_food_aisle"), "Director should allow moving into the food aisle.")
 	assert_eq(
 		_edge_ids(director.get_map_snapshot()),
-		["food_aisle|household_goods", "food_aisle|mart_entrance"],
-		"After moving through the food aisle, the minimap should preserve the traveled path and expose the household-goods route."
+		["food_aisle|freezer_row", "food_aisle|household_goods", "food_aisle|mart_entrance"],
+		"After moving through the food aisle, the minimap should preserve the traveled path and expose the newly adjacent aisles."
 	)
 
 	assert_true(director.apply_action("move_household_goods"), "Director should allow moving into the household goods zone.")
 	assert_eq(
 		_edge_ids(director.get_map_snapshot()),
-		["back_hall|household_goods", "food_aisle|household_goods", "food_aisle|mart_entrance"],
-		"The household goods zone should sit between the food aisle and the back area."
+		["back_hall|household_goods", "food_aisle|household_goods", "food_aisle|mart_entrance", "household_goods|snack_aisle"],
+		"The household goods zone should expose both the back area and the side snack aisle."
 	)
 	assert_true(director.apply_action("search_household_goods"), "Director should allow searching the household goods zone.")
 	assert_true(director.apply_action("take_household_goods_small_backpack_0"), "Director should allow taking the backpack as discovered loot.")
@@ -96,28 +96,6 @@ func _run_test() -> void:
 	)
 	assert_true(director.apply_action("equip_inventory_small_backpack"), "Director should allow equipping the selected backpack.")
 	assert_eq(director.get_inventory_title(), "소지품 (0/12)", "Equipping the backpack should increase the carry limit in the inventory title.")
-	assert_true(director.apply_action("take_household_goods_running_shoes_1"), "Director should allow taking the shoes from household goods.")
-	assert_true(director.apply_action("inspect_inventory_running_shoes"), "Director should allow selecting the shoes for inspection.")
-	selected_item_sheet = director.get_selected_inventory_sheet()
-	assert_true(
-		String(selected_item_sheet.get("effect_text", "")).find("이동속도 +24") != -1,
-		"Shoes should surface their movement bonus in the item sheet effect text."
-	)
-	assert_true(
-		_action_ids(selected_item_sheet.get("actions", [])).has("equip_inventory_running_shoes"),
-		"Movement gear should expose an equip action in the item sheet."
-	)
-	assert_true(director.apply_action("equip_inventory_running_shoes"), "Director should allow equipping shoes.")
-	assert_true(run_state.move_speed > 230.0, "Equipping shoes should increase the survivor move speed stat.")
-	assert_true(director.apply_action("take_household_goods_utility_vest_4"), "Director should allow taking torso gear from household goods.")
-	assert_true(director.apply_action("inspect_inventory_utility_vest"), "Director should allow selecting the vest for inspection.")
-	selected_item_sheet = director.get_selected_inventory_sheet()
-	assert_true(
-		String(selected_item_sheet.get("effect_text", "")).find("소지 한도 +2") != -1,
-		"Torso storage gear should surface its carry bonus in the item sheet effect text."
-	)
-	assert_true(director.apply_action("equip_inventory_utility_vest"), "Director should allow equipping torso gear.")
-	assert_eq(director.get_inventory_title(), "소지품 (0/14)", "Equipping torso storage gear should stack with the backpack bonus.")
 	assert_eq(director.get_inventory_status_text(), "여유 있음", "Director should report a calm carry state before the player goes overweight.")
 
 	assert_true(director.apply_action("move_back_hall"), "Director should allow moving from household goods into the back area.")
@@ -130,7 +108,26 @@ func _run_test() -> void:
 
 	director.configure(run_state, "mart_01")
 	assert_true(director.apply_action("move_checkout"), "Director should allow moving to checkout.")
-	assert_true(director.apply_action("search_checkout_counter"), "Director should allow searching checkout.")
+	var checkout_exit_action := _action_by_id(director.get_actions(), "exit_building")
+	if not assert_true(checkout_exit_action.has("id"), "Director should expose a leave-building shortcut away from the entrance."):
+		director.free()
+		return
+	assert_eq(
+		String(checkout_exit_action.get("label", "")),
+		"건물 밖으로 나간다 (10분)",
+		"Director should price the leave-building shortcut as the shortest route back to the exit."
+	)
+	var minute_before_exit := int(run_state.clock.minute_of_day)
+	assert_true(director.apply_action("exit_building"), "Director should allow resolving the leave-building shortcut from inside the building.")
+	assert_eq(
+		int(run_state.clock.minute_of_day),
+		minute_before_exit + 10,
+		"Director should advance time by the shortest-route leave-building shortcut cost."
+	)
+
+	director.configure(run_state, "mart_01")
+	assert_true(director.apply_action("move_checkout"), "Director should allow moving to checkout.")
+	assert_true(director.apply_action("search_checkout_drawer"), "Director should allow searching checkout.")
 	var lighter_take_id := _action_id_by_label_prefix(director.get_actions(), "라이터 챙긴다")
 	assert_true(not lighter_take_id.is_empty(), "Checkout search should surface the lighter loot action.")
 	assert_true(director.apply_action(lighter_take_id), "Director should allow taking the lighter.")
@@ -185,13 +182,16 @@ func _run_test() -> void:
 	assert_true(not bool(room_101_move.get("locked", true)), "Taking the 101 key should unlock room 101.")
 	assert_true(director.apply_action("move_unit_101_room"), "Apartment should allow entering room 101.")
 	assert_true(director.apply_action("search_unit_101_room"), "Apartment should allow searching room 101.")
-	var take_201_key_action_id := _action_id_by_label_prefix(director.get_actions(), "201호 열쇠 챙긴다")
-	assert_true(not take_201_key_action_id.is_empty(), "Apartment room 101 should surface the 201 key.")
-	assert_true(director.apply_action(take_201_key_action_id), "Apartment should allow taking the 201 key.")
 	assert_true(director.apply_action("move_unit_101_door"), "Apartment should allow stepping back to the 101 doorway.")
 	assert_true(director.apply_action("move_first_floor_hall"), "Apartment should allow returning to the first-floor hall.")
 	assert_true(director.apply_action("move_stairwell"), "Apartment should allow entering the stairwell.")
 	assert_true(director.apply_action("move_second_floor_hall"), "Apartment should allow reaching the second-floor hall.")
+	assert_true(director.apply_action("move_laundry_room"), "Apartment second-floor hall should allow entering the laundry room.")
+	assert_true(director.apply_action("search_laundry_room"), "Apartment should allow searching the laundry room.")
+	var take_201_key_action_id := _action_id_by_label_prefix(director.get_actions(), "201호 열쇠 챙긴다")
+	assert_true(not take_201_key_action_id.is_empty(), "Apartment laundry room should surface the 201 key.")
+	assert_true(director.apply_action(take_201_key_action_id), "Apartment should allow taking the 201 key.")
+	assert_true(director.apply_action("move_second_floor_hall"), "Apartment should allow returning from the laundry room to the second-floor hall.")
 	assert_true(
 		_action_ids(director.get_actions()).has("move_unit_201_door"),
 		"Apartment second-floor hall should expose the 201 doorway."

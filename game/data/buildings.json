@@ -3,22 +3,24 @@
     "id": "mart_01",
     "name": "동네 마트",
     "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": ["living_goods", "staff_only", "stockroom"],
+    "entry_briefing": "앞쪽은 금방 훑을 수 있지만 뒤쪽 직원 구역과 재고실은 더 깊다.",
     "base_candidate": true,
-    "outdoor_position": {
-      "x": 640,
-      "y": 360
-    },
+    "outdoor_block_coord": { "x": 0, "y": 0 },
+    "outdoor_anchor_id": "mart_anchor",
     "indoor_event_path": "res://data/events/indoor/mart_01.json"
   },
   {
     "id": "apartment_01",
     "name": "낡은 아파트",
     "category": "residential",
+    "depth_tier": "tier_3",
+    "site_tags": ["vertical_site", "keys", "living_trace"],
+    "entry_briefing": "공동 현관만 보고 끝나는 곳이 아니다. 위층과 잠긴 생활 공간이 더 있다.",
     "base_candidate": false,
-    "outdoor_position": {
-      "x": 900,
-      "y": 240
-    },
+    "outdoor_block_coord": { "x": 0, "y": 1 },
+    "outdoor_anchor_id": "apartment_anchor",
     "indoor_event_path": "res://data/events/indoor/apartment_01.json"
   },
   {
@@ -26,10 +28,8 @@
     "name": "동네 의원",
     "category": "medical",
     "base_candidate": false,
-    "outdoor_position": {
-      "x": 980,
-      "y": 520
-    },
+    "outdoor_block_coord": { "x": 1, "y": 0 },
+    "outdoor_anchor_id": "clinic_anchor",
     "indoor_event_path": "res://data/events/indoor/clinic_01.json"
   },
   {
@@ -37,10 +37,242 @@
     "name": "소형 사무실",
     "category": "office",
     "base_candidate": false,
-    "outdoor_position": {
-      "x": 360,
-      "y": 180
-    },
+    "outdoor_block_coord": { "x": 0, "y": 0 },
+    "outdoor_anchor_id": "office_anchor",
     "indoor_event_path": "res://data/events/indoor/office_01.json"
+  },
+  {
+    "id": "convenience_01",
+    "name": "편의점",
+    "category": "retail",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 1, "y": 0 },
+    "outdoor_anchor_id": "convenience_anchor",
+    "indoor_event_path": "res://data/events/indoor/convenience_01.json"
+  },
+  {
+    "id": "hardware_01",
+    "name": "철물점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": ["repair", "materials", "gated_backroom"],
+    "entry_briefing": "앞 매장보다 안쪽 자재실이 중요하다. 좋은 물건은 잠긴 뒷방에 있다.",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 1, "y": 1 },
+    "outdoor_anchor_id": "hardware_anchor",
+    "indoor_event_path": "res://data/events/indoor/hardware_01.json"
+  },
+  {
+    "id": "gas_station_01",
+    "name": "주유소",
+    "category": "retail",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 0, "y": 1 },
+    "outdoor_anchor_id": "gas_station_anchor",
+    "indoor_event_path": "res://data/events/indoor/gas_station_01.json"
+  },
+  {
+    "id": "laundry_01",
+    "name": "코인 세탁소",
+    "category": "retail",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 1, "y": 1 },
+    "outdoor_anchor_id": "laundry_anchor",
+    "indoor_event_path": "res://data/events/indoor/laundry_01.json"
+  },
+  {
+    "id": "pharmacy_01",
+    "name": "약국",
+    "category": "medical",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 0, "y": 0 },
+    "outdoor_anchor_id": "pharmacy_anchor",
+    "indoor_event_path": "res://data/events/indoor/pharmacy_01.json"
+  },
+  {
+    "id": "restaurant_01",
+    "name": "작은 식당",
+    "category": "food_service",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 0, "y": 1 },
+    "outdoor_anchor_id": "restaurant_anchor",
+    "indoor_event_path": "res://data/events/indoor/restaurant_01.json"
+  },
+  {
+    "id": "bakery_01",
+    "name": "빵집",
+    "category": "retail",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 1, "y": 0 },
+    "outdoor_anchor_id": "bakery_anchor",
+    "indoor_event_path": "res://data/events/indoor/bakery_01.json"
+  },
+  {
+    "id": "warehouse_01",
+    "name": "창고",
+    "category": "industrial",
+    "depth_tier": "tier_3",
+    "site_tags": ["logistics", "shutter_gate", "bulk_storage"],
+    "entry_briefing": "상하차 구역은 시작일 뿐이다. 안쪽 셔터 너머가 진짜 보관 공간이다.",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 1, "y": 1 },
+    "outdoor_anchor_id": "warehouse_anchor",
+    "indoor_event_path": "res://data/events/indoor/warehouse_01.json"
+  },
+  {
+    "id": "cafe_01",
+    "name": "카페",
+    "category": "food_service",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 0, "y": 0 },
+    "outdoor_anchor_id": "cafe_anchor",
+    "indoor_event_path": "res://data/events/indoor/cafe_01.json"
+  },
+  {
+    "id": "police_box_01",
+    "name": "파출소",
+    "category": "security",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 1, "y": 0 },
+    "outdoor_anchor_id": "police_box_anchor",
+    "indoor_event_path": "res://data/events/indoor/police_box_01.json"
+  },
+  {
+    "id": "repair_shop_01",
+    "name": "수리점",
+    "category": "industrial",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 1, "y": 1 },
+    "outdoor_anchor_id": "repair_shop_anchor",
+    "indoor_event_path": "res://data/events/indoor/repair_shop_01.json"
+  },
+  {
+    "id": "residence_01",
+    "name": "다가구 주택",
+    "category": "residential",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 0, "y": 1 },
+    "outdoor_anchor_id": "residence_anchor",
+    "indoor_event_path": "res://data/events/indoor/residence_01.json"
+  },
+  {
+    "id": "bookstore_01",
+    "name": "중고 서점",
+    "category": "retail",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 2, "y": 0 },
+    "outdoor_anchor_id": "bookstore_anchor",
+    "indoor_event_path": "res://data/events/indoor/bookstore_01.json"
+  },
+  {
+    "id": "deli_01",
+    "name": "반찬 가게",
+    "category": "food_service",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 2, "y": 0 },
+    "outdoor_anchor_id": "deli_anchor",
+    "indoor_event_path": "res://data/events/indoor/deli_01.json"
+  },
+  {
+    "id": "hostel_01",
+    "name": "소형 여관",
+    "category": "residential",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 2, "y": 0 },
+    "outdoor_anchor_id": "hostel_anchor",
+    "indoor_event_path": "res://data/events/indoor/hostel_01.json"
+  },
+  {
+    "id": "storage_depot_01",
+    "name": "물류 보관소",
+    "category": "industrial",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 2, "y": 1 },
+    "outdoor_anchor_id": "storage_depot_anchor",
+    "indoor_event_path": "res://data/events/indoor/storage_depot_01.json"
+  },
+  {
+    "id": "garage_01",
+    "name": "차고지",
+    "category": "industrial",
+    "depth_tier": "tier_3",
+    "site_tags": ["maintenance", "tools", "logistics_side_site"],
+    "entry_briefing": "반쯤 열린 셔터 안쪽엔 공구와 안쪽 공간으로 이어지는 단서가 남아 있다.",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 2, "y": 1 },
+    "outdoor_anchor_id": "garage_anchor",
+    "indoor_event_path": "res://data/events/indoor/garage_01.json"
+  },
+  {
+    "id": "canteen_01",
+    "name": "구내 식당",
+    "category": "food_service",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 2, "y": 1 },
+    "outdoor_anchor_id": "canteen_anchor",
+    "indoor_event_path": "res://data/events/indoor/canteen_01.json"
+  },
+  {
+    "id": "church_01",
+    "name": "작은 교회",
+    "category": "office",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 2, "y": 2 },
+    "outdoor_anchor_id": "church_anchor",
+    "indoor_event_path": "res://data/events/indoor/church_01.json"
+  },
+  {
+    "id": "corner_store_01",
+    "name": "구멍가게",
+    "category": "retail",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 2, "y": 2 },
+    "outdoor_anchor_id": "corner_store_anchor",
+    "indoor_event_path": "res://data/events/indoor/corner_store_01.json"
+  },
+  {
+    "id": "school_gate_01",
+    "name": "폐교 정문",
+    "category": "office",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 1, "y": 2 },
+    "outdoor_anchor_id": "school_gate_anchor",
+    "indoor_event_path": "res://data/events/indoor/school_gate_01.json"
+  },
+  {
+    "id": "butcher_01",
+    "name": "정육점",
+    "category": "food_service",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 1, "y": 2 },
+    "outdoor_anchor_id": "butcher_anchor",
+    "indoor_event_path": "res://data/events/indoor/butcher_01.json"
+  },
+  {
+    "id": "row_house_01",
+    "name": "연립 주택",
+    "category": "residential",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 1, "y": 2 },
+    "outdoor_anchor_id": "row_house_anchor",
+    "indoor_event_path": "res://data/events/indoor/row_house_01.json"
+  },
+  {
+    "id": "chapel_01",
+    "name": "작은 예배당",
+    "category": "office",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 0, "y": 2 },
+    "outdoor_anchor_id": "chapel_anchor",
+    "indoor_event_path": "res://data/events/indoor/chapel_01.json"
+  },
+  {
+    "id": "tea_shop_01",
+    "name": "찻집",
+    "category": "food_service",
+    "base_candidate": false,
+    "outdoor_block_coord": { "x": 0, "y": 2 },
+    "outdoor_anchor_id": "tea_shop_anchor",
+    "indoor_event_path": "res://data/events/indoor/tea_shop_01.json"
   }
 ]

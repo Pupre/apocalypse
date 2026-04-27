@@ -1,0 +1,164 @@
+{
+  "id": "garage_01",
+  "name": "차고지",
+  "summary": "반쯤 열린 셔터 안쪽은 단순한 한 칸이 아니다. 공구 사물함과 pit 아래쪽에도 손대지 않은 물건이 남아 있다.",
+  "entry_zone_id": "garage_floor",
+  "zones": [
+    {
+      "id": "garage_floor",
+      "floor_id": "floor_1",
+      "label": "차고",
+      "summary": "정비 흔적이 남은 바닥과 벽 쪽 작업 선반이 이어진다.",
+      "connected_zone_ids": ["parts_cabinet", "service_pit", "tool_locker"],
+      "event_ids": ["search_garage_floor"],
+      "map_position": [0, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "parts_cabinet",
+      "floor_id": "floor_1",
+      "label": "부품 캐비닛",
+      "summary": "작은 부속과 정비용 소모품이 아직 서랍에 남아 있다.",
+      "connected_zone_ids": ["garage_floor"],
+      "event_ids": ["search_parts_cabinet"],
+      "map_position": [1, 0],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "service_pit",
+      "floor_id": "floor_1",
+      "label": "정비 pit",
+      "summary": "차량 하부를 보던 구덩이 아래로 호스와 큰 용기가 떨어져 있다.",
+      "connected_zone_ids": ["garage_floor"],
+      "event_ids": ["search_service_pit"],
+      "map_position": [1, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "tool_locker",
+      "floor_id": "floor_1",
+      "label": "공구 사물함",
+      "summary": "오염된 천과 작은 공구가 공구 사물함 안에 남아 있다.",
+      "connected_zone_ids": ["garage_floor"],
+      "event_ids": ["search_tool_locker"],
+      "map_position": [1, 2],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [],
+  "events": [
+    {
+      "id": "search_garage_floor",
+      "zone_id": "garage_floor",
+      "type": "search",
+      "hint_text": "차고 바닥과 벽 선반 주변에 즉시 쓸 수 있는 소모품이 남아 있다.",
+      "options": [
+        {
+          "id": "search_garage_floor_once",
+          "label": "차고 바닥을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "work_gloves", "weight": 3 },
+                { "id": "spare_batteries", "weight": 2 },
+                { "id": "rubber_band", "weight": 2 },
+                { "id": "siphon_hose", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_parts_cabinet",
+      "zone_id": "parts_cabinet",
+      "type": "search",
+      "hint_text": "선반 캐비닛엔 클램프, 작은 깔때기, 묶음 부품이 남아 있다.",
+      "options": [
+        {
+          "id": "search_parts_cabinet_once",
+          "label": "부품 캐비닛을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "hose_clamp", "weight": 3 },
+                { "id": "drain_funnel", "weight": 3 },
+                { "id": "zip_bag", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_service_pit",
+      "zone_id": "service_pit",
+      "type": "search",
+      "hint_text": "정비 구덩이 아래엔 큰 용기와 이송 부품이 밀려 있다.",
+      "options": [
+        {
+          "id": "search_service_pit_once",
+          "label": "정비 pit를 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "empty_jerrycan", "weight": 3 },
+                { "id": "siphon_hose", "weight": 3 },
+                { "id": "tarp_sheet", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_tool_locker",
+      "zone_id": "tool_locker",
+      "type": "search",
+      "hint_text": "공구 사물함 안엔 오염된 천과 세척용 잡자재가 남아 있다.",
+      "options": [
+        {
+          "id": "search_tool_locker_once",
+          "label": "공구 사물함을 뒤진다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "shop_towel_bundle", "weight": 4 },
+                { "id": "rubbing_alcohol", "weight": 2 },
+                { "id": "steel_wire", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

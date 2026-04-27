@@ -1,0 +1,103 @@
+extends RefCounted
+class_name OutdoorArtResolver
+
+const PACK_ROOT := "res://../resources/world/city"
+const TERRAIN_DIR := "%s/terrain" % PACK_ROOT
+const BUILDING_DIR := "%s/buildings_cutout" % PACK_ROOT
+const PROP_DIR := "%s/props_cutout" % PACK_ROOT
+const DECAL_DIR := "%s/decals" % PACK_ROOT
+const PLAYER_DIR := "%s/player" % PACK_ROOT
+
+var _texture_cache: Dictionary = {}
+
+
+func get_building_texture(building_data: Dictionary) -> Texture2D:
+	var building_id := String(building_data.get("id", ""))
+	var file_name := "building_office.png"
+
+	match building_id:
+		"mart_01", "convenience_01":
+			file_name = "building_mart.png"
+		"apartment_01", "residence_01":
+			file_name = "building_apartment.png"
+		"clinic_01":
+			file_name = "building_clinic.png"
+		"pharmacy_01":
+			file_name = "building_pharmacy.png"
+		"office_01", "laundry_01":
+			file_name = "building_office.png"
+		"hardware_01", "gas_station_01", "warehouse_01", "repair_shop_01":
+			file_name = "building_warehouse.png"
+		"cafe_01", "restaurant_01", "bakery_01":
+			file_name = "building_cafe.png"
+		"police_box_01":
+			file_name = "building_police.png"
+		_:
+			var category := String(building_data.get("category", ""))
+			match category:
+				"retail":
+					file_name = "building_mart.png"
+				"medical":
+					file_name = "building_clinic.png"
+				"residential":
+					file_name = "building_apartment.png"
+				"food_service":
+					file_name = "building_cafe.png"
+				"industrial":
+					file_name = "building_warehouse.png"
+				"security":
+					file_name = "building_police.png"
+
+	return _load_texture("%s/%s" % [BUILDING_DIR, file_name])
+
+
+func get_prop_texture(obstacle_kind: String, obstacle_rect: Rect2 = Rect2()) -> Texture2D:
+	var file_name := "crate_stack.png"
+	match obstacle_kind:
+		"vehicle":
+			file_name = "frozen_car.png"
+		"rubble":
+			file_name = "dumpster_snow.png" if obstacle_rect.size.x >= 100.0 or obstacle_rect.size.y >= 80.0 else "roadblock.png"
+		"tree":
+			file_name = "dead_tree.png"
+		"barrier":
+			file_name = "sandbags.png"
+	return _load_texture("%s/%s" % [PROP_DIR, file_name])
+
+
+func get_player_texture(facing_id: String, walking: bool, frame_index: int = 0) -> Texture2D:
+	var resolved_facing := facing_id if facing_id in ["up", "down", "left", "right"] else "down"
+	var frame_suffix := "idle"
+	if walking:
+		frame_suffix = "walk%d" % (((frame_index % 4) + 4) % 4 + 1)
+	return _load_texture("%s/%s_%s.png" % [PLAYER_DIR, resolved_facing, frame_suffix])
+
+
+func get_terrain_texture(texture_id: String) -> Texture2D:
+	var file_name := "%s.png" % texture_id
+	return _load_texture("%s/%s" % [TERRAIN_DIR, file_name])
+
+
+func get_decal_texture(texture_id: String) -> Texture2D:
+	var file_name := "%s.png" % texture_id
+	return _load_texture("%s/%s" % [DECAL_DIR, file_name])
+
+
+func _load_texture(path: String) -> Texture2D:
+	if path.is_empty():
+		return null
+	if _texture_cache.has(path):
+		return _texture_cache[path] as Texture2D
+
+	var absolute_path := ProjectSettings.globalize_path(path)
+	if not FileAccess.file_exists(absolute_path):
+		return null
+
+	var image := Image.new()
+	var err := image.load(absolute_path)
+	if err != OK:
+		return null
+
+	var texture := ImageTexture.create_from_image(image)
+	_texture_cache[path] = texture
+	return texture

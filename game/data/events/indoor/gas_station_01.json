@@ -1,0 +1,165 @@
+{
+  "id": "gas_station_01",
+  "name": "주유소",
+  "summary": "주유기 앞마당을 지나면 매장과 정비 코너, 안쪽 창고가 이어진다.",
+  "entry_zone_id": "forecourt",
+  "zones": [
+    {
+      "id": "forecourt",
+      "floor_id": "floor_1",
+      "label": "주유기 앞",
+      "summary": "얼어붙은 바닥 너머로 매장 출입문과 정비 코너가 보인다.",
+      "connected_zone_ids": ["shop_floor", "service_bay"],
+      "event_ids": ["forecourt_search_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "shop_floor",
+      "floor_id": "floor_1",
+      "label": "매장",
+      "summary": "간식 선반과 음료 냉장고가 드문드문 남아 있다.",
+      "connected_zone_ids": ["forecourt", "stock_room"],
+      "event_ids": ["shop_floor_search_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "service_bay",
+      "floor_id": "floor_1",
+      "label": "정비 코너",
+      "summary": "차량 용품과 비상 자재가 정비대 옆에 흩어져 있다.",
+      "connected_zone_ids": ["forecourt"],
+      "event_ids": ["service_bay_search_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "stock_room",
+      "floor_id": "floor_1",
+      "label": "창고",
+      "summary": "뒤쪽 창고 선반엔 음료 박스와 생활 자재가 남아 있다.",
+      "connected_zone_ids": ["shop_floor"],
+      "event_ids": ["stock_room_search_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [],
+  "events": [
+    {
+      "id": "forecourt_search_event",
+      "zone_id": "forecourt",
+      "type": "search",
+      "hint_text": "주유기 주변 적재함과 매트 아래를 훑으면 작은 물건이 나올 수 있다.",
+      "options": [
+        {
+          "id": "search_forecourt",
+          "label": "앞마당을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "newspaper", "weight": 3 },
+                { "id": "plastic_bag", "weight": 3 },
+                { "id": "paper_cup", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "shop_floor_search_event",
+      "zone_id": "shop_floor",
+      "type": "search",
+      "hint_text": "매장 선반엔 아직 간단한 식량과 음료가 남아 있다.",
+      "options": [
+        {
+          "id": "search_shop_floor",
+          "label": "매장을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [
+              { "id": "bottled_water", "name": "생수", "bulk": 1 }
+            ],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "energy_bar", "weight": 4 },
+                { "id": "crackers", "weight": 4 },
+                { "id": "instant_soup_powder", "weight": 3 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "service_bay_search_event",
+      "zone_id": "service_bay",
+      "type": "search",
+      "hint_text": "정비대 주변에는 차량용 소모품과 작업 자재가 남아 있다.",
+      "options": [
+        {
+          "id": "search_service_bay",
+          "label": "정비 코너를 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "duct_tape", "weight": 4 },
+                { "id": "work_gloves", "weight": 3 },
+                { "id": "spare_batteries", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "stock_room_search_event",
+      "zone_id": "stock_room",
+      "type": "search",
+      "hint_text": "창고 안쪽 상자에 남아 있는 생활용품을 챙길 수 있다.",
+      "options": [
+        {
+          "id": "search_stock_room",
+          "label": "창고를 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "paper_bag", "weight": 4 },
+                { "id": "zip_bag", "weight": 3 },
+                { "id": "cooking_oil", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

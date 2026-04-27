@@ -1,6 +1,31 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/run/hud_presenter.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/shared/survival_gauge_strip.tscn" id="2"]
+
+[sub_resource type="StyleBoxFlat" id="1"]
+bg_color = Color(0.08, 0.1, 0.12, 0.92)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.27, 0.31, 0.36, 0.92)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="2"]
+bg_color = Color(0.12, 0.14, 0.17, 0.94)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.29, 0.33, 0.39, 0.92)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
 
 [node name="HUD" type="CanvasLayer"]
 layer = 10
@@ -13,41 +38,77 @@ anchor_right = 1.0
 anchor_bottom = 0.0
 offset_left = 12.0
 offset_top = 12.0
-offset_right = -12.0
-offset_bottom = 116.0
+offset_right = -8.0
+offset_bottom = 94.0
+
+[node name="Backdrop" type="ColorRect" parent="TopRibbon"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
 
 [node name="Margin" type="MarginContainer" parent="TopRibbon"]
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 6
 
 [node name="Stack" type="VBoxContainer" parent="TopRibbon/Margin"]
-theme_override_constants/separation = 12
+theme_override_constants/separation = 4
 
-[node name="HeaderRow" type="HBoxContainer" parent="TopRibbon/Margin/Stack"]
-theme_override_constants/separation = 12
+[node name="HeaderShell" type="PanelContainer" parent="TopRibbon/Margin/Stack"]
+theme_override_styles/panel = SubResource("1")
 
-[node name="TitleLabel" type="Label" parent="TopRibbon/Margin/Stack/HeaderRow"]
+[node name="HeaderBackdrop" type="ColorRect" parent="TopRibbon/Margin/Stack/HeaderShell"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.08, 0.1, 0.12, 0.94)
+
+[node name="HeaderMargin" type="MarginContainer" parent="TopRibbon/Margin/Stack/HeaderShell"]
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 2
+
+[node name="HeaderRow" type="HBoxContainer" parent="TopRibbon/Margin/Stack/HeaderShell/HeaderMargin"]
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="TopRibbon/Margin/Stack/HeaderShell/HeaderMargin/HeaderRow"]
 text = "외부 생존 정보"
 
-[node name="ClockLabel" type="Label" parent="TopRibbon/Margin/Stack/HeaderRow"]
+[node name="ClockLabel" type="Label" parent="TopRibbon/Margin/Stack/HeaderShell/HeaderMargin/HeaderRow"]
+size_flags_horizontal = 3
 text = "시각: --"
 
-[node name="StatsRow" type="HBoxContainer" parent="TopRibbon/Margin/Stack"]
-theme_override_constants/separation = 12
+[node name="MapButton" type="Button" parent="TopRibbon/Margin/Stack/HeaderShell/HeaderMargin/HeaderRow"]
+text = "지도"
 
-[node name="FatigueLabel" type="Label" parent="TopRibbon/Margin/Stack/StatsRow"]
-text = "피로: --"
+[node name="BagButton" type="Button" parent="TopRibbon/Margin/Stack/HeaderShell/HeaderMargin/HeaderRow"]
+text = "가방"
 
-[node name="HungerLabel" type="Label" parent="TopRibbon/Margin/Stack/StatsRow"]
-text = "허기: --"
+[node name="GaugeShell" type="PanelContainer" parent="TopRibbon/Margin/Stack"]
+theme_override_styles/panel = SubResource("2")
 
-[node name="ThirstLabel" type="Label" parent="TopRibbon/Margin/Stack/StatsRow"]
-text = "갈증: --"
+[node name="GaugeBackdrop" type="ColorRect" parent="TopRibbon/Margin/Stack/GaugeShell"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.11, 0.13, 0.16, 0.96)
 
-[node name="HealthLabel" type="Label" parent="TopRibbon/Margin/Stack/StatsRow"]
-text = "체력: --"
+[node name="GaugePadding" type="MarginContainer" parent="TopRibbon/Margin/Stack/GaugeShell"]
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 7
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
 
-[node name="CarryLabel" type="Label" parent="TopRibbon/Margin/Stack/StatsRow"]
-text = "소지량: --"
+[node name="GaugeRow" parent="TopRibbon/Margin/Stack/GaugeShell/GaugePadding" instance=ExtResource("2")]

@@ -42,6 +42,7 @@ var survivor_config: Dictionary = {}
 var equipped_items: Dictionary = {}
 var known_recipe_ids: Dictionary = {}
 var read_knowledge_item_ids: Dictionary = {}
+var visited_outdoor_block_ids: Dictionary = {}
 var active_warmth_effects: Array[Dictionary] = []
 var indoor_site_memories: Dictionary = {}
 var current_indoor_building_id := ""
@@ -158,6 +159,18 @@ func get_health_stage() -> String:
 	return "안정"
 
 
+func get_temperature_stage() -> String:
+	if exposure <= 15.0:
+		return "위독"
+	if exposure <= 30.0:
+		return "위험"
+	if exposure <= 55.0:
+		return "한기"
+	if exposure <= 80.0:
+		return "서늘"
+	return "안정"
+
+
 func get_fatigue_stage() -> String:
 	return fatigue_model.get_band(fatigue)
 
@@ -188,11 +201,45 @@ func is_hard_mode() -> bool:
 	return get_difficulty_id() == "hard"
 
 
+func mark_outdoor_block_visited(block_coord: Vector2i) -> void:
+	visited_outdoor_block_ids[_outdoor_block_key(block_coord)] = true
+
+
+func is_outdoor_block_visited(block_coord: Vector2i) -> bool:
+	return bool(visited_outdoor_block_ids.get(_outdoor_block_key(block_coord), false))
+
+
+func get_visited_outdoor_block_keys() -> Array[String]:
+	var keys: Array[String] = []
+	for key_variant in visited_outdoor_block_ids.keys():
+		keys.append(String(key_variant))
+	keys.sort()
+	return keys
+
+
+func has_entered_indoor_site(building_id: String) -> bool:
+	if building_id.is_empty():
+		return false
+	return indoor_site_memories.has(building_id)
+
+
+func get_site_memory(building_id: String) -> Dictionary:
+	if building_id.is_empty():
+		return {}
+	if not indoor_site_memories.has(building_id):
+		return {}
+	var memory_variant: Variant = indoor_site_memories.get(building_id, {})
+	if typeof(memory_variant) != TYPE_DICTIONARY:
+		return {}
+	return (memory_variant as Dictionary).duplicate(true)
+
+
 func _apply_survivor_config(config: Dictionary) -> void:
 	survivor_config = _normalized_survivor_config(config)
 	equipped_items = {}
 	known_recipe_ids = {}
 	read_knowledge_item_ids = {}
+	visited_outdoor_block_ids = {}
 	move_speed = BASE_MOVE_SPEED
 	fatigue_gain_multiplier = BASE_FATIGUE_GAIN_MULTIPLIER
 	world_seed = int(survivor_config.get("world_seed", 0))
@@ -427,6 +474,17 @@ func get_outdoor_move_speed() -> float:
 		1.0 - (float(overflow_bulk) * OVERFLOW_MOVE_PENALTY_PER_BULK)
 	))
 	return move_speed * multiplier * fatigue_multiplier
+
+
+func apply_outdoor_threat_contact() -> Dictionary:
+	exposure = max(0.0, exposure - 18.0)
+	fatigue = min(MAX_SURVIVAL_VALUE, fatigue + 8.0)
+	clock.advance_minutes(3)
+	return {
+		"exposure": exposure,
+		"fatigue": fatigue,
+		"minute_of_day": clock.minute_of_day,
+	}
 
 
 func deploy_item_in_current_site(item_id: String) -> bool:
@@ -766,6 +824,10 @@ func _tick_warmth_effects(minutes: int) -> void:
 	if minutes <= 0:
 		return
 	active_warmth_effects = warmth_model.tick_active_effects(active_warmth_effects, minutes)
+
+
+func _outdoor_block_key(block_coord: Vector2i) -> String:
+	return "%d_%d" % [block_coord.x, block_coord.y]
 
 
 func _expected_removed_item_count(primary_item_id: String, secondary_item_id: String, ingredient_rules: Dictionary) -> int:

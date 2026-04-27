@@ -42,10 +42,17 @@ func _run_test() -> void:
 	if not assert_true(run_shell.run_state != null, "Run shell should create a run state before transition tests."):
 		run_shell.free()
 		return
+	assert_eq(run_shell._craft_toast_type({"result_type": "success"}), "success", "Successful crafting should emit a success toast.")
+	assert_eq(run_shell._craft_toast_type({"result_type": "invalid"}), "warning", "Invalid crafting attempts should emit a warning toast.")
+	assert_eq(run_shell._craft_toast_type({"result_type": "failure"}), "warning", "Failed crafting outcomes should emit a warning toast.")
+	assert_eq(run_shell._craft_toast_icon_item_id({"result_type": "success", "result_item_id": "bottled_water"}), "bottled_water", "Successful crafting should pass the crafted item icon through to the toast.")
+	assert_eq(run_shell._craft_toast_icon_item_id({"result_type": "failure", "result_item_id": "wet_newspaper"}), "", "Failed crafting should not reuse the result item as the toast icon.")
 
 	var transition_layer := run_shell.get_node_or_null("TransitionLayer")
 	var mode_host := run_shell.get_node_or_null("ModeHost")
 	var hud := run_shell.get_node_or_null("HUD")
+	var shared_survival_sheet := run_shell.get_node_or_null("SurvivalSheet")
+	var toast_presenter := run_shell.get_node_or_null("ToastPresenter") as CanvasLayer
 	var outdoor_mode := run_shell.get_node_or_null("ModeHost/OutdoorMode")
 	var content_library := root.get_node_or_null("ContentLibrary")
 	if not assert_true(transition_layer != null, "Run shell should include a transition layer."):
@@ -55,6 +62,12 @@ func _run_test() -> void:
 		run_shell.free()
 		return
 	if not assert_true(hud != null, "Run shell should include a HUD."):
+		run_shell.free()
+		return
+	if not assert_true(shared_survival_sheet != null, "Run shell should include a shared SurvivalSheet for outdoor bag flow."):
+		run_shell.free()
+		return
+	if not assert_true(toast_presenter != null, "RunShell should mount a shared ToastPresenter."):
 		run_shell.free()
 		return
 	if not assert_true(outdoor_mode != null, "Run shell should start in outdoor mode."):
@@ -73,6 +86,11 @@ func _run_test() -> void:
 	if not assert_true(top_ribbon != null, "HUD should mount the portrait top ribbon."):
 		run_shell.free()
 		return
+	var bag_button := hud.get_node_or_null("TopRibbon/Margin/Stack/HeaderShell/HeaderMargin/HeaderRow/BagButton") as Button
+	var map_button := hud.get_node_or_null("TopRibbon/Margin/Stack/HeaderShell/HeaderMargin/HeaderRow/MapButton") as Button
+	if not assert_true(bag_button != null and map_button != null, "HUD should expose bag and map buttons in the portrait top ribbon."):
+		run_shell.free()
+		return
 	assert_eq(top_ribbon.anchor_left, 0.0, "HUD TopRibbon should stretch from the left edge.")
 	assert_eq(top_ribbon.anchor_right, 1.0, "HUD TopRibbon should stretch to the right edge.")
 	assert_true(hud.get_index() > mode_host.get_index(), "HUD should render above the mode host so indoor panels do not hide it.")
@@ -80,7 +98,7 @@ func _run_test() -> void:
 	transition_layer.set_duration_for_tests(0.1)
 
 	var fade_rect := transition_layer.get_node_or_null("FadeRect") as ColorRect
-	var player_sprite := outdoor_mode.get_node_or_null("PlayerSprite") as Polygon2D
+	var player_sprite := outdoor_mode.get_node_or_null("PlayerVisual") as Sprite2D
 	var mart_data: Dictionary = content_library.get_building("mart_01")
 	var mart_position_data: Dictionary = mart_data.get("outdoor_position", {})
 	var mart_position := Vector2(
@@ -90,9 +108,22 @@ func _run_test() -> void:
 	if not assert_true(fade_rect != null, "Transition layer should expose FadeRect."):
 		run_shell.free()
 		return
-	if not assert_true(player_sprite != null, "Outdoor player marker should be present."):
+	if not assert_true(player_sprite != null, "Outdoor player visual should be present."):
 		run_shell.free()
 		return
+	var toast_shell := toast_presenter.get_node_or_null("ToastShell") as Control
+	var toast_label := toast_presenter.get_node_or_null("ToastShell/Margin/Row/MessageLabel") as Label
+	if not assert_true(toast_shell != null and not toast_shell.visible, "Toast shell should exist and start hidden."):
+		run_shell.free()
+		return
+	if not assert_true(toast_label != null, "Toast presenter should expose a message label."):
+		run_shell.free()
+		return
+
+	run_shell._on_survival_sheet_action_requested("drop_inventory_newspaper")
+	assert_true(toast_shell.visible, "Outdoor inventory feedback should make the toast visible.")
+	assert_true(toast_label.text.find("버렸다") != -1, "Outdoor inventory feedback should push a short toast message.")
+
 	outdoor_mode.move_player(Vector2.RIGHT, 1.5)
 	assert_true(player_sprite.position.distance_to(mart_position) <= 72.0, "Player should enter building range before transition test.")
 

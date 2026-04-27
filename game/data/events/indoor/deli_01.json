@@ -1,0 +1,87 @@
+{
+  "id": "deli_01",
+  "name": "반찬 가게",
+  "summary": "전면 포장대와 안쪽 준비대가 분리돼 있어 즉석 식품과 용기를 따로 살펴야 한다.",
+  "entry_zone_id": "counter",
+  "zones": [
+    {
+      "id": "counter",
+      "floor_id": "floor_1",
+      "label": "포장대",
+      "summary": "작은 용기와 종이봉투가 카운터 주변에 남아 있다.",
+      "connected_zone_ids": ["prep_table"],
+      "event_ids": ["search_deli_counter"],
+      "map_position": [0, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "prep_table",
+      "floor_id": "floor_1",
+      "label": "안쪽 준비대",
+      "summary": "뒤편 준비대엔 수프 재료와 작은 통조림이 놓여 있다.",
+      "connected_zone_ids": ["counter"],
+      "event_ids": ["search_deli_prep_table"],
+      "map_position": [1, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [],
+  "events": [
+    {
+      "id": "search_deli_counter",
+      "zone_id": "counter",
+      "type": "search",
+      "hint_text": "포장대 주변엔 포장재와 작은 먹거리가 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_deli_counter_once",
+          "label": "포장대를 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "paper_bag", "weight": 3 },
+                { "id": "steel_food_can", "weight": 2 },
+                { "id": "zip_bag", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_deli_prep_table",
+      "zone_id": "prep_table",
+      "type": "search",
+      "hint_text": "안쪽 준비대엔 따뜻한 식사 재료와 작은 용기가 남아 있다.",
+      "options": [
+        {
+          "id": "search_deli_prep_table_once",
+          "label": "안쪽 준비대를 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "instant_soup_powder", "weight": 3 },
+                { "id": "tea_bag", "weight": 2 },
+                { "id": "foil_tray_pack", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

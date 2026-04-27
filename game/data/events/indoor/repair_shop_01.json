@@ -1,0 +1,87 @@
+{
+  "id": "repair_shop_01",
+  "name": "수리점",
+  "summary": "작업대와 안쪽 부품 선반이 분리돼 있어 금속 자재와 보수 재료가 따로 남아 있다.",
+  "entry_zone_id": "bench",
+  "zones": [
+    {
+      "id": "bench",
+      "floor_id": "floor_1",
+      "label": "작업대",
+      "summary": "금속 조각과 공구함이 작업대 위에 흩어져 있다.",
+      "connected_zone_ids": ["parts_rack"],
+      "event_ids": ["search_repair_shop_bench"],
+      "map_position": [0, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "parts_rack",
+      "floor_id": "floor_1",
+      "label": "부품 선반",
+      "summary": "안쪽 선반엔 철사, 접착재, 작은 보수 부품이 남아 있다.",
+      "connected_zone_ids": ["bench"],
+      "event_ids": ["search_repair_shop_parts_rack"],
+      "map_position": [1, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [],
+  "events": [
+    {
+      "id": "search_repair_shop_bench",
+      "zone_id": "bench",
+      "type": "search",
+      "hint_text": "작업대 아래 공구함엔 기본 보수 재료가 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_repair_shop_bench_once",
+          "label": "작업대를 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "duct_tape", "weight": 3 },
+                { "id": "steel_wire", "weight": 3 },
+                { "id": "work_gloves", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_repair_shop_parts_rack",
+      "zone_id": "parts_rack",
+      "type": "search",
+      "hint_text": "안쪽 선반엔 더 직접적인 보수 재료가 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_repair_shop_parts_rack_once",
+          "label": "부품 선반을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "epoxy_putty", "weight": 3 },
+                { "id": "steel_wire", "weight": 2 },
+                { "id": "hose_clamp", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

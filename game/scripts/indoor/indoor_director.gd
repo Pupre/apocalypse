@@ -3,12 +3,6 @@ extends Node
 signal state_changed
 
 const ACTION_RESOLVER_SCRIPT := preload("res://scripts/indoor/indoor_action_resolver.gd")
-const SURVIVAL_CHIP_ICON_PATHS := {
-	"hunger": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/question.png",
-	"thirst": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/basket.png",
-	"health": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/home.png",
-	"fatigue": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/locked.png",
-}
 var _resolver := ACTION_RESOLVER_SCRIPT.new()
 var _run_state = null
 var _building_data: Dictionary = {}
@@ -103,15 +97,21 @@ func get_current_zone_status_rows() -> Array[String]:
 
 
 func get_actions() -> Array[Dictionary]:
-	var actions := _format_action_labels(_resolver.get_actions(_event_data, _event_state, _run_state))
-	if _is_at_entry_zone():
-		actions.append({
-			"id": "exit_building",
-			"label": "건물 밖으로 나간다",
-			"type": "exit",
-		})
+	var actions := _resolver.get_actions(_event_data, _event_state, _run_state)
+	var exit_action := _exit_building_action()
+	if not exit_action.is_empty():
+		actions.append(exit_action)
 
-	return actions
+	return _format_action_labels(actions)
+
+
+func get_exit_action() -> Dictionary:
+	var exit_action := _exit_building_action()
+	if exit_action.is_empty():
+		return {}
+	var formatted := exit_action.duplicate(true)
+	formatted["label"] = _format_action_label(formatted)
+	return formatted
 
 
 func get_clock_label() -> String:
@@ -119,89 +119,6 @@ func get_clock_label() -> String:
 		return ""
 
 	return String(_run_state.clock.get_clock_label())
-
-
-func get_survival_chip_rows() -> Array[Dictionary]:
-	if _run_state == null:
-		return []
-
-	return [
-		_create_survival_chip_row(
-			"hunger",
-			"허기",
-			_run_state.get_hunger_stage(),
-			float(_run_state.hunger),
-			"0이 되면 체력이 계속 감소한다",
-			"음식으로 회복",
-			"hunger",
-			"%d / %d · %s" % [int(round(_run_state.hunger)), _run_state.MAX_SURVIVAL_VALUE, _run_state.get_hunger_stage()]
-		),
-		_create_survival_chip_row(
-			"thirst",
-			"갈증",
-			_run_state.get_thirst_stage(),
-			float(_run_state.thirst),
-			"허기보다 더 빠르게 바닥난다",
-			"물과 음료로 회복",
-			"thirst",
-			"%d / %d · %s" % [int(round(_run_state.thirst)), _run_state.MAX_SURVIVAL_VALUE, _run_state.get_thirst_stage()]
-		),
-		_create_survival_chip_row(
-			"health",
-			"체력",
-			_run_state.get_health_stage(),
-			float(_run_state.health),
-			"부상과 위기로 줄어든다",
-			"의약품으로 회복",
-			"health",
-			"%d / %d · %s" % [int(round(_run_state.health)), _run_state.MAX_SURVIVAL_VALUE, _run_state.get_health_stage()]
-		),
-		_create_survival_chip_row(
-			"fatigue",
-			"피로",
-			_run_state.get_fatigue_stage(),
-			float(_run_state.fatigue),
-			"시간과 행동으로 쌓인다",
-			"휴식과 취침으로 회복",
-			"fatigue",
-			"%d · %s" % [int(round(_run_state.fatigue)), _run_state.get_fatigue_stage()]
-		),
-	]
-
-
-func get_survival_chip_detail(chip_id: String) -> Dictionary:
-	for chip in get_survival_chip_rows():
-		if String(chip.get("id", "")) == chip_id:
-			return chip
-
-	return {}
-
-
-func get_survival_chip_icon_path(chip_id: String) -> String:
-	return String(SURVIVAL_CHIP_ICON_PATHS.get(chip_id, ""))
-
-
-func _create_survival_chip_row(
-	chip_id: String,
-	label: String,
-	stage: String,
-	value: float,
-	rule_text: String,
-	recovery_text: String,
-	icon_id: String,
-	detail_value_text: String
-) -> Dictionary:
-	return {
-		"id": chip_id,
-		"label": label,
-		"stage": stage,
-		"value": value,
-		"display_value_text": stage,
-		"detail_value_text": detail_value_text,
-		"icon_id": icon_id,
-		"rule_text": rule_text,
-		"recovery_text": recovery_text,
-	}
 
 
 func get_sleep_preview() -> Dictionary:
@@ -300,6 +217,7 @@ func get_equipped_rows() -> Array[Dictionary]:
 			continue
 		rows.append({
 			"kind": "equipped",
+			"item_id": String(equipped_item.get("id", "")),
 			"slot_id": slot_id,
 			"slot_label": _slot_label(slot_id),
 			"item_name": _item_name(equipped_item, slot_id),
@@ -517,6 +435,10 @@ func apply_action(action_id: String) -> bool:
 		return true
 
 	if action_id == "exit_building":
+		var exit_action := _exit_building_action()
+		var minute_cost := int(exit_action.get("minute_cost", 0))
+		if minute_cost > 0 and _run_state != null and _run_state.has_method("advance_minutes"):
+			_run_state.advance_minutes(minute_cost)
 		return true
 
 	if not _resolver.apply_action(_run_state, _event_data, _event_state, action_id):
@@ -604,6 +526,91 @@ func _inventory_has_item(item_id: String) -> bool:
 		if String((item_variant as Dictionary).get("id", "")) == item_id:
 			return true
 	return false
+
+
+func _exit_building_action() -> Dictionary:
+	if _event_data.is_empty():
+		return {}
+	var entry_zone_id := _resolver.get_entry_zone_id(_event_data)
+	if entry_zone_id.is_empty():
+		return {}
+
+	var minute_cost := _shortest_exit_minutes(get_current_zone_id(), entry_zone_id)
+	if minute_cost < 0:
+		return {}
+
+	var action := {
+		"id": "exit_building",
+		"label": "건물 밖으로 나간다",
+		"type": "exit",
+	}
+	if minute_cost > 0:
+		action["minute_cost"] = minute_cost
+	return action
+
+
+func _shortest_exit_minutes(start_zone_id: String, target_zone_id: String) -> int:
+	if start_zone_id.is_empty() or target_zone_id.is_empty():
+		return -1
+	if start_zone_id == target_zone_id:
+		return 0
+
+	var visited_zone_ids := _string_ids(_event_state.get("visited_zone_ids", []))
+	var distances := {start_zone_id: 0}
+	var frontier: Array[Dictionary] = [{"zone_id": start_zone_id, "cost": 0}]
+	var settled := {}
+
+	while not frontier.is_empty():
+		var best_index := 0
+		var best_cost := int(frontier[0].get("cost", 0))
+		for index in range(1, frontier.size()):
+			var candidate_cost := int(frontier[index].get("cost", 0))
+			if candidate_cost < best_cost:
+				best_index = index
+				best_cost = candidate_cost
+		var current := frontier[best_index]
+		frontier.remove_at(best_index)
+
+		var zone_id := String(current.get("zone_id", ""))
+		if zone_id.is_empty() or settled.has(zone_id):
+			continue
+		settled[zone_id] = true
+		if zone_id == target_zone_id:
+			return best_cost
+
+		var zone := _resolver.get_zone(_event_data, zone_id)
+		if zone.is_empty():
+			continue
+
+		for neighbor_variant in zone.get("connected_zone_ids", []):
+			var neighbor_zone_id := String(neighbor_variant)
+			if neighbor_zone_id.is_empty():
+				continue
+			if not visited_zone_ids.has(neighbor_zone_id) and neighbor_zone_id != target_zone_id:
+				continue
+			if not _resolver.is_zone_accessible(_event_data, _event_state, neighbor_zone_id, _run_state):
+				continue
+
+			var step_cost := _move_minutes_to_zone(neighbor_zone_id, visited_zone_ids)
+			var total_cost := best_cost + step_cost
+			if total_cost < int(distances.get(neighbor_zone_id, 1_000_000)):
+				distances[neighbor_zone_id] = total_cost
+				frontier.append({
+					"zone_id": neighbor_zone_id,
+					"cost": total_cost,
+				})
+
+	return -1
+
+
+func _move_minutes_to_zone(target_zone_id: String, visited_zone_ids: Array[String]) -> int:
+	var target_zone := _resolver.get_zone(_event_data, target_zone_id)
+	if target_zone.is_empty():
+		return 0
+	var minute_cost := int(target_zone.get("revisit_cost", 10)) if visited_zone_ids.has(target_zone_id) else int(target_zone.get("first_visit_cost", 30))
+	if _run_state != null and _run_state.has_method("get_indoor_action_minutes"):
+		minute_cost = int(_run_state.get_indoor_action_minutes(minute_cost))
+	return minute_cost
 
 
 func _current_site_memory() -> Dictionary:

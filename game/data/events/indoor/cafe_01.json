@@ -1,0 +1,87 @@
+{
+  "id": "cafe_01",
+  "name": "카페",
+  "summary": "카운터만이 아니라 안쪽 좌석과 보조 선반까지 훑어야 음료 재료가 나온다.",
+  "entry_zone_id": "counter",
+  "zones": [
+    {
+      "id": "counter",
+      "floor_id": "floor_1",
+      "label": "카운터",
+      "summary": "커피 머신 옆으로 작은 음료 재료와 종이봉투가 남아 있다.",
+      "connected_zone_ids": ["seating_area"],
+      "event_ids": ["search_cafe_counter_event"],
+      "map_position": [0, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "seating_area",
+      "floor_id": "floor_1",
+      "label": "안쪽 좌석",
+      "summary": "창가 좌석 아래엔 뜯지 않은 간식과 티백이 굴러다닌다.",
+      "connected_zone_ids": ["counter"],
+      "event_ids": ["search_cafe_seating_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [],
+  "events": [
+    {
+      "id": "search_cafe_counter_event",
+      "zone_id": "counter",
+      "type": "search",
+      "hint_text": "뜨거운 음료 재료와 작은 포장지가 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_cafe_counter",
+          "label": "카운터를 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "instant_coffee", "weight": 4 },
+                { "id": "tea_bag", "weight": 3 },
+                { "id": "paper_bag", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_cafe_seating_event",
+      "zone_id": "seating_area",
+      "type": "search",
+      "hint_text": "좌석 틈에는 간식과 작은 생활 물건이 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_cafe_seating",
+          "label": "안쪽 좌석을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "butter_cookie_box", "weight": 3 },
+                { "id": "tea_bag", "weight": 2 },
+                { "id": "shopping_bag", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

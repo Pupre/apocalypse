@@ -1,5 +1,6 @@
 extends Control
 
+const UI_KIT_RESOLVER_SCRIPT := preload("res://scripts/ui/ui_kit_resolver.gd")
 const GRID_SPACING := Vector2(84, 56)
 const MAP_MARGIN := Vector2(24, 24)
 const FLOOR_SEPARATION := 84.0
@@ -14,6 +15,7 @@ var _snapshot: Dictionary = {
 	"nodes": [],
 	"edges": [],
 }
+var _ui_kit_resolver = UI_KIT_RESOLVER_SCRIPT.new()
 
 
 func set_snapshot(snapshot: Dictionary) -> void:
@@ -43,6 +45,8 @@ func _rebuild_nodes() -> void:
 		label.position = _point_for_node(node) - Vector2(0, 10)
 		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		label.add_theme_color_override("font_color", _node_color(node))
+		label.add_theme_color_override("font_outline_color", Color(0.04, 0.06, 0.09, 0.88))
+		label.add_theme_constant_override("outline_size", 2)
 		add_child(label)
 
 
@@ -63,20 +67,14 @@ func _draw() -> void:
 		var to_id := String(edge.get("to", ""))
 		if not node_points.has(from_id) or not node_points.has(to_id):
 			continue
-
-		draw_line(
-			node_points[from_id],
-			node_points[to_id],
-			_edge_color(edge, from_id, to_id),
-			2.0
-		)
+		_draw_edge(node_points[from_id], node_points[to_id], edge, from_id, to_id)
 
 	for node_variant in _snapshot.get("nodes", []):
 		if typeof(node_variant) != TYPE_DICTIONARY:
 			continue
 		var node := node_variant as Dictionary
 		var center := _point_for_node(node)
-		draw_circle(center, 8.0, _node_color(node))
+		_draw_node(center, node)
 
 
 func _point_for_node(node: Dictionary) -> Vector2:
@@ -147,6 +145,46 @@ func _edge_color(edge: Dictionary, from_id: String, to_id: String) -> Color:
 	if (not from_floor_id.is_empty() and from_floor_id != current_floor_id) or (not to_floor_id.is_empty() and to_floor_id != current_floor_id):
 		color.a *= 0.45
 	return color
+
+
+func _draw_edge(from_point: Vector2, to_point: Vector2, edge: Dictionary, from_id: String, to_id: String) -> void:
+	var texture_path := "structure/structure_room_link_locked.png" if bool(edge.get("locked", false)) else "structure/structure_room_link_line.png"
+	var texture := _ui_kit_resolver.get_texture(texture_path)
+	if texture == null:
+		draw_line(from_point, to_point, _edge_color(edge, from_id, to_id), 2.0)
+		return
+
+	var segment := to_point - from_point
+	var length := segment.length()
+	if length <= 0.0:
+		return
+
+	var alpha := _edge_color(edge, from_id, to_id).a
+	var texture_size := texture.get_size()
+	draw_set_transform(from_point, segment.angle(), Vector2(length / texture_size.x, 1.0))
+	draw_texture(texture, Vector2(0.0, -texture_size.y * 0.5), Color(1.0, 1.0, 1.0, alpha))
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+
+
+func _draw_node(center: Vector2, node: Dictionary) -> void:
+	var texture := _ui_kit_resolver.get_texture(_node_texture_path(node))
+	if texture == null:
+		draw_circle(center, 8.0, _node_color(node))
+		return
+
+	var alpha := _node_color(node).a
+	var texture_size := texture.get_size()
+	draw_texture(texture, center - texture_size * 0.5, Color(1.0, 1.0, 1.0, alpha))
+
+
+func _node_texture_path(node: Dictionary) -> String:
+	match String(node.get("state", "")):
+		"current":
+			return "structure/structure_room_node_current.png"
+		"visited":
+			return "structure/structure_room_node_known.png"
+		_:
+			return "structure/structure_room_node_unknown.png"
 
 
 func _current_node() -> Dictionary:

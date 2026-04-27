@@ -1,0 +1,79 @@
+{
+  "pack_name": "Frozen UI Pack 2 - Indoor Surface",
+  "style_family": "Frozen-city survival UI compact family",
+  "source_rules": "Game-ready 2D sprite assets with transparent background outside intended shape only; no baked text; grounded frozen-city palette; 9-slice values when applicable.",
+  "assets": [
+    {
+      "filename": "indoor_surface_panel_compact.png",
+      "purpose": "Shared opaque indoor surface panel for location, reading, minimap, and result cards",
+      "size": "320x192",
+      "nine_slice": {
+        "left": 28,
+        "right": 28,
+        "top": 28,
+        "bottom": 28
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "indoor_section_header_plain_compact.png",
+      "purpose": "Slim section header strip for stacked indoor action groups",
+      "size": "384x40",
+      "nine_slice": {
+        "left": 20,
+        "right": 20,
+        "top": 14,
+        "bottom": 14
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "indoor_minimap_frame.png",
+      "purpose": "Indoor minimap / structure frame card with calm readable interior",
+      "size": "336x184",
+      "nine_slice": {
+        "left": 24,
+        "right": 24,
+        "top": 24,
+        "bottom": 24
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "indoor_location_strip_compact.png",
+      "purpose": "Compact strip for current indoor location/status line",
+      "size": "336x44",
+      "nine_slice": {
+        "left": 18,
+        "right": 18,
+        "top": 12,
+        "bottom": 12
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "indoor_reading_panel_plain.png",
+      "purpose": "Plain indoor text card for room summaries, descriptions, and results",
+      "size": "336x168",
+      "nine_slice": {
+        "left": 24,
+        "right": 24,
+        "top": 24,
+        "bottom": 24
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "indoor_result_chip_compact.png",
+      "purpose": "Compact result / feedback chip with calm empty label area",
+      "size": "220x38",
+      "nine_slice": {
+        "left": 18,
+        "right": 18,
+        "top": 12,
+        "bottom": 12
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    }
+  ]
+}

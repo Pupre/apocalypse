@@ -1,0 +1,87 @@
+{
+  "id": "bookstore_01",
+  "name": "중고 서점",
+  "summary": "입구 계산대 뒤쪽으로 무너진 안쪽 서가가 이어져 있어 종이류를 두 번 훑어야 한다.",
+  "entry_zone_id": "bookstore_entry",
+  "zones": [
+    {
+      "id": "bookstore_entry",
+      "floor_id": "floor_1",
+      "label": "입구",
+      "summary": "계산대와 얇은 서가가 젖은 종이 냄새를 풍긴다.",
+      "connected_zone_ids": ["back_stacks"],
+      "event_ids": ["search_bookstore_entry"],
+      "map_position": [0, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "back_stacks",
+      "floor_id": "floor_1",
+      "label": "안쪽 서가",
+      "summary": "무너진 서가 뒤쪽에 필기구와 종이묶음이 덜 젖은 채 남아 있다.",
+      "connected_zone_ids": ["bookstore_entry"],
+      "event_ids": ["search_bookstore_back_stacks"],
+      "map_position": [1, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [],
+  "events": [
+    {
+      "id": "search_bookstore_entry",
+      "zone_id": "bookstore_entry",
+      "type": "search",
+      "hint_text": "입구 주변엔 종이봉투와 메모지가 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_bookstore_entry_once",
+          "label": "서점 입구를 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "newspaper", "weight": 4 },
+                { "id": "paper_bag", "weight": 2 },
+                { "id": "memo_pad", "weight": 3 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_bookstore_back_stacks",
+      "zone_id": "back_stacks",
+      "type": "search",
+      "hint_text": "무너진 서가 뒤편엔 필기구와 덜 젖은 문서가 남아 있다.",
+      "options": [
+        {
+          "id": "search_bookstore_back_stacks_once",
+          "label": "안쪽 서가를 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "memo_pad", "weight": 3 },
+                { "id": "ballpoint_pen", "weight": 3 },
+                { "id": "newspaper", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

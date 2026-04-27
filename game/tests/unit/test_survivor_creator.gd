@@ -143,7 +143,7 @@ func _run_test() -> void:
 
 	transition_layer.set_duration_for_tests(0.0)
 
-	var hud_clock_label := hud.get_node_or_null("TopRibbon/Margin/Stack/HeaderRow/ClockLabel") as Label
+	var hud_clock_label := hud.get_node_or_null("TopRibbon/Margin/Stack/HeaderShell/HeaderMargin/HeaderRow/ClockLabel") as Label
 	var content_library := root.get_node_or_null("ContentLibrary")
 	if not assert_true(hud_clock_label != null, "HUD clock label should be present."):
 		bootstrap.free()
@@ -153,14 +153,14 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
-	var player_sprite := outdoor_mode.get_node_or_null("PlayerSprite") as Polygon2D
+	var player_sprite := outdoor_mode.get_node_or_null("PlayerVisual") as Sprite2D
 	var mart_data: Dictionary = content_library.get_building("mart_01")
 	var mart_position_data: Dictionary = mart_data.get("outdoor_position", {})
 	var mart_position := Vector2(
 		float(mart_position_data.get("x", 640.0)),
 		float(mart_position_data.get("y", 360.0))
 	)
-	if not assert_true(player_sprite != null, "Outdoor player marker should be present."):
+	if not assert_true(player_sprite != null, "Outdoor player visual should be present."):
 		bootstrap.free()
 		return
 	assert_true(player_sprite.position.distance_to(mart_position) > 72.0, "The run should start outside the entry radius.")
@@ -181,7 +181,7 @@ func _run_test() -> void:
 	if not assert_true(indoor_mode != null, "Entering a building should swap to the indoor mode."):
 		bootstrap.free()
 		return
-	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/VBox/ResultLabel") as Label
+	var result_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/Padding/VBox/ResultLabel") as Label
 	var action_buttons := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ActionScroll/ActionButtons") as VBoxContainer
 	if not assert_true(result_label != null, "Indoor result label should be present."):
 		bootstrap.free()
@@ -201,7 +201,7 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
-	var location_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/LocationStrip/HBox/LocationValueLabel") as Label
+	var location_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/LocationStrip/Padding/HBox/LocationValueLabel") as Label
 	if not assert_true(location_label != null, "Indoor mode should expose a location label in the creator flow."):
 		bootstrap.free()
 		return

@@ -2233,5 +2233,312 @@
     "cold_hint": "짧은 전력 기회를 놓치지 않게 해 주는 생활형 준비물이다.",
     "category": "utility",
     "item_tags": ["electronics", "power", "crafted"]
+  },
+  {
+    "id": "butter_cookie_box",
+    "name": "버터 쿠키 상자",
+    "bulk": 1,
+    "description": "금속 상자에 담긴 버터 쿠키다. 오래됐지만 아직 먹을 만하다.",
+    "usage_hint": "간단한 간식으로 바로 먹기 좋다.",
+    "cold_hint": "체온을 직접 올리진 않지만 추운 이동 중 허기를 눌러 주는 식량이다.",
+    "category": "food",
+    "item_tags": ["food", "packaged", "mart_item"],
+    "hunger_restore": 9,
+    "thirst_restore": -1,
+    "use_minutes": 10
+  },
+  {
+    "id": "instant_cocoa_mix",
+    "name": "코코아 믹스",
+    "bulk": 1,
+    "description": "뜨거운 물만 있으면 금방 마실 수 있는 달콤한 코코아 믹스다.",
+    "usage_hint": "뜨거운 물과 함께 쓰면 체온 회복에 도움이 되는 따뜻한 음료가 된다.",
+    "cold_hint": "찬 몸을 달래는 쪽에 더 가까운 식품 재료다.",
+    "category": "food",
+    "item_tags": ["food", "drink_mix", "mart_item"]
+  },
+  {
+    "id": "cling_wrap_roll",
+    "name": "랩",
+    "bulk": 1,
+    "description": "얇지만 밀봉과 보온 보조에 두루 쓸 수 있는 랩이다.",
+    "usage_hint": "용기, 보온병, 임시 봉합물과 함께 쓰기 좋다.",
+    "cold_hint": "직접 따뜻하진 않지만 열과 수분을 잡는 데 도움이 된다.",
+    "category": "utility",
+    "item_tags": ["utility", "seal", "mart_item"]
+  },
+  {
+    "id": "foil_tray_pack",
+    "name": "알루미늄 포일 트레이",
+    "bulk": 1,
+    "description": "얕은 포일 트레이 몇 개가 포개져 있다.",
+    "usage_hint": "작은 열원과 함께 쓰면 바닥 받침이나 임시 열 반사판으로 쓸 수 있다.",
+    "cold_hint": "직접적인 연료는 아니지만 열을 모으는 데는 도움이 된다.",
+    "category": "utility",
+    "item_tags": ["utility", "container", "heat_support", "mart_item"]
+  },
+  {
+    "id": "hand_warmer_pack",
+    "name": "핫팩",
+    "bulk": 1,
+    "description": "봉지를 흔들면 한동안 미지근한 열을 내는 일회용 핫팩이다.",
+    "usage_hint": "응급 보온이나 짧은 야외 이동 전에 바로 쓰기 좋다.",
+    "cold_hint": "추위에 직접 대응하는 즉시성 높은 생활 보온품이다.",
+    "category": "medical",
+    "item_tags": ["medical", "warming", "mart_item"],
+    "use_minutes": 5,
+    "use_effects": {
+      "exposure_restore": 5
+    }
+  },
+  {
+    "id": "mart_stock_note_01",
+    "name": "재고 정리 메모",
+    "bulk": 1,
+    "description": "포장재와 작은 생활용품을 어떻게 돌려쓰는지 적어 둔 메모다.",
+    "usage_hint": "읽으면 소형 생활 조합 몇 가지를 익힌다.",
+    "cold_hint": "보온용 소형 생활도구를 임시로 꾸리는 요령이 적혀 있다.",
+    "category": "knowledge",
+    "item_tags": ["knowledge", "readable", "mart_item"],
+    "readable": true,
+    "knowledge_title": "재고 정리 메모",
+    "knowledge_recipe_ids": ["foil_tray_pack__tea_light_candle", "cling_wrap_roll__hot_water_bottle"]
+  },
+  {
+    "id": "sealant_tube",
+    "name": "실링제 튜브",
+    "bulk": 1,
+    "description": "틈을 메우고 접합면을 밀봉하는 데 쓰는 실링제다.",
+    "usage_hint": "플라스틱 판, 얇은 막, 틈막이 재료와 잘 맞는다.",
+    "cold_hint": "바람과 물이 새는 틈을 줄이는 데 좋다.",
+    "category": "utility",
+    "item_tags": ["utility", "seal", "hardware_item"]
+  },
+  {
+    "id": "hose_clamp",
+    "name": "호스 밴드",
+    "bulk": 1,
+    "description": "호스를 금속 관이나 노즐에 단단히 고정하는 금속 밴드다.",
+    "usage_hint": "호스, 관, 임시 연결 장치와 함께 쓰기 좋다.",
+    "cold_hint": "직접 보온에는 도움되지 않지만 유체를 다루는 임시 장치 제작에 좋다.",
+    "category": "utility",
+    "item_tags": ["utility", "fastener", "hardware_item"]
+  },
+  {
+    "id": "rubber_gasket",
+    "name": "고무 개스킷",
+    "bulk": 1,
+    "description": "압착면 사이를 밀봉하는 고무 개스킷이다.",
+    "usage_hint": "배관 부속이나 뚜껑 결합면을 더 단단히 막는 데 쓸 수 있다.",
+    "cold_hint": "찬 바람과 누수를 막는 보수 쪽에 가까운 부품이다.",
+    "category": "utility",
+    "item_tags": ["utility", "seal", "hardware_item"]
+  },
+  {
+    "id": "epoxy_putty",
+    "name": "에폭시 퍼티",
+    "bulk": 1,
+    "description": "손으로 섞어 틈이나 금속 파손부를 임시로 메울 수 있는 퍼티다.",
+    "usage_hint": "작은 금속 파손부나 고정이 필요한 부분의 응급 보수에 쓸 수 있다.",
+    "cold_hint": "바깥 추위보다 파손과 틈새를 줄이는 데 직접 도움이 되는 재료다.",
+    "category": "utility",
+    "item_tags": ["utility", "repair", "hardware_item"]
+  },
+  {
+    "id": "hardware_backroom_key",
+    "name": "철물점 뒷방 열쇠",
+    "bulk": 1,
+    "description": "철물점 안쪽 자재실을 여는 작은 열쇠다.",
+    "usage_hint": "잠긴 자재실이나 안쪽 보관 구역을 여는 데 쓴다.",
+    "cold_hint": "직접 따뜻하진 않지만 더 깊은 생존 자원으로 가는 관문이다.",
+    "category": "key",
+    "item_tags": ["key", "hardware_item"]
+  },
+  {
+    "id": "sewing_kit",
+    "name": "반짇고리",
+    "bulk": 1,
+    "description": "실, 바늘, 작은 가위가 들어 있는 휴대용 반짇고리다.",
+    "usage_hint": "천이나 담요를 기워 다시 쓰는 데 좋다.",
+    "cold_hint": "낡은 섬유를 보수해 보온 도구를 오래 쓰게 만드는 쪽에 가깝다.",
+    "category": "tool",
+    "item_tags": ["tool", "textile", "apartment_item"]
+  },
+  {
+    "id": "knit_cap",
+    "name": "니트 모자",
+    "bulk": 1,
+    "description": "귀를 덮는 두꺼운 니트 모자다.",
+    "usage_hint": "바로 쓰는 소모품은 아니지만 생활 보온 물품으로 가치가 있다.",
+    "cold_hint": "머리 쪽 보온을 상상하게 만드는 생활용 겨울 물품이다.",
+    "category": "utility",
+    "item_tags": ["utility", "warming", "apartment_item"]
+  },
+  {
+    "id": "slippers",
+    "name": "실내 슬리퍼",
+    "bulk": 1,
+    "description": "바닥 냉기를 조금 막아 주는 낡은 실내 슬리퍼다.",
+    "usage_hint": "장착하면 실내 이동이 조금 편해진다.",
+    "cold_hint": "바닥 냉기를 완전히 막진 못하지만 생활 공간에서는 체감 차이가 난다.",
+    "category": "equipment",
+    "item_tags": ["equipment", "warming", "apartment_item"],
+    "equip_slot": "feet",
+    "move_speed_bonus": 2
+  },
+  {
+    "id": "detergent_pod_pack",
+    "name": "세제 캡슐",
+    "bulk": 1,
+    "description": "작은 세제 캡슐이 몇 개 남아 있는 봉투다.",
+    "usage_hint": "세척 관련 조합이나 생활 위생 아이템과 잘 맞는다.",
+    "cold_hint": "직접 보온은 아니지만 장기 생존에서 위생 유지에 도움이 된다.",
+    "category": "utility",
+    "item_tags": ["utility", "cleaning", "apartment_item"]
+  },
+  {
+    "id": "apartment_boiler_key",
+    "name": "보일러실 열쇠",
+    "bulk": 1,
+    "description": "아파트 지하 보일러실을 여는 녹슨 열쇠다.",
+    "usage_hint": "지하 설비실이나 잠긴 생활 공간으로 들어가는 데 쓴다.",
+    "cold_hint": "직접 따뜻하진 않지만 보온 자원을 품은 깊은 구역으로 연결된다.",
+    "category": "key",
+    "item_tags": ["key", "apartment_item"]
+  },
+  {
+    "id": "empty_jerrycan",
+    "name": "빈 제리캔",
+    "bulk": 2,
+    "description": "내용물은 비었지만 연료나 물을 옮기기 좋게 생긴 통이다.",
+    "usage_hint": "이송 호스나 깔때기와 함께 쓰기 좋다.",
+    "cold_hint": "직접 따뜻하진 않지만 연료나 물을 옮기는 기반 용기다.",
+    "category": "utility",
+    "item_tags": ["utility", "container", "logistics_item"]
+  },
+  {
+    "id": "siphon_hose",
+    "name": "사이펀 호스",
+    "bulk": 1,
+    "description": "액체를 옮길 때 쓰는 유연한 고무 호스다.",
+    "usage_hint": "호스 밴드나 용기와 결합하면 임시 이송 장치가 된다.",
+    "cold_hint": "연료와 물 같은 자원을 옮기는 기반 부품이다.",
+    "category": "utility",
+    "item_tags": ["utility", "fluid", "logistics_item"]
+  },
+  {
+    "id": "shop_towel_bundle",
+    "name": "작업용 수건 묶음",
+    "bulk": 1,
+    "description": "기름과 먼지가 밴 작업용 천 묶음이다.",
+    "usage_hint": "세척제, 알코올, 보수 재료와 함께 쓰기 좋다.",
+    "cold_hint": "직접 보온보다는 정비와 세척 쪽에 쓰기 좋은 천이다.",
+    "category": "utility",
+    "item_tags": ["utility", "cleaning", "logistics_item"]
+  },
+  {
+    "id": "tarp_sheet",
+    "name": "방수포",
+    "bulk": 2,
+    "description": "큰 물건을 덮거나 임시 차단막을 만들 때 쓰는 방수포다.",
+    "usage_hint": "담요나 결속재와 함께 쓰면 차단막이나 꾸러미를 만들 수 있다.",
+    "cold_hint": "바람과 눈을 막는 외피 재료로 가치가 있다.",
+    "category": "utility",
+    "item_tags": ["utility", "cover", "logistics_item"]
+  },
+  {
+    "id": "drain_funnel",
+    "name": "깔때기",
+    "bulk": 1,
+    "description": "액체를 좁은 입구로 옮길 때 쓰는 플라스틱 깔때기다.",
+    "usage_hint": "병, 캔, 큰 용기에 액체를 옮길 때 쓰기 좋다.",
+    "cold_hint": "직접 보온과는 무관하지만 자원 이송 작업을 쉽게 해 준다.",
+    "category": "utility",
+    "item_tags": ["utility", "container", "logistics_item"]
+  },
+  {
+    "id": "warehouse_shutter_key",
+    "name": "셔터 열쇠",
+    "bulk": 1,
+    "description": "창고 안쪽 셔터를 여는 묵직한 열쇠다.",
+    "usage_hint": "안쪽 적재 구역이나 셔터 너머 공간을 여는 데 쓴다.",
+    "cold_hint": "직접 보온과는 무관하지만 더 좋은 자원으로 가는 문을 연다.",
+    "category": "key",
+    "item_tags": ["key", "logistics_item"]
+  },
+  {
+    "id": "sealed_window_patch",
+    "name": "밀봉 보수 패치",
+    "bulk": 1,
+    "description": "얇은 막과 실링제를 이어 만든 틈막이 패치다.",
+    "usage_hint": "창문 틈새나 얇은 패널 보수에 쓰는 완성형 패치다.",
+    "cold_hint": "찬 바람을 줄이는 데 직접 도움이 되는 결과물이다.",
+    "category": "utility",
+    "item_tags": ["utility", "seal", "crafted_item"]
+  },
+  {
+    "id": "transfer_hose",
+    "name": "이송 호스",
+    "bulk": 1,
+    "description": "호스 밴드로 끝단을 고정한 임시 이송 호스다.",
+    "usage_hint": "용기와 함께 액체를 옮기는 데 쓸 수 있다.",
+    "cold_hint": "직접 따뜻하진 않지만 자원 확보 루프를 넓혀 주는 제작물이다.",
+    "category": "utility",
+    "item_tags": ["utility", "fluid", "crafted_item"]
+  },
+  {
+    "id": "patched_blanket",
+    "name": "기운 담요",
+    "bulk": 2,
+    "description": "헤진 부분을 꿰매 다시 쓸 수 있게 만든 담요다.",
+    "usage_hint": "휴식이나 보온 조합에서 다시 쓸 수 있는 생활 보온 물건이다.",
+    "cold_hint": "추위에 직접 대응하는 보온 결과물이다.",
+    "category": "utility",
+    "item_tags": ["utility", "warming", "crafted_item"]
+  },
+  {
+    "id": "solvent_wipes",
+    "name": "세척용 천 꾸러미",
+    "bulk": 1,
+    "description": "작업용 수건에 알코올을 적셔 만든 세척용 천이다.",
+    "usage_hint": "오염된 표면을 닦거나 간단한 위생 처리에 쓸 수 있다.",
+    "cold_hint": "보온보다는 위생과 정비에 가까운 제작 결과물이다.",
+    "category": "medical",
+    "item_tags": ["medical", "cleaning", "crafted_item"],
+    "health_restore": 4,
+    "use_minutes": 5
+  },
+  {
+    "id": "tarp_bedroll",
+    "name": "방수 침낭 꾸러미",
+    "bulk": 3,
+    "description": "담요와 방수포를 함께 묶어 만든 거친 보온 꾸러미다.",
+    "usage_hint": "바닥 냉기와 눈을 줄이는 야전 보온 꾸러미다.",
+    "cold_hint": "직접적으로 추위 대응에 도움이 되는 보온 결과물이다.",
+    "category": "utility",
+    "item_tags": ["utility", "warming", "crafted_item"]
+  },
+  {
+    "id": "foil_tray_warmer",
+    "name": "포일 트레이 보온기",
+    "bulk": 1,
+    "description": "포일 트레이와 작은 초를 조합한 간이 보온기다.",
+    "usage_hint": "작은 열원을 바닥 받침과 반사판처럼 쓰는 데 적합하다.",
+    "cold_hint": "강한 열원은 아니지만 몸 가까운 곳의 미세한 열 유지에 도움이 된다.",
+    "category": "utility",
+    "item_tags": ["utility", "warming", "crafted_item"]
+  },
+  {
+    "id": "wrapped_hot_water_bottle",
+    "name": "보온 감싼 물주머니",
+    "bulk": 1,
+    "description": "랩으로 표면을 감싸 열이 오래 가게 만든 물주머니다.",
+    "usage_hint": "짧은 보온 도구보다 오래 따뜻함을 유지하는 데 목적이 있다.",
+    "cold_hint": "직접 체감되는 보온 회복에 쓰는 결과물이다.",
+    "category": "utility",
+    "item_tags": ["drink", "warming", "crafted_item"],
+    "use_effects": {
+      "exposure_restore": 8
+    }
   }
 ]

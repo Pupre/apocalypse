@@ -1,21 +1,16 @@
 {
   "id": "apartment_01",
   "name": "낡은 아파트",
-  "summary": "공동 현관 안쪽으로 우편함, 1층 복도, 위층으로 이어지는 계단실이 보인다.",
+  "summary": "공동 현관만 보고 끝날 곳이 아니다. 위층, 보일러실, 잠긴 세대 안쪽에 생활 흔적과 자원이 남아 있다.",
   "entry_zone_id": "shared_entrance",
   "zones": [
     {
       "id": "shared_entrance",
       "floor_id": "floor_1",
       "label": "공동 현관",
-      "summary": "갈라진 타일 바닥 너머로 우편함 앞과 1층 복도가 보인다.",
-      "connected_zone_ids": [
-        "mailbox_hall",
-        "first_floor_hall"
-      ],
-      "event_ids": [
-        "shared_entrance_search_event"
-      ],
+      "summary": "갈라진 타일 바닥 너머로 우편함과 1층 복도 입구가 보인다.",
+      "connected_zone_ids": ["mailbox_hall", "first_floor_hall"],
+      "event_ids": ["shared_entrance_search_event"],
       "map_position": [0, 1],
       "first_visit_cost": 30,
       "revisit_cost": 10
@@ -24,13 +19,9 @@
       "id": "mailbox_hall",
       "floor_id": "floor_1",
       "label": "우편함 앞",
-      "summary": "열린 우편함 몇 개와 아직 닫힌 금속 함들이 벽을 따라 늘어서 있다.",
-      "connected_zone_ids": [
-        "shared_entrance"
-      ],
-      "event_ids": [
-        "mailbox_hall_search_event"
-      ],
+      "summary": "열린 우편함과 아직 닫힌 금속 함이 벽을 따라 늘어서 있다.",
+      "connected_zone_ids": ["shared_entrance"],
+      "event_ids": ["mailbox_hall_search_event"],
       "map_position": [1, 0],
       "first_visit_cost": 30,
       "revisit_cost": 10
@@ -39,13 +30,8 @@
       "id": "first_floor_hall",
       "floor_id": "floor_1",
       "label": "1층 복도",
-      "summary": "먼지 낀 복도 끝으로 관리 창고와 101호 문, 계단실 입구가 보인다.",
-      "connected_zone_ids": [
-        "shared_entrance",
-        "janitor_closet",
-        "unit_101_door",
-        "stairwell"
-      ],
+      "summary": "관리 창고와 101호, 계단실 입구가 한 줄로 이어져 있다.",
+      "connected_zone_ids": ["shared_entrance", "janitor_closet", "unit_101_door", "stairwell"],
       "event_ids": [],
       "map_position": [1, 1],
       "first_visit_cost": 30,
@@ -55,13 +41,9 @@
       "id": "janitor_closet",
       "floor_id": "floor_1",
       "label": "관리 창고",
-      "summary": "빗자루와 생수 상자, 비상용 자재가 어두운 창고 안에 쌓여 있다.",
-      "connected_zone_ids": [
-        "first_floor_hall"
-      ],
-      "event_ids": [
-        "janitor_closet_search_event"
-      ],
+      "summary": "청소도구와 생수 상자, 세탁 관련 소모품이 뒤섞여 있다.",
+      "connected_zone_ids": ["first_floor_hall"],
+      "event_ids": ["janitor_closet_search_event"],
       "map_position": [2, 0],
       "first_visit_cost": 30,
       "revisit_cost": 10
@@ -70,11 +52,8 @@
       "id": "unit_101_door",
       "floor_id": "floor_1",
       "label": "101호 앞",
-      "summary": "문틈 아래로 생활 흔적이 남아 있지만, 현관문은 잠겨 있다.",
-      "connected_zone_ids": [
-        "first_floor_hall",
-        "unit_101_room"
-      ],
+      "summary": "문틈 아래로 옷감과 종이 봉투가 밀려 나와 있다.",
+      "connected_zone_ids": ["first_floor_hall", "unit_101_room"],
       "event_ids": [],
       "map_position": [2, 1],
       "first_visit_cost": 30,
@@ -86,31 +65,22 @@
       "label": "101호",
       "move_label": "101호 문을 연다",
       "blocked_feedback": "101호 문이 잠겨 있어 들어갈 수 없다.",
-      "summary": "뒤집힌 식탁과 반쯤 열린 찬장 속에 생활 물자가 남아 있다.",
-      "connected_zone_ids": [
-        "unit_101_door"
-      ],
-      "event_ids": [
-        "unit_101_room_search_event"
-      ],
+      "summary": "뒤집힌 식탁 옆으로 손바느질 도구와 생활 물자가 남아 있다.",
+      "connected_zone_ids": ["unit_101_door"],
+      "event_ids": ["unit_101_room_search_event"],
       "map_position": [3, 1],
       "first_visit_cost": 30,
       "revisit_cost": 10,
       "access_requirements": {
-        "required_item_ids": [
-          "apartment_101_key"
-        ]
+        "required_item_ids": ["apartment_101_key"]
       }
     },
     {
       "id": "stairwell",
       "floor_id": "floor_1",
       "label": "계단실",
-      "summary": "난간이 삐걱거리는 계단이 2층으로 이어지고 있다.",
-      "connected_zone_ids": [
-        "first_floor_hall",
-        "second_floor_hall"
-      ],
+      "summary": "난간이 삐걱거리지만 2층과 아래 보일러 쪽으로 모두 이어진다.",
+      "connected_zone_ids": ["first_floor_hall", "second_floor_hall", "boiler_stair"],
       "event_ids": [],
       "map_position": [2, 2],
       "first_visit_cost": 30,
@@ -121,12 +91,8 @@
       "floor_id": "floor_2",
       "label": "2층 복도",
       "move_label": "2층으로 올라간다",
-      "summary": "빨랫감 냄새가 밴 복도 끝으로 세탁실과 201호 문이 나란히 있다.",
-      "connected_zone_ids": [
-        "stairwell",
-        "laundry_room",
-        "unit_201_door"
-      ],
+      "summary": "세탁실과 201호, 옥상으로 이어지는 문이 나란히 있다.",
+      "connected_zone_ids": ["stairwell", "laundry_room", "unit_201_door", "rooftop_door"],
       "event_ids": [],
       "map_position": [3, 2],
       "first_visit_cost": 30,
@@ -136,13 +102,9 @@
       "id": "laundry_room",
       "floor_id": "floor_2",
       "label": "공용 세탁실",
-      "summary": "세탁기 뚜껑이 열린 채 멈춰 있고, 선반 위엔 빨랫감과 잡동사니가 남아 있다.",
-      "connected_zone_ids": [
-        "second_floor_hall"
-      ],
-      "event_ids": [
-        "laundry_room_search_event"
-      ],
+      "summary": "세탁기 뚜껑이 열린 채 멈춰 있고, 선반 위엔 빨랫감이 남아 있다.",
+      "connected_zone_ids": ["second_floor_hall"],
+      "event_ids": ["laundry_room_search_event"],
       "map_position": [4, 1],
       "first_visit_cost": 30,
       "revisit_cost": 10
@@ -151,11 +113,8 @@
       "id": "unit_201_door",
       "floor_id": "floor_2",
       "label": "201호 앞",
-      "summary": "현관문 손잡이에 먼지가 덜 앉아 있다. 누군가 최근까지 드나든 것 같다.",
-      "connected_zone_ids": [
-        "second_floor_hall",
-        "unit_201_room"
-      ],
+      "summary": "문고리 먼지가 덜하다. 누군가 비교적 최근까지 드나든 느낌이다.",
+      "connected_zone_ids": ["second_floor_hall", "unit_201_room"],
       "event_ids": [],
       "map_position": [4, 2],
       "first_visit_cost": 30,
@@ -167,39 +126,76 @@
       "label": "201호",
       "move_label": "201호 문을 연다",
       "blocked_feedback": "201호 문이 잠겨 있어 들어갈 수 없다.",
-      "summary": "침대 옆 여행 가방과 손전등, 아직 덜 정리된 생활 흔적이 남아 있다.",
-      "connected_zone_ids": [
-        "unit_201_door"
-      ],
-      "event_ids": [
-        "unit_201_room_search_event"
-      ],
+      "summary": "여행 가방과 난방 메모, 보일러실 열쇠가 아직 방 안에 남아 있다.",
+      "connected_zone_ids": ["unit_201_door"],
+      "event_ids": ["unit_201_room_search_event"],
       "map_position": [5, 2],
       "first_visit_cost": 30,
       "revisit_cost": 10,
       "access_requirements": {
-        "required_item_ids": [
-          "apartment_201_key"
-        ]
+        "required_item_ids": ["apartment_201_key"]
       }
+    },
+    {
+      "id": "boiler_stair",
+      "floor_id": "floor_0",
+      "label": "보일러실 계단",
+      "move_label": "아래 보일러실로 내려간다",
+      "summary": "아래쪽으로 찬 공기가 새어 나오는 관리 구간 입구다.",
+      "connected_zone_ids": ["stairwell", "boiler_room"],
+      "event_ids": [],
+      "map_position": [2, 3],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "boiler_room",
+      "floor_id": "floor_0",
+      "label": "보일러실",
+      "move_label": "보일러실 문을 연다",
+      "blocked_feedback": "보일러실 문이 잠겨 있어 들어갈 수 없다.",
+      "summary": "금이 간 보일러 옆으로 뜨거운 물 주머니와 낡은 담요가 밀려 있다.",
+      "connected_zone_ids": ["boiler_stair"],
+      "event_ids": ["boiler_room_search_event"],
+      "map_position": [3, 3],
+      "first_visit_cost": 30,
+      "revisit_cost": 10,
+      "access_requirements": {
+        "required_item_ids": ["apartment_boiler_key"]
+      }
+    },
+    {
+      "id": "rooftop_door",
+      "floor_id": "floor_3",
+      "label": "옥상 출입문",
+      "move_label": "옥상으로 올라간다",
+      "summary": "눈이 들이친 옥상 문 너머로 도시 가장자리가 내려다보인다.",
+      "connected_zone_ids": ["second_floor_hall"],
+      "event_ids": ["rooftop_door_search_event"],
+      "map_position": [5, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
     }
   ],
-  "clues": [],
+  "clues": [
+    {
+      "id": "boiler_key_hint",
+      "text": "세탁실 메모 한쪽엔 보일러실 열쇠를 윗층 세대 안에 맡겼다는 낙서가 적혀 있다.",
+      "visible": false
+    }
+  ],
   "events": [
     {
       "id": "shared_entrance_search_event",
       "zone_id": "shared_entrance",
       "type": "search",
-      "hint_text": "현관 매트 아래와 관리비 고지함 주변엔 놓치고 간 물건이 있을지 모른다.",
+      "hint_text": "현관 매트 아래와 고지서 틈새에 작은 생활물자가 남아 있을 수 있다.",
       "options": [
         {
           "id": "search_shared_entrance",
           "label": "공동 현관을 탐색한다",
           "requirements": {},
-          "costs": {
-            "minutes": 30,
-            "noise": 0
-          },
+          "costs": { "minutes": 30, "noise": 0 },
           "outcomes": {
             "discover_loot": [],
             "loot_table": {
@@ -209,8 +205,7 @@
                 { "id": "shopping_bag", "weight": 4 },
                 { "id": "newspaper", "weight": 4 },
                 { "id": "wet_wipes", "weight": 3 },
-                { "id": "paper_bag", "weight": 3 },
-                { "id": "zip_bag", "weight": 2 }
+                { "id": "paper_bag", "weight": 2 }
               ]
             },
             "consume_on_use": true
@@ -222,42 +217,24 @@
       "id": "mailbox_hall_search_event",
       "zone_id": "mailbox_hall",
       "type": "search",
-      "hint_text": "금이 간 우편함 틈새에 아직 손대지 않은 봉투와 작은 열쇠가 남아 있다.",
+      "hint_text": "금이 간 우편함 틈새에 열쇠와 작은 생활 물건이 남아 있다.",
       "options": [
         {
           "id": "search_mailbox_hall",
           "label": "우편함 앞을 탐색한다",
           "requirements": {},
-          "costs": {
-            "minutes": 30,
-            "noise": 0
-          },
+          "costs": { "minutes": 30, "noise": 0 },
           "outcomes": {
             "discover_loot": [
-              {
-                "id": "apartment_101_key",
-                "name": "101호 열쇠",
-                "bulk": 1
-              },
-              {
-                "id": "crackers",
-                "name": "크래커",
-                "bulk": 1
-              },
-              {
-                "id": "lighter",
-                "name": "라이터",
-                "bulk": 1
-              }
+              { "id": "apartment_101_key", "bulk": 1 }
             ],
             "loot_table": {
               "rolls": 3,
               "allow_duplicates": false,
               "entries": [
-                { "id": "newspaper", "weight": 4 },
-                { "id": "shopping_bag", "weight": 4 },
-                { "id": "zip_bag", "weight": 3 },
-                { "id": "rubber_band", "weight": 3 },
+                { "id": "newspaper", "weight": 3 },
+                { "id": "lighter", "weight": 2 },
+                { "id": "crackers", "weight": 2 },
                 { "id": "memo_pad", "weight": 2 }
               ]
             },
@@ -270,44 +247,23 @@
       "id": "janitor_closet_search_event",
       "zone_id": "janitor_closet",
       "type": "search",
-      "hint_text": "생수 상자 뒤편과 청소 도구 사이엔 아직 쓸 만한 비상 물자가 남아 있다.",
+      "hint_text": "청소도구와 생수 상자, 세탁 관련 소모품이 아직 남아 있다.",
       "options": [
         {
           "id": "search_janitor_closet",
           "label": "관리 창고를 탐색한다",
           "requirements": {},
-          "costs": {
-            "minutes": 30,
-            "noise": 0
-          },
+          "costs": { "minutes": 30, "noise": 0 },
           "outcomes": {
-            "discover_loot": [
-              {
-                "id": "bottled_water",
-                "name": "생수",
-                "bulk": 1
-              },
-              {
-                "id": "packing_tape",
-                "name": "포장 테이프",
-                "bulk": 1
-              },
-              {
-                "id": "work_gloves",
-                "name": "작업 장갑",
-                "bulk": 1
-              }
-            ],
+            "discover_loot": [],
             "loot_table": {
               "rolls": 3,
               "allow_duplicates": false,
               "entries": [
-                { "id": "laundry_detergent", "weight": 5 },
-                { "id": "dish_soap", "weight": 4 },
-                { "id": "scrub_sponge", "weight": 4 },
-                { "id": "towel", "weight": 4 },
-                { "id": "dishcloth", "weight": 4 },
-                { "id": "trash_bag_roll", "weight": 3 }
+                { "id": "bottled_water", "weight": 3 },
+                { "id": "detergent_pod_pack", "weight": 3 },
+                { "id": "soap", "weight": 2 },
+                { "id": "trash_bag_roll", "weight": 2 }
               ]
             },
             "consume_on_use": true
@@ -319,49 +275,23 @@
       "id": "unit_101_room_search_event",
       "zone_id": "unit_101_room",
       "type": "search",
-      "hint_text": "뒤집힌 찬장과 식탁 아래엔 통조림과 개인 짐이 뒤섞여 있다.",
+      "hint_text": "현관 가까운 세대라 생활 흔적과 섬유 재료가 더 많이 남아 있다.",
       "options": [
         {
           "id": "search_unit_101_room",
           "label": "101호를 탐색한다",
           "requirements": {},
-          "costs": {
-            "minutes": 30,
-            "noise": 0
-          },
+          "costs": { "minutes": 30, "noise": 0 },
           "outcomes": {
-            "discover_loot": [
-              {
-                "id": "canned_beans",
-                "name": "통조림 콩",
-                "bulk": 1
-              },
-              {
-                "id": "energy_bar",
-                "name": "에너지바",
-                "bulk": 1
-              },
-              {
-                "id": "apartment_201_key",
-                "name": "201호 열쇠",
-                "bulk": 1
-              },
-              {
-                "id": "small_backpack",
-                "name": "작은 배낭",
-                "bulk": 2
-              }
-            ],
+            "discover_loot": [],
             "loot_table": {
-              "rolls": 3,
+              "rolls": 4,
               "allow_duplicates": false,
               "entries": [
-                { "id": "old_blanket", "weight": 4 },
-                { "id": "hoodie", "weight": 4 },
-                { "id": "tea_bag", "weight": 3 },
-                { "id": "food_storage_container", "weight": 3 },
-                { "id": "cardboard_box", "weight": 3 },
-                { "id": "paper_bag", "weight": 2 }
+                { "id": "sewing_kit", "weight": 4 },
+                { "id": "knit_cap", "weight": 3 },
+                { "id": "old_blanket", "weight": 3 },
+                { "id": "bandage", "weight": 2 }
               ]
             },
             "consume_on_use": true
@@ -373,46 +303,28 @@
       "id": "laundry_room_search_event",
       "zone_id": "laundry_room",
       "type": "search",
-      "hint_text": "세제통 뒤와 접이식 선반 아래엔 아직 건질 만한 자잘한 물건이 남아 있다.",
+      "hint_text": "젖은 빨랫감과 세탁 선반 사이에 생활 소모품이 남아 있다.",
       "options": [
         {
           "id": "search_laundry_room",
-          "label": "세탁실을 탐색한다",
+          "label": "공용 세탁실을 탐색한다",
           "requirements": {},
-          "costs": {
-            "minutes": 30,
-            "noise": 0
-          },
+          "costs": { "minutes": 30, "noise": 0 },
           "outcomes": {
             "discover_loot": [
-              {
-                "id": "bottled_water",
-                "name": "생수",
-                "bulk": 1
-              },
-              {
-                "id": "spare_batteries",
-                "name": "건전지",
-                "bulk": 1
-              },
-              {
-                "id": "instant_noodles",
-                "name": "컵라면",
-                "bulk": 1
-              }
+              { "id": "apartment_201_key", "bulk": 1 }
             ],
             "loot_table": {
               "rolls": 3,
               "allow_duplicates": false,
               "entries": [
-                { "id": "laundry_detergent", "weight": 5 },
-                { "id": "sleep_socks", "weight": 4 },
-                { "id": "towel", "weight": 4 },
-                { "id": "dishcloth", "weight": 4 },
-                { "id": "scrub_sponge", "weight": 3 },
-                { "id": "hoodie", "weight": 2 }
+                { "id": "detergent_pod_pack", "weight": 4 },
+                { "id": "slippers", "weight": 3 },
+                { "id": "soap", "weight": 2 },
+                { "id": "wet_wipes", "weight": 2 }
               ]
             },
+            "reveal_clue_ids": ["boiler_key_hint"],
             "consume_on_use": true
           }
         }
@@ -422,44 +334,79 @@
       "id": "unit_201_room_search_event",
       "zone_id": "unit_201_room",
       "type": "search",
-      "hint_text": "침대 아래 여행 가방과 벽장 안쪽엔 아직 챙길 만한 장비가 남아 있다.",
+      "hint_text": "누군가 비교적 최근까지 살림을 정리하지 못한 채 떠난 흔적이 남아 있다.",
       "options": [
         {
           "id": "search_unit_201_room",
           "label": "201호를 탐색한다",
           "requirements": {},
-          "costs": {
-            "minutes": 30,
-            "noise": 0
-          },
+          "costs": { "minutes": 30, "noise": 0 },
           "outcomes": {
             "discover_loot": [
-              {
-                "id": "flashlight",
-                "name": "손전등",
-                "bulk": 1
-              },
-              {
-                "id": "running_shoes",
-                "name": "운동화",
-                "bulk": 1
-              },
-              {
-                "id": "canned_tuna",
-                "name": "참치 통조림",
-                "bulk": 1
-              }
+              { "id": "apartment_boiler_key", "bulk": 1 }
             ],
             "loot_table": {
               "rolls": 3,
               "allow_duplicates": false,
               "entries": [
-                { "id": "hoodie", "weight": 5 },
-                { "id": "sleep_socks", "weight": 4 },
-                { "id": "cardboard_box", "weight": 4 },
-                { "id": "laundry_detergent", "weight": 4 },
-                { "id": "sweater", "weight": 3 },
-                { "id": "food_storage_container", "weight": 2 }
+                { "id": "knit_cap", "weight": 3 },
+                { "id": "slippers", "weight": 3 },
+                { "id": "memo_pad", "weight": 2 }
+              ]
+            },
+            "reveal_clue_ids": ["boiler_key_hint"],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "boiler_room_search_event",
+      "zone_id": "boiler_room",
+      "type": "search",
+      "hint_text": "보일러실 구석엔 물을 덥히던 생활 흔적과 보온 도구가 남아 있다.",
+      "options": [
+        {
+          "id": "search_boiler_room",
+          "label": "보일러실을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "hot_water_bottle", "weight": 3 },
+                { "id": "old_blanket", "weight": 3 },
+                { "id": "bottled_water", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "rooftop_door_search_event",
+      "zone_id": "rooftop_door",
+      "type": "search",
+      "hint_text": "옥상 출입문 앞엔 급히 버리고 간 생활 물건이 눈 속에 반쯤 묻혀 있다.",
+      "options": [
+        {
+          "id": "search_rooftop_door",
+          "label": "옥상 출입문 주변을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "shopping_bag", "weight": 2 },
+                { "id": "knit_cap", "weight": 2 },
+                { "id": "slippers", "weight": 2 }
               ]
             },
             "consume_on_use": true

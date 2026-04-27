@@ -1,0 +1,163 @@
+{
+  "id": "laundry_01",
+  "name": "코인 세탁소",
+  "summary": "세탁기 줄 사이로 접이식 테이블과 세제 선반, 안쪽 수거 코너가 이어진다.",
+  "entry_zone_id": "washer_row",
+  "zones": [
+    {
+      "id": "washer_row",
+      "floor_id": "floor_1",
+      "label": "세탁기 줄",
+      "summary": "멈춘 세탁기 뚜껑이 반쯤 열려 있고 바닥엔 젖은 천 조각이 널려 있다.",
+      "connected_zone_ids": ["folding_table", "detergent_shelf"],
+      "event_ids": ["washer_row_search_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "folding_table",
+      "floor_id": "floor_1",
+      "label": "접이식 테이블",
+      "summary": "수건과 봉투, 작은 잡동사니가 테이블 아래에 남아 있다.",
+      "connected_zone_ids": ["washer_row", "pickup_corner"],
+      "event_ids": ["folding_table_search_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "detergent_shelf",
+      "floor_id": "floor_1",
+      "label": "세제 선반",
+      "summary": "세제 빈 통 사이로 포장지와 생활용품이 흩어져 있다.",
+      "connected_zone_ids": ["washer_row"],
+      "event_ids": ["detergent_shelf_search_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "pickup_corner",
+      "floor_id": "floor_1",
+      "label": "수거 코너",
+      "summary": "수거함 옆에 천 조각과 봉투, 잊힌 소지품이 남아 있다.",
+      "connected_zone_ids": ["folding_table"],
+      "event_ids": ["pickup_corner_search_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [],
+  "events": [
+    {
+      "id": "washer_row_search_event",
+      "zone_id": "washer_row",
+      "type": "search",
+      "hint_text": "세탁기 안쪽과 하부 틈새에는 놓치고 간 물건이 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_washer_row",
+          "label": "세탁기 줄을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "wet_wipes", "weight": 4 },
+                { "id": "zip_bag", "weight": 3 },
+                { "id": "plastic_bag", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "folding_table_search_event",
+      "zone_id": "folding_table",
+      "type": "search",
+      "hint_text": "테이블 아래엔 수건과 작은 생활용품이 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_folding_table",
+          "label": "접이식 테이블을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "paper_bag", "weight": 4 },
+                { "id": "tissue_pack", "weight": 3 },
+                { "id": "zip_bag", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "detergent_shelf_search_event",
+      "zone_id": "detergent_shelf",
+      "type": "search",
+      "hint_text": "세제 선반에는 위생 키트 재료가 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_detergent_shelf",
+          "label": "세제 선반을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "wet_wipes", "weight": 4 },
+                { "id": "alcohol_swab", "weight": 3 },
+                { "id": "zip_bag", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "pickup_corner_search_event",
+      "zone_id": "pickup_corner",
+      "type": "search",
+      "hint_text": "수거 코너엔 누가 잊고 간 소지품이 아직 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_pickup_corner",
+          "label": "수거 코너를 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "newspaper", "weight": 3 },
+                { "id": "plastic_bag", "weight": 3 },
+                { "id": "memo_pad", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

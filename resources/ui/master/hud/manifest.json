@@ -1,0 +1,265 @@
+{
+  "pack_name": "Frozen UI Pack 1 - HUD Compact",
+  "style_family": "Frozen-city survival UI compact family",
+  "source_rules": "Game-ready 2D sprite assets with transparent background outside shape only, no baked text, grounded cold palette.",
+  "assets": [
+    {
+      "filename": "hud_header_chip_compact.png",
+      "purpose": "Compact top info chip for location/time line above gameplay",
+      "size": "620x40",
+      "nine_slice": {
+        "left": 22,
+        "right": 22,
+        "top": 14,
+        "bottom": 14
+      },
+      "alpha_policy": "outside transparent only"
+    },
+    {
+      "filename": "hud_gauge_strip_compact.png",
+      "purpose": "Long compact strip behind five survival gauges",
+      "size": "620x34",
+      "nine_slice": {
+        "left": 18,
+        "right": 18,
+        "top": 12,
+        "bottom": 12
+      },
+      "alpha_policy": "outside transparent only"
+    },
+    {
+      "filename": "gauge_frame_short_compact.png",
+      "purpose": "Short shared gauge frame for health/hunger/thirst/fatigue/cold",
+      "size": "112x20",
+      "nine_slice": {
+        "left": 12,
+        "right": 12,
+        "top": 8,
+        "bottom": 8
+      },
+      "alpha_policy": "outside transparent only"
+    },
+    {
+      "filename": "gauge_fill_health.png",
+      "purpose": "Health fill texture",
+      "size": "104x14",
+      "nine_slice": {
+        "left": 7,
+        "right": 7,
+        "top": 6,
+        "bottom": 6
+      },
+      "alpha_policy": "shape transparent outside only"
+    },
+    {
+      "filename": "gauge_fill_hunger.png",
+      "purpose": "Hunger fill texture",
+      "size": "104x14",
+      "nine_slice": {
+        "left": 7,
+        "right": 7,
+        "top": 6,
+        "bottom": 6
+      },
+      "alpha_policy": "shape transparent outside only"
+    },
+    {
+      "filename": "gauge_fill_thirst.png",
+      "purpose": "Thirst fill texture",
+      "size": "104x14",
+      "nine_slice": {
+        "left": 7,
+        "right": 7,
+        "top": 6,
+        "bottom": 6
+      },
+      "alpha_policy": "shape transparent outside only"
+    },
+    {
+      "filename": "gauge_fill_fatigue.png",
+      "purpose": "Fatigue fill texture",
+      "size": "104x14",
+      "nine_slice": {
+        "left": 7,
+        "right": 7,
+        "top": 6,
+        "bottom": 6
+      },
+      "alpha_policy": "shape transparent outside only"
+    },
+    {
+      "filename": "gauge_fill_cold.png",
+      "purpose": "Cold/exposure fill texture",
+      "size": "104x14",
+      "nine_slice": {
+        "left": 7,
+        "right": 7,
+        "top": 6,
+        "bottom": 6
+      },
+      "alpha_policy": "shape transparent outside only"
+    },
+    {
+      "filename": "hud_icon_button_compact_normal.png",
+      "purpose": "Compact HUD icon button (normal) for map/bag/structure/close slots",
+      "size": "40x40",
+      "nine_slice": {
+        "left": 12,
+        "right": 12,
+        "top": 12,
+        "bottom": 12
+      },
+      "alpha_policy": "outside transparent only"
+    },
+    {
+      "filename": "hud_icon_button_compact_pressed.png",
+      "purpose": "Compact HUD icon button (pressed) for map/bag/structure/close slots",
+      "size": "40x40",
+      "nine_slice": {
+        "left": 12,
+        "right": 12,
+        "top": 12,
+        "bottom": 12
+      },
+      "alpha_policy": "outside transparent only"
+    },
+    {
+      "filename": "hud_icon_button_compact_active.png",
+      "purpose": "Compact HUD icon button (active) for map/bag/structure/close slots",
+      "size": "40x40",
+      "nine_slice": {
+        "left": 12,
+        "right": 12,
+        "top": 12,
+        "bottom": 12
+      },
+      "alpha_policy": "outside transparent only"
+    },
+    {
+      "filename": "hud_icon_button_compact_disabled.png",
+      "purpose": "Compact HUD icon button (disabled) for map/bag/structure/close slots",
+      "size": "40x40",
+      "nine_slice": {
+        "left": 12,
+        "right": 12,
+        "top": 12,
+        "bottom": 12
+      },
+      "alpha_policy": "outside transparent only"
+    },
+    {
+      "filename": "hud_status_pill.png",
+      "purpose": "Compact status pill for short text like pursuit, danger, prompt, unrest",
+      "size": "196x28",
+      "nine_slice": {
+        "left": 18,
+        "right": 18,
+        "top": 10,
+        "bottom": 10
+      },
+      "alpha_policy": "outside transparent only"
+    },
+    {
+      "filename": "hud_divider_subtle.png",
+      "purpose": "Subtle divider for separating HUD header subsections",
+      "size": "280x6",
+      "nine_slice": null,
+      "alpha_policy": "effect line; mostly transparent"
+    }
+  ],
+  "atlas": {
+    "filename": "atlas_hud_compact_pack1.png",
+    "placements": {
+      "hud_header_chip_compact.png": {
+        "x": 8,
+        "y": 8,
+        "w": 620,
+        "h": 40
+      },
+      "hud_gauge_strip_compact.png": {
+        "x": 8,
+        "y": 56,
+        "w": 620,
+        "h": 34
+      },
+      "gauge_frame_short_compact.png": {
+        "x": 636,
+        "y": 56,
+        "w": 112,
+        "h": 20
+      },
+      "gauge_fill_health.png": {
+        "x": 756,
+        "y": 56,
+        "w": 104,
+        "h": 14
+      },
+      "gauge_fill_hunger.png": {
+        "x": 868,
+        "y": 56,
+        "w": 104,
+        "h": 14
+      },
+      "gauge_fill_thirst.png": {
+        "x": 8,
+        "y": 98,
+        "w": 104,
+        "h": 14
+      },
+      "gauge_fill_fatigue.png": {
+        "x": 120,
+        "y": 98,
+        "w": 104,
+        "h": 14
+      },
+      "gauge_fill_cold.png": {
+        "x": 232,
+        "y": 98,
+        "w": 104,
+        "h": 14
+      },
+      "hud_icon_button_compact_normal.png": {
+        "x": 344,
+        "y": 98,
+        "w": 40,
+        "h": 40
+      },
+      "hud_icon_button_compact_pressed.png": {
+        "x": 392,
+        "y": 98,
+        "w": 40,
+        "h": 40
+      },
+      "hud_icon_button_compact_active.png": {
+        "x": 440,
+        "y": 98,
+        "w": 40,
+        "h": 40
+      },
+      "hud_icon_button_compact_disabled.png": {
+        "x": 488,
+        "y": 98,
+        "w": 40,
+        "h": 40
+      },
+      "hud_status_pill.png": {
+        "x": 536,
+        "y": 98,
+        "w": 196,
+        "h": 28
+      },
+      "hud_divider_subtle.png": {
+        "x": 8,
+        "y": 146,
+        "w": 280,
+        "h": 6
+      }
+    }
+  },
+  "notes": [
+    "Panel/button/chip assets use opaque interiors and transparent exterior only.",
+    "Gauge fills and divider are effect-style HUD assets and intentionally use shape transparency around the element.",
+    "Use 9-slice on header chip, gauge strip, gauge frame, status pill, and button states.",
+    "Gauge fills should usually be masked or width-controlled in-engine rather than 9-sliced when possible."
+  ]
+}

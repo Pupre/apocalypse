@@ -1,0 +1,87 @@
+{
+  "id": "church_01",
+  "name": "작은 교회",
+  "summary": "본당과 안쪽 제의실이 나뉘어 있어 종이류와 초류가 따로 남아 있다.",
+  "entry_zone_id": "hall",
+  "zones": [
+    {
+      "id": "hall",
+      "floor_id": "floor_1",
+      "label": "본당",
+      "summary": "긴 의자와 게시판 사이에 종이와 천 조각이 남아 있다.",
+      "connected_zone_ids": ["vestry"],
+      "event_ids": ["search_church_hall"],
+      "map_position": [0, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "vestry",
+      "floor_id": "floor_1",
+      "label": "제의실",
+      "summary": "뒤편 선반엔 작은 초와 보관 상자가 남아 있다.",
+      "connected_zone_ids": ["hall"],
+      "event_ids": ["search_church_vestry"],
+      "map_position": [1, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [],
+  "events": [
+    {
+      "id": "search_church_hall",
+      "zone_id": "hall",
+      "type": "search",
+      "hint_text": "의자와 게시판 사이에 메모와 종이류가 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_church_hall_once",
+          "label": "본당을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "newspaper", "weight": 2 },
+                { "id": "memo_pad", "weight": 2 },
+                { "id": "old_blanket", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_church_vestry",
+      "zone_id": "vestry",
+      "type": "search",
+      "hint_text": "안쪽 방엔 초와 작은 생활 물건이 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_church_vestry_once",
+          "label": "제의실을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "tea_light_candle", "weight": 3 },
+                { "id": "paper_bag", "weight": 1 },
+                { "id": "ballpoint_pen", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}
