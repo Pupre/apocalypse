@@ -86,6 +86,10 @@
           "costs": { "minutes": 30, "noise": 0 },
           "outcomes": {
             "discover_loot": [],
+            "supply_sources": [
+              { "id": "bag_bundle", "item_id": "trash_bag_roll", "quantity": 6 },
+              { "id": "jerrycan_stack", "item_id": "empty_jerrycan", "quantity": 4 }
+            ],
             "loot_table": {
               "rolls": 2,
               "allow_duplicates": false,

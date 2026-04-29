@@ -166,4 +166,56 @@ custom_minimum_size = Vector2(440, 260)
 size_flags_vertical = 3
 script = ExtResource("3")
 
+[node name="SupplyPickerOverlay" type="PanelContainer" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -120.0
+offset_right = 220.0
+offset_bottom = 120.0
+
+[node name="Padding" type="MarginContainer" parent="SupplyPickerOverlay"]
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBox" type="VBoxContainer" parent="SupplyPickerOverlay/Padding"]
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="SupplyPickerOverlay/Padding/VBox"]
+text = "수량 선택"
+
+[node name="StatusLabel" type="Label" parent="SupplyPickerOverlay/Padding/VBox"]
+text = ""
+
+[node name="QuantityRow" type="HBoxContainer" parent="SupplyPickerOverlay/Padding/VBox"]
+alignment = 1
+theme_override_constants/separation = 10
+
+[node name="MinusButton" type="Button" parent="SupplyPickerOverlay/Padding/VBox/QuantityRow"]
+text = "-"
+
+[node name="QuantityValueLabel" type="Label" parent="SupplyPickerOverlay/Padding/VBox/QuantityRow"]
+text = "1"
+horizontal_alignment = 1
+
+[node name="PlusButton" type="Button" parent="SupplyPickerOverlay/Padding/VBox/QuantityRow"]
+text = "+"
+
+[node name="ButtonRow" type="HBoxContainer" parent="SupplyPickerOverlay/Padding/VBox"]
+theme_override_constants/separation = 10
+
+[node name="CancelButton" type="Button" parent="SupplyPickerOverlay/Padding/VBox/ButtonRow"]
+size_flags_horizontal = 3
+text = "취소"
+
+[node name="ConfirmButton" type="Button" parent="SupplyPickerOverlay/Padding/VBox/ButtonRow"]
+size_flags_horizontal = 3
+text = "챙긴다"
+
 [node name="SurvivalSheet" parent="." instance=ExtResource("4")]

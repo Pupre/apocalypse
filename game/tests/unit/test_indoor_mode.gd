@@ -219,6 +219,14 @@ func _run_test() -> void:
 		indoor_mode.free()
 		return
 
+	var supply_picker_overlay := indoor_mode.get_node_or_null("SupplyPickerOverlay") as Control
+	var supply_picker_title := indoor_mode.get_node_or_null("SupplyPickerOverlay/Padding/VBox/TitleLabel") as Label
+	var supply_picker_quantity := indoor_mode.get_node_or_null("SupplyPickerOverlay/Padding/VBox/QuantityRow/QuantityValueLabel") as Label
+	if not assert_true(supply_picker_overlay != null and supply_picker_title != null and supply_picker_quantity != null, "Indoor mode should expose a supply quantity picker overlay."):
+		indoor_mode.free()
+		return
+	assert_true(not supply_picker_overlay.visible, "Indoor mode should keep the supply quantity picker hidden by default.")
+
 	var gauge_row := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/GaugeRow")
 	var health_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/GaugeRow/HealthGauge/StageLabel") as Label
 	var hunger_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/GaugeRow/HungerGauge/StageLabel") as Label
@@ -497,6 +505,15 @@ func _run_test() -> void:
 		return
 	move_food_aisle_button.emit_signal("pressed")
 	await process_frame
+	assert_true(director.apply_action("search_food_aisle"), "Indoor mode should allow searching the food aisle for supply picker coverage.")
+	indoor_mode._on_action_pressed("take_supply_food_aisle_water_shelf_detail")
+	await process_frame
+	assert_true(supply_picker_overlay.visible, "Indoor mode should open the supply picker when the detail supply action is pressed.")
+	assert_true(supply_picker_title.text.find("생수") >= 0, "Supply picker should name the selected supply source item.")
+	assert_eq(supply_picker_quantity.text, "1", "Supply picker should start at one item.")
+	indoor_mode._on_supply_picker_cancel_pressed()
+	await process_frame
+	assert_true(not supply_picker_overlay.visible, "Indoor mode should hide the supply picker when cancel is pressed.")
 	var move_household_goods_button := _find_button_by_text(action_buttons, "생활용품 코너로 이동한다 (30분)")
 	if not assert_true(move_household_goods_button != null, "Indoor mode should expose movement from the food aisle into household goods."):
 		indoor_mode.free()
@@ -571,8 +588,8 @@ func _run_test() -> void:
 	)
 	assert_eq(
 		time_label.text,
-		"시각: 1일차 11:30",
-		"Indoor mode should include the portrait craft time before walking back through known zones."
+		"시각: 1일차 12:00",
+		"Indoor mode should include the supply search and portrait craft time before walking back through known zones."
 	)
 	move_section_header = _find_section_header_panel_by_text(action_buttons, "이동")
 	exit_button = _find_descendant_by_name_and_type(move_section_header, "ExitShortcutButton", "Button") as Button

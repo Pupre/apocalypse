@@ -255,6 +255,10 @@
           "costs": { "minutes": 30, "noise": 0 },
           "outcomes": {
             "discover_loot": [],
+            "supply_sources": [
+              { "id": "water_shelf", "item_id": "bottled_water", "quantity": 12 },
+              { "id": "soup_case", "item_id": "instant_soup_powder", "quantity": 8 }
+            ],
             "loot_table": {
               "rolls": 3,
               "allow_duplicates": false,

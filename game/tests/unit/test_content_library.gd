@@ -25,6 +25,16 @@ func _assert_item_contract(item_id: String) -> void:
 	assert_true(typeof(item_tags_variant) == TYPE_ARRAY and not (item_tags_variant as Array).is_empty(), "Item '%s' should expose a non-empty item_tags array." % item_id)
 
 
+func _assert_carry_weight_contract(item_id: String) -> void:
+	var content_library = _content_library()
+	if not assert_true(content_library != null, "ContentLibrary autoload should be registered."):
+		return
+	var row: Dictionary = content_library.get_item(item_id)
+	assert_true(not row.is_empty(), "Expected carry-weight item '%s' to exist." % item_id)
+	assert_true(row.has("carry_weight"), "Item '%s' should expose carry_weight for hauling decisions." % item_id)
+	assert_true(typeof(row.get("carry_weight", null)) in [TYPE_FLOAT, TYPE_INT], "Item '%s' carry_weight should be numeric." % item_id)
+
+
 func _assert_recipe_contract(primary: String, secondary: String, expected_result_item_id: String = "") -> void:
 	var content_library = _content_library()
 	if not assert_true(content_library != null, "ContentLibrary autoload should be registered."):
@@ -289,6 +299,12 @@ func _run_test() -> void:
 		assert_true(not building.is_empty(), "Expected building '%s' to exist." % required_building_id)
 		assert_true(String(building.get("depth_tier", "")).begins_with("tier_"), "Building '%s' should expose a depth_tier." % required_building_id)
 		assert_true(not String(building.get("entry_briefing", "")).is_empty(), "Building '%s' should expose an outdoor entry briefing." % required_building_id)
+	var mart_building: Dictionary = content_library.get_building("mart_01")
+	var apartment_building: Dictionary = content_library.get_building("apartment_01")
+	assert_true(typeof(mart_building.get("fixed_heat_sources", [])) == TYPE_ARRAY, "Mart should expose fixed_heat_sources metadata for indoor recovery rules.")
+	assert_true(typeof(apartment_building.get("fixed_heat_sources", [])) == TYPE_ARRAY, "Apartment should expose fixed_heat_sources metadata for indoor recovery rules.")
+	assert_true((mart_building.get("fixed_heat_sources", []) as Array).size() > 0, "Mart should include at least one fixed indoor heat point.")
+	assert_true((apartment_building.get("fixed_heat_sources", []) as Array).size() > 0, "Apartment should include at least one fixed indoor heat point.")
 	for required_item_id in [
 		"butter_cookie_box",
 		"sealant_tube",
@@ -304,6 +320,18 @@ func _run_test() -> void:
 	_assert_recipe_contract("shop_towel_bundle", "rubbing_alcohol", "solvent_wipes")
 	_assert_recipe_contract("tarp_sheet", "old_blanket", "tarp_bedroll")
 	_assert_recipe_contract("foil_tray_pack", "tea_light_candle", "foil_tray_warmer")
+	_assert_carry_weight_contract("energy_bar")
+	_assert_carry_weight_contract("bottled_water")
+	_assert_carry_weight_contract("small_backpack")
+	_assert_carry_weight_contract("can_stove")
+	var small_backpack: Dictionary = content_library.get_item("small_backpack")
+	assert_true(small_backpack.has("carry_capacity_bonus"), "Bag items should expose carry_capacity_bonus instead of carry_limit_bonus.")
+	assert_true(not small_backpack.has("carry_limit_bonus"), "Bag items should stop exposing carry_limit_bonus as the canonical field.")
+	var clerk_job: Dictionary = content_library.get_job("clerk")
+	assert_true(not clerk_job.is_empty(), "Clerk job should exist for carry contract coverage.")
+	var clerk_modifiers: Dictionary = clerk_job.get("modifiers", {})
+	assert_true(clerk_modifiers.has("carry_capacity_bonus"), "Carry-oriented job modifiers should use carry_capacity_bonus.")
+	assert_true(not clerk_modifiers.has("carry_limit"), "Carry-oriented job modifiers should stop using carry_limit.")
 	assert_true(bool(items["improvised_heat_note_01"].get("readable", false)), "Knowledge notes should expose readable=true.")
 	assert_true(Array(items["improvised_heat_note_01"].get("knowledge_recipe_ids", [])).size() > 0, "Knowledge notes should unlock at least one recipe.")
 	assert_eq(int(items["lighter"].get("charges_max", 0)), 5, "Lighter should expose a default charge capacity of 5.")

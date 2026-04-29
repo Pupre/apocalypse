@@ -91,6 +91,9 @@ func get_current_zone_status_rows() -> Array[String]:
 	rows.append("남아 있는 물건 %d개" % zone_loot.size())
 	var deployments := _deployments_for_zone(memory, zone_id)
 	rows.append("설치물 %d개" % deployments.size())
+	if _run_state != null and _run_state.has_method("get_current_heat_recovery_context"):
+		var heat_context: Dictionary = _run_state.get_current_heat_recovery_context()
+		rows.append(String(heat_context.get("status_text", "")))
 	if _zone_search_completed(zone_id):
 		rows.append("수색 완료")
 	return rows
@@ -112,6 +115,40 @@ func get_exit_action() -> Dictionary:
 	var formatted := exit_action.duplicate(true)
 	formatted["label"] = _format_action_label(formatted)
 	return formatted
+
+
+func get_supply_picker_payload(action_id: String) -> Dictionary:
+	if action_id.is_empty():
+		return {"visible": false}
+
+	for action in _resolver.get_actions(_event_data, _event_state, _run_state):
+		if String(action.get("id", "")) != action_id:
+			continue
+		if String(action.get("type", "")) != "take_supply_detail":
+			continue
+		var max_quantity := int(action.get("max_quantity", 0))
+		return {
+			"visible": true,
+			"action_id": action_id,
+			"zone_id": String(action.get("zone_id", "")),
+			"source_id": String(action.get("source_id", "")),
+			"item_id": String(action.get("item_id", "")),
+			"item_name": String(action.get("item_name", "")),
+			"quantity_remaining": int(action.get("quantity_remaining", 0)),
+			"max_quantity": max_quantity,
+			"selected_quantity": 1 if max_quantity > 0 else 0,
+		}
+
+	return {"visible": false}
+
+
+func apply_supply_pickup(zone_id: String, source_id: String, quantity: int) -> bool:
+	if _run_state == null:
+		return false
+	if not _resolver.apply_supply_pickup(_run_state, _event_state, zone_id, source_id, quantity):
+		return false
+	state_changed.emit()
+	return true
 
 
 func get_clock_label() -> String:
@@ -138,26 +175,27 @@ func get_inventory_entries() -> Array[String]:
 
 func get_inventory_title() -> String:
 	if _run_state == null or _run_state.inventory == null:
-		return "소지품 (0/0)"
+		return "소지품 (0.0/0.0kg)"
 
-	return "소지품 (%d/%d)" % [_run_state.inventory.total_bulk(), _run_state.inventory.carry_limit]
+	var summary: Dictionary = _run_state.get_carry_weight_summary() if _run_state.has_method("get_carry_weight_summary") else {}
+	return "소지품 (%.1f/%.1fkg)" % [
+		float(summary.get("total_weight", 0.0)),
+		float(summary.get("carry_capacity", 0.0))
+	]
 
 
 func get_inventory_status_text() -> String:
 	if _run_state == null or _run_state.inventory == null:
 		return ""
 
-	var total_bulk: int = _run_state.inventory.total_bulk()
-	var carry_limit: int = _run_state.inventory.carry_limit
-	if total_bulk < carry_limit:
-		return "여유 있음"
-	if total_bulk == carry_limit:
-		return "가방이 가득 찼다"
+	var state_label: String = _run_state.get_carry_state_label() if _run_state.has_method("get_carry_state_label") else "적정"
+	if state_label == "적정":
+		return "적정"
 	if not _run_state.has_method("get_outdoor_move_speed") or _run_state.move_speed <= 0.0:
-		return "과적"
+		return state_label
 
 	var speed_ratio := float(_run_state.get_outdoor_move_speed()) / float(_run_state.move_speed)
-	return "과적: 실외 이동속도 %d%%" % int(round(speed_ratio * 100.0))
+	return "%s: 실외 이동속도 %d%%" % [state_label, int(round(speed_ratio * 100.0))]
 
 
 func get_inventory_rows() -> Array[Dictionary]:
@@ -185,11 +223,13 @@ func get_inventory_rows() -> Array[Dictionary]:
 
 	for item_id in order:
 		var item_data := _item_definition(item_id)
+		var item_weight := float(item_data.get("carry_weight", item_data.get("bulk", 1)))
+		var total_weight := item_weight * float(counts[item_id])
 		rows.append({
 			"kind": "carried",
 			"item_id": item_id,
 			"count": int(counts[item_id]),
-			"label": "%s x%d" % [_item_name(item_data, item_id), int(counts[item_id])],
+			"label": "%s x%d · %.1fkg" % [_item_name(item_data, item_id), int(counts[item_id]), total_weight],
 			"tag_texts": _item_tags(item_data),
 			"charges_text": _item_charges_text(item_id, item_data),
 			"action_id": "inspect_inventory_%s" % item_id,
@@ -466,6 +506,8 @@ func _create_initial_event_state(current_zone_id: String = "") -> Dictionary:
 		"visited_zone_ids": visited_zone_ids,
 		"traversed_edge_ids": PackedStringArray(),
 		"zone_found_loot": {},
+		"zone_loot_entries": {},
+		"zone_supply_sources": {},
 		"next_loot_uid": 0,
 		"revealed_clue_ids": PackedStringArray(),
 		"spent_action_ids": PackedStringArray(),
@@ -719,9 +761,12 @@ func _item_effect_text(item_data: Dictionary) -> String:
 	var fatigue_restore := int(item_data.get("fatigue_restore", 0))
 	if fatigue_restore > 0:
 		parts.append("피로 -%d" % fatigue_restore)
-	var carry_limit_bonus := int(item_data.get("carry_limit_bonus", 0))
-	if carry_limit_bonus > 0:
-		parts.append("소지 한도 +%d" % carry_limit_bonus)
+	var carry_weight := float(item_data.get("carry_weight", item_data.get("bulk", 0)))
+	if carry_weight > 0.0:
+		parts.append("무게 %.1fkg" % carry_weight)
+	var carry_capacity_bonus := float(item_data.get("carry_capacity_bonus", item_data.get("carry_limit_bonus", 0)))
+	if carry_capacity_bonus > 0.0:
+		parts.append("운반 한계 +%.1fkg" % carry_capacity_bonus)
 	var move_speed_bonus := int(item_data.get("move_speed_bonus", 0))
 	if move_speed_bonus > 0:
 		parts.append("이동속도 +%d" % move_speed_bonus)

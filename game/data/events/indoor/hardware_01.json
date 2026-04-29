@@ -136,6 +136,10 @@
           "costs": { "minutes": 30, "noise": 0 },
           "outcomes": {
             "discover_loot": [],
+            "supply_sources": [
+              { "id": "clamp_bin", "item_id": "hose_clamp", "quantity": 10 },
+              { "id": "gasket_drawer", "item_id": "rubber_gasket", "quantity": 12 }
+            ],
             "loot_table": {
               "rolls": 3,
               "allow_duplicates": false,

@@ -1,21 +1,51 @@
 extends RefCounted
 class_name InventoryModel
 
-const MAX_OVERFLOW_BULK := 4
+const DEFAULT_OVERPACK_MARGIN := 2.0
+const LEGACY_OVERFLOW_MARGIN := 4.0
 
 var carry_limit: int = 8
+var ideal_carry_capacity: float = 8.0
+var carry_capacity: float = 10.0
+var overpack_capacity: float = 12.0
 var items: Array[Dictionary] = []
 
 
-func total_bulk() -> int:
-	var total := 0
+func configure_thresholds(ideal_capacity: float, max_capacity: float, max_overpack_capacity: float) -> void:
+	ideal_carry_capacity = max(0.0, ideal_capacity)
+	carry_capacity = max(ideal_carry_capacity, max_capacity)
+	overpack_capacity = max(carry_capacity, max_overpack_capacity)
+	carry_limit = int(round(ideal_carry_capacity))
+
+
+func carry_weight_for(item: Dictionary) -> float:
+	if item.is_empty():
+		return 0.0
+	return max(0.0, float(item.get("carry_weight", item.get("bulk", 1))))
+
+
+func total_carry_weight() -> float:
+	var total := 0.0
 	for item in items:
-		total += int(item.get("bulk", 1))
+		total += carry_weight_for(item)
 	return total
 
 
+func get_carry_state_id() -> String:
+	var total := total_carry_weight()
+	if total > carry_capacity + 0.001:
+		return "overpacked"
+	if total > ideal_carry_capacity + 0.001:
+		return "overloaded"
+	return "normal"
+
+
+func total_bulk() -> int:
+	return int(round(total_carry_weight()))
+
+
 func can_add(item: Dictionary) -> bool:
-	return total_bulk() + int(item.get("bulk", 1)) <= max_bulk()
+	return total_carry_weight() + carry_weight_for(item) <= overpack_capacity + 0.001
 
 
 func add_item(item: Dictionary) -> bool:
@@ -165,8 +195,8 @@ func spend_item_charges(item_id: String, amount: int) -> Dictionary:
 
 
 func max_bulk() -> int:
-	return carry_limit + MAX_OVERFLOW_BULK
+	return int(round(overpack_capacity))
 
 
 func overflow_bulk() -> int:
-	return max(0, total_bulk() - carry_limit)
+	return max(0, int(ceili(total_carry_weight() - ideal_carry_capacity)))

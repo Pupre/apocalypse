@@ -5,7 +5,7 @@
     "description": "생활용품이 어디에 보관되는지 잘 알고 있다.",
     "modifiers": {
       "indoor_find_bias": 0.15,
-      "carry_limit": 1
+      "carry_capacity_bonus": 1
     }
   },
   {

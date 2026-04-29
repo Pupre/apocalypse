@@ -44,6 +44,14 @@ var _survival_sheet: CanvasLayer = null
 var _minimap_overlay: Control = null
 var _minimap_close_button: Button = null
 var _minimap: Control = null
+var _supply_picker_overlay: PanelContainer = null
+var _supply_picker_title: Label = null
+var _supply_picker_status: Label = null
+var _supply_picker_quantity: Label = null
+var _supply_picker_minus_button: Button = null
+var _supply_picker_plus_button: Button = null
+var _supply_picker_cancel_button: Button = null
+var _supply_picker_confirm_button: Button = null
 var _director_connected := false
 var _buttons_bound := false
 var _icon_cache: Dictionary = {}
@@ -51,6 +59,7 @@ var _item_icon_resolver = ItemIconResolver.new()
 var _ui_kit_resolver = UiKitResolver.new()
 var _skin_applied := false
 var _last_toast_feedback_message := ""
+var _active_supply_picker: Dictionary = {"visible": false}
 
 
 func configure(run_state, building_id: String = "mart_01") -> void:
@@ -96,6 +105,14 @@ func _bind_ui_buttons() -> void:
 		_survival_sheet.craft_applied.connect(Callable(self, "_on_survival_sheet_craft_applied"))
 	if _minimap_close_button != null and not _minimap_close_button.pressed.is_connected(Callable(self, "_on_minimap_close_pressed")):
 		_minimap_close_button.pressed.connect(Callable(self, "_on_minimap_close_pressed"))
+	if _supply_picker_minus_button != null and not _supply_picker_minus_button.pressed.is_connected(Callable(self, "_on_supply_picker_minus_pressed")):
+		_supply_picker_minus_button.pressed.connect(Callable(self, "_on_supply_picker_minus_pressed"))
+	if _supply_picker_plus_button != null and not _supply_picker_plus_button.pressed.is_connected(Callable(self, "_on_supply_picker_plus_pressed")):
+		_supply_picker_plus_button.pressed.connect(Callable(self, "_on_supply_picker_plus_pressed"))
+	if _supply_picker_cancel_button != null and not _supply_picker_cancel_button.pressed.is_connected(Callable(self, "_on_supply_picker_cancel_pressed")):
+		_supply_picker_cancel_button.pressed.connect(Callable(self, "_on_supply_picker_cancel_pressed"))
+	if _supply_picker_confirm_button != null and not _supply_picker_confirm_button.pressed.is_connected(Callable(self, "_on_supply_picker_confirm_pressed")):
+		_supply_picker_confirm_button.pressed.connect(Callable(self, "_on_supply_picker_confirm_pressed"))
 
 	_buttons_bound = true
 
@@ -115,6 +132,7 @@ func _refresh_view() -> void:
 	_push_inventory_payload_into_sheet()
 	_refresh_action_buttons()
 	_refresh_minimap()
+	_refresh_supply_picker()
 
 
 func refresh_view() -> void:
@@ -249,7 +267,7 @@ func _section_for_action(action: Dictionary) -> String:
 	var action_type := String(action.get("type", ""))
 	if bool(action.get("locked", false)) and action_type == "move":
 		return "locked"
-	if action_type == "take_loot":
+	if action_type == "take_loot" or action_type == "take_supply" or action_type == "take_supply_detail":
 		return "loot"
 	if action_type == "move" or action_type == "exit":
 		return "move"
@@ -447,6 +465,9 @@ func _close_bag_sheet() -> void:
 
 
 func _on_action_pressed(action_id: String) -> void:
+	if action_id.begins_with("take_supply_") and action_id.ends_with("_detail"):
+		_open_supply_picker(action_id)
+		return
 	if action_id == "exit_building":
 		if _director != null and _director.has_method("apply_action"):
 			_director.apply_action(action_id)
@@ -475,6 +496,14 @@ func _cache_nodes() -> void:
 	_minimap_overlay = get_node_or_null("MinimapOverlay") as Control
 	_minimap_close_button = get_node_or_null("MinimapOverlay/Padding/VBox/Header/CloseButton") as Button
 	_minimap = get_node_or_null("MinimapOverlay/Padding/VBox/MapNodes") as Control
+	_supply_picker_overlay = get_node_or_null("SupplyPickerOverlay") as PanelContainer
+	_supply_picker_title = get_node_or_null("SupplyPickerOverlay/Padding/VBox/TitleLabel") as Label
+	_supply_picker_status = get_node_or_null("SupplyPickerOverlay/Padding/VBox/StatusLabel") as Label
+	_supply_picker_quantity = get_node_or_null("SupplyPickerOverlay/Padding/VBox/QuantityRow/QuantityValueLabel") as Label
+	_supply_picker_minus_button = get_node_or_null("SupplyPickerOverlay/Padding/VBox/QuantityRow/MinusButton") as Button
+	_supply_picker_plus_button = get_node_or_null("SupplyPickerOverlay/Padding/VBox/QuantityRow/PlusButton") as Button
+	_supply_picker_cancel_button = get_node_or_null("SupplyPickerOverlay/Padding/VBox/ButtonRow/CancelButton") as Button
+	_supply_picker_confirm_button = get_node_or_null("SupplyPickerOverlay/Padding/VBox/ButtonRow/ConfirmButton") as Button
 	_apply_ui_skin()
 
 
@@ -494,6 +523,7 @@ func _apply_ui_skin() -> void:
 	_ui_kit_resolver.apply_panel(reading_card, "indoor/indoor_reading_panel_plain.png")
 	_ui_kit_resolver.apply_panel(minimap_card, "indoor/indoor_minimap_frame.png")
 	_ui_kit_resolver.apply_panel(minimap_panel, "structure/structure_panel_bg.png")
+	_ui_kit_resolver.apply_panel(_supply_picker_overlay, "indoor/indoor_reading_panel_plain.png")
 	_ui_kit_resolver.apply_button(
 		_map_button,
 		"hud/hud_icon_button_compact_normal.png",
@@ -508,6 +538,26 @@ func _apply_ui_skin() -> void:
 		"hud/hud_icon_button_compact_normal.png",
 		"hud/hud_icon_button_compact_disabled.png"
 	)
+	_ui_kit_resolver.apply_button(
+		_supply_picker_minus_button,
+		"sheet/sheet_button_secondary_normal.png",
+		"sheet/sheet_button_secondary_pressed.png"
+	)
+	_ui_kit_resolver.apply_button(
+		_supply_picker_plus_button,
+		"sheet/sheet_button_secondary_normal.png",
+		"sheet/sheet_button_secondary_pressed.png"
+	)
+	_ui_kit_resolver.apply_button(
+		_supply_picker_cancel_button,
+		"sheet/sheet_button_secondary_normal.png",
+		"sheet/sheet_button_secondary_pressed.png"
+	)
+	_ui_kit_resolver.apply_button(
+		_supply_picker_confirm_button,
+		"sheet/sheet_button_secondary_normal.png",
+		"sheet/sheet_button_secondary_pressed.png"
+	)
 	if _title_label != null:
 		_apply_label_style(_title_label, 14, TEXT_PRIMARY_COLOR, 2)
 	if _time_label != null:
@@ -520,6 +570,12 @@ func _apply_ui_skin() -> void:
 		_apply_label_style(_summary_label, 15, TEXT_PRIMARY_COLOR, 2)
 	if _result_label != null:
 		_apply_label_style(_result_label, 14, TEXT_SECONDARY_COLOR, 2)
+	if _supply_picker_title != null:
+		_apply_label_style(_supply_picker_title, 16, TEXT_PRIMARY_COLOR, 2)
+	if _supply_picker_status != null:
+		_apply_label_style(_supply_picker_status, 13, TEXT_SECONDARY_COLOR, 1)
+	if _supply_picker_quantity != null:
+		_apply_label_style(_supply_picker_quantity, 18, TEXT_PRIMARY_COLOR, 2)
 	if _map_button != null:
 		_map_button.text = ""
 		_map_button.tooltip_text = "구조도"
@@ -534,6 +590,7 @@ func _apply_ui_skin() -> void:
 		_bag_button.icon = _ui_kit_resolver.get_texture("icons/light_24/bag.png")
 		_bag_button.expand_icon = false
 		_bag_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_refresh_supply_picker()
 
 
 func _push_inventory_payload_into_sheet() -> void:
@@ -617,6 +674,79 @@ func _emit_feedback_toast_if_needed(toast_type: String = "info", duration: float
 		return
 	_last_toast_feedback_message = message
 	_emit_feedback_toast(message, toast_type, duration, "")
+
+
+func _open_supply_picker(action_id: String) -> void:
+	if _director == null or not _director.has_method("get_supply_picker_payload"):
+		return
+	_active_supply_picker = _director.get_supply_picker_payload(action_id)
+	if not bool(_active_supply_picker.get("visible", false)):
+		return
+	_refresh_supply_picker()
+
+
+func _close_supply_picker() -> void:
+	_active_supply_picker = {"visible": false}
+	_refresh_supply_picker()
+
+
+func _refresh_supply_picker() -> void:
+	if _supply_picker_overlay == null:
+		return
+	var is_visible := bool(_active_supply_picker.get("visible", false))
+	_supply_picker_overlay.visible = is_visible
+	if not is_visible:
+		return
+	var item_name := String(_active_supply_picker.get("item_name", "물건"))
+	var remaining := int(_active_supply_picker.get("quantity_remaining", 0))
+	var max_quantity: int = max(0, int(_active_supply_picker.get("max_quantity", 0)))
+	var selected_quantity: int = clampi(int(_active_supply_picker.get("selected_quantity", 1)), 1, max(1, max_quantity))
+	_active_supply_picker["selected_quantity"] = selected_quantity
+	if _supply_picker_title != null:
+		_supply_picker_title.text = "%s 수량 선택" % item_name
+	if _supply_picker_status != null:
+		_supply_picker_status.text = "남은 재고 %d개 · 지금 최대 %d개" % [remaining, max_quantity]
+	if _supply_picker_quantity != null:
+		_supply_picker_quantity.text = str(selected_quantity)
+	if _supply_picker_minus_button != null:
+		_supply_picker_minus_button.disabled = selected_quantity <= 1
+	if _supply_picker_plus_button != null:
+		_supply_picker_plus_button.disabled = selected_quantity >= max_quantity
+	if _supply_picker_confirm_button != null:
+		_supply_picker_confirm_button.disabled = max_quantity <= 0
+
+
+func _on_supply_picker_minus_pressed() -> void:
+	if not bool(_active_supply_picker.get("visible", false)):
+		return
+	_active_supply_picker["selected_quantity"] = max(1, int(_active_supply_picker.get("selected_quantity", 1)) - 1)
+	_refresh_supply_picker()
+
+
+func _on_supply_picker_plus_pressed() -> void:
+	if not bool(_active_supply_picker.get("visible", false)):
+		return
+	var max_quantity: int = max(1, int(_active_supply_picker.get("max_quantity", 1)))
+	_active_supply_picker["selected_quantity"] = min(max_quantity, int(_active_supply_picker.get("selected_quantity", 1)) + 1)
+	_refresh_supply_picker()
+
+
+func _on_supply_picker_cancel_pressed() -> void:
+	_close_supply_picker()
+
+
+func _on_supply_picker_confirm_pressed() -> void:
+	if not bool(_active_supply_picker.get("visible", false)):
+		return
+	if _director == null or not _director.has_method("apply_supply_pickup"):
+		return
+	var zone_id := String(_active_supply_picker.get("zone_id", ""))
+	var source_id := String(_active_supply_picker.get("source_id", ""))
+	var quantity := int(_active_supply_picker.get("selected_quantity", 0))
+	if zone_id.is_empty() or source_id.is_empty() or quantity <= 0:
+		return
+	if _director.apply_supply_pickup(zone_id, source_id, quantity):
+		_close_supply_picker()
 
 
 func _clear_children(container: Node) -> void:

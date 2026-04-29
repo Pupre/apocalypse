@@ -954,9 +954,12 @@ func _item_effect_text(item_data: Dictionary) -> String:
 	var fatigue_restore := int(item_data.get("fatigue_restore", 0))
 	if fatigue_restore > 0:
 		parts.append("피로 -%d" % fatigue_restore)
-	var carry_limit_bonus := int(item_data.get("carry_limit_bonus", 0))
-	if carry_limit_bonus > 0:
-		parts.append("소지 한도 +%d" % carry_limit_bonus)
+	var carry_weight := float(item_data.get("carry_weight", item_data.get("bulk", 0)))
+	if carry_weight > 0.0:
+		parts.append("무게 %.1fkg" % carry_weight)
+	var carry_capacity_bonus := float(item_data.get("carry_capacity_bonus", item_data.get("carry_limit_bonus", 0)))
+	if carry_capacity_bonus > 0.0:
+		parts.append("운반 한계 +%.1fkg" % carry_capacity_bonus)
 	var move_speed_bonus := int(item_data.get("move_speed_bonus", 0))
 	if move_speed_bonus > 0:
 		parts.append("이동속도 +%d" % move_speed_bonus)

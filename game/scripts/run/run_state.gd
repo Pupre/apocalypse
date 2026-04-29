@@ -23,10 +23,13 @@ const STARVATION_HEALTH_LOSS_PER_MINUTE := 1.0 / 30.0
 const DEHYDRATION_HEALTH_LOSS_PER_MINUTE := 1.0 / 15.0
 const REST_FATIGUE_RECOVERY_PER_MINUTE := 1.0 / 10.0
 const SLEEP_FATIGUE_RECOVERY_PER_MINUTE := 1.0 / 4.5
+const REST_HEAT_RECOVERY_PER_MINUTE := 0.18
+const SLEEP_HEAT_RECOVERY_PER_MINUTE := 0.3
 const MAX_SURVIVAL_VALUE := 100.0
-const BASE_CARRY_LIMIT := 8
-const MIN_OVERLOADED_MOVE_MULTIPLIER := 0.45
-const OVERFLOW_MOVE_PENALTY_PER_BULK := 0.12
+const BASE_IDEAL_CARRY_CAPACITY := 8.0
+const BASE_CARRY_CAPACITY := 10.0
+const BASE_OVERPACK_CAPACITY := 12.0
+const MIN_OVERPACKED_MOVE_MULTIPLIER := 0.45
 const DEFAULT_DIFFICULTY := "easy"
 const VALID_DIFFICULTY_IDS := {
 	"easy": true,
@@ -55,7 +58,10 @@ var health: float = 100.0
 var exposure: float = 100.0
 var move_speed: float = BASE_MOVE_SPEED
 var fatigue_gain_multiplier: float = BASE_FATIGUE_GAIN_MULTIPLIER
-var base_carry_limit: int = BASE_CARRY_LIMIT
+var base_carry_limit: int = int(BASE_IDEAL_CARRY_CAPACITY)
+var base_ideal_carry_capacity: float = BASE_IDEAL_CARRY_CAPACITY
+var base_carry_capacity: float = BASE_CARRY_CAPACITY
+var base_overpack_capacity: float = BASE_OVERPACK_CAPACITY
 var _base_move_speed: float = BASE_MOVE_SPEED
 var _base_fatigue_gain_multiplier: float = BASE_FATIGUE_GAIN_MULTIPLIER
 var _content_source = null
@@ -102,6 +108,7 @@ func advance_sleep_time(minutes: int) -> void:
 	hunger = max(0.0, hunger - (float(minutes) * HUNGER_DECAY_PER_MINUTE * SLEEP_HUNGER_MULTIPLIER))
 	thirst = max(0.0, thirst - (float(minutes) * THIRST_DECAY_PER_MINUTE * SLEEP_THIRST_MULTIPLIER))
 	fatigue = max(0.0, fatigue - (float(minutes) * SLEEP_FATIGUE_RECOVERY_PER_MINUTE))
+	_apply_indoor_heat_recovery(minutes, "sleep")
 	_apply_survival_damage(minutes)
 
 
@@ -114,6 +121,7 @@ func advance_rest_time(minutes: int) -> void:
 	hunger = max(0.0, hunger - (float(minutes) * HUNGER_DECAY_PER_MINUTE * REST_HUNGER_MULTIPLIER))
 	thirst = max(0.0, thirst - (float(minutes) * THIRST_DECAY_PER_MINUTE * REST_THIRST_MULTIPLIER))
 	fatigue = max(0.0, fatigue - (float(minutes) * REST_FATIGUE_RECOVERY_PER_MINUTE))
+	_apply_indoor_heat_recovery(minutes, "rest")
 	_apply_survival_damage(minutes)
 
 
@@ -246,15 +254,18 @@ func _apply_survivor_config(config: Dictionary) -> void:
 	if world_seed == 0:
 		world_seed = int(Time.get_unix_time_from_system())
 
-	var carry_limit_bonus := 0
-	carry_limit_bonus += _apply_job_modifiers(String(survivor_config.get("job_id", "")))
+	var carry_capacity_bonus := 0.0
+	carry_capacity_bonus += _apply_job_modifiers(String(survivor_config.get("job_id", "")))
 
 	for trait_id_variant in survivor_config.get("trait_ids", []):
-		carry_limit_bonus += _apply_trait_modifiers(String(trait_id_variant))
+		carry_capacity_bonus += _apply_trait_modifiers(String(trait_id_variant))
 
 	_base_move_speed = move_speed
 	_base_fatigue_gain_multiplier = fatigue_gain_multiplier
-	base_carry_limit = BASE_CARRY_LIMIT + carry_limit_bonus
+	base_ideal_carry_capacity = BASE_IDEAL_CARRY_CAPACITY + carry_capacity_bonus
+	base_carry_capacity = BASE_CARRY_CAPACITY + carry_capacity_bonus
+	base_overpack_capacity = BASE_OVERPACK_CAPACITY + carry_capacity_bonus
+	base_carry_limit = int(round(base_ideal_carry_capacity))
 	_recalculate_derived_stats()
 
 
@@ -463,16 +474,63 @@ func equip_inventory_item(item_id: String, item_data: Dictionary) -> Dictionary:
 	return result
 
 
-func get_outdoor_move_speed() -> float:
-	var overflow_bulk: int = inventory.overflow_bulk()
-	var fatigue_multiplier := fatigue_model.outdoor_efficiency_multiplier(fatigue)
-	if overflow_bulk <= 0:
-		return move_speed * fatigue_multiplier
+func get_carry_state_id() -> String:
+	if inventory == null or not inventory.has_method("get_carry_state_id"):
+		return "normal"
+	return String(inventory.get_carry_state_id())
 
-	var multiplier := float(max(
-		MIN_OVERLOADED_MOVE_MULTIPLIER,
-		1.0 - (float(overflow_bulk) * OVERFLOW_MOVE_PENALTY_PER_BULK)
-	))
+
+func get_carry_state_label() -> String:
+	match get_carry_state_id():
+		"overloaded":
+			return "과중"
+		"overpacked":
+			return "과적"
+		_:
+			return "적정"
+
+
+func get_carry_weight_summary() -> Dictionary:
+	if inventory == null:
+		return {
+			"total_weight": 0.0,
+			"ideal_capacity": 0.0,
+			"carry_capacity": 0.0,
+			"overpack_capacity": 0.0,
+			"state_id": "normal",
+			"state_label": "적정",
+		}
+
+	return {
+		"total_weight": float(inventory.total_carry_weight()),
+		"ideal_capacity": float(inventory.ideal_carry_capacity),
+		"carry_capacity": float(inventory.carry_capacity),
+		"overpack_capacity": float(inventory.overpack_capacity),
+		"state_id": get_carry_state_id(),
+		"state_label": get_carry_state_label(),
+	}
+
+
+func get_outdoor_move_speed() -> float:
+	var fatigue_multiplier := fatigue_model.outdoor_efficiency_multiplier(fatigue)
+	var total_weight: float = float(inventory.total_carry_weight())
+	var ideal_capacity: float = float(inventory.ideal_carry_capacity)
+	var carry_capacity: float = float(inventory.carry_capacity)
+	var overpack_capacity: float = float(inventory.overpack_capacity)
+	var multiplier: float = 1.0
+
+	match get_carry_state_id():
+		"overloaded":
+			var overloaded_range: float = max(0.01, carry_capacity - ideal_capacity)
+			var overloaded_ratio: float = clamp((total_weight - ideal_capacity) / overloaded_range, 0.0, 1.0)
+			multiplier = lerpf(1.0, 0.78, overloaded_ratio)
+		"overpacked":
+			var overpacked_range: float = max(0.01, overpack_capacity - carry_capacity)
+			var overpacked_ratio: float = clamp((total_weight - carry_capacity) / overpacked_range, 0.0, 1.0)
+			multiplier = lerpf(0.72, MIN_OVERPACKED_MOVE_MULTIPLIER, overpacked_ratio)
+		_:
+			multiplier = 1.0
+
 	return move_speed * multiplier * fatigue_multiplier
 
 
@@ -524,7 +582,7 @@ func deploy_item_in_current_site(item_id: String) -> bool:
 
 func get_current_indoor_environment_modifiers() -> Dictionary:
 	var modifiers := {
-		"indoor_heat_score": 0.0,
+		"indoor_heat_score": _get_current_fixed_heat_score(),
 		"indoor_light_score": 0.0,
 		"indoor_insulation_score": 0.0,
 		"rest_recovery_multiplier": 1.0,
@@ -560,6 +618,33 @@ func get_current_indoor_environment_modifiers() -> Dictionary:
 	return modifiers
 
 
+func get_current_heat_recovery_context() -> Dictionary:
+	var fixed_heat_score := _get_current_fixed_heat_score()
+	var portable_heat_score := _get_current_portable_heat_score()
+	var has_setup_base := portable_heat_score > 0.0
+	var has_ignition := _inventory_has_any_item_tag(["ignition_tool", "ignition"])
+	var has_fuel := _inventory_has_any_item_tag(["fuel", "fuel_component"])
+	var portable_heat_active := has_setup_base and has_ignition and has_fuel
+	var can_recover := fixed_heat_score > 0.0 or portable_heat_active
+	var recovery_note := "실내라 추위 하락은 멈췄다. 회복하려면 열원이 필요하다."
+	if fixed_heat_score > 0.0:
+		recovery_note = "고정 열원으로 몸을 덥힐 수 있다."
+	elif has_setup_base and not portable_heat_active:
+		recovery_note = "열원 장비는 있지만 점화 도구와 연료가 더 필요하다."
+	elif portable_heat_active:
+		recovery_note = "설치한 열원으로 몸을 덥힐 수 있다."
+	return {
+		"fixed_heat_score": fixed_heat_score,
+		"portable_heat_score": portable_heat_score,
+		"has_setup_base": has_setup_base,
+		"has_ignition": has_ignition,
+		"has_fuel": has_fuel,
+		"can_recover": can_recover,
+		"effective_heat_score": fixed_heat_score + (portable_heat_score if portable_heat_active else 0.0),
+		"status_text": recovery_note,
+	}
+
+
 func get_or_create_site_memory(building_id: String, entry_zone_id: String = "") -> Dictionary:
 	if building_id.is_empty():
 		return {}
@@ -578,6 +663,7 @@ func get_or_create_site_memory(building_id: String, entry_zone_id: String = "") 
 			"spent_action_ids": PackedStringArray(),
 			"zone_flags": {},
 			"zone_loot_entries": {},
+			"zone_supply_sources": {},
 			"installed_deployments": [],
 			"next_loot_uid": 0,
 			"last_site_tick": clock.minute_of_day,
@@ -618,6 +704,86 @@ func update_current_indoor_zone(zone_id: String) -> void:
 	memory["visited_zone_ids"] = visited_zone_ids
 
 
+func _apply_indoor_heat_recovery(minutes: int, recovery_mode: String) -> void:
+	if minutes <= 0 or current_indoor_building_id.is_empty() or current_indoor_zone_id.is_empty():
+		return
+	var heat_context := get_current_heat_recovery_context()
+	if not bool(heat_context.get("can_recover", false)):
+		return
+	var heat_score := float(heat_context.get("effective_heat_score", 0.0))
+	if heat_score <= 0.0:
+		return
+	var recovery_rate := REST_HEAT_RECOVERY_PER_MINUTE
+	if recovery_mode == "sleep":
+		recovery_rate = SLEEP_HEAT_RECOVERY_PER_MINUTE
+	exposure = min(MAX_SURVIVAL_VALUE, exposure + (float(minutes) * recovery_rate * heat_score))
+
+
+func _get_current_fixed_heat_score() -> float:
+	if current_indoor_building_id.is_empty() or current_indoor_zone_id.is_empty():
+		return 0.0
+	if not is_instance_valid(ContentLibrary) or not ContentLibrary.has_method("get_building"):
+		return 0.0
+	var building := ContentLibrary.get_building(current_indoor_building_id)
+	if building.is_empty():
+		return 0.0
+	var fixed_sources_variant: Variant = building.get("fixed_heat_sources", [])
+	if typeof(fixed_sources_variant) != TYPE_ARRAY:
+		return 0.0
+	var total_score := 0.0
+	for source_variant in fixed_sources_variant:
+		if typeof(source_variant) != TYPE_DICTIONARY:
+			continue
+		var source := source_variant as Dictionary
+		if String(source.get("zone_id", "")) != current_indoor_zone_id:
+			continue
+		total_score += float(source.get("heat_score", 0.0))
+	return total_score
+
+
+func _get_current_portable_heat_score() -> float:
+	if current_indoor_building_id.is_empty() or current_indoor_zone_id.is_empty():
+		return 0.0
+	var memory := get_or_create_site_memory(current_indoor_building_id)
+	var deployments_variant: Variant = memory.get("installed_deployments", [])
+	if typeof(deployments_variant) != TYPE_ARRAY:
+		return 0.0
+	var total_score := 0.0
+	for deployment_variant in deployments_variant:
+		if typeof(deployment_variant) != TYPE_DICTIONARY:
+			continue
+		var deployment := deployment_variant as Dictionary
+		if String(deployment.get("zone_id", "")) != current_indoor_zone_id:
+			continue
+		var deploy_effects_variant: Variant = deployment.get("deploy_effects", {})
+		if typeof(deploy_effects_variant) != TYPE_DICTIONARY:
+			continue
+		total_score += float((deploy_effects_variant as Dictionary).get("indoor_heat_score", 0.0))
+	return total_score
+
+
+func _inventory_has_any_item_tag(tag_ids: Array[String]) -> bool:
+	if _content_source == null or not _content_source.has_method("get_item") or inventory == null:
+		return false
+	for carried_variant in inventory.items:
+		if typeof(carried_variant) != TYPE_DICTIONARY:
+			continue
+		var carried_item := carried_variant as Dictionary
+		var item_id := String(carried_item.get("id", ""))
+		if item_id.is_empty():
+			continue
+		var item_data: Dictionary = _content_source.get_item(item_id)
+		if item_data.is_empty():
+			continue
+		var item_tags_variant: Variant = item_data.get("item_tags", [])
+		if typeof(item_tags_variant) != TYPE_ARRAY:
+			continue
+		for item_tag_variant in item_tags_variant:
+			if tag_ids.has(String(item_tag_variant)):
+				return true
+	return false
+
+
 func drop_item_in_current_zone_data(item_data: Dictionary) -> void:
 	if current_indoor_building_id.is_empty() or current_indoor_zone_id.is_empty():
 		return
@@ -645,16 +811,18 @@ func get_loot_roll_seed(site_id: String, zone_id: String, action_id: String) -> 
 	return abs(hash("%d|%s|%s|%s" % [world_seed, site_id, zone_id, action_id]))
 
 
-func _apply_job_modifiers(job_id: String) -> int:
+func _apply_job_modifiers(job_id: String) -> float:
 	var job := _require_job_data(job_id)
 	_apply_modifiers(job.get("modifiers", {}))
-	return int(job.get("modifiers", {}).get("carry_limit", 0))
+	var modifiers: Dictionary = job.get("modifiers", {})
+	return float(modifiers.get("carry_capacity_bonus", modifiers.get("carry_limit", 0)))
 
 
-func _apply_trait_modifiers(trait_id: String) -> int:
+func _apply_trait_modifiers(trait_id: String) -> float:
 	var trait_data := _require_trait_data(trait_id)
 	_apply_modifiers(trait_data.get("modifiers", {}))
-	return int(trait_data.get("modifiers", {}).get("carry_limit", 0))
+	var modifiers: Dictionary = trait_data.get("modifiers", {})
+	return float(modifiers.get("carry_capacity_bonus", modifiers.get("carry_limit", 0)))
 
 
 func _apply_modifiers(modifiers: Dictionary) -> void:
@@ -769,18 +937,24 @@ func _report_validation_error(message: String) -> void:
 
 
 func _recalculate_derived_stats() -> void:
-	var carry_bonus := 0
+	var carry_bonus := 0.0
+	var ideal_carry_bonus := 0.0
 	var move_speed_bonus := 0.0
 	var fatigue_gain_bonus := 0.0
 	for item_variant in equipped_items.values():
 		if typeof(item_variant) != TYPE_DICTIONARY:
 			continue
 		var item := item_variant as Dictionary
-		carry_bonus += int(item.get("carry_limit_bonus", 0))
+		carry_bonus += float(item.get("carry_capacity_bonus", item.get("carry_limit_bonus", 0)))
+		ideal_carry_bonus += float(item.get("ideal_carry_bonus", item.get("carry_capacity_bonus", item.get("carry_limit_bonus", 0))))
 		move_speed_bonus += float(item.get("move_speed_bonus", 0.0))
 		fatigue_gain_bonus += float(item.get("fatigue_gain_bonus", 0.0))
 
-	inventory.carry_limit = base_carry_limit + carry_bonus
+	inventory.configure_thresholds(
+		base_ideal_carry_capacity + ideal_carry_bonus,
+		base_carry_capacity + carry_bonus,
+		base_overpack_capacity + carry_bonus
+	)
 	move_speed = _base_move_speed + move_speed_bonus
 	fatigue_gain_multiplier = _base_fatigue_gain_multiplier + fatigue_gain_bonus
 

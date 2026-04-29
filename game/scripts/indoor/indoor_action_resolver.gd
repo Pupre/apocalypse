@@ -99,6 +99,7 @@ func get_actions(event_data: Dictionary, event_state: Dictionary = {}, run_state
 	var actions: Array[Dictionary] = []
 	if _has_zone_state(event_data, event_state):
 		actions.append_array(_get_take_loot_actions(event_state, run_state))
+		actions.append_array(_get_take_supply_actions(event_state, run_state))
 
 	actions.append_array(_get_flat_actions(event_data, event_state))
 	actions.append_array(_get_zone_actions(event_data, event_state, run_state))
@@ -120,6 +121,10 @@ func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, ac
 	var take_action := _get_take_loot_action(event_state, action_id, run_state)
 	if not take_action.is_empty():
 		return _apply_take_loot_action(run_state, event_state, take_action)
+
+	var take_supply_action := _get_take_supply_action(event_state, action_id, run_state)
+	if not take_supply_action.is_empty():
+		return _apply_take_supply_action(run_state, event_state, take_supply_action)
 
 	var action := _get_action(event_data, event_state, action_id, run_state)
 	if action.is_empty():
@@ -149,9 +154,11 @@ func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, ac
 			if sleep_minutes > 0 and run_state.has_method("advance_sleep_time"):
 				run_state.advance_sleep_time(sleep_minutes)
 
-		if action.has("discover_loot") or action.has("loot_table"):
+		if action.has("discover_loot") or action.has("loot_table") or action.has("supply_sources"):
 			var discovered_loot := _resolve_discovered_loot(event_data, event_state, action, run_state)
 			_append_zone_found_loot(event_state, String(event_state.get("current_zone_id", "")), discovered_loot)
+			var discovered_supply_sources := _normalize_supply_sources_array(action.get("supply_sources", []))
+			_append_zone_supply_sources(event_state, String(event_state.get("current_zone_id", "")), discovered_supply_sources)
 			var discovered_labels := _loot_labels(discovered_loot)
 			if not discovered_labels.is_empty():
 				var discovered_message := "%s 발견했다." % ", ".join(discovered_labels)
@@ -159,7 +166,10 @@ func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, ac
 					discovered_message += " %d분 동안 탐색했다." % minute_cost
 				event_state["last_feedback_message"] = discovered_message
 			elif minute_cost > 0:
-				event_state["last_feedback_message"] = "%d분 동안 탐색했지만 챙길 만한 건 없었다." % minute_cost
+				if not discovered_supply_sources.is_empty():
+					event_state["last_feedback_message"] = "%d분 동안 탐색해 남은 재고를 확인했다." % minute_cost
+				else:
+					event_state["last_feedback_message"] = "%d분 동안 탐색했지만 챙길 만한 건 없었다." % minute_cost
 		else:
 			var loot_messages: Array[String] = []
 			var collected_loot_labels: Array[String] = []
@@ -410,6 +420,8 @@ func _normalize_zone_option(event: Dictionary, option: Dictionary) -> Dictionary
 			action["discover_loot"] = outcomes.get("discover_loot", [])
 		if outcomes.has("loot_table"):
 			action["loot_table"] = outcomes.get("loot_table", {})
+		if outcomes.has("supply_sources"):
+			action["supply_sources"] = outcomes.get("supply_sources", [])
 		if outcomes.has("reveal_clue_ids"):
 			action["reveal_clue_ids"] = _string_id_array(outcomes.get("reveal_clue_ids", []))
 		if outcomes.has("set_flags"):
@@ -682,6 +694,125 @@ func _apply_take_loot_action(run_state, event_state: Dictionary, action: Diction
 	return true
 
 
+func _get_take_supply_actions(event_state: Dictionary, run_state = null) -> Array[Dictionary]:
+	var current_zone_id := String(event_state.get("current_zone_id", ""))
+	if current_zone_id.is_empty():
+		return []
+	if run_state == null or run_state.inventory == null:
+		return []
+
+	var sources := _get_zone_supply_sources(event_state, current_zone_id)
+	var actions: Array[Dictionary] = []
+	for source in sources:
+		var quantity_remaining := int(source.get("quantity_remaining", 0))
+		if quantity_remaining <= 0:
+			continue
+		var item := _supply_item_entry(source)
+		if item.is_empty():
+			continue
+		var legal_max := _max_pickup_quantity_for_supply(run_state, item, quantity_remaining)
+		var source_id := String(source.get("id", "source"))
+		var item_label := _loot_label(item)
+		var common_fields := {
+			"type": "take_supply",
+			"zone_id": current_zone_id,
+			"source_id": source_id,
+			"item_id": String(item.get("id", "")),
+			"item_name": item_label,
+			"quantity_remaining": quantity_remaining,
+			"max_quantity": legal_max,
+			"locked": legal_max <= 0,
+			"blocked_feedback": "더는 %s 챙길 여유가 없다." % item_label,
+		}
+		for requested_quantity in [1, 3]:
+			if requested_quantity > quantity_remaining:
+				continue
+			var action := common_fields.duplicate(true)
+			action.merge({
+				"id": "take_supply_%s_%s_%d" % [current_zone_id, source_id, requested_quantity],
+				"label": "%s %d개 챙긴다" % [item_label, requested_quantity],
+				"requested_quantity": requested_quantity,
+			}, true)
+			actions.append(action)
+		var max_action := common_fields.duplicate(true)
+		max_action.merge({
+			"id": "take_supply_%s_%s_max" % [current_zone_id, source_id],
+			"label": "%s 최대한 챙긴다" % item_label,
+			"requested_quantity": -1,
+		}, true)
+		actions.append(max_action)
+		var detail_action := common_fields.duplicate(true)
+		detail_action.merge({
+			"id": "take_supply_%s_%s_detail" % [current_zone_id, source_id],
+			"type": "take_supply_detail",
+			"label": "%s 수량을 정한다" % item_label,
+			"requested_quantity": 1,
+		}, true)
+		actions.append(detail_action)
+
+	return actions
+
+
+func _get_take_supply_action(event_state: Dictionary, action_id: String, run_state = null) -> Dictionary:
+	for action in _get_take_supply_actions(event_state, run_state):
+		if String(action.get("id", "")) == action_id:
+			return action
+	return {}
+
+
+func _apply_take_supply_action(run_state, event_state: Dictionary, action: Dictionary) -> bool:
+	if run_state == null or run_state.inventory == null:
+		return false
+	if bool(action.get("locked", false)):
+		event_state["last_feedback_message"] = String(action.get("blocked_feedback", "더는 챙길 여유가 없다."))
+		return true
+
+	var zone_id := String(action.get("zone_id", ""))
+	var source_id := String(action.get("source_id", ""))
+	var sources := _get_zone_supply_sources(event_state, zone_id)
+	var source_index := _find_supply_source_index(sources, source_id)
+	if source_index < 0:
+		return false
+
+	var source := sources[source_index]
+	var item := _supply_item_entry(source)
+	if item.is_empty():
+		return false
+
+	var quantity_remaining := int(source.get("quantity_remaining", 0))
+	var legal_max := _max_pickup_quantity_for_supply(run_state, item, quantity_remaining)
+	if legal_max <= 0:
+		event_state["last_feedback_message"] = "더는 %s 챙길 여유가 없다." % _loot_label(item)
+		return true
+
+	var requested_quantity := int(action.get("requested_quantity", 1))
+	var quantity_to_take: int = legal_max if requested_quantity < 0 else min(requested_quantity, legal_max, quantity_remaining)
+	if quantity_to_take <= 0:
+		event_state["last_feedback_message"] = "더는 %s 챙길 여유가 없다." % _loot_label(item)
+		return true
+
+	for _index in range(quantity_to_take):
+		if not run_state.inventory.add_item(item):
+			break
+
+	source["quantity_remaining"] = quantity_remaining - quantity_to_take
+	sources[source_index] = source
+	_set_zone_supply_sources(event_state, zone_id, sources)
+	event_state["last_feedback_message"] = "%s %d개 챙겼다." % [_loot_label(item), quantity_to_take]
+	return true
+
+
+func apply_supply_pickup(run_state, event_state: Dictionary, zone_id: String, source_id: String, quantity: int) -> bool:
+	if quantity <= 0:
+		return false
+	return _apply_take_supply_action(run_state, event_state, {
+		"zone_id": zone_id,
+		"source_id": source_id,
+		"requested_quantity": quantity,
+		"locked": false,
+	})
+
+
 func _get_zone_found_loot(event_state: Dictionary, zone_id: String) -> Array[Dictionary]:
 	var all_found_loot: Dictionary = event_state.get("zone_loot_entries", {})
 	if typeof(all_found_loot) != TYPE_DICTIONARY:
@@ -713,6 +844,76 @@ func _set_zone_found_loot(event_state: Dictionary, zone_id: String, found_loot: 
 		all_found_loot = {}
 	all_found_loot[zone_id] = found_loot
 	event_state["zone_loot_entries"] = all_found_loot
+
+
+func _get_zone_supply_sources(event_state: Dictionary, zone_id: String) -> Array[Dictionary]:
+	var all_supply_sources: Dictionary = event_state.get("zone_supply_sources", {})
+	if typeof(all_supply_sources) != TYPE_DICTIONARY:
+		return []
+	return _dictionary_loot_array(all_supply_sources.get(zone_id, []))
+
+
+func _append_zone_supply_sources(event_state: Dictionary, zone_id: String, discovered_supply_sources: Array[Dictionary]) -> void:
+	if zone_id.is_empty() or discovered_supply_sources.is_empty():
+		return
+
+	var all_supply_sources: Dictionary = event_state.get("zone_supply_sources", {})
+	if typeof(all_supply_sources) != TYPE_DICTIONARY:
+		all_supply_sources = {}
+
+	var existing_sources := _dictionary_loot_array(all_supply_sources.get(zone_id, []))
+	for source in discovered_supply_sources:
+		var source_id := String(source.get("id", ""))
+		if source_id.is_empty():
+			continue
+		if _find_supply_source_index(existing_sources, source_id) >= 0:
+			continue
+		existing_sources.append(source.duplicate(true))
+	all_supply_sources[zone_id] = existing_sources
+	event_state["zone_supply_sources"] = all_supply_sources
+
+
+func _set_zone_supply_sources(event_state: Dictionary, zone_id: String, supply_sources: Array[Dictionary]) -> void:
+	var all_supply_sources: Dictionary = event_state.get("zone_supply_sources", {})
+	if typeof(all_supply_sources) != TYPE_DICTIONARY:
+		all_supply_sources = {}
+	all_supply_sources[zone_id] = supply_sources
+	event_state["zone_supply_sources"] = all_supply_sources
+
+
+func _find_supply_source_index(sources: Array[Dictionary], source_id: String) -> int:
+	for source_index in range(sources.size()):
+		if String(sources[source_index].get("id", "")) == source_id:
+			return source_index
+	return -1
+
+
+func _supply_item_entry(source: Dictionary) -> Dictionary:
+	var item_id := String(source.get("item_id", source.get("id", "")))
+	if item_id.is_empty():
+		return {}
+
+	var item := _loot_entry_from_table({"id": item_id})
+	if item.is_empty():
+		item = {"id": item_id, "name": item_id, "bulk": 1, "carry_weight": 1.0}
+	return item
+
+
+func _max_pickup_quantity_for_supply(run_state, item: Dictionary, quantity_remaining: int) -> int:
+	if run_state == null or run_state.inventory == null:
+		return 0
+	if quantity_remaining <= 0:
+		return 0
+
+	var legal_quantity := 0
+	for _index in range(quantity_remaining):
+		if not run_state.inventory.can_add(item):
+			break
+		run_state.inventory.items.append(item.duplicate(true))
+		legal_quantity += 1
+	for _index in range(legal_quantity):
+		run_state.inventory.items.remove_at(run_state.inventory.items.size() - 1)
+	return legal_quantity
 
 
 func _consume_loot_uid(event_state: Dictionary) -> int:
@@ -747,6 +948,25 @@ func _normalized_loot_array(values) -> Array[Dictionary]:
 			result.append(loot.duplicate(true))
 			continue
 		result.append(_loot_entry_from_table(loot))
+	return result
+
+
+func _normalize_supply_sources_array(values) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for value in values:
+		if typeof(value) != TYPE_DICTIONARY:
+			continue
+		var source := (value as Dictionary).duplicate(true)
+		var source_id := String(source.get("id", ""))
+		var item_id := String(source.get("item_id", source_id))
+		var quantity: int = max(0, int(source.get("quantity_remaining", source.get("quantity", 0))))
+		if source_id.is_empty() or item_id.is_empty() or quantity <= 0:
+			continue
+		source["id"] = source_id
+		source["item_id"] = item_id
+		source["quantity"] = quantity
+		source["quantity_remaining"] = quantity
+		result.append(source)
 	return result
 
 

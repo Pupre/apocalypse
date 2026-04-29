@@ -6,6 +6,9 @@
     "depth_tier": "tier_3",
     "site_tags": ["living_goods", "staff_only", "stockroom"],
     "entry_briefing": "앞쪽은 금방 훑을 수 있지만 뒤쪽 직원 구역과 재고실은 더 깊다.",
+    "fixed_heat_sources": [
+      { "zone_id": "break_room", "heat_score": 2, "label": "직원 휴게실 전기난로" }
+    ],
     "base_candidate": true,
     "outdoor_block_coord": { "x": 0, "y": 0 },
     "outdoor_anchor_id": "mart_anchor",
@@ -18,6 +21,9 @@
     "depth_tier": "tier_3",
     "site_tags": ["vertical_site", "keys", "living_trace"],
     "entry_briefing": "공동 현관만 보고 끝나는 곳이 아니다. 위층과 잠긴 생활 공간이 더 있다.",
+    "fixed_heat_sources": [
+      { "zone_id": "boiler_room", "heat_score": 3, "label": "보일러실 잔열" }
+    ],
     "base_candidate": false,
     "outdoor_block_coord": { "x": 0, "y": 1 },
     "outdoor_anchor_id": "apartment_anchor",

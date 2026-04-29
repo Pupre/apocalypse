@@ -13,6 +13,7 @@ Start here if you are trying to understand what is current, what is active, and 
 
 Active specs live in `docs/superpowers/specs/` and define the current feature direction. Newest first.
 
+- [Carry, Heat, and Loot Pressure Design](superpowers/specs/2026-04-27-carry-heat-loot-pressure-design.md)
 - [Toast Feedback System Design](superpowers/specs/2026-04-20-toast-feedback-system-design.md)
 - [Indoor Depth and Item Expansion Design](superpowers/specs/2026-04-20-indoor-depth-item-expansion-design.md)
 - [Outdoor 3x3 Authored Slice Design](superpowers/specs/2026-04-17-outdoor-3x3-authored-slice-design.md)
@@ -35,6 +36,7 @@ Active specs live in `docs/superpowers/specs/` and define the current feature di
 
 Active plans live in `docs/superpowers/plans/` and define the current implementation sequence. Newest first.
 
+- [Carry, Heat, and Loot Pressure](superpowers/plans/2026-04-27-carry-heat-loot-pressure.md)
 - [Toast Feedback System](superpowers/plans/2026-04-20-toast-feedback-system.md)
 - [Indoor Depth and Item Expansion](superpowers/plans/2026-04-20-indoor-depth-item-expansion.md)
 - [Outdoor 3x3 Authored Slice](superpowers/plans/2026-04-17-outdoor-3x3-authored-slice.md)
@@ -79,6 +81,7 @@ Background docs live in `docs/specs/`. They describe long-lived project directio
 Historical docs live in `docs/handoffs/` and `docs/worklogs/`. Use these when you need to reconstruct how a decision evolved, not to determine current direction.
 
 - Handoffs
+  - [2026-04-29 Codex Recovery And Setup](handoffs/2026-04-29-codex-recovery-and-setup.md)
   - [2026-04-01 Indoor Prototype Iteration](handoffs/2026-04-01-indoor-prototype-iteration.md)
   - [2026-04-02 Indoor UI Clarity Follow-up](handoffs/2026-04-02-indoor-ui-clarity-follow-up.md)
   - [2026-04-02 Indoor UI Restructure](handoffs/2026-04-02-indoor-ui-restructure.md)
