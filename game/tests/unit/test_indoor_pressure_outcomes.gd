@@ -5,6 +5,7 @@ const INDOOR_ACTION_RESOLVER_SCRIPT_PATH := "res://scripts/indoor/indoor_action_
 const MART_EVENT_PATH := "res://data/events/indoor/mart_01.json"
 const GARAGE_EVENT_PATH := "res://data/events/indoor/garage_01.json"
 const WAREHOUSE_EVENT_PATH := "res://data/events/indoor/warehouse_01.json"
+const CLINIC_EVENT_PATH := "res://data/events/indoor/clinic_01.json"
 
 var _test_jobs: Dictionary = {
 	"courier": {
@@ -135,6 +136,30 @@ func _run_test() -> void:
 	assert_true(_string_values(braced_shutter_state.get("spent_pressure_ids", [])).has("warehouse_shutter_wire_brace"), "Wire brace pressure should be marked spent.")
 	assert_true(resolver.is_zone_accessible(warehouse_event_data, braced_shutter_state, "deep_storage", braced_warehouse_run_state), "A braced shutter should open the deep-storage route without the key.")
 	assert_true(not bool(_move_action_by_target(resolver.get_move_actions(warehouse_event_data, braced_shutter_state, braced_warehouse_run_state), "deep_storage").get("locked", true)), "The deep-storage move action should unlock after bracing the shutter.")
+
+	var clinic_event_data: Dictionary = resolver.load_event(CLINIC_EVENT_PATH)
+	if not assert_true(not clinic_event_data.is_empty(), "Clinic event data should load."):
+		return
+	var clinic_run_state = _build_run_state(run_state_script)
+	var medicine_state := _event_state_for_zone("medicine_storage")
+	health_before = float(clinic_run_state.health)
+	assert_true(resolver.apply_action(clinic_run_state, clinic_event_data, medicine_state, "search_medicine_storage"), "Rushed medicine-storage search should resolve.")
+	assert_eq(float(clinic_run_state.health), health_before - 1.0, "Rushed medicine-storage search should risk a small cut.")
+	assert_eq(int(medicine_state.get("noise", 0)), 1, "Rushed medicine-storage search should add a small noise mark.")
+	assert_true(_string_values(medicine_state.get("spent_pressure_ids", [])).has("clinic_storage_broken_glass"), "Rushed medicine-storage pressure should be marked spent.")
+
+	var careful_clinic_run_state = _build_run_state(run_state_script)
+	assert_true(careful_clinic_run_state.inventory.add_item({"id": "flashlight", "name": "Flashlight", "bulk": 1}), "Careful clinic test should seed a flashlight.")
+	var careful_medicine_state := _event_state_for_zone("medicine_storage")
+	assert_true(_action_ids(resolver.get_actions(clinic_event_data, careful_medicine_state, careful_clinic_run_state)).has("search_medicine_storage_with_flashlight"), "A flashlight should unlock a safer medicine-storage search.")
+	health_before = float(careful_clinic_run_state.health)
+	fatigue_before = float(careful_clinic_run_state.fatigue)
+	assert_true(resolver.apply_action(careful_clinic_run_state, clinic_event_data, careful_medicine_state, "search_medicine_storage_with_flashlight"), "Careful medicine-storage search should resolve.")
+	assert_eq(float(careful_clinic_run_state.health), health_before, "Careful medicine-storage search should avoid the broken-glass injury.")
+	assert_true(float(careful_clinic_run_state.fatigue) >= fatigue_before + 0.75, "Careful medicine-storage search should still cost effort.")
+	assert_eq(int(careful_medicine_state.get("noise", 0)), 0, "Careful medicine-storage search should stay quiet.")
+	assert_true(_string_values(careful_medicine_state.get("spent_pressure_ids", [])).has("clinic_storage_careful_sort"), "Careful medicine-storage pressure should be marked spent.")
+	assert_true(not _action_ids(resolver.get_actions(clinic_event_data, careful_medicine_state, careful_clinic_run_state)).has("search_medicine_storage"), "Clearing the medicine storage carefully should remove the rushed search option.")
 
 	pass_test("INDOOR_PRESSURE_OUTCOMES_OK")
 

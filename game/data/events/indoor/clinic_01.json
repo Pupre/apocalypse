@@ -346,7 +346,10 @@
         {
           "id": "search_medicine_storage",
           "label": "약품 보관실을 탐색한다",
-          "requirements": {},
+          "requirements": {
+            "forbidden_flag_ids": ["medicine_storage_cleared"]
+          },
+          "show_when_locked": false,
           "costs": {
             "minutes": 30,
             "noise": 0
@@ -381,6 +384,69 @@
                 { "id": "thermometer", "weight": 3 },
                 { "id": "anti_inflammatory_ointment", "weight": 3 }
               ]
+            },
+            "set_flags": ["medicine_storage_cleared"],
+            "pressure": {
+              "id": "clinic_storage_broken_glass",
+              "message": "어두운 약품 보관실 안쪽을 급히 뒤지다 깨진 앰플 조각에 손끝을 베었다.",
+              "fatigue_gain": 1.0,
+              "health_loss": 1.0,
+              "noise": 1,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "search_medicine_storage_with_flashlight",
+          "label": "손전등으로 라벨을 비추며 약품을 고른다",
+          "requirements": {
+            "required_item_ids": ["flashlight"],
+            "forbidden_flag_ids": ["medicine_storage_cleared"]
+          },
+          "blocked_feedback": "약품 라벨과 깨진 유리를 구분하려면 손전등이 필요하다.",
+          "costs": {
+            "minutes": 45,
+            "noise": 0
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "painkillers",
+                "name": "진통제",
+                "bulk": 1
+              },
+              {
+                "id": "bandage",
+                "name": "붕대",
+                "bulk": 1
+              },
+              {
+                "id": "filter_cartridge",
+                "name": "방호 필터",
+                "bulk": 1
+              }
+            ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "disinfectant_bottle", "weight": 5 },
+                { "id": "sterile_gauze_roll", "weight": 5 },
+                { "id": "alcohol_swab", "weight": 4 },
+                { "id": "cold_medicine", "weight": 4 },
+                { "id": "fever_reducer", "weight": 4 },
+                { "id": "thermometer", "weight": 3 },
+                { "id": "anti_inflammatory_ointment", "weight": 3 }
+              ]
+            },
+            "set_flags": ["medicine_storage_cleared"],
+            "pressure": {
+              "id": "clinic_storage_careful_sort",
+              "message": "손전등 빛으로 라벨과 깨진 유리를 하나씩 확인하며 쓸 만한 약품만 골라냈다.",
+              "fatigue_gain": 0.75,
+              "noise": 0,
+              "repeatable": false
             },
             "consume_on_use": true
           }

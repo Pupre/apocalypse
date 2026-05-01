@@ -126,3 +126,13 @@ Outdoor terrain pressure now extends beyond the spawn crossing.
 - Hazard messages are authored per location so risky travel reads like a place-specific incident, not a generic cold tick.
 
 This makes longer outdoor routes feel more like route planning through a dangerous frozen city.
+
+## Follow-up Change: Clinic Search Risk
+
+The clinic medicine storage now has a practical safe-versus-rushed search decision.
+
+- Rummaging quickly can cut the survivor on broken ampoule glass and adds noise.
+- Bringing a flashlight allows slower label checking that avoids injury and stays quiet.
+- Both paths clear the same storage so the choice is about risk, time, and preparedness rather than duplicate loot.
+
+This keeps medical loot valuable while making the act of extracting it feel tense and concrete.
