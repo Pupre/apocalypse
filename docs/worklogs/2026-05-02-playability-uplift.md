@@ -63,3 +63,15 @@ After the first pressure pass, `noise` was connected to gameplay consequences ra
 - The first threshold adds a forced pause and fatigue.
 - The second threshold adds a longer pause, fatigue, and exposure loss.
 - The third threshold adds exposure loss, fatigue, a small injury, and a stronger warning message.
+
+## Follow-up Change: Practical Recipe Links
+
+The item and crafting pool already had a strong base, so this pass focused on believable missing links among items already present in the current building set.
+
+- `medical_tape + sterile_gauze_roll -> pressure_bandage`
+- `shop_towel_bundle + duct_tape -> draft_blocker`
+- `tarp_sheet + duct_tape -> window_cover_patch`
+- `hand_warmer_pack + scarf -> hand_warmer_wrap`
+- `disinfectant_bottle + shop_towel_bundle -> solvent_wipes`
+
+These are intentionally ordinary survival improvisations: medical dressing, draft blocking, broken-opening patching, pocket warmth, and cleaning/disinfection.

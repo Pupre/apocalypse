@@ -2088,5 +2088,95 @@
     "result_item_id": "wrapped_hot_water_bottle",
     "indoor_minutes": 10,
     "result_text": "물주머니 표면을 감싸 열이 오래 가는 보온 감싼 물주머니로 정리했다."
+  },
+  {
+    "id": "medical_tape__sterile_gauze_roll",
+    "ingredients": ["medical_tape", "sterile_gauze_roll"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "medical_tape": "consume",
+      "sterile_gauze_roll": "consume"
+    },
+    "result_items": [
+      {"id": "pressure_bandage", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "pressure_bandage",
+    "indoor_minutes": 4,
+    "result_text": "멸균 거즈를 테이프로 고정해 바로 압박할 수 있는 드레싱으로 만들었다."
+  },
+  {
+    "id": "shop_towel_bundle__duct_tape",
+    "ingredients": ["shop_towel_bundle", "duct_tape"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "shop_towel_bundle": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {"id": "draft_blocker", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "draft_blocker",
+    "indoor_minutes": 8,
+    "result_text": "두꺼운 작업용 수건을 말아 테이프로 묶어 문풍 차단 뭉치로 만들었다."
+  },
+  {
+    "id": "duct_tape__tarp_sheet",
+    "ingredients": ["tarp_sheet", "duct_tape"],
+    "contexts": ["indoor"],
+    "required_tags": [],
+    "minutes": 10,
+    "ingredient_rules": {
+      "tarp_sheet": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {"id": "window_cover_patch", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "window_cover_patch",
+    "indoor_minutes": 10,
+    "result_text": "방수포를 잘라 테이프로 고정해 깨진 창이나 큰 틈을 막는 패치로 만들었다."
+  },
+  {
+    "id": "hand_warmer_pack__scarf",
+    "ingredients": ["hand_warmer_pack", "scarf"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "hand_warmer_pack": "consume",
+      "scarf": "consume"
+    },
+    "result_items": [
+      {"id": "hand_warmer_wrap", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "hand_warmer_wrap",
+    "indoor_minutes": 3,
+    "result_text": "핫팩을 목도리 안에 감싸 품에 넣기 좋은 손난로 꾸러미로 만들었다."
+  },
+  {
+    "id": "disinfectant_bottle__shop_towel_bundle",
+    "ingredients": ["disinfectant_bottle", "shop_towel_bundle"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "disinfectant_bottle": "consume",
+      "shop_towel_bundle": "consume"
+    },
+    "result_items": [
+      {"id": "solvent_wipes", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "solvent_wipes",
+    "indoor_minutes": 5,
+    "result_text": "작업용 수건에 소독제를 적셔 상처 주변과 도구를 닦을 수 있는 천 꾸러미로 만들었다."
   }
 ]

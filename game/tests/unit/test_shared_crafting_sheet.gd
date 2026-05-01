@@ -66,11 +66,11 @@ func _run_test() -> void:
 	shared_survival_sheet.begin_craft_mode("newspaper")
 	assert_true(shared_survival_sheet.get_highlighted_item_ids().has("cooking_oil"), "Easy difficulty should still highlight compatible outdoor ingredients inside SurvivalSheet.")
 	var craft_card := shared_survival_sheet.get_node_or_null("CraftCard") as Control
-	var material_one_icon_rect := shared_survival_sheet.get_node_or_null("CraftCard/VBox/SlotsRow/MaterialOneCard/MaterialOneIconRect") as TextureRect
-	var material_one_label := shared_survival_sheet.get_node_or_null("CraftCard/VBox/SlotsRow/MaterialOneCard/MaterialOneValueLabel") as Label
-	var material_two_icon_rect := shared_survival_sheet.get_node_or_null("CraftCard/VBox/SlotsRow/MaterialTwoCard/MaterialTwoIconRect") as TextureRect
-	var material_two_label := shared_survival_sheet.get_node_or_null("CraftCard/VBox/SlotsRow/MaterialTwoCard/MaterialTwoValueLabel") as Label
-	var craft_confirm_button := shared_survival_sheet.get_node_or_null("CraftCard/VBox/ActionsRow/CraftConfirmButton") as Button
+	var material_one_icon_rect := shared_survival_sheet.get_node_or_null("CraftCard/Padding/VBox/SlotsRow/MaterialOneCard/Padding/VBox/ValueRow/MaterialOneIconSlot/IconCenter/MaterialOneIconRect") as TextureRect
+	var material_one_label := shared_survival_sheet.get_node_or_null("CraftCard/Padding/VBox/SlotsRow/MaterialOneCard/Padding/VBox/ValueRow/MaterialOneValueLabel") as Label
+	var material_two_icon_rect := shared_survival_sheet.get_node_or_null("CraftCard/Padding/VBox/SlotsRow/MaterialTwoCard/Padding/VBox/ValueRow/MaterialTwoIconSlot/IconCenter/MaterialTwoIconRect") as TextureRect
+	var material_two_label := shared_survival_sheet.get_node_or_null("CraftCard/Padding/VBox/SlotsRow/MaterialTwoCard/Padding/VBox/ValueRow/MaterialTwoValueLabel") as Label
+	var craft_confirm_button := shared_survival_sheet.get_node_or_null("CraftCard/Padding/VBox/ActionsRow/CraftConfirmButton") as Button
 	if not assert_true(craft_card != null and craft_card.visible, "Outdoor SurvivalSheet should show the same craft card during craft mode."):
 		run_shell.free()
 		return

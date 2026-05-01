@@ -40,6 +40,28 @@ func _run_test() -> void:
 	tool_charge_costs = hot_water_result.get("tool_charge_costs", {})
 	assert_eq(int(tool_charge_costs.get("lighter", 0)), 1, "Heating water should spend one lighter charge.")
 
+	var pressure_bandage_result: Dictionary = resolver.resolve("medical_tape", "sterile_gauze_roll", "indoor", content_library)
+	assert_eq(String(pressure_bandage_result.get("result_type", "")), "success", "Medical tape and sterile gauze should make a practical pressure bandage.")
+	assert_eq(String(pressure_bandage_result.get("result_item_id", "")), "pressure_bandage", "Medical dressing recipe should expose the pressure bandage output.")
+	assert_eq(int(pressure_bandage_result.get("minutes_elapsed", -1)), 4, "Fast medical assembly should keep a short indoor craft time.")
+
+	var draft_blocker_result: Dictionary = resolver.resolve("shop_towel_bundle", "duct_tape", "indoor", content_library)
+	assert_eq(String(draft_blocker_result.get("result_type", "")), "success", "Work towels and tape should make a believable draft blocker.")
+	assert_eq(String(draft_blocker_result.get("result_item_id", "")), "draft_blocker", "Logistics textiles should feed indoor insulation crafting.")
+
+	var tarp_patch_result: Dictionary = resolver.resolve("tarp_sheet", "duct_tape", "indoor", content_library)
+	assert_eq(String(tarp_patch_result.get("result_type", "")), "success", "Tarp and tape should patch a broken opening indoors.")
+	assert_eq(String(tarp_patch_result.get("result_item_id", "")), "window_cover_patch", "Tarp patch recipe should output the existing window-cover deployable.")
+
+	var hand_warmer_wrap_result: Dictionary = resolver.resolve("hand_warmer_pack", "scarf", "outdoor", content_library)
+	assert_eq(String(hand_warmer_wrap_result.get("result_type", "")), "success", "A scarf should turn a loose heat pack into a useful carry-warmth bundle.")
+	assert_eq(String(hand_warmer_wrap_result.get("result_item_id", "")), "hand_warmer_wrap", "Wrapped heat-pack recipe should reuse the carry-warmth output.")
+	assert_eq(int(hand_warmer_wrap_result.get("minutes_elapsed", -1)), 0, "Outdoor crafting should not spend indoor action minutes.")
+
+	var solvent_wipes_result: Dictionary = resolver.resolve("disinfectant_bottle", "shop_towel_bundle", "indoor", content_library)
+	assert_eq(String(solvent_wipes_result.get("result_type", "")), "success", "Disinfectant and work towels should make useful cleaning wipes.")
+	assert_eq(String(solvent_wipes_result.get("result_item_id", "")), "solvent_wipes", "Disinfectant towel recipe should output solvent wipes.")
+
 	var failure_result: Dictionary = resolver.resolve("newspaper", "bottled_water", "indoor", content_library)
 	assert_eq(String(failure_result.get("result_type", "")), "failure", "Configured bad pairs should still resolve into a failure result.")
 	assert_eq(String(failure_result.get("result_item_id", "")), "wet_newspaper", "Failure pairs should expose their failure result item.")
