@@ -179,6 +179,11 @@
       "id": "storage_key_hint",
       "text": "사무실 장부 가장자리엔 보관실 열쇠를 따로 숨겨둔다는 표시가 남아 있다.",
       "visible": false
+    },
+    {
+      "id": "recent_human_presence_hint",
+      "text": "매장 뒤편 철제문 너머에서 누군가 방금 지나간 듯한 발소리와 비닐 끌리는 소리가 희미하게 남아 있다.",
+      "visible": false
     }
   ],
   "events": [
@@ -330,6 +335,8 @@
               "entries": [
                 { "id": "cling_wrap_roll", "weight": 4 },
                 { "id": "foil_tray_pack", "weight": 4 },
+                { "id": "dish_soap", "weight": 3 },
+                { "id": "scrub_sponge", "weight": 3 },
                 { "id": "hand_warmer_pack", "weight": 3 },
                 { "id": "zip_bag", "weight": 2 }
               ]
@@ -391,6 +398,16 @@
               ]
             },
             "reveal_clue_ids": ["staff_gate_hint"],
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "wait_and_listen",
+          "label": "숨을 죽이고 인기척을 살핀다",
+          "requirements": {},
+          "costs": { "minutes": 10, "noise": 0 },
+          "outcomes": {
+            "reveal_clue_ids": ["recent_human_presence_hint"],
             "consume_on_use": true
           }
         }

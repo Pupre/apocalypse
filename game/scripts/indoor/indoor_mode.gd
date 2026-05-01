@@ -280,6 +280,7 @@ func _create_action_button(action: Dictionary, section_id: String) -> Button:
 	button.text = ""
 	button.custom_minimum_size = Vector2(0, 50)
 	button.focus_mode = Control.FOCUS_NONE
+	button.set_meta("action_id", action_id)
 	_ui_kit_resolver.apply_button(
 		button,
 		"indoor/indoor_action_row_compact_idle.png",

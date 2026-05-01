@@ -13,8 +13,10 @@ Thumbs.db
 game/.godot/
 game/builds/
 game/android/build/.gradle/
-game/android/build/assets/
-game/android/build/assetPacks/installTime/src/main/assets/
+game/android/build/assets/*
+!game/android/build/assets/.gitkeep
+game/android/build/assetPacks/installTime/src/main/assets/*
+!game/android/build/assetPacks/installTime/src/main/assets/.gitkeep
 game/android/build/build/
 game/android/build/libs/
 game/android/build/local.properties

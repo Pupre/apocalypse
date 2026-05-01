@@ -82,7 +82,7 @@ func _run_test() -> void:
 	}
 
 	var visible_clues: Array = resolver.get_visible_clues(event_data, event_state)
-	assert_eq(visible_clues.size(), 1, "Mart clues should start with one visible clue.")
+	assert_eq(visible_clues.size(), 0, "Mart clues should start hidden until a local search reveals them.")
 
 	var actions: Array = resolver.get_actions(event_data, event_state)
 	assert_true(_action_ids(actions).has("move_checkout"), "Entrance should expose movement into checkout.")
@@ -109,11 +109,11 @@ func _run_test() -> void:
 	assert_eq(String(event_state.get("current_zone_id", "")), "checkout", "Moving should update the current zone to checkout.")
 
 	visible_clues = resolver.get_visible_clues(event_data, event_state)
-	assert_eq(visible_clues.size(), 1, "Moving zones should not reveal hidden clues on its own.")
+	assert_eq(visible_clues.size(), 0, "Moving zones should not reveal hidden clues on its own.")
 	assert_eq(run_state.inventory.total_bulk(), 0, "Moving zones should not add loot on its own.")
 
 	actions = resolver.get_actions(event_data, event_state)
-	assert_true(_action_ids(actions).has("search_checkout_counter"), "Checkout should expose its local search after entering the zone.")
+	assert_true(_action_ids(actions).has("search_checkout_drawer"), "Checkout should expose its local search after entering the zone.")
 	assert_true(not _action_ids(actions).has("rest"), "Checkout should not expose the removed flat rest action.")
 
 	assert_true(
@@ -140,7 +140,7 @@ func _run_test() -> void:
 
 	var checkout_actions: Array = resolver.get_actions(event_data, checkout_event_state)
 	assert_true(
-		_action_ids(checkout_actions).has("search_checkout_counter"),
+		_action_ids(checkout_actions).has("search_checkout_drawer"),
 		"Checkout should expose its local search option."
 	)
 	assert_true(
@@ -160,7 +160,7 @@ func _run_test() -> void:
 
 	var hall_actions: Array = resolver.get_actions(event_data, hall_state)
 	assert_true(
-		_action_ids(hall_actions).has("search_back_hall_supplies"),
+		_action_ids(hall_actions).has("search_back_hall"),
 		"Back hall should expose a supply search action."
 	)
 	assert_true(
@@ -174,7 +174,7 @@ func _run_test() -> void:
 
 	var before_checkout_clock_minute_of_day: int = checkout_run_state.clock.minute_of_day
 	assert_true(
-		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "search_checkout_counter"),
+		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, "search_checkout_drawer"),
 		"Checkout search should resolve through the indoor resolver."
 	)
 	assert_eq(
@@ -183,13 +183,12 @@ func _run_test() -> void:
 		"Checkout search should spend its minute cost."
 	)
 	assert_true(
-		_string_values(checkout_event_state.get("revealed_clue_ids", [])).has("staff_key_board_hint"),
+		_string_values(checkout_event_state.get("revealed_clue_ids", [])).has("staff_gate_hint"),
 		"Searching the checkout should reveal the staff key board clue."
 	)
-	var checkout_zone_flags: Dictionary = checkout_event_state.get("zone_flags", {})
 	assert_true(
-		checkout_zone_flags.has("checkout_counter_searched"),
-		"Searching the checkout should set its zone flag."
+		_string_values(checkout_event_state.get("spent_action_ids", [])).has("search_checkout_drawer"),
+		"Searching the checkout should mark the one-shot drawer search as spent."
 	)
 	assert_eq(
 		checkout_run_state.inventory.total_bulk(),
@@ -201,19 +200,19 @@ func _run_test() -> void:
 		"Searching the checkout should report discovered loot."
 	)
 	assert_true(
-		not _action_ids(resolver.get_actions(event_data, checkout_event_state)).has("search_checkout_counter"),
+		not _action_ids(resolver.get_actions(event_data, checkout_event_state)).has("search_checkout_drawer"),
 		"Checkout search should be consumed after use."
 	)
 	checkout_actions = resolver.get_actions(event_data, checkout_event_state)
 	var take_checkout_lighter_action_id := _action_id_by_prefix(checkout_actions, "take_checkout_lighter_")
-	var take_checkout_energy_bar_action_id := _action_id_by_prefix(checkout_actions, "take_checkout_energy_bar_")
+	var take_checkout_action_ids := _action_ids_by_prefix(checkout_actions, "take_checkout_")
 	assert_true(
 		not take_checkout_lighter_action_id.is_empty(),
 		"Searching the checkout should reveal a take action for the lighter."
 	)
 	assert_true(
-		not take_checkout_energy_bar_action_id.is_empty(),
-		"Searching the checkout should reveal a take action for the snack."
+		take_checkout_action_ids.size() >= 2,
+		"Searching the checkout should reveal the lighter plus at least one rolled counter item."
 	)
 	assert_true(
 		resolver.apply_action(checkout_run_state, event_data, checkout_event_state, take_checkout_lighter_action_id),
@@ -331,8 +330,16 @@ func _run_test() -> void:
 
 	checkout_actions = resolver.get_actions(event_data, toolless_gate_state, toolless_gate_run_state)
 	assert_true(
-		not _action_ids(checkout_actions).has("force_staff_corridor_gate"),
-		"Staff gate zone should hide the force option until the player finds the tool."
+		_action_ids(checkout_actions).has("force_staff_gate"),
+		"Staff gate zone should expose a noisy brute-force option even without a tool."
+	)
+	assert_true(
+		_action_ids(checkout_actions).has("jimmy_staff_gate_with_screwdriver"),
+		"Staff gate zone should still explain the quieter screwdriver option before the player has the tool."
+	)
+	assert_true(
+		bool(_action_by_id(checkout_actions, "jimmy_staff_gate_with_screwdriver").get("locked", false)),
+		"The screwdriver option should be locked while the player lacks the tool."
 	)
 	assert_true(
 		_action_ids(checkout_actions).has("move_stair_landing"),
@@ -340,13 +347,17 @@ func _run_test() -> void:
 	)
 	var blocked_force_clock_minute_of_day: int = toolless_gate_run_state.clock.minute_of_day
 	assert_true(
-		not resolver.apply_action(toolless_gate_run_state, event_data, toolless_gate_state, "force_staff_corridor_gate"),
-		"Trying to use the hidden force action id directly should fail while the player lacks the tool."
+		resolver.apply_action(toolless_gate_run_state, event_data, toolless_gate_state, "jimmy_staff_gate_with_screwdriver"),
+		"Trying to use the locked screwdriver action should resolve with blocked feedback while the player lacks the tool."
 	)
 	assert_eq(
 		toolless_gate_run_state.clock.minute_of_day,
 		blocked_force_clock_minute_of_day,
-		"Failing to invoke the hidden force action should not spend time."
+		"Trying the locked screwdriver action should not spend time."
+	)
+	assert_true(
+		String(toolless_gate_state.get("last_feedback_message", "")).find("드라이버") != -1,
+		"Trying the locked screwdriver action should explain the missing tool."
 	)
 	var blocked_attempt_clock_minute_of_day: int = toolless_gate_run_state.clock.minute_of_day
 	assert_true(
@@ -364,7 +375,7 @@ func _run_test() -> void:
 		"Trying a locked route should not spend travel time."
 	)
 	assert_true(
-		String(toolless_gate_state.get("last_feedback_message", "")).find("잠겨") != -1,
+		String(toolless_gate_state.get("last_feedback_message", "")).find("걸려") != -1,
 		"Trying a locked route should explain that the door is locked."
 	)
 
@@ -386,21 +397,25 @@ func _run_test() -> void:
 		"noise": 0,
 	}
 	assert_true(
-		resolver.apply_action(gate_run_state, event_data, gate_event_state, "search_back_hall_supplies"),
+		resolver.apply_action(gate_run_state, event_data, gate_event_state, "search_back_hall"),
 		"Back hall search should reveal supply loot."
 	)
 	assert_true(
-		not _action_id_by_prefix(resolver.get_actions(event_data, gate_event_state, gate_run_state), "take_back_hall_screwdriver_").is_empty(),
-		"Back hall search should reveal a take action for the screwdriver."
+		not _action_id_by_prefix(resolver.get_actions(event_data, gate_event_state, gate_run_state), "take_back_hall_mart_stock_note_01_").is_empty(),
+		"Back hall search should reveal a take action for the stock note."
 	)
 	assert_true(
 		resolver.apply_action(
 			gate_run_state,
 			event_data,
 			gate_event_state,
-			_action_id_by_prefix(resolver.get_actions(event_data, gate_event_state, gate_run_state), "take_back_hall_screwdriver_")
+			_action_id_by_prefix(resolver.get_actions(event_data, gate_event_state, gate_run_state), "take_back_hall_mart_stock_note_01_")
 		),
-		"The player should be able to pick up the screwdriver after finding it."
+		"The player should be able to pick up the stock note after finding it."
+	)
+	assert_true(
+		gate_run_state.inventory.add_item({"id": "screwdriver", "bulk": 1}),
+		"Gate branch test should seed a screwdriver from a previous scavenging stop."
 	)
 	assert_true(
 		resolver.apply_action(gate_run_state, event_data, gate_event_state, "move_staff_corridor_gate"),
@@ -409,22 +424,22 @@ func _run_test() -> void:
 
 	checkout_actions = resolver.get_actions(event_data, gate_event_state, gate_run_state)
 	assert_true(
-		not bool(_action_by_id(checkout_actions, "force_staff_corridor_gate").get("locked", false)),
-		"Finding the screwdriver should unlock the force-gate action."
+		not bool(_action_by_id(checkout_actions, "jimmy_staff_gate_with_screwdriver").get("locked", false)),
+		"Having a screwdriver should unlock the quieter gate action."
 	)
 
 	assert_true(
-		resolver.apply_action(gate_run_state, event_data, gate_event_state, "force_staff_corridor_gate"),
-		"Checkout gate forcing should resolve through the same resolver path."
+		resolver.apply_action(gate_run_state, event_data, gate_event_state, "jimmy_staff_gate_with_screwdriver"),
+		"Checkout gate jimmying should resolve through the same resolver path."
 	)
 	assert_true(
 		bool((gate_event_state.get("zone_flags", {}) as Dictionary).has("staff_gate_forced")),
-		"Forcing the staff gate should set its zone flag."
+		"Opening the staff gate should set its zone flag."
 	)
 	assert_eq(
 		int(gate_event_state.get("noise", 0)),
-		2,
-		"Forcing the staff gate should add its noise cost."
+		0,
+		"Using the screwdriver should avoid adding noise."
 	)
 	checkout_actions = resolver.get_actions(event_data, gate_event_state, gate_run_state)
 	assert_true(
@@ -510,6 +525,7 @@ func _run_test() -> void:
 		"2층 입구로 이동한다",
 		"Returning from the office should use a neutral move label instead of the one-way upstairs wording."
 	)
+	var before_office_inventory_bulk: int = gate_run_state.inventory.total_bulk()
 	assert_true(
 		resolver.apply_action(gate_run_state, event_data, gate_event_state, "search_office_drawer"),
 		"Office drawer search should resolve through the indoor resolver."
@@ -520,7 +536,7 @@ func _run_test() -> void:
 	)
 	assert_eq(
 		gate_run_state.inventory.total_bulk(),
-		1,
+		before_office_inventory_bulk,
 		"Searching the office should not auto-loot the storage key."
 	)
 	office_actions = resolver.get_actions(event_data, gate_event_state, gate_run_state)
@@ -535,7 +551,7 @@ func _run_test() -> void:
 	)
 	assert_eq(
 		gate_run_state.inventory.total_bulk(),
-		2,
+		before_office_inventory_bulk + 1,
 		"Picking up the storage key should add it to the player's inventory."
 	)
 
@@ -609,7 +625,7 @@ func _run_test() -> void:
 		"noise": 0,
 	}
 	assert_true(
-		resolver.apply_action(full_run_state, event_data, overflow_event_state, "search_checkout_counter"),
+		resolver.apply_action(full_run_state, event_data, overflow_event_state, "search_checkout_drawer"),
 		"Overflow tests should still resolve the search action."
 	)
 	assert_eq(
@@ -696,6 +712,17 @@ func _action_id_by_prefix(actions: Array, expected_prefix: String) -> String:
 		if action_id.begins_with(expected_prefix):
 			return action_id
 	return ""
+
+
+func _action_ids_by_prefix(actions: Array, expected_prefix: String) -> Array[String]:
+	var result: Array[String] = []
+	for action_variant in actions:
+		if typeof(action_variant) != TYPE_DICTIONARY:
+			continue
+		var action_id := String((action_variant as Dictionary).get("id", ""))
+		if action_id.begins_with(expected_prefix):
+			result.append(action_id)
+	return result
 
 
 func _action_ids(actions: Array) -> Array[String]:

@@ -47,7 +47,7 @@
               "allow_duplicates": false,
               "entries": [
                 { "id": "bandage", "weight": 3 },
-                { "id": "soap", "weight": 2 },
+                { "id": "soap_bar", "weight": 2 },
                 { "id": "wet_wipes", "weight": 2 }
               ]
             },

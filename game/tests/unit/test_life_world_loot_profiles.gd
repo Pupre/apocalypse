@@ -10,7 +10,7 @@ const BUILDING_CASES := [
 		"search_cases": [
 			{"zone_id": "food_aisle", "action_id": "search_food_aisle"},
 			{"zone_id": "household_goods", "action_id": "search_household_goods"},
-			{"zone_id": "back_hall", "action_id": "search_back_hall_supplies"},
+			{"zone_id": "back_hall", "action_id": "search_back_hall"},
 		],
 		"family_cases": [
 			{"label": "food staples", "expected_ids": ["cooking_oil", "tea_bag", "instant_soup_powder"]},

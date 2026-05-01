@@ -35,6 +35,7 @@ Systems already integrated in `main`:
 - Outdoor black-ice and wind-gap hazards now cover multiple nearby city blocks.
 - Clinic medicine storage now has rushed versus flashlight-assisted search risk.
 - Gas station fuel salvage now turns empty jerrycans into heavy portable-heat fuel.
+- Indoor loot profiles now use validated practical household item ids, and the mart back hall has a listen-first clue action.
 
 ## 2026-05-02 Checkpoint
 
@@ -42,6 +43,7 @@ Systems already integrated in `main`:
 - Current playability uplift continues from that checkpoint with generated cold-screen feedback and indoor pressure consequences.
 - Indoor `outcomes.pressure` is now the preferred first-pass authoring hook for deterministic search risk.
 - Noise is visible, persistent, and now resolves deterministic danger thresholds at 3/6/9.
+- Recent stabilization also refreshed stale indoor/action UI tests against the current branching gate and loot-profile behavior.
 
 ## Active Specs
 

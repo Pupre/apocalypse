@@ -109,7 +109,7 @@ func _run_test() -> void:
 		"Checkout should still expose the return path through zone-aware get_actions."
 	)
 	assert_true(
-		_action_ids(zone_aware_actions).has("search_checkout_counter"),
+		_action_ids(zone_aware_actions).has("search_checkout_drawer"),
 		"Checkout should expose its local search only after entering the checkout zone."
 	)
 
@@ -142,8 +142,8 @@ func _run_test() -> void:
 	}
 	var staff_gate_actions: Array = resolver.get_actions(event_data, staff_gate_state)
 	assert_true(
-		not _action_ids(staff_gate_actions).has("force_staff_corridor_gate"),
-		"Staff gate should hide the force action until the player actually has a tool."
+		_action_ids(staff_gate_actions).has("force_staff_gate"),
+		"Staff gate should expose the noisy brute-force option before the player has a tool."
 	)
 	assert_true(
 		_action_ids(staff_gate_actions).has("move_stair_landing"),

@@ -147,3 +147,22 @@ The gas station now has a concrete fuel-hauling decision.
 - The filled jerrycan is tagged as fuel, so it can activate portable heat recovery with a deployed heat base and ignition.
 
 This ties scavenged logistics gear into the heat-source loop and gives the player another reason to choose heavy utility over lighter food.
+
+## Follow-up Change: Loot Profile Stabilization
+
+The broad regression sweep exposed several places where tests still described the old single-path mart flow or older item ids.
+
+- Mart back hall now has a `wait_and_listen` option that reveals a recent human-presence clue without turning every indoor action into a generic search.
+- Mart household shelves can roll cleaning supplies such as dish soap and scrub sponges.
+- Apartment janitor, laundry, and unit search tables now include more realistic laundry, clothing, and storage finds.
+- Stale `soap` loot references now use the actual `soap_bar` item id.
+- Indoor action buttons now carry action-id metadata so UI flow tests can target behavior instead of fragile Korean label text.
+- Android template placeholder asset directories are tracked with `.gitkeep` so export-contract checks survive clean clones.
+
+Verification added or refreshed around these changes:
+
+- `res://tests/unit/test_android_export_contract.gd`
+- `res://tests/unit/test_indoor_actions.gd`
+- `res://tests/unit/test_indoor_zone_graph.gd`
+- `res://tests/unit/test_life_world_loot_profiles.gd`
+- `res://tests/unit/test_survivor_creator.gd`

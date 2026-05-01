@@ -74,7 +74,7 @@
               "allow_duplicates": false,
               "entries": [
                 { "id": "old_blanket", "weight": 3 },
-                { "id": "soap", "weight": 2 },
+                { "id": "soap_bar", "weight": 2 },
                 { "id": "knit_cap", "weight": 2 }
               ]
             },

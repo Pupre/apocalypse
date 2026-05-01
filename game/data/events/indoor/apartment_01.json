@@ -261,8 +261,12 @@
               "allow_duplicates": false,
               "entries": [
                 { "id": "bottled_water", "weight": 3 },
+                { "id": "laundry_detergent", "weight": 4 },
                 { "id": "detergent_pod_pack", "weight": 3 },
-                { "id": "soap", "weight": 2 },
+                { "id": "dish_soap", "weight": 3 },
+                { "id": "scrub_sponge", "weight": 2 },
+                { "id": "soap_bar", "weight": 2 },
+                { "id": "towel", "weight": 2 },
                 { "id": "trash_bag_roll", "weight": 2 }
               ]
             },
@@ -318,9 +322,12 @@
               "rolls": 3,
               "allow_duplicates": false,
               "entries": [
+                { "id": "laundry_detergent", "weight": 4 },
                 { "id": "detergent_pod_pack", "weight": 4 },
                 { "id": "slippers", "weight": 3 },
-                { "id": "soap", "weight": 2 },
+                { "id": "towel", "weight": 3 },
+                { "id": "dishcloth", "weight": 2 },
+                { "id": "soap_bar", "weight": 2 },
                 { "id": "wet_wipes", "weight": 2 }
               ]
             },
@@ -350,7 +357,11 @@
               "allow_duplicates": false,
               "entries": [
                 { "id": "knit_cap", "weight": 3 },
+                { "id": "hoodie", "weight": 3 },
+                { "id": "sleep_socks", "weight": 3 },
                 { "id": "slippers", "weight": 3 },
+                { "id": "cardboard_box", "weight": 2 },
+                { "id": "food_storage_container", "weight": 2 },
                 { "id": "memo_pad", "weight": 2 }
               ]
             },

@@ -203,12 +203,13 @@ func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, ac
 		else:
 			var loot_messages: Array[String] = []
 			var collected_loot_labels: Array[String] = []
+			var inventory = _run_inventory(run_state)
 			for loot_variant in action.get("loot", []):
-				if typeof(loot_variant) != TYPE_DICTIONARY or run_state == null:
+				if typeof(loot_variant) != TYPE_DICTIONARY or inventory == null:
 					continue
 
 				var loot := loot_variant as Dictionary
-				if run_state.inventory.add_item(loot):
+				if inventory.add_item(loot):
 					collected_loot_labels.append(_loot_label(loot))
 				else:
 					loot_messages.append("가방이 가득 차서 %s 챙기지 못했다." % _loot_label(loot))
@@ -559,11 +560,12 @@ func _inventory_contains_ids(run_state, required_item_ids) -> bool:
 	var required := _string_id_array(required_item_ids)
 	if required.is_empty():
 		return true
-	if run_state == null or run_state.inventory == null:
+	var inventory = _run_inventory(run_state)
+	if inventory == null:
 		return false
 
 	var inventory_lookup := {}
-	for item_variant in run_state.inventory.items:
+	for item_variant in inventory.items:
 		if typeof(item_variant) != TYPE_DICTIONARY:
 			continue
 		var item := item_variant as Dictionary
@@ -579,18 +581,27 @@ func _consume_action_items(run_state, action: Dictionary) -> bool:
 	var consume_item_ids := _string_id_array(action.get("consume_item_ids", []))
 	if consume_item_ids.is_empty():
 		return true
-	if run_state == null or run_state.inventory == null:
+	var inventory = _run_inventory(run_state)
+	if inventory == null:
 		return false
 
 	var removed_items: Array[Dictionary] = []
 	for item_id in consume_item_ids:
-		var removed_item: Dictionary = run_state.inventory.take_first_item_by_id(item_id)
+		var removed_item: Dictionary = inventory.take_first_item_by_id(item_id)
 		if removed_item.is_empty():
-			if run_state.inventory.has_method("restore_items"):
-				run_state.inventory.restore_items(removed_items)
+			if inventory.has_method("restore_items"):
+				inventory.restore_items(removed_items)
 			return false
 		removed_items.append(removed_item)
 	return true
+
+
+func _run_inventory(run_state):
+	if run_state == null:
+		return null
+	if not (run_state is Object):
+		return null
+	return run_state.get("inventory")
 
 
 func _apply_action_outcomes(event_state: Dictionary, action: Dictionary) -> void:
@@ -798,13 +809,14 @@ func _get_take_loot_actions(event_state: Dictionary, run_state = null) -> Array[
 		return []
 
 	var found_loot := _get_zone_found_loot(event_state, current_zone_id)
+	var inventory = _run_inventory(run_state)
 	var actions: Array[Dictionary] = []
 	for loot_index in range(found_loot.size()):
 		var loot := found_loot[loot_index]
 		var loot_id := String(loot.get("id", "loot"))
 		var loot_uid := int(loot.get("loot_uid", loot_index))
 		var loot_label := _loot_label(loot)
-		var can_add: bool = run_state != null and run_state.inventory != null and run_state.inventory.can_add(loot)
+		var can_add: bool = inventory != null and inventory.can_add(loot)
 		actions.append({
 			"id": "take_%s_%s_%d" % [current_zone_id, loot_id, loot_uid],
 			"type": "take_loot",
@@ -827,7 +839,8 @@ func _get_take_loot_action(event_state: Dictionary, action_id: String, run_state
 
 
 func _apply_take_loot_action(run_state, event_state: Dictionary, action: Dictionary) -> bool:
-	if run_state == null or run_state.inventory == null:
+	var inventory = _run_inventory(run_state)
+	if inventory == null:
 		return false
 	if bool(action.get("locked", false)):
 		event_state["last_feedback_message"] = String(action.get("blocked_feedback", "가방이 가득 차서 더 챙길 수 없다."))
@@ -840,7 +853,7 @@ func _apply_take_loot_action(run_state, event_state: Dictionary, action: Diction
 		return false
 
 	var loot := found_loot[loot_index]
-	if not run_state.inventory.add_item(loot):
+	if not inventory.add_item(loot):
 		event_state["last_feedback_message"] = "가방이 가득 차서 %s 챙기지 못한다." % _loot_label(loot)
 		return true
 
@@ -854,7 +867,8 @@ func _get_take_supply_actions(event_state: Dictionary, run_state = null) -> Arra
 	var current_zone_id := String(event_state.get("current_zone_id", ""))
 	if current_zone_id.is_empty():
 		return []
-	if run_state == null or run_state.inventory == null:
+	var inventory = _run_inventory(run_state)
+	if inventory == null:
 		return []
 
 	var sources := _get_zone_supply_sources(event_state, current_zone_id)
@@ -917,7 +931,8 @@ func _get_take_supply_action(event_state: Dictionary, action_id: String, run_sta
 
 
 func _apply_take_supply_action(run_state, event_state: Dictionary, action: Dictionary) -> bool:
-	if run_state == null or run_state.inventory == null:
+	var inventory = _run_inventory(run_state)
+	if inventory == null:
 		return false
 	if bool(action.get("locked", false)):
 		event_state["last_feedback_message"] = String(action.get("blocked_feedback", "더는 챙길 여유가 없다."))
@@ -948,7 +963,7 @@ func _apply_take_supply_action(run_state, event_state: Dictionary, action: Dicti
 		return true
 
 	for _index in range(quantity_to_take):
-		if not run_state.inventory.add_item(item):
+		if not inventory.add_item(item):
 			break
 
 	source["quantity_remaining"] = quantity_remaining - quantity_to_take
@@ -1056,19 +1071,20 @@ func _supply_item_entry(source: Dictionary) -> Dictionary:
 
 
 func _max_pickup_quantity_for_supply(run_state, item: Dictionary, quantity_remaining: int) -> int:
-	if run_state == null or run_state.inventory == null:
+	var inventory = _run_inventory(run_state)
+	if inventory == null:
 		return 0
 	if quantity_remaining <= 0:
 		return 0
 
 	var legal_quantity := 0
 	for _index in range(quantity_remaining):
-		if not run_state.inventory.can_add(item):
+		if not inventory.can_add(item):
 			break
-		run_state.inventory.items.append(item.duplicate(true))
+		inventory.items.append(item.duplicate(true))
 		legal_quantity += 1
 	for _index in range(legal_quantity):
-		run_state.inventory.items.remove_at(run_state.inventory.items.size() - 1)
+		inventory.items.remove_at(inventory.items.size() - 1)
 	return legal_quantity
 
 

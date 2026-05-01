@@ -192,11 +192,11 @@ func _run_test() -> void:
 	assert_true(_count_buttons(action_buttons) >= 1, "Mart indoor mode should expose at least one indoor action.")
 	assert_true(_section_labels(action_buttons).has("이동"), "Indoor UI should expose a movement section in the creator flow.")
 	assert_true(
-		_find_button_by_text(action_buttons, "계산대를 수색한다 (30분)") == null,
+		_find_button_by_action_id(action_buttons, "search_checkout_drawer") == null,
 		"The mart entrance should not expose checkout-only search actions."
 	)
 
-	var move_checkout_button := _find_button_by_text(action_buttons, "계산대로 이동한다 (30분)")
+	var move_checkout_button := _find_button_by_action_id(action_buttons, "move_checkout")
 	if not assert_true(move_checkout_button != null, "The mart entrance should expose movement into the checkout zone."):
 		bootstrap.free()
 		return
@@ -214,7 +214,7 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 
-	var search_button := _find_button_by_text(action_buttons, "계산대를 탐색한다 (30분)")
+	var search_button := _find_button_by_action_id(action_buttons, "search_checkout_drawer")
 	if not assert_true(search_button != null, "Checkout should expose the search action after moving there."):
 		bootstrap.free()
 		return
@@ -240,11 +240,11 @@ func _run_test() -> void:
 	assert_eq(hud_clock_label.text, "1일차 09:00", "Moving into checkout and then searching should advance the HUD clock.")
 	assert_true(result_label.text.find(expected_feedback) != -1, "Pressing the indoor action should refresh the result feedback.")
 	assert_true(
-		_find_button_by_text(action_buttons, "계산대를 탐색한다 (30분)") == null,
+		_find_button_by_action_id(action_buttons, "search_checkout_drawer") == null,
 		"The one-shot search action should be removed after use."
 	)
 	assert_true(
-		_find_button_by_text(action_buttons, "라이터 챙긴다") != null,
+		_find_button_by_action_id_prefix(action_buttons, "take_checkout_lighter_") != null,
 		"Searching should reveal take actions in the creator flow as well."
 	)
 
@@ -310,6 +310,36 @@ func _find_button_by_text(container: Node, expected_text: String) -> Button:
 		if button != null and button.text == expected_text:
 			return button
 		var nested := _find_button_by_text(child, expected_text)
+		if nested != null:
+			return nested
+
+	return null
+
+
+func _find_button_by_action_id(container: Node, expected_action_id: String) -> Button:
+	if container == null:
+		return null
+
+	for child in container.get_children():
+		var button := child as Button
+		if button != null and button.has_meta("action_id") and String(button.get_meta("action_id")) == expected_action_id:
+			return button
+		var nested := _find_button_by_action_id(child, expected_action_id)
+		if nested != null:
+			return nested
+
+	return null
+
+
+func _find_button_by_action_id_prefix(container: Node, expected_prefix: String) -> Button:
+	if container == null:
+		return null
+
+	for child in container.get_children():
+		var button := child as Button
+		if button != null and button.has_meta("action_id") and String(button.get_meta("action_id")).begins_with(expected_prefix):
+			return button
+		var nested := _find_button_by_action_id_prefix(child, expected_prefix)
 		if nested != null:
 			return nested
 
