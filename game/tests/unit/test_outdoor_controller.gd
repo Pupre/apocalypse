@@ -198,6 +198,39 @@ func _run_test() -> void:
 	assert_true(run_state.thirst < before_thirst, "Outdoor time should reduce thirst reserves.")
 	assert_true(run_state.fatigue > before_fatigue, "Outdoor time should build fatigue.")
 
+	var normal_pressure_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, self)
+	var overpacked_pressure_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, self)
+	if not assert_true(normal_pressure_state != null and overpacked_pressure_state != null, "RunState should build for outdoor pressure comparisons."):
+		outdoor_mode.free()
+		return
+	assert_true(overpacked_pressure_state.inventory.add_item({"id": "heavy_haul", "carry_weight": 11.0}), "Pressure tests should be able to seed an overpacked carry load.")
+
+	outdoor_mode.bind_run_state(normal_pressure_state, "mart_01", Vector2(0.0, 0.0))
+	var normal_pressure_exposure_before: float = normal_pressure_state.exposure
+	var normal_pressure_fatigue_before: float = normal_pressure_state.fatigue
+	outdoor_mode.simulate_seconds(60.0)
+	var normal_pressure_exposure_loss: float = normal_pressure_exposure_before - normal_pressure_state.exposure
+	var normal_pressure_fatigue_gain: float = normal_pressure_state.fatigue - normal_pressure_fatigue_before
+
+	outdoor_mode.bind_run_state(overpacked_pressure_state, "mart_01", Vector2(0.0, 0.0))
+	var overpacked_pressure_exposure_before: float = overpacked_pressure_state.exposure
+	var overpacked_pressure_fatigue_before: float = overpacked_pressure_state.fatigue
+	outdoor_mode.simulate_seconds(60.0)
+	var overpacked_pressure_exposure_loss: float = overpacked_pressure_exposure_before - overpacked_pressure_state.exposure
+	var overpacked_pressure_fatigue_gain: float = overpacked_pressure_state.fatigue - overpacked_pressure_fatigue_before
+
+	assert_true(overpacked_pressure_exposure_loss > normal_pressure_exposure_loss * 1.35, "Overpacked outdoor travel should lose materially more exposure than an ideal carry load.")
+	assert_true(overpacked_pressure_fatigue_gain > normal_pressure_fatigue_gain * 1.4, "Overpacked outdoor travel should build fatigue materially faster than an ideal carry load.")
+	outdoor_mode.bind_run_state(run_state)
+
 	var content_library := root.get_node_or_null("ContentLibrary")
 	if not assert_true(content_library != null, "ContentLibrary autoload should be available for building lookups."):
 		outdoor_mode.free()
@@ -212,6 +245,35 @@ func _run_test() -> void:
 		"chapel_01", "tea_shop_01"
 	]:
 		assert_true(content_library.get_building(building_id).size() > 0, "Building '%s' should exist in the expanded district." % building_id)
+
+	var unprotected_exposure_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, content_library)
+	var warmed_exposure_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, content_library)
+	if not assert_true(unprotected_exposure_state != null and warmed_exposure_state != null, "RunState should build for warmth-modified outdoor pressure checks."):
+		outdoor_mode.free()
+		return
+	assert_true(warmed_exposure_state.inventory.add_item(content_library.get_item("warm_tea")), "Warmth pressure tests should add warm tea.")
+	assert_true(warmed_exposure_state.use_inventory_item("warm_tea"), "Warm tea should apply its timed outdoor exposure modifier.")
+
+	outdoor_mode.bind_run_state(unprotected_exposure_state, "mart_01", Vector2(0.0, 0.0))
+	var unprotected_exposure_before: float = unprotected_exposure_state.exposure
+	outdoor_mode.simulate_seconds(20.0)
+	var unprotected_exposure_loss: float = unprotected_exposure_before - unprotected_exposure_state.exposure
+
+	outdoor_mode.bind_run_state(warmed_exposure_state, "mart_01", Vector2(0.0, 0.0))
+	var warmed_exposure_before: float = warmed_exposure_state.exposure
+	outdoor_mode.simulate_seconds(20.0)
+	var warmed_exposure_loss: float = warmed_exposure_before - warmed_exposure_state.exposure
+
+	assert_true(warmed_exposure_loss < unprotected_exposure_loss, "Timed warmth effects should reduce outdoor exposure loss while active.")
+	outdoor_mode.bind_run_state(run_state)
 
 	var mart_data: Dictionary = content_library.get_building("mart_01")
 	var mart_position := Vector2(

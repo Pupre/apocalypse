@@ -30,6 +30,14 @@ const BASE_IDEAL_CARRY_CAPACITY := 8.0
 const BASE_CARRY_CAPACITY := 10.0
 const BASE_OVERPACK_CAPACITY := 12.0
 const MIN_OVERPACKED_MOVE_MULTIPLIER := 0.45
+const OUTDOOR_OVERLOADED_EXPOSURE_MULTIPLIER_MIN := 1.12
+const OUTDOOR_OVERLOADED_EXPOSURE_MULTIPLIER_MAX := 1.3
+const OUTDOOR_OVERPACKED_EXPOSURE_MULTIPLIER_MIN := 1.45
+const OUTDOOR_OVERPACKED_EXPOSURE_MULTIPLIER_MAX := 1.75
+const OUTDOOR_OVERLOADED_FATIGUE_MULTIPLIER_MIN := 1.12
+const OUTDOOR_OVERLOADED_FATIGUE_MULTIPLIER_MAX := 1.3
+const OUTDOOR_OVERPACKED_FATIGUE_MULTIPLIER_MIN := 1.45
+const OUTDOOR_OVERPACKED_FATIGUE_MULTIPLIER_MAX := 1.85
 const DEFAULT_DIFFICULTY := "easy"
 const VALID_DIFFICULTY_IDS := {
 	"easy": true,
@@ -89,7 +97,7 @@ func advance_minutes(amount: int, context: String = "indoor") -> void:
 	var hunger_multiplier := 1.0
 	var thirst_multiplier := 1.0
 	if context == "outdoor":
-		fatigue_multiplier = OUTDOOR_FATIGUE_MULTIPLIER
+		fatigue_multiplier = OUTDOOR_FATIGUE_MULTIPLIER * get_outdoor_fatigue_gain_multiplier()
 		hunger_multiplier = OUTDOOR_HUNGER_MULTIPLIER
 		thirst_multiplier = OUTDOOR_THIRST_MULTIPLIER
 
@@ -534,6 +542,20 @@ func get_outdoor_move_speed() -> float:
 	return move_speed * multiplier * fatigue_multiplier
 
 
+func get_outdoor_fatigue_gain_multiplier() -> float:
+	return _get_outdoor_carry_fatigue_multiplier()
+
+
+func get_outdoor_exposure_drain_multiplier() -> float:
+	var equipped_item_rows: Array[Dictionary] = []
+	for item_variant in equipped_items.values():
+		if typeof(item_variant) == TYPE_DICTIONARY:
+			equipped_item_rows.append((item_variant as Dictionary))
+
+	var warmth_multiplier := warmth_model.get_outdoor_exposure_drain_multiplier(active_warmth_effects, equipped_item_rows)
+	return maxf(0.2, warmth_multiplier * _get_outdoor_carry_exposure_multiplier())
+
+
 func apply_outdoor_threat_contact() -> Dictionary:
 	exposure = max(0.0, exposure - 18.0)
 	fatigue = min(MAX_SURVIVAL_VALUE, fatigue + 8.0)
@@ -957,6 +979,49 @@ func _recalculate_derived_stats() -> void:
 	)
 	move_speed = _base_move_speed + move_speed_bonus
 	fatigue_gain_multiplier = _base_fatigue_gain_multiplier + fatigue_gain_bonus
+
+
+func _get_outdoor_carry_exposure_multiplier() -> float:
+	match get_carry_state_id():
+		"overloaded":
+			return lerpf(
+				OUTDOOR_OVERLOADED_EXPOSURE_MULTIPLIER_MIN,
+				OUTDOOR_OVERLOADED_EXPOSURE_MULTIPLIER_MAX,
+				_carry_band_ratio(float(inventory.ideal_carry_capacity), float(inventory.carry_capacity))
+			)
+		"overpacked":
+			return lerpf(
+				OUTDOOR_OVERPACKED_EXPOSURE_MULTIPLIER_MIN,
+				OUTDOOR_OVERPACKED_EXPOSURE_MULTIPLIER_MAX,
+				_carry_band_ratio(float(inventory.carry_capacity), float(inventory.overpack_capacity))
+			)
+		_:
+			return 1.0
+
+
+func _get_outdoor_carry_fatigue_multiplier() -> float:
+	match get_carry_state_id():
+		"overloaded":
+			return lerpf(
+				OUTDOOR_OVERLOADED_FATIGUE_MULTIPLIER_MIN,
+				OUTDOOR_OVERLOADED_FATIGUE_MULTIPLIER_MAX,
+				_carry_band_ratio(float(inventory.ideal_carry_capacity), float(inventory.carry_capacity))
+			)
+		"overpacked":
+			return lerpf(
+				OUTDOOR_OVERPACKED_FATIGUE_MULTIPLIER_MIN,
+				OUTDOOR_OVERPACKED_FATIGUE_MULTIPLIER_MAX,
+				_carry_band_ratio(float(inventory.carry_capacity), float(inventory.overpack_capacity))
+			)
+		_:
+			return 1.0
+
+
+func _carry_band_ratio(start_capacity: float, end_capacity: float) -> float:
+	if inventory == null:
+		return 0.0
+	var capacity_range := maxf(0.01, end_capacity - start_capacity)
+	return clampf((float(inventory.total_carry_weight()) - start_capacity) / capacity_range, 0.0, 1.0)
 
 
 func _merge_item_data(primary: Dictionary, fallback: Dictionary) -> Dictionary:

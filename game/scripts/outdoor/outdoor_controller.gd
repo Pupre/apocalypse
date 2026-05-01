@@ -139,8 +139,7 @@ func simulate_seconds(seconds_elapsed: float) -> void:
 		return
 
 	_seconds_buffer -= float(full_minutes)
-	run_state.advance_minutes(full_minutes, "outdoor")
-	run_state.exposure = exposure_model.drain(run_state.exposure, float(full_minutes), run_state.fatigue)
+	_advance_outdoor_minutes(full_minutes)
 	_sync_view()
 	state_changed.emit()
 
@@ -253,6 +252,15 @@ func _process(delta: float) -> void:
 	var nearby_building_id := _get_nearby_building_id()
 	if not nearby_building_id.is_empty() and Input.is_action_just_pressed(ENTER_BUILDING_ACTION):
 		try_enter_building(nearby_building_id)
+
+
+func _advance_outdoor_minutes(minutes: int) -> void:
+	for _minute in range(minutes):
+		var exposure_multiplier := 1.0
+		if run_state.has_method("get_outdoor_exposure_drain_multiplier"):
+			exposure_multiplier = float(run_state.get_outdoor_exposure_drain_multiplier())
+		run_state.advance_minutes(1, "outdoor")
+		run_state.exposure = exposure_model.drain(run_state.exposure, 1.0, run_state.fatigue, exposure_multiplier)
 
 
 func _is_player_near_building(building_id: String) -> bool:

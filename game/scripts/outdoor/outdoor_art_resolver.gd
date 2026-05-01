@@ -16,8 +16,10 @@ func get_building_texture(building_data: Dictionary) -> Texture2D:
 	var file_name := "building_office.png"
 
 	match building_id:
-		"mart_01", "convenience_01":
+		"mart_01":
 			file_name = "building_mart.png"
+		"convenience_01":
+			file_name = "building_convenience.png"
 		"apartment_01", "residence_01":
 			file_name = "building_apartment.png"
 		"clinic_01":
@@ -26,8 +28,10 @@ func get_building_texture(building_data: Dictionary) -> Texture2D:
 			file_name = "building_pharmacy.png"
 		"office_01", "laundry_01":
 			file_name = "building_office.png"
-		"hardware_01", "gas_station_01", "warehouse_01", "repair_shop_01":
+		"hardware_01", "warehouse_01", "repair_shop_01":
 			file_name = "building_warehouse.png"
+		"gas_station_01":
+			file_name = "building_gas_station.png"
 		"cafe_01", "restaurant_01", "bakery_01":
 			file_name = "building_cafe.png"
 		"police_box_01":
