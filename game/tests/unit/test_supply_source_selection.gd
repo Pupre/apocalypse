@@ -5,6 +5,7 @@ const INDOOR_ACTION_RESOLVER_SCRIPT_PATH := "res://scripts/indoor/indoor_action_
 const MART_EVENT_PATH := "res://data/events/indoor/mart_01.json"
 const HARDWARE_EVENT_PATH := "res://data/events/indoor/hardware_01.json"
 const WAREHOUSE_EVENT_PATH := "res://data/events/indoor/warehouse_01.json"
+const CONVENIENCE_EVENT_PATH := "res://data/events/indoor/convenience_01.json"
 
 
 func _init() -> void:
@@ -22,13 +23,15 @@ func _run_test() -> void:
 	var mart_event: Dictionary = _load_json(MART_EVENT_PATH)
 	var hardware_event: Dictionary = _load_json(HARDWARE_EVENT_PATH)
 	var warehouse_event: Dictionary = _load_json(WAREHOUSE_EVENT_PATH)
-	if mart_event.is_empty() or hardware_event.is_empty() or warehouse_event.is_empty():
+	var convenience_event: Dictionary = _load_json(CONVENIENCE_EVENT_PATH)
+	if mart_event.is_empty() or hardware_event.is_empty() or warehouse_event.is_empty() or convenience_event.is_empty():
 		return
 
 	var resolver = resolver_script.new()
 	assert_true(_event_has_supply_sources(mart_event), "Mart should expose quantity-bearing supply sources.")
 	assert_true(_event_has_supply_sources(hardware_event), "Hardware store should expose quantity-bearing supply sources.")
 	assert_true(_event_has_supply_sources(warehouse_event), "Warehouse should expose quantity-bearing supply sources.")
+	assert_true(_event_has_supply_sources(convenience_event), "Convenience store should expose quantity-bearing drink stock.")
 
 	var content_library := root.get_node_or_null("ContentLibrary")
 	if not assert_true(content_library != null, "ContentLibrary should be available for supply-source tests."):
@@ -106,6 +109,39 @@ func _run_test() -> void:
 	)
 	assert_eq(overloaded_state.inventory.count_item_by_id("bottled_water"), 1, "Max pickup should clamp to the remaining legal carry allowance.")
 	assert_eq(_remaining_supply_quantity(overloaded_event_state, "food_aisle", "water_shelf"), 11, "Clamped max pickup should only consume the legal amount from the source.")
+
+	var convenience_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, content_library)
+	if not assert_true(convenience_state != null, "RunState should build for convenience supply tests."):
+		return
+	var convenience_event_state := {
+		"current_zone_id": "fridge_row",
+		"visited_zone_ids": PackedStringArray(["storefront", "fridge_row"]),
+		"revealed_clue_ids": PackedStringArray(),
+		"spent_action_ids": PackedStringArray(),
+		"zone_flags": {},
+		"zone_loot_entries": {},
+		"zone_supply_sources": {},
+		"noise": 0,
+	}
+	var exposure_before: float = convenience_state.exposure
+	assert_true(
+		resolver.apply_action(convenience_state, convenience_event, convenience_event_state, "search_fridge_row"),
+		"Convenience fridge search should reveal drink stock."
+	)
+	assert_true(convenience_state.exposure < exposure_before, "Searching the cold convenience fridge should cost some exposure.")
+	var convenience_supply_actions: Array[Dictionary] = resolver.get_actions(convenience_event, convenience_event_state, convenience_state)
+	var take_convenience_three_action_id := _action_id_by_prefix(convenience_supply_actions, "take_supply_fridge_row_drink_fridge_water_3")
+	assert_true(not take_convenience_three_action_id.is_empty(), "Convenience fridge should expose a 3-bottle pickup action.")
+	assert_true(
+		resolver.apply_action(convenience_state, convenience_event, convenience_event_state, take_convenience_three_action_id),
+		"Convenience fridge supply pickup should allow taking three bottles."
+	)
+	assert_eq(convenience_state.inventory.count_item_by_id("bottled_water"), 3, "Taking three from convenience stock should add three bottled waters.")
+	assert_eq(_remaining_supply_quantity(convenience_event_state, "fridge_row", "drink_fridge_water"), 3, "Taking three from convenience stock should leave three bottles.")
 
 	pass_test("SUPPLY_SOURCE_SELECTION_OK")
 

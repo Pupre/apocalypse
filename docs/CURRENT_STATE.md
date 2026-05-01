@@ -38,6 +38,7 @@ Systems already integrated in `main`:
 - Indoor loot profiles now use validated practical household item ids, and the mart back hall has a listen-first clue action.
 - Equipped footwear and face/neck gear can now mitigate authored outdoor hazard pressure.
 - Convenience-store counter search now branches between rushed broken-glass risk and safer work-glove handling.
+- Convenience-store fridge stock now uses quantity supply pickup for bottled water.
 
 ## 2026-05-02 Checkpoint
 

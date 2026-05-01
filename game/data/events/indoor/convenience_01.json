@@ -124,6 +124,9 @@
             "discover_loot": [
               { "id": "bottled_water", "name": "생수", "bulk": 1 }
             ],
+            "supply_sources": [
+              { "id": "drink_fridge_water", "item_id": "bottled_water", "quantity": 6 }
+            ],
             "loot_table": {
               "rolls": 2,
               "allow_duplicates": false,
@@ -132,6 +135,14 @@
                 { "id": "cooking_oil", "weight": 2 },
                 { "id": "tea_bag", "weight": 2 }
               ]
+            },
+            "pressure": {
+              "id": "convenience_fridge_cold_bite",
+              "message": "멈춘 냉장 진열대 안쪽을 오래 뒤지는 동안 찬 유리와 금속 선반이 손끝을 얼렸다.",
+              "exposure_loss": 2.0,
+              "fatigue_gain": 0.75,
+              "noise": 0,
+              "repeatable": false
             },
             "consume_on_use": true
           }

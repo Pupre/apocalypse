@@ -184,6 +184,8 @@ The convenience-store counter now follows the same practical-risk pattern as the
 
 - Rummaging the counter quickly can cut the survivor on broken display glass and add noise.
 - Bringing work gloves unlocks a slower, quieter counter search that avoids the injury.
+- The fridge row now exposes quantity-bearing bottled-water stock, so the player chooses how many bottles to haul instead of receiving a single flat loot result.
+- Searching the stopped fridge costs a small exposure/fatigue pressure beat, making the extra water useful but not free.
 - Indoor option filtering now hides branches that are obsolete because a `forbidden_flag_ids` condition has already been tripped, while still allowing missing-tool options to appear as locked hints.
 
 This makes a small building feel less like a one-click loot node and more like a place where preparedness changes the cost of searching.
