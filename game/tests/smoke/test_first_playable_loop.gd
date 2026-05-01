@@ -229,6 +229,7 @@ func _run_test() -> void:
 	var hint_label := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/HintLabel") as Label
 	var threat_label := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/ThreatLabel") as Label
 	var frost_overlay := outdoor_mode.get_node_or_null("CanvasLayer/FrostOverlay") as ColorRect
+	var frost_crystals := outdoor_mode.get_node_or_null("CanvasLayer/FrostCrystals") as TextureRect
 	var map_overlay := outdoor_mode.get_node_or_null("MapOverlay") as CanvasLayer
 	var full_map_view := outdoor_mode.get_node_or_null("MapOverlay/Panel/VBox/Margin/MapView") as Control
 	var map_overlay_panel := outdoor_mode.get_node_or_null("MapOverlay/Panel") as PanelContainer
@@ -239,6 +240,9 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 	if not assert_true(frost_overlay != null, "Outdoor mode should mount a frost overlay in smoke coverage."):
+		bootstrap.free()
+		return
+	if not assert_true(frost_crystals != null and frost_crystals.texture != null, "Outdoor smoke coverage should mount the generated frost crystal texture."):
 		bootstrap.free()
 		return
 	if not assert_true(map_overlay != null, "Outdoor smoke coverage should include the full-screen map overlay."):

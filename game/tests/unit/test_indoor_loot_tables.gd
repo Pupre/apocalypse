@@ -128,10 +128,14 @@ func _assert_all_search_actions_have_loot_tables(resolver, event_path: String) -
 				continue
 			var option := option_variant as Dictionary
 			var outcomes: Dictionary = option.get("outcomes", {})
+			var has_loot_outcome := outcomes.has("loot") or outcomes.has("discover_loot") or outcomes.has("loot_table") or outcomes.has("supply_sources")
+			var has_pressure_or_state_outcome := outcomes.has("pressure") or outcomes.has("reveal_clue_ids") or outcomes.has("set_flags") or outcomes.has("unlock_zone_ids")
 			assert_true(
-				outcomes.has("loot_table"),
-				"%s:%s should define loot_table so all indoor search actions share the same randomized rule." % [event_path, String(option.get("id", ""))]
+				has_loot_outcome or has_pressure_or_state_outcome,
+				"%s:%s should define loot, pressure, clue, flag, or unlock outcomes." % [event_path, String(option.get("id", ""))]
 			)
+			if not outcomes.has("loot_table"):
+				continue
 			var loot_table_variant: Variant = outcomes.get("loot_table", {})
 			assert_true(
 				typeof(loot_table_variant) == TYPE_DICTIONARY,

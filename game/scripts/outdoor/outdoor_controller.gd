@@ -8,6 +8,7 @@ const EXPOSURE_MODEL_SCRIPT := preload("res://scripts/outdoor/exposure_model.gd"
 const OUTDOOR_THREAT_DIRECTOR_SCRIPT := preload("res://scripts/outdoor/outdoor_threat_director.gd")
 const OUTDOOR_WORLD_RUNTIME_SCRIPT := preload("res://scripts/outdoor/outdoor_world_runtime.gd")
 const OUTDOOR_ART_RESOLVER_SCRIPT := preload("res://scripts/outdoor/outdoor_art_resolver.gd")
+const UI_KIT_RESOLVER_SCRIPT := preload("res://scripts/ui/ui_kit_resolver.gd")
 const DEFAULT_BUILDING_ID := "mart_01"
 const DEFAULT_PLAYER_POSITION := Vector2(240.0, 360.0)
 const PORTRAIT_CAMERA_OFFSET := Vector2(0.0, -220.0)
@@ -42,6 +43,7 @@ var exposure_model := EXPOSURE_MODEL_SCRIPT.new()
 var threat_director = OUTDOOR_THREAT_DIRECTOR_SCRIPT.new()
 var world_runtime = OUTDOOR_WORLD_RUNTIME_SCRIPT.new()
 var art_resolver = OUTDOOR_ART_RESOLVER_SCRIPT.new()
+var ui_kit_resolver = UI_KIT_RESOLVER_SCRIPT.new()
 var _seconds_buffer := 0.0
 var _player_position := DEFAULT_PLAYER_POSITION
 var _player_spawn := DEFAULT_PLAYER_POSITION
@@ -76,6 +78,7 @@ var _threat_markers: Dictionary = {}
 var _hint_label: Label = null
 var _threat_label: Label = null
 var _frost_overlay: ColorRect = null
+var _frost_crystals: TextureRect = null
 var _map_overlay = null
 var _debug_contact_requested := false
 var _player_facing_id := "down"
@@ -615,6 +618,9 @@ func _cache_nodes() -> void:
 	_hint_label = get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/HintLabel") as Label
 	_threat_label = get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/ThreatLabel") as Label
 	_frost_overlay = get_node_or_null("CanvasLayer/FrostOverlay") as ColorRect
+	_frost_crystals = get_node_or_null("CanvasLayer/FrostCrystals") as TextureRect
+	if _frost_crystals != null and _frost_crystals.texture == null:
+		_frost_crystals.texture = ui_kit_resolver.get_texture("feedback/frost_screen_overlay.png")
 	_map_overlay = get_node_or_null("MapOverlay")
 	_refresh_threat_markers()
 
@@ -637,8 +643,11 @@ func _sync_threat_view(snapshot: Dictionary) -> void:
 	if _threat_label != null:
 		_threat_label.text = "추적 중" if threat_state == "chasing" else "주변이 불안하다"
 	if _frost_overlay != null and run_state != null:
-		var frost_alpha: float = clampf((60.0 - run_state.exposure) / 60.0, 0.0, 0.7)
+		var frost_alpha: float = clampf((65.0 - run_state.exposure) / 120.0, 0.0, 0.28)
 		_frost_overlay.color = Color(0.78, 0.88, 1.0, frost_alpha)
+	if _frost_crystals != null and run_state != null:
+		var crystal_alpha: float = clampf((72.0 - run_state.exposure) / 62.0, 0.0, 0.88)
+		_frost_crystals.modulate = Color(1.0, 1.0, 1.0, crystal_alpha)
 	var threat_rows_variant: Variant = snapshot.get("threats", [])
 	if typeof(threat_rows_variant) != TYPE_ARRAY:
 		return

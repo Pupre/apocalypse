@@ -203,6 +203,7 @@ func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, ac
 			event_state["last_feedback_message"] = "%d분 동안 잠을 청했다." % int(action.get("sleep_minutes", 0))
 
 	_apply_action_outcomes(event_state, action)
+	_apply_action_pressure(run_state, event_state, action)
 
 	if _action_consumes_on_use(action):
 		var spent_action_ids := _string_id_array(event_state.get("spent_action_ids", []))
@@ -428,6 +429,8 @@ func _normalize_zone_option(event: Dictionary, option: Dictionary) -> Dictionary
 			action["set_flags"] = _string_id_array(outcomes.get("set_flags", []))
 		if outcomes.has("unlock_zone_ids"):
 			action["unlock_zone_ids"] = _string_id_array(outcomes.get("unlock_zone_ids", []))
+		if outcomes.has("pressure"):
+			action["pressure"] = outcomes.get("pressure", {})
 		if outcomes.has("consume_on_use"):
 			action["consume_on_use"] = bool(outcomes.get("consume_on_use", false))
 
@@ -522,6 +525,41 @@ func _apply_action_outcomes(event_state: Dictionary, action: Dictionary) -> void
 			added_unlocks = true
 	if added_unlocks:
 		event_state["unlocked_zone_ids"] = unlocked_zone_ids
+
+
+func _apply_action_pressure(run_state, event_state: Dictionary, action: Dictionary) -> void:
+	var pressure_variant: Variant = action.get("pressure", {})
+	if typeof(pressure_variant) != TYPE_DICTIONARY:
+		return
+
+	var pressure := (pressure_variant as Dictionary).duplicate(true)
+	if pressure.is_empty():
+		return
+
+	var pressure_id := String(pressure.get("id", ""))
+	var repeatable := bool(pressure.get("repeatable", false))
+	var spent_pressure_ids := _string_id_array(event_state.get("spent_pressure_ids", []))
+	if not repeatable and not pressure_id.is_empty() and spent_pressure_ids.has(pressure_id):
+		return
+
+	var extra_noise := int(pressure.get("noise", 0))
+	if extra_noise != 0:
+		event_state["noise"] = int(event_state.get("noise", 0)) + extra_noise
+
+	if run_state != null and run_state.has_method("apply_indoor_pressure"):
+		run_state.apply_indoor_pressure(pressure)
+
+	if not repeatable and not pressure_id.is_empty():
+		spent_pressure_ids.append(pressure_id)
+		event_state["spent_pressure_ids"] = spent_pressure_ids
+
+	var message := String(pressure.get("message", ""))
+	if message.is_empty():
+		return
+
+	event_state["last_pressure_message"] = message
+	var feedback_message := String(event_state.get("last_feedback_message", ""))
+	event_state["last_feedback_message"] = message if feedback_message.is_empty() else "%s %s" % [feedback_message, message]
 
 
 func _resolve_discovered_loot(event_data: Dictionary, event_state: Dictionary, action: Dictionary, run_state = null) -> Array[Dictionary]:

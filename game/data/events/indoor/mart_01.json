@@ -206,6 +206,14 @@
                 { "id": "trash_bag_roll", "weight": 2 }
               ]
             },
+            "pressure": {
+              "id": "mart_freezer_row_cold",
+              "message": "냉장고 문을 오래 열어둔 사이 손끝이 차갑게 굳어 간다.",
+              "exposure_loss": 3.0,
+              "fatigue_gain": 1.0,
+              "noise": 0,
+              "repeatable": false
+            },
             "consume_on_use": true
           }
         }
@@ -401,6 +409,14 @@
           "costs": { "minutes": 10, "noise": 1 },
           "outcomes": {
             "set_flags": ["staff_gate_forced"],
+            "pressure": {
+              "id": "mart_staff_gate_bang",
+              "message": "문을 밀어붙이는 동안 금속이 크게 울리고 손바닥이 얼얼해졌다.",
+              "fatigue_gain": 3.0,
+              "health_loss": 1.0,
+              "noise": 2,
+              "repeatable": false
+            },
             "consume_on_use": true
           }
         }
@@ -427,6 +443,14 @@
                 { "id": "instant_cocoa_mix", "weight": 3 },
                 { "id": "hand_warmer_pack", "weight": 2 }
               ]
+            },
+            "pressure": {
+              "id": "mart_cold_storage_bite",
+              "message": "냉장 보관실의 찬 공기가 옷 안으로 파고들어 체온을 빼앗는다.",
+              "exposure_loss": 6.0,
+              "fatigue_gain": 2.0,
+              "noise": 1,
+              "repeatable": false
             },
             "consume_on_use": true
           }
@@ -482,7 +506,9 @@
               "entries": [
                 { "id": "memo_pad", "weight": 2 },
                 { "id": "ballpoint_pen", "weight": 2 },
-                { "id": "receipt_bundle", "weight": 2 }
+                { "id": "receipt_bundle", "weight": 2 },
+                { "id": "improvised_heat_note_01", "weight": 1 },
+                { "id": "survival_cooking_note_01", "weight": 1 }
               ]
             },
             "reveal_clue_ids": ["storage_key_hint"],

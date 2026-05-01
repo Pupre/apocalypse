@@ -87,6 +87,7 @@ const PATH_ALIASES := {
 	"feedback/status_chip_cold.png": "@master/feedback/status_chip_cold.png",
 	"feedback/status_chip_danger.png": "@master/feedback/status_chip_danger.png",
 	"feedback/status_chip_overweight.png": "@master/feedback/status_chip_overweight.png",
+	"feedback/frost_screen_overlay.png": "@master/feedback/frost_screen_overlay.png",
 }
 
 var _manifest_loaded := false

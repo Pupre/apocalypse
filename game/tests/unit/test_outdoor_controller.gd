@@ -100,6 +100,7 @@ func _run_test() -> void:
 	var threat_label := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/ThreatLabel") as Label
 	var world_camera := outdoor_mode.get_node_or_null("WorldCamera") as Camera2D
 	var frost_overlay := outdoor_mode.get_node_or_null("CanvasLayer/FrostOverlay") as ColorRect
+	var frost_crystals := outdoor_mode.get_node_or_null("CanvasLayer/FrostCrystals") as TextureRect
 	var map_overlay := outdoor_mode.get_node_or_null("MapOverlay") as CanvasLayer
 	var full_map_view := outdoor_mode.get_node_or_null("MapOverlay/Panel/VBox/Margin/MapView") as Control
 	var overlay_close := outdoor_mode.get_node_or_null("MapOverlay/Panel/VBox/Header/CloseButton") as Button
@@ -118,6 +119,12 @@ func _run_test() -> void:
 	if not assert_true(frost_overlay != null, "Outdoor mode should expose a full-screen frost overlay."):
 		outdoor_mode.free()
 		return
+	if not assert_true(frost_crystals != null, "Outdoor mode should expose an image-backed frost crystal overlay."):
+		outdoor_mode.free()
+		return
+	if not assert_true(frost_crystals.texture != null, "Outdoor frost crystals should load the generated frost texture."):
+		outdoor_mode.free()
+		return
 	if not assert_true(map_overlay != null, "Outdoor mode should expose a full-screen map overlay."):
 		outdoor_mode.free()
 		return
@@ -134,6 +141,7 @@ func _run_test() -> void:
 	assert_eq(top_ribbon.anchor_right, 1.0, "Outdoor TopRibbon should stretch to the right edge.")
 	assert_true(world_camera.offset.y < 0.0, "Portrait outdoor camera should lead upward with a negative Y offset.")
 	assert_true(frost_overlay.color.a <= 0.05, "Healthy outdoor exposure should start with almost no frost overlay.")
+	assert_true(frost_crystals.modulate.a <= 0.05, "Healthy outdoor exposure should start with almost no frost crystal coverage.")
 	assert_true(not map_overlay.visible, "Outdoor map overlay should start closed.")
 	assert_eq(String(full_map_view.get_script().resource_path), "res://scripts/outdoor/outdoor_map_view.gd", "Outdoor overlay should use the full-screen spatial map renderer.")
 	assert_true(outdoor_mode.has_method("show_map_overlay"), "Outdoor mode should expose show_map_overlay().")
@@ -340,7 +348,8 @@ func _run_test() -> void:
 	overloaded_run_state.exposure = 18.0
 	outdoor_mode.refresh_view()
 	assert_true(threat_label.text.length() > 0, "Outdoor top ribbon should always show a readable threat-state line.")
-	assert_true(frost_overlay.color.a >= 0.35, "Low exposure should visibly intensify the frost overlay.")
+	assert_true(frost_overlay.color.a <= 0.3, "Low exposure should keep the tint veil subtle enough for readability.")
+	assert_true(frost_crystals.modulate.a >= 0.6, "Low exposure should visibly grow the image-backed frost crystal overlay.")
 
 	var fresh_state = run_state_script.from_survivor_config({
 		"job_id": "courier",

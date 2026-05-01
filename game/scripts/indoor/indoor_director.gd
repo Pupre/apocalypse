@@ -91,6 +91,9 @@ func get_current_zone_status_rows() -> Array[String]:
 	rows.append("남아 있는 물건 %d개" % zone_loot.size())
 	var deployments := _deployments_for_zone(memory, zone_id)
 	rows.append("설치물 %d개" % deployments.size())
+	var noise := int(_event_state.get("noise", memory.get("noise", 0)))
+	if noise > 0:
+		rows.append("소란 %d" % noise)
 	if _run_state != null and _run_state.has_method("get_current_heat_recovery_context"):
 		var heat_context: Dictionary = _run_state.get_current_heat_recovery_context()
 		rows.append(String(heat_context.get("status_text", "")))
@@ -511,7 +514,9 @@ func _create_initial_event_state(current_zone_id: String = "") -> Dictionary:
 		"next_loot_uid": 0,
 		"revealed_clue_ids": PackedStringArray(),
 		"spent_action_ids": PackedStringArray(),
+		"spent_pressure_ids": PackedStringArray(),
 		"zone_flags": {},
+		"last_pressure_message": "",
 		"noise": 0,
 	}
 

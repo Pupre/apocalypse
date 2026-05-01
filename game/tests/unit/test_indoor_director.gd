@@ -95,8 +95,8 @@ func _run_test() -> void:
 		"Equippable inventory items should expose an equip action in the item sheet."
 	)
 	assert_true(director.apply_action("equip_inventory_small_backpack"), "Director should allow equipping the selected backpack.")
-	assert_eq(director.get_inventory_title(), "소지품 (0/12)", "Equipping the backpack should increase the carry limit in the inventory title.")
-	assert_eq(director.get_inventory_status_text(), "여유 있음", "Director should report a calm carry state before the player goes overweight.")
+	assert_eq(director.get_inventory_title(), "소지품 (0.0/14.0kg)", "Equipping the backpack should increase the carry capacity in the inventory title.")
+	assert_eq(director.get_inventory_status_text(), "적정", "Director should report a calm carry state before the player goes overweight.")
 
 	assert_true(director.apply_action("move_back_hall"), "Director should allow moving from household goods into the back area.")
 	assert_true(director.apply_action("move_staff_corridor_gate"), "Director should allow moving to the staff door from the back area.")

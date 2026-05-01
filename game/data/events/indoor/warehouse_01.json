@@ -176,6 +176,13 @@
           "costs": { "minutes": 10, "noise": 0 },
           "outcomes": {
             "reveal_clue_ids": ["shutter_key_hint"],
+            "pressure": {
+              "id": "warehouse_shutter_rattle",
+              "message": "셔터를 들어 올려 보자 레일이 크게 떨리며 창고 안쪽으로 소리가 번졌다.",
+              "fatigue_gain": 1.0,
+              "noise": 2,
+              "repeatable": false
+            },
             "consume_on_use": true
           }
         }
@@ -204,6 +211,14 @@
                 { "id": "tarp_sheet", "weight": 3 },
                 { "id": "drain_funnel", "weight": 3 }
               ]
+            },
+            "pressure": {
+              "id": "warehouse_deep_storage_shift",
+              "message": "안쪽 적재 더미가 흔들려 상자를 받치느라 어깨에 힘이 빠졌다.",
+              "fatigue_gain": 3.0,
+              "health_loss": 1.0,
+              "noise": 1,
+              "repeatable": false
             },
             "consume_on_use": true
           }

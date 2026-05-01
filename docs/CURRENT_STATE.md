@@ -1,7 +1,7 @@
 # Current State
 
 - Status: active
-- Last updated: 2026-04-29
+- Last updated: 2026-05-02
  
 
 ## Product Direction
@@ -25,6 +25,16 @@ Systems already integrated in `main`:
 - Indoor site memory plus drop/re-entry persistence.
 - Crafting codex, note-based unlocks, lighter charges, and tool requirements.
 - Portrait phase 1 shell and indoor survival sheet work.
+- First generated frozen-city art replacement checkpoint.
+- Image-backed outdoor frost screen feedback.
+- First authored indoor pressure outcomes for cold, noise, fatigue, and small injuries.
+
+## 2026-05-02 Checkpoint
+
+- Stable local checkpoint: `8c469a9` (`feat: tune outdoor pressure and refresh city art`).
+- Current playability uplift continues from that checkpoint with generated cold-screen feedback and indoor pressure consequences.
+- Indoor `outcomes.pressure` is now the preferred first-pass authoring hook for deterministic search risk.
+- Noise is visible and persistent, but broader danger escalation from noise is still a follow-up.
 
 ## Active Specs
 

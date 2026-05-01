@@ -567,6 +567,21 @@ func apply_outdoor_threat_contact() -> Dictionary:
 	}
 
 
+func apply_indoor_pressure(pressure: Dictionary) -> Dictionary:
+	exposure = max(0.0, exposure - float(pressure.get("exposure_loss", 0.0)))
+	fatigue = min(MAX_SURVIVAL_VALUE, fatigue + float(pressure.get("fatigue_gain", 0.0)))
+	health = max(0.0, health - float(pressure.get("health_loss", 0.0)))
+	var minutes := int(pressure.get("minutes", 0))
+	if minutes > 0:
+		advance_minutes(minutes)
+	return {
+		"exposure": exposure,
+		"fatigue": fatigue,
+		"health": health,
+		"minute_of_day": clock.minute_of_day,
+	}
+
+
 func deploy_item_in_current_site(item_id: String) -> bool:
 	if current_indoor_building_id.is_empty() or current_indoor_zone_id.is_empty():
 		return false
@@ -683,11 +698,13 @@ func get_or_create_site_memory(building_id: String, entry_zone_id: String = "") 
 			"traversed_edge_ids": PackedStringArray(),
 			"revealed_clue_ids": PackedStringArray(),
 			"spent_action_ids": PackedStringArray(),
+			"spent_pressure_ids": PackedStringArray(),
 			"zone_flags": {},
 			"zone_loot_entries": {},
 			"zone_supply_sources": {},
 			"installed_deployments": [],
 			"next_loot_uid": 0,
+			"last_pressure_message": "",
 			"last_site_tick": clock.minute_of_day,
 			"noise": 0,
 		}
