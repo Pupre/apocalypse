@@ -31,6 +31,7 @@ Systems already integrated in `main`:
 - First outdoor terrain hazard zones for black ice and wind-gap pressure.
 - First branching indoor resolution option using tools versus brute force.
 - First improvised indoor access rules using key-or-setup requirements and material consumption.
+- Wearable warmth gear now reduces outdoor cold drain through equipment effects.
 
 ## 2026-05-02 Checkpoint
 

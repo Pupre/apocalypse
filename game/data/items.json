@@ -250,7 +250,10 @@
     "description": "거친 물건을 옮길 때 손을 보호해 주는 장갑이다.",
     "category": "equipment",
     "equip_slot": "hands",
-    "fatigue_gain_bonus": -0.1
+    "fatigue_gain_bonus": -0.1,
+    "equip_effects": {
+      "outdoor_exposure_drain_multiplier": 0.98
+    }
   },
   {
     "id": "utility_vest",
@@ -1725,7 +1728,11 @@
     "usage_hint": "다른 천 재료와 합치면 더 넓은 보온 장비가 된다.",
     "cold_hint": "노출 부위를 직접 줄이는 대표적인 보온 재료다.",
     "category": "equipment",
-    "item_tags": ["cloth", "warmth", "face_cover_component"]
+    "item_tags": ["cloth", "warmth", "face_cover_component"],
+    "equip_slot": "neck",
+    "equip_effects": {
+      "outdoor_exposure_drain_multiplier": 0.96
+    }
   },
   {
     "id": "wool_socks",
@@ -1736,7 +1743,11 @@
     "usage_hint": "다른 양말과 겹쳐 신으면 보온층을 만들 수 있다.",
     "cold_hint": "발 시림을 줄여 장시간 이동을 버티게 한다.",
     "category": "equipment",
-    "item_tags": ["warmth", "footwear_component"]
+    "item_tags": ["warmth", "footwear_component"],
+    "equip_slot": "feet_layer",
+    "equip_effects": {
+      "outdoor_exposure_drain_multiplier": 0.97
+    }
   },
   {
     "id": "thermal_socks",
@@ -1747,7 +1758,11 @@
     "usage_hint": "두꺼운 양말이나 깔창과 조합해 보온층을 더할 수 있다.",
     "cold_hint": "발끝 체온 유지에 직접적으로 기여한다.",
     "category": "equipment",
-    "item_tags": ["warmth", "footwear_component"]
+    "item_tags": ["warmth", "footwear_component"],
+    "equip_slot": "feet_layer",
+    "equip_effects": {
+      "outdoor_exposure_drain_multiplier": 0.96
+    }
   },
   {
     "id": "knitted_gloves",
@@ -1758,7 +1773,11 @@
     "usage_hint": "안쪽에 천을 덧대 더 따뜻한 장갑으로 만들 수 있다.",
     "cold_hint": "손이 얼면 작업 효율이 크게 떨어진다.",
     "category": "equipment",
-    "item_tags": ["warmth", "handwear_component"]
+    "item_tags": ["warmth", "handwear_component"],
+    "equip_slot": "hands_layer",
+    "equip_effects": {
+      "outdoor_exposure_drain_multiplier": 0.96
+    }
   },
   {
     "id": "shoe_insole",
@@ -1769,7 +1788,11 @@
     "usage_hint": "천과 덧대 두툼한 보온 깔창으로 만들 수 있다.",
     "cold_hint": "발바닥에서 새는 찬 기운을 줄이는 데 좋다.",
     "category": "equipment",
-    "item_tags": ["warmth", "footwear_component"]
+    "item_tags": ["warmth", "footwear_component"],
+    "equip_slot": "feet_layer",
+    "equip_effects": {
+      "outdoor_exposure_drain_multiplier": 0.97
+    }
   },
   {
     "id": "duct_tape",
@@ -1904,7 +1927,11 @@
     "usage_hint": "바람을 많이 맞는 부위를 줄이는 데 쓴다.",
     "cold_hint": "짧은 실외 이동에서 체감 차이가 큰 보온 장비다.",
     "category": "crafted",
-    "item_tags": ["warmth", "face_cover", "crafted_gear"]
+    "item_tags": ["warmth", "face_cover", "crafted_gear"],
+    "equip_slot": "face",
+    "equip_effects": {
+      "outdoor_exposure_drain_multiplier": 0.92
+    }
   },
   {
     "id": "sock_layer",
@@ -1915,7 +1942,11 @@
     "usage_hint": "발 보온을 강화해 오래 걷기 편하게 만든다.",
     "cold_hint": "발이 식는 속도를 늦춰 이동 안정성을 높인다.",
     "category": "crafted",
-    "item_tags": ["warmth", "footwear", "crafted_gear"]
+    "item_tags": ["warmth", "footwear", "crafted_gear"],
+    "equip_slot": "feet_layer",
+    "equip_effects": {
+      "outdoor_exposure_drain_multiplier": 0.93
+    }
   },
   {
     "id": "glove_liner",
@@ -1926,7 +1957,11 @@
     "usage_hint": "손 시림을 줄여 작업 중 안정감을 높인다.",
     "cold_hint": "실내외에서 손을 더 오래 쓸 수 있게 해 준다.",
     "category": "crafted",
-    "item_tags": ["warmth", "handwear", "crafted_gear"]
+    "item_tags": ["warmth", "handwear", "crafted_gear"],
+    "equip_slot": "hands_layer",
+    "equip_effects": {
+      "outdoor_exposure_drain_multiplier": 0.94
+    }
   },
   {
     "id": "padded_insole",
@@ -1937,7 +1972,11 @@
     "usage_hint": "발바닥으로 스며드는 찬 기운을 줄인다.",
     "cold_hint": "장시간 이동 시 체감 차이가 크다.",
     "category": "crafted",
-    "item_tags": ["warmth", "footwear", "crafted_gear"]
+    "item_tags": ["warmth", "footwear", "crafted_gear"],
+    "equip_slot": "feet_layer",
+    "equip_effects": {
+      "outdoor_exposure_drain_multiplier": 0.94
+    }
   },
   {
     "id": "hot_water",
@@ -2413,8 +2452,11 @@
     "cold_hint": "손끝 감각이 둔해지는 걸 늦춰 작업 실수를 줄여 준다.",
     "category": "equipment",
     "item_tags": ["equipment", "warmth", "crafted"],
-    "equip_slot": "hands",
-    "fatigue_gain_bonus": -0.05
+    "equip_slot": "hands_layer",
+    "fatigue_gain_bonus": -0.05,
+    "equip_effects": {
+      "outdoor_exposure_drain_multiplier": 0.92
+    }
   },
   {
     "id": "thick_sock_bundle",
@@ -2426,8 +2468,11 @@
     "cold_hint": "발이 따뜻하면 이동과 휴식 양쪽이 훨씬 안정적이다.",
     "category": "equipment",
     "item_tags": ["equipment", "warmth", "crafted"],
-    "equip_slot": "feet",
-    "move_speed_bonus": 6
+    "equip_slot": "feet_layer",
+    "move_speed_bonus": 6,
+    "equip_effects": {
+      "outdoor_exposure_drain_multiplier": 0.91
+    }
   },
   {
     "id": "charging_kit",

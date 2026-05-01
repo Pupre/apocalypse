@@ -105,3 +105,14 @@ The branching-resolution pattern now applies beyond the mart.
 - Indoor action outcomes can consume specific inventory items, letting reusable tools and spent materials behave differently.
 
 This moves indoor play closer to the intended survival-planning fantasy: what you brought changes what risks you can avoid, what doors you can open, and what materials you lose.
+
+## Follow-up Change: Wearable Warmth Gear
+
+Several warmth items now function as actual equipment rather than only crafting ingredients or flavor text.
+
+- Scarves, face wraps, sock layers, glove liners, insoles, and thick sock bundles have equipment slots.
+- Wearable warmth gear now applies `equip_effects.outdoor_exposure_drain_multiplier`, so it reduces outdoor cold drain while equipped.
+- Added `neck`, `face`, `feet_layer`, and `hands_layer` equipment rows so shoes, socks, gloves, and liners can coexist more realistically.
+- Inventory detail text now surfaces the outdoor cold reduction percentage.
+
+This makes "do I grab the food, the bag, or the warm clothing?" a more concrete survival decision instead of only a roleplay distinction.

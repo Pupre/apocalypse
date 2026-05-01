@@ -252,7 +252,7 @@ func get_equipped_rows() -> Array[Dictionary]:
 		}]
 		return empty_rows
 
-	var slot_order := ["back", "body", "feet", "hands"]
+	var slot_order := ["back", "body", "neck", "face", "feet", "feet_layer", "hands", "hands_layer"]
 	var rows: Array[Dictionary] = []
 	for slot_id in slot_order:
 		var equipped_item: Dictionary = _run_state.equipped_items.get(slot_id, {})
@@ -780,6 +780,12 @@ func _item_effect_text(item_data: Dictionary) -> String:
 	var fatigue_gain_bonus := float(item_data.get("fatigue_gain_bonus", 0.0))
 	if fatigue_gain_bonus < 0.0:
 		parts.append("피로 누적 -%d%%" % int(round(abs(fatigue_gain_bonus) * 100.0)))
+	var equip_effects_variant: Variant = item_data.get("equip_effects", {})
+	if typeof(equip_effects_variant) == TYPE_DICTIONARY:
+		var equip_effects := equip_effects_variant as Dictionary
+		var outdoor_exposure_multiplier := float(equip_effects.get("outdoor_exposure_drain_multiplier", 1.0))
+		if outdoor_exposure_multiplier > 0.0 and outdoor_exposure_multiplier < 1.0:
+			parts.append("야외 냉기 -%d%%" % int(round((1.0 - outdoor_exposure_multiplier) * 100.0)))
 	var equip_slot := String(item_data.get("equip_slot", ""))
 	if not equip_slot.is_empty():
 		parts.append("장착 슬롯: %s" % _slot_label(equip_slot))
@@ -877,8 +883,16 @@ func _slot_label(slot_id: String) -> String:
 			return "등"
 		"feet":
 			return "발"
+		"feet_layer":
+			return "양말"
 		"hands":
 			return "손"
+		"hands_layer":
+			return "장갑 안감"
+		"neck":
+			return "목"
+		"face":
+			return "얼굴"
 		"body":
 			return "몸"
 		_:

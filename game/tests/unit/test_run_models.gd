@@ -218,6 +218,20 @@ func _run_test() -> void:
 	assert_true(bool(equipped_vest.get("ok", false)), "RunState should allow equipping torso gear.")
 	assert_eq(state.inventory.carry_limit, 14, "Equipping torso storage gear should stack with the backpack carry bonus.")
 
+	var before_warm_gear_multiplier: float = state.get_outdoor_exposure_drain_multiplier()
+	assert_true(state.inventory.add_item({"id": "scarf", "name": "Scarf", "bulk": 1}), "Inventory should hold an equippable neck warmth item.")
+	var equipped_scarf: Dictionary = state.equip_inventory_item("scarf", {
+		"id": "scarf",
+		"name": "Scarf",
+		"equip_slot": "neck",
+		"equip_effects": {
+			"outdoor_exposure_drain_multiplier": 0.96,
+		},
+	})
+	assert_true(bool(equipped_scarf.get("ok", false)), "RunState should allow equipping wearable warmth gear.")
+	assert_true(state.equipped_items.has("neck"), "Warmth gear should occupy its authored equipment layer.")
+	assert_true(state.get_outdoor_exposure_drain_multiplier() < before_warm_gear_multiplier, "Equipped warmth gear should reduce outdoor exposure drain.")
+
 	for index in range(15):
 		assert_true(state.inventory.add_item({"id": "weight_%d" % index, "bulk": 1}), "Inventory should allow a few items beyond the soft limit for overload testing.")
 
