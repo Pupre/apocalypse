@@ -6,6 +6,7 @@ const MART_EVENT_PATH := "res://data/events/indoor/mart_01.json"
 const GARAGE_EVENT_PATH := "res://data/events/indoor/garage_01.json"
 const WAREHOUSE_EVENT_PATH := "res://data/events/indoor/warehouse_01.json"
 const CLINIC_EVENT_PATH := "res://data/events/indoor/clinic_01.json"
+const GAS_STATION_EVENT_PATH := "res://data/events/indoor/gas_station_01.json"
 
 var _test_jobs: Dictionary = {
 	"courier": {
@@ -160,6 +161,25 @@ func _run_test() -> void:
 	assert_eq(int(careful_medicine_state.get("noise", 0)), 0, "Careful medicine-storage search should stay quiet.")
 	assert_true(_string_values(careful_medicine_state.get("spent_pressure_ids", [])).has("clinic_storage_careful_sort"), "Careful medicine-storage pressure should be marked spent.")
 	assert_true(not _action_ids(resolver.get_actions(clinic_event_data, careful_medicine_state, careful_clinic_run_state)).has("search_medicine_storage"), "Clearing the medicine storage carefully should remove the rushed search option.")
+
+	var gas_station_event_data: Dictionary = resolver.load_event(GAS_STATION_EVENT_PATH)
+	if not assert_true(not gas_station_event_data.is_empty(), "Gas station event data should load."):
+		return
+	var fuel_run_state = _build_run_state(run_state_script)
+	assert_true(fuel_run_state.inventory.add_item({"id": "empty_jerrycan", "name": "Empty jerrycan", "bulk": 2, "carry_weight": 2}), "Fuel siphon test should seed an empty jerrycan.")
+	assert_true(fuel_run_state.inventory.add_item({"id": "transfer_hose", "name": "Transfer hose", "bulk": 1, "carry_weight": 1}), "Fuel siphon test should seed a transfer hose.")
+	var forecourt_state := _event_state_for_zone("forecourt")
+	assert_true(_action_ids(resolver.get_actions(gas_station_event_data, forecourt_state, fuel_run_state)).has("siphon_forecourt_fuel"), "Jerrycan and transfer hose should unlock gas-station fuel salvage.")
+	health_before = float(fuel_run_state.health)
+	fatigue_before = float(fuel_run_state.fatigue)
+	assert_true(resolver.apply_action(fuel_run_state, gas_station_event_data, forecourt_state, "siphon_forecourt_fuel"), "Fuel siphon action should resolve.")
+	assert_eq(fuel_run_state.inventory.count_item_by_id("empty_jerrycan"), 0, "Siphoning fuel should consume the empty jerrycan.")
+	assert_eq(fuel_run_state.inventory.count_item_by_id("transfer_hose"), 1, "Siphoning fuel should keep the transfer hose as reusable setup gear.")
+	assert_eq(fuel_run_state.inventory.count_item_by_id("salvaged_fuel_jerrycan"), 1, "Siphoning fuel should add a filled fuel jerrycan.")
+	assert_true(float(fuel_run_state.health) < health_before, "Fuel fumes should chip health slightly.")
+	assert_true(float(fuel_run_state.fatigue) >= fatigue_before + 2.0, "Fuel siphoning should cost real effort.")
+	assert_eq(int(forecourt_state.get("noise", 0)), 2, "Fuel siphoning should combine handling noise and pressure noise.")
+	assert_true(_string_values(forecourt_state.get("spent_pressure_ids", [])).has("gas_station_fuel_fumes"), "Fuel siphon pressure should be marked spent.")
 
 	pass_test("INDOOR_PRESSURE_OUTCOMES_OK")
 

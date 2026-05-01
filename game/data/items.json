@@ -2685,6 +2685,17 @@
     "item_tags": ["utility", "container", "logistics_item"]
   },
   {
+    "id": "salvaged_fuel_jerrycan",
+    "name": "연료 든 제리캔",
+    "bulk": 3,
+    "carry_weight": 3,
+    "description": "주유소나 차량에서 조금씩 모은 연료가 든 제리캔이다.",
+    "usage_hint": "휴대 열원을 살리거나 다음 이동 전 거점에 연료를 비축하는 데 쓴다.",
+    "cold_hint": "무겁지만 열원을 실제 회복 수단으로 바꾸는 핵심 자원이다.",
+    "category": "utility",
+    "item_tags": ["fuel", "fuel_component", "logistics_item"]
+  },
+  {
     "id": "siphon_hose",
     "name": "사이펀 호스",
     "bulk": 1,

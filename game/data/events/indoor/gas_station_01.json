@@ -75,6 +75,32 @@
             },
             "consume_on_use": true
           }
+        },
+        {
+          "id": "siphon_forecourt_fuel",
+          "label": "제리캔에 남은 연료를 옮긴다",
+          "requirements": {
+            "required_item_ids": ["empty_jerrycan", "transfer_hose"],
+            "forbidden_flag_ids": ["forecourt_fuel_siphoned"]
+          },
+          "blocked_feedback": "남은 연료를 챙기려면 빈 제리캔과 단단히 고정된 이송 호스가 필요하다.",
+          "costs": { "minutes": 45, "noise": 1 },
+          "outcomes": {
+            "loot": [
+              { "id": "salvaged_fuel_jerrycan", "bulk": 3 }
+            ],
+            "set_flags": ["forecourt_fuel_siphoned"],
+            "consume_item_ids": ["empty_jerrycan"],
+            "pressure": {
+              "id": "gas_station_fuel_fumes",
+              "message": "차가운 바닥에 엎드려 호스를 맞추는 동안 연료 냄새가 목 안쪽까지 올라왔다.",
+              "fatigue_gain": 2.0,
+              "health_loss": 0.5,
+              "noise": 1,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
         }
       ]
     },

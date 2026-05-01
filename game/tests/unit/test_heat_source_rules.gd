@@ -61,6 +61,23 @@ func _run_test() -> void:
 	portable_state.advance_rest_time(60)
 	assert_true(portable_state.exposure > before_fueled_rest, "Portable heat should restore exposure once ignition, fuel, and setup base all exist.")
 
+	var jerrycan_fuel_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, content_library)
+	if not assert_true(jerrycan_fuel_state != null, "RunState should build for salvaged fuel tests."):
+		return
+	jerrycan_fuel_state.exposure = 36.0
+	jerrycan_fuel_state.enter_indoor_site("warehouse_01", "loading")
+	assert_true(jerrycan_fuel_state.inventory.add_item(content_library.get_item("can_stove")), "Salvaged fuel tests should add a can stove.")
+	assert_true(jerrycan_fuel_state.deploy_item_in_current_site("can_stove"), "Salvaged fuel tests should deploy the can stove.")
+	assert_true(jerrycan_fuel_state.inventory.add_item(content_library.get_item("lighter")), "Salvaged fuel tests should add ignition.")
+	assert_true(jerrycan_fuel_state.inventory.add_item(content_library.get_item("salvaged_fuel_jerrycan")), "Salvaged fuel tests should add the gas-station fuel item.")
+	var before_jerrycan_rest: float = jerrycan_fuel_state.exposure
+	jerrycan_fuel_state.advance_rest_time(60)
+	assert_true(jerrycan_fuel_state.exposure > before_jerrycan_rest, "A salvaged fuel jerrycan should count as fuel for portable heat recovery.")
+
 	var warmth_state = run_state_script.from_survivor_config({
 		"job_id": "courier",
 		"trait_ids": PackedStringArray(["athlete"]),

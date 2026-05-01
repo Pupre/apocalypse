@@ -136,3 +136,14 @@ The clinic medicine storage now has a practical safe-versus-rushed search decisi
 - Both paths clear the same storage so the choice is about risk, time, and preparedness rather than duplicate loot.
 
 This keeps medical loot valuable while making the act of extracting it feel tense and concrete.
+
+## Follow-up Change: Gas Station Fuel Salvage
+
+The gas station now has a concrete fuel-hauling decision.
+
+- A survivor with an empty jerrycan and transfer hose can siphon leftover fuel from the forecourt.
+- The action consumes the empty jerrycan, keeps the reusable transfer hose, and adds a heavy filled fuel jerrycan.
+- Fuel siphoning costs time, noise, fatigue, and a small health chip from fumes.
+- The filled jerrycan is tagged as fuel, so it can activate portable heat recovery with a deployed heat base and ignition.
+
+This ties scavenged logistics gear into the heat-source loop and gives the player another reason to choose heavy utility over lighter food.

@@ -34,6 +34,7 @@ Systems already integrated in `main`:
 - Wearable warmth gear now reduces outdoor cold drain through equipment effects.
 - Outdoor black-ice and wind-gap hazards now cover multiple nearby city blocks.
 - Clinic medicine storage now has rushed versus flashlight-assisted search risk.
+- Gas station fuel salvage now turns empty jerrycans into heavy portable-heat fuel.
 
 ## 2026-05-02 Checkpoint
 
