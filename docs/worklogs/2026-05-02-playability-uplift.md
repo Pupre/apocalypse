@@ -116,3 +116,13 @@ Several warmth items now function as actual equipment rather than only crafting 
 - Inventory detail text now surfaces the outdoor cold reduction percentage.
 
 This makes "do I grab the food, the bag, or the warm clothing?" a more concrete survival decision instead of only a roleplay distinction.
+
+## Follow-up Change: Broader Outdoor Hazard Coverage
+
+Outdoor terrain pressure now extends beyond the spawn crossing.
+
+- Added black-ice and wind-gap hazards around the gas station, restaurant alley, clinic driveway, convenience corner, hardware loading lane, warehouse yard, garage lane, and canteen lot.
+- The starting active block window now renders multiple hazard decals instead of only the first crossing hazards.
+- Hazard messages are authored per location so risky travel reads like a place-specific incident, not a generic cold tick.
+
+This makes longer outdoor routes feel more like route planning through a dangerous frozen city.

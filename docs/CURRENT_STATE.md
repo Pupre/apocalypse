@@ -32,6 +32,7 @@ Systems already integrated in `main`:
 - First branching indoor resolution option using tools versus brute force.
 - First improvised indoor access rules using key-or-setup requirements and material consumption.
 - Wearable warmth gear now reduces outdoor cold drain through equipment effects.
+- Outdoor black-ice and wind-gap hazards now cover multiple nearby city blocks.
 
 ## 2026-05-02 Checkpoint
 

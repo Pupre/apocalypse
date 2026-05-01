@@ -8,6 +8,27 @@
     { "id": "central_snow", "rect": { "x": 640, "y": 640, "width": 320, "height": 320 } },
     { "id": "warehouse_snow", "rect": { "x": 0, "y": 0, "width": 260, "height": 240 } }
   ],
+  "hazards": [
+    {
+      "id": "hardware_loading_wind_gap",
+      "kind": "wind_gap",
+      "rect": { "x": 610, "y": 230, "width": 270, "height": 180 },
+      "message": "철물점 적재 통로로 몰린 바람이 손끝 감각을 빠르게 빼앗았다.",
+      "exposure_loss": 2.25,
+      "fatigue_gain": 1.0,
+      "cooldown_seconds": 7.0
+    },
+    {
+      "id": "warehouse_yard_black_ice",
+      "kind": "black_ice",
+      "rect": { "x": 600, "y": 635, "width": 230, "height": 150 },
+      "message": "창고 마당의 눌어붙은 빙판을 밟자 짐이 한쪽으로 쏠렸다.",
+      "exposure_loss": 1.5,
+      "fatigue_gain": 1.75,
+      "health_loss": 0.5,
+      "cooldown_seconds": 7.0
+    }
+  ],
   "obstacles": [
     { "kind": "vehicle", "rect": { "x": 780, "y": 440, "width": 56, "height": 56 } },
     { "kind": "rubble", "rect": { "x": 180, "y": 700, "width": 120, "height": 90 } }

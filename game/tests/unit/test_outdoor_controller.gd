@@ -92,7 +92,7 @@ func _run_test() -> void:
 		return
 	assert_true(tile_host.get_child_count() > 0, "Outdoor terrain should place at least one runtime tile sprite.")
 	assert_true(_children_named_with(tile_host, "road_cracked").size() > 0 or _children_named_with(tile_host, "slush_road").size() > 0, "Outdoor terrain should mix cracked or slushy road variants instead of a single repeated lane texture.")
-	assert_true(_children_named_with(decal_host, "Hazard").size() > 0, "Outdoor terrain should render authored hazard decals for risky road surfaces.")
+	assert_true(_children_named_with(decal_host, "Hazard").size() >= 8, "The starting active block window should render multiple authored hazard decals across nearby blocks.")
 	assert_true(_max_visual_scale(obstacles) > 1.0, "Outdoor obstacle props should be scaled up to fit the authored city block better.")
 	assert_true(outdoor_mode.has_method("_effective_obstacle_rect"), "Outdoor controller should expose an internal obstacle hitbox helper for collision debugging.")
 	var sample_obstacle := {"kind": "rubble", "rect": {"x": 710.0, "y": 180.0, "width": 120.0, "height": 80.0}}

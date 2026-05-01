@@ -8,6 +8,27 @@
     { "id": "northeast_snow", "rect": { "x": 640, "y": 0, "width": 320, "height": 260 } },
     { "id": "south_plaza_snow", "rect": { "x": 0, "y": 660, "width": 260, "height": 300 } }
   ],
+  "hazards": [
+    {
+      "id": "clinic_driveway_black_ice",
+      "kind": "black_ice",
+      "rect": { "x": 110, "y": 300, "width": 210, "height": 120 },
+      "message": "클리닉 진입로의 다져진 눈이 유리처럼 얼어 발목이 꺾일 뻔했다.",
+      "exposure_loss": 1.0,
+      "fatigue_gain": 1.5,
+      "health_loss": 0.5,
+      "cooldown_seconds": 7.0
+    },
+    {
+      "id": "convenience_corner_wind_gap",
+      "kind": "wind_gap",
+      "rect": { "x": 635, "y": 250, "width": 250, "height": 180 },
+      "message": "편의점 모퉁이를 돌자 골목바람이 몸을 밀어붙였다.",
+      "exposure_loss": 2.0,
+      "fatigue_gain": 1.0,
+      "cooldown_seconds": 7.0
+    }
+  ],
   "obstacles": [
     { "kind": "vehicle", "rect": { "x": 520, "y": 460, "width": 50, "height": 50 } },
     { "kind": "rubble", "rect": { "x": 140, "y": 160, "width": 110, "height": 70 } }

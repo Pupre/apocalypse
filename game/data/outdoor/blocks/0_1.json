@@ -8,6 +8,27 @@
     { "id": "southwest_snow", "rect": { "x": 0, "y": 640, "width": 320, "height": 320 } },
     { "id": "mid_snow", "rect": { "x": 660, "y": 0, "width": 280, "height": 220 } }
   ],
+  "hazards": [
+    {
+      "id": "gas_station_forecourt_black_ice",
+      "kind": "black_ice",
+      "rect": { "x": 665, "y": 265, "width": 180, "height": 130 },
+      "message": "주유소 앞마당의 얼어붙은 기름막을 밟자 발이 미끄러졌다.",
+      "exposure_loss": 1.0,
+      "fatigue_gain": 1.25,
+      "health_loss": 0.5,
+      "cooldown_seconds": 7.0
+    },
+    {
+      "id": "restaurant_alley_wind_gap",
+      "kind": "wind_gap",
+      "rect": { "x": 585, "y": 610, "width": 250, "height": 160 },
+      "message": "식당 골목의 빈 틈으로 바람이 몰려와 옷 안쪽까지 파고들었다.",
+      "exposure_loss": 2.0,
+      "fatigue_gain": 0.75,
+      "cooldown_seconds": 7.0
+    }
+  ],
   "obstacles": [
     { "kind": "vehicle", "rect": { "x": 120, "y": 460, "width": 52, "height": 52 } },
     { "kind": "rubble", "rect": { "x": 760, "y": 720, "width": 120, "height": 90 } }
