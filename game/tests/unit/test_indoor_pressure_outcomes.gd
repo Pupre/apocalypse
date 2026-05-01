@@ -7,6 +7,7 @@ const GARAGE_EVENT_PATH := "res://data/events/indoor/garage_01.json"
 const WAREHOUSE_EVENT_PATH := "res://data/events/indoor/warehouse_01.json"
 const CLINIC_EVENT_PATH := "res://data/events/indoor/clinic_01.json"
 const GAS_STATION_EVENT_PATH := "res://data/events/indoor/gas_station_01.json"
+const CONVENIENCE_EVENT_PATH := "res://data/events/indoor/convenience_01.json"
 
 var _test_jobs: Dictionary = {
 	"courier": {
@@ -162,6 +163,37 @@ func _run_test() -> void:
 	assert_true(_string_values(careful_medicine_state.get("spent_pressure_ids", [])).has("clinic_storage_careful_sort"), "Careful medicine-storage pressure should be marked spent.")
 	assert_true(not _action_ids(resolver.get_actions(clinic_event_data, careful_medicine_state, careful_clinic_run_state)).has("search_medicine_storage"), "Clearing the medicine storage carefully should remove the rushed search option.")
 
+	var convenience_event_data: Dictionary = resolver.load_event(CONVENIENCE_EVENT_PATH)
+	if not assert_true(not convenience_event_data.is_empty(), "Convenience event data should load."):
+		return
+	var counter_run_state = _build_run_state(run_state_script)
+	var counter_state := _event_state_for_zone("counter")
+	var counter_actions: Array[Dictionary] = resolver.get_actions(convenience_event_data, counter_state, counter_run_state)
+	assert_true(_action_ids(counter_actions).has("search_counter"), "Convenience counter should expose the rushed search.")
+	assert_true(_action_ids(counter_actions).has("search_counter_with_gloves"), "Convenience counter should show the safer glove option.")
+	assert_true(bool(_action_by_id(counter_actions, "search_counter_with_gloves").get("locked", false)), "The glove option should be locked without work gloves.")
+	health_before = float(counter_run_state.health)
+	assert_true(resolver.apply_action(counter_run_state, convenience_event_data, counter_state, "search_counter"), "Rushed convenience-counter search should resolve.")
+	assert_eq(float(counter_run_state.health), health_before - 1.0, "Rushed convenience-counter search should risk broken-glass injury.")
+	assert_eq(int(counter_state.get("noise", 0)), 1, "Rushed convenience-counter search should add a small noise mark.")
+	assert_true(bool((counter_state.get("zone_flags", {}) as Dictionary).has("counter_cleared")), "Counter search should clear both counter branches.")
+	assert_true(_string_values(counter_state.get("spent_pressure_ids", [])).has("convenience_counter_broken_glass"), "Convenience counter pressure should be marked spent.")
+	assert_true(not _action_ids(resolver.get_actions(convenience_event_data, counter_state, counter_run_state)).has("search_counter_with_gloves"), "Clearing the counter should hide the alternate glove branch.")
+
+	var careful_counter_run_state = _build_run_state(run_state_script)
+	assert_true(careful_counter_run_state.inventory.add_item({"id": "work_gloves", "name": "Work gloves", "bulk": 1}), "Careful counter test should seed work gloves.")
+	var careful_counter_state := _event_state_for_zone("counter")
+	var careful_counter_actions: Array[Dictionary] = resolver.get_actions(convenience_event_data, careful_counter_state, careful_counter_run_state)
+	assert_true(not bool(_action_by_id(careful_counter_actions, "search_counter_with_gloves").get("locked", true)), "Work gloves should unlock the safe counter search.")
+	health_before = float(careful_counter_run_state.health)
+	fatigue_before = float(careful_counter_run_state.fatigue)
+	assert_true(resolver.apply_action(careful_counter_run_state, convenience_event_data, careful_counter_state, "search_counter_with_gloves"), "Careful convenience-counter search should resolve.")
+	assert_eq(float(careful_counter_run_state.health), health_before, "Careful convenience-counter search should avoid the broken-glass injury.")
+	assert_true(float(careful_counter_run_state.fatigue) >= fatigue_before + 0.75, "Careful convenience-counter search should still cost effort.")
+	assert_eq(int(careful_counter_state.get("noise", 0)), 0, "Careful convenience-counter search should stay quiet.")
+	assert_true(_string_values(careful_counter_state.get("spent_pressure_ids", [])).has("convenience_counter_careful_sort"), "Careful convenience-counter pressure should be marked spent.")
+	assert_true(not _action_ids(resolver.get_actions(convenience_event_data, careful_counter_state, careful_counter_run_state)).has("search_counter"), "Clearing the counter carefully should remove the rushed branch.")
+
 	var gas_station_event_data: Dictionary = resolver.load_event(GAS_STATION_EVENT_PATH)
 	if not assert_true(not gas_station_event_data.is_empty(), "Gas station event data should load."):
 		return
@@ -229,6 +261,13 @@ func _action_ids(actions: Array[Dictionary]) -> PackedStringArray:
 func _move_action_by_target(actions: Array[Dictionary], target_zone_id: String) -> Dictionary:
 	for action in actions:
 		if String(action.get("target_zone_id", "")) == target_zone_id:
+			return action
+	return {}
+
+
+func _action_by_id(actions: Array[Dictionary], action_id: String) -> Dictionary:
+	for action in actions:
+		if String(action.get("id", "")) == action_id:
 			return action
 	return {}
 

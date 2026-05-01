@@ -177,3 +177,13 @@ Outdoor hazards now respond to what the survivor is wearing, not only where they
 - The survival sheet item detail panel now surfaces hazard reductions alongside cold-drain and weight effects.
 
 This turns outdoor gear into a practical planning choice: lighter food still matters, but traction and face coverage can make a dangerous route less punishing.
+
+## Follow-up Change: Convenience Counter Risk
+
+The convenience-store counter now follows the same practical-risk pattern as the clinic and garage.
+
+- Rummaging the counter quickly can cut the survivor on broken display glass and add noise.
+- Bringing work gloves unlocks a slower, quieter counter search that avoids the injury.
+- Indoor option filtering now hides branches that are obsolete because a `forbidden_flag_ids` condition has already been tripped, while still allowing missing-tool options to appear as locked hints.
+
+This makes a small building feel less like a one-click loot node and more like a place where preparedness changes the cost of searching.

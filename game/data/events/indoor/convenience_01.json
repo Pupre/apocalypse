@@ -147,7 +147,9 @@
         {
           "id": "search_counter",
           "label": "계산대를 탐색한다",
-          "requirements": {},
+          "requirements": {
+            "forbidden_flag_ids": ["counter_cleared"]
+          },
           "costs": { "minutes": 30, "noise": 0 },
           "outcomes": {
             "discover_loot": [],
@@ -160,6 +162,47 @@
                 { "id": "ballpoint_pen", "weight": 3 },
                 { "id": "plastic_bag", "weight": 2 }
               ]
+            },
+            "set_flags": ["counter_cleared"],
+            "pressure": {
+              "id": "convenience_counter_broken_glass",
+              "message": "카운터 뒤편을 급히 더듬다 깨진 진열장 유리에 손등이 긁혔다.",
+              "fatigue_gain": 1.0,
+              "health_loss": 1.0,
+              "noise": 1,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "search_counter_with_gloves",
+          "label": "작업 장갑을 끼고 계산대 뒤를 정리한다",
+          "requirements": {
+            "required_item_ids": ["work_gloves"],
+            "forbidden_flag_ids": ["counter_cleared"]
+          },
+          "blocked_feedback": "깨진 진열장 조각을 치우려면 손을 보호할 장갑이 필요하다.",
+          "costs": { "minutes": 40, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "lighter", "weight": 4 },
+                { "id": "memo_pad", "weight": 3 },
+                { "id": "ballpoint_pen", "weight": 3 },
+                { "id": "plastic_bag", "weight": 2 }
+              ]
+            },
+            "set_flags": ["counter_cleared"],
+            "pressure": {
+              "id": "convenience_counter_careful_sort",
+              "message": "장갑으로 유리 조각을 밀어내고 카운터 밑을 차분히 훑었다.",
+              "fatigue_gain": 0.75,
+              "noise": 0,
+              "repeatable": false
             },
             "consume_on_use": true
           }

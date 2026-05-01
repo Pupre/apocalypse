@@ -287,7 +287,7 @@ func _get_zone_actions(event_data: Dictionary, event_state: Dictionary, run_stat
 			if int(action.get("minute_cost", 0)) > 0 and run_state != null and run_state.has_method("get_indoor_action_minutes"):
 				action["minute_cost"] = int(run_state.get_indoor_action_minutes(int(action.get("minute_cost", 0))))
 			var is_available := _option_is_available(action, event_state, run_state)
-			if not is_available and not bool(action.get("show_when_locked", true)):
+			if not is_available and (_option_is_forbidden_by_state(action, event_state) or not bool(action.get("show_when_locked", true))):
 				continue
 
 			if _action_consumes_on_use(action) and _is_action_spent(event_state, action_id):
@@ -477,6 +477,13 @@ func _option_is_available(action: Dictionary, event_state: Dictionary, run_state
 		return true
 
 	return _requirements_are_met(requirements, event_state, run_state)
+
+
+func _option_is_forbidden_by_state(action: Dictionary, event_state: Dictionary) -> bool:
+	var requirements: Dictionary = action.get("requirements", {})
+	if typeof(requirements) != TYPE_DICTIONARY or requirements.is_empty():
+		return false
+	return _requirements_contain_any_ids(requirements.get("forbidden_flag_ids", []), event_state.get("zone_flags", {}))
 
 
 func _zone_is_accessible(zone: Dictionary, event_state: Dictionary, run_state = null) -> bool:
