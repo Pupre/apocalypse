@@ -53,6 +53,7 @@ var _active_block_coords: Array[Vector2i] = []
 var _building_rows: Array[Dictionary] = []
 var _road_rows: Array[Dictionary] = []
 var _snow_field_rows: Array[Dictionary] = []
+var _hazard_rows: Array[Dictionary] = []
 var _obstacle_rows: Array[Dictionary] = []
 var _threat_rows: Array[Dictionary] = []
 var _building_anchor_rows: Dictionary = {}
@@ -63,6 +64,9 @@ var _last_threat_snapshot := {
 	"threats": [],
 }
 var _contact_cooldown_seconds := 0.0
+var _hazard_cooldown_seconds := 0.0
+var _hazard_message_seconds := 0.0
+var _last_hazard_message := ""
 var _player_visual: Sprite2D = null
 var _camera: Camera2D = null
 var _top_ribbon: PanelContainer = null
@@ -101,6 +105,9 @@ func bind_run_state(value, building_id: String = DEFAULT_BUILDING_ID, player_pos
 	run_state = value
 	_seconds_buffer = 0.0
 	_contact_cooldown_seconds = 0.0
+	_hazard_cooldown_seconds = 0.0
+	_hazard_message_seconds = 0.0
+	_last_hazard_message = ""
 	_player_walk_seconds = 0.0
 	_player_facing_id = "down"
 	_cache_nodes()
@@ -164,6 +171,7 @@ func move_player(direction: Vector2, seconds_elapsed: float) -> void:
 	_refresh_buildings()
 	_refresh_obstacles()
 	_configure_threats()
+	_tick_current_outdoor_hazard(seconds_elapsed)
 	_sync_view()
 	state_changed.emit()
 
@@ -235,11 +243,14 @@ func _process(delta: float) -> void:
 
 	simulate_seconds(delta)
 	_contact_cooldown_seconds = max(0.0, _contact_cooldown_seconds - delta)
+	_hazard_cooldown_seconds = max(0.0, _hazard_cooldown_seconds - delta)
+	_hazard_message_seconds = max(0.0, _hazard_message_seconds - delta)
 	var direction := Input.get_vector(MOVE_LEFT_ACTION, MOVE_RIGHT_ACTION, MOVE_UP_ACTION, MOVE_DOWN_ACTION)
 	if direction != Vector2.ZERO:
 		move_player(direction, delta)
 	else:
 		_player_walk_seconds = 0.0
+		_tick_current_outdoor_hazard(delta)
 
 	var threat_snapshot: Dictionary = threat_director.tick(_player_position, delta)
 	if _debug_contact_requested:
@@ -391,6 +402,7 @@ func _sync_active_blocks() -> void:
 func _rebuild_active_rows() -> void:
 	_road_rows.clear()
 	_snow_field_rows.clear()
+	_hazard_rows.clear()
 	_obstacle_rows.clear()
 	_threat_rows.clear()
 	_building_anchor_rows.clear()
@@ -402,6 +414,7 @@ func _rebuild_active_rows() -> void:
 		var block_origin := world_runtime.get_block_origin(block_coord)
 		_append_rect_rows(_road_rows, block_row.get("roads", []), block_origin)
 		_append_rect_rows(_snow_field_rows, block_row.get("snow_fields", []), block_origin)
+		_append_rect_rows(_hazard_rows, block_row.get("hazards", []), block_origin)
 		_append_rect_rows(_obstacle_rows, block_row.get("obstacles", []), block_origin)
 		_append_threat_rows(block_row.get("threat_spawns", []), block_origin)
 		_append_anchor_rows(block_row.get("building_anchors", {}), block_origin)
@@ -518,6 +531,21 @@ func _refresh_ground() -> void:
 		)
 		_ground_decals_host.add_child(snow_patch)
 
+	for hazard_row in _hazard_rows:
+		var hazard_rect := _rect_from_row(hazard_row.get("rect", {}))
+		if hazard_rect.size == Vector2.ZERO:
+			continue
+		var hazard_kind := String(hazard_row.get("kind", "black_ice"))
+		var decal_id := "wind_streak" if hazard_kind == "wind_gap" else "ice_patch"
+		var hazard_decal := _make_decal_sprite(
+			"%sHazard" % String(hazard_row.get("id", "Hazard")),
+			hazard_rect.position + (hazard_rect.size * 0.5),
+			art_resolver.get_decal_texture(decal_id),
+			Vector2.ONE * (2.1 if hazard_kind == "wind_gap" else 1.7)
+		)
+		hazard_decal.modulate = Color(0.82, 0.94, 1.0, 0.68) if hazard_kind == "black_ice" else Color(0.95, 0.98, 1.0, 0.58)
+		_ground_decals_host.add_child(hazard_decal)
+
 	for block_coord in _active_block_coords:
 		var block_origin := world_runtime.get_block_origin(block_coord)
 		var block_size := world_runtime.get_block_size()
@@ -594,7 +622,7 @@ func _sync_view() -> void:
 			var entry_briefing := String(nearby_building_data.get("entry_briefing", "")).strip_edges()
 			_hint_label.text = "[E] %s 진입" % building_name if entry_briefing.is_empty() else "[E] %s 진입 · %s" % [building_name, entry_briefing]
 		else:
-			_hint_label.text = "WASD 이동"
+			_hint_label.text = _last_hazard_message if _hazard_message_seconds > 0.0 and not _last_hazard_message.is_empty() else "WASD 이동"
 	var visited_block_ids := {}
 	if run_state != null and run_state.has_method("get_visited_outdoor_block_keys"):
 		for block_key in run_state.get_visited_outdoor_block_keys():
@@ -781,6 +809,34 @@ func _effective_obstacle_rect(obstacle_row: Dictionary) -> Rect2:
 		source_rect.end.y - collision_size.y
 	)
 	return Rect2(collision_position, collision_size)
+
+
+func _tick_current_outdoor_hazard(delta: float) -> void:
+	if run_state == null or _hazard_cooldown_seconds > 0.0:
+		return
+
+	for hazard_row in _hazard_rows:
+		var hazard_rect := _rect_from_row(hazard_row.get("rect", {}))
+		if hazard_rect.size == Vector2.ZERO or not hazard_rect.has_point(_player_position):
+			continue
+		if run_state.has_method("apply_outdoor_hazard_contact"):
+			run_state.apply_outdoor_hazard_contact(hazard_row)
+		_last_hazard_message = String(hazard_row.get("message", "위험한 노면을 지나며 몸의 균형이 흔들렸다."))
+		_hazard_message_seconds = 4.0
+		_hazard_cooldown_seconds = maxf(1.0, float(hazard_row.get("cooldown_seconds", 6.0)) - delta)
+		return
+
+
+func _rect_from_row(rect_variant: Variant) -> Rect2:
+	if typeof(rect_variant) != TYPE_DICTIONARY:
+		return Rect2()
+	var rect_row := rect_variant as Dictionary
+	return Rect2(
+		float(rect_row.get("x", 0.0)),
+		float(rect_row.get("y", 0.0)),
+		float(rect_row.get("width", 0.0)),
+		float(rect_row.get("height", 0.0))
+	)
 
 
 func _make_textured_rect(name: String, rect: Rect2, texture: Texture2D) -> Polygon2D:

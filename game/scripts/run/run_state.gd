@@ -567,6 +567,21 @@ func apply_outdoor_threat_contact() -> Dictionary:
 	}
 
 
+func apply_outdoor_hazard_contact(hazard: Dictionary) -> Dictionary:
+	exposure = max(0.0, exposure - float(hazard.get("exposure_loss", 0.0)))
+	fatigue = min(MAX_SURVIVAL_VALUE, fatigue + float(hazard.get("fatigue_gain", 0.0)))
+	health = max(0.0, health - float(hazard.get("health_loss", 0.0)))
+	var minutes := int(hazard.get("minutes", 0))
+	if minutes > 0:
+		advance_minutes(minutes, "outdoor")
+	return {
+		"exposure": exposure,
+		"fatigue": fatigue,
+		"health": health,
+		"minute_of_day": clock.minute_of_day,
+	}
+
+
 func apply_indoor_pressure(pressure: Dictionary) -> Dictionary:
 	exposure = max(0.0, exposure - float(pressure.get("exposure_loss", 0.0)))
 	fatigue = min(MAX_SURVIVAL_VALUE, fatigue + float(pressure.get("fatigue_gain", 0.0)))

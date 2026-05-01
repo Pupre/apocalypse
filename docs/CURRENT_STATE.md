@@ -28,6 +28,7 @@ Systems already integrated in `main`:
 - First generated frozen-city art replacement checkpoint.
 - Image-backed outdoor frost screen feedback.
 - First authored indoor pressure outcomes for cold, noise, fatigue, and small injuries.
+- First outdoor terrain hazard zones for black ice and wind-gap pressure.
 
 ## 2026-05-02 Checkpoint
 

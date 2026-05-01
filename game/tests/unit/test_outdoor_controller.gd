@@ -83,11 +83,16 @@ func _run_test() -> void:
 	assert_true(obstacles.get_child_count() > 0, "Outdoor mode should render at least one obstacle prop.")
 
 	var tile_host := outdoor_mode.get_node_or_null("Ground/Tiles") as Node2D
+	var decal_host := outdoor_mode.get_node_or_null("Ground/Decals") as Node2D
 	if not assert_true(tile_host != null, "Outdoor mode should expose a terrain tile host."):
+		outdoor_mode.free()
+		return
+	if not assert_true(decal_host != null, "Outdoor mode should expose a terrain decal host."):
 		outdoor_mode.free()
 		return
 	assert_true(tile_host.get_child_count() > 0, "Outdoor terrain should place at least one runtime tile sprite.")
 	assert_true(_children_named_with(tile_host, "road_cracked").size() > 0 or _children_named_with(tile_host, "slush_road").size() > 0, "Outdoor terrain should mix cracked or slushy road variants instead of a single repeated lane texture.")
+	assert_true(_children_named_with(decal_host, "Hazard").size() > 0, "Outdoor terrain should render authored hazard decals for risky road surfaces.")
 	assert_true(_max_visual_scale(obstacles) > 1.0, "Outdoor obstacle props should be scaled up to fit the authored city block better.")
 	assert_true(outdoor_mode.has_method("_effective_obstacle_rect"), "Outdoor controller should expose an internal obstacle hitbox helper for collision debugging.")
 	var sample_obstacle := {"kind": "rubble", "rect": {"x": 710.0, "y": 180.0, "width": 120.0, "height": 80.0}}
@@ -182,6 +187,16 @@ func _run_test() -> void:
 	outdoor_mode.move_player(Vector2.DOWN, 8.0)
 	var traveled_distance: float = start_position.distance_to(outdoor_mode.get_player_position())
 	assert_true(traveled_distance >= 1400.0, "Outdoor travel should support materially longer continuous movement inside the streamed city grid.")
+	outdoor_mode.bind_run_state(run_state)
+
+	var hazard_exposure_before: float = run_state.exposure
+	var hazard_fatigue_before: float = run_state.fatigue
+	var hazard_health_before: float = run_state.health
+	outdoor_mode.move_player(Vector2.RIGHT, 1.25)
+	assert_true(run_state.exposure < hazard_exposure_before, "Crossing black ice should reduce exposure beyond passive cold drain.")
+	assert_true(run_state.fatigue > hazard_fatigue_before, "Crossing black ice should add fatigue pressure.")
+	assert_true(run_state.health < hazard_health_before, "Crossing black ice should be able to cause a small injury.")
+	assert_true(hint_label.text != "WASD 이동", "Outdoor hazard contact should temporarily replace the generic movement hint with feedback.")
 	outdoor_mode.bind_run_state(run_state)
 
 	var before_clock_minute_of_day: int = run_state.clock.minute_of_day

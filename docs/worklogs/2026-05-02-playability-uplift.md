@@ -75,3 +75,12 @@ The item and crafting pool already had a strong base, so this pass focused on be
 - `disinfectant_bottle + shop_towel_bundle -> solvent_wipes`
 
 These are intentionally ordinary survival improvisations: medical dressing, draft blocking, broken-opening patching, pocket warmth, and cleaning/disinfection.
+
+## Follow-up Change: Outdoor Hazard Zones
+
+The first block now has terrain-driven outdoor risks in addition to cold and pursuit.
+
+- `black_ice` zones can cause a small injury, exposure loss, and fatigue.
+- `wind_gap` zones cost exposure and fatigue as the survivor crosses exposed building gaps.
+- Hazard decals render on the outdoor ground layer so risky surfaces have a visible cue.
+- Hazard feedback temporarily replaces the generic movement hint, keeping the result readable without opening a modal.
