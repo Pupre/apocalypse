@@ -515,8 +515,10 @@ func _create_initial_event_state(current_zone_id: String = "") -> Dictionary:
 		"revealed_clue_ids": PackedStringArray(),
 		"spent_action_ids": PackedStringArray(),
 		"spent_pressure_ids": PackedStringArray(),
+		"resolved_noise_threshold_ids": PackedStringArray(),
 		"zone_flags": {},
 		"last_pressure_message": "",
+		"last_noise_message": "",
 		"noise": 0,
 	}
 

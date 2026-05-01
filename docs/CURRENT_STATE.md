@@ -34,7 +34,7 @@ Systems already integrated in `main`:
 - Stable local checkpoint: `8c469a9` (`feat: tune outdoor pressure and refresh city art`).
 - Current playability uplift continues from that checkpoint with generated cold-screen feedback and indoor pressure consequences.
 - Indoor `outcomes.pressure` is now the preferred first-pass authoring hook for deterministic search risk.
-- Noise is visible and persistent, but broader danger escalation from noise is still a follow-up.
+- Noise is visible, persistent, and now resolves deterministic danger thresholds at 3/6/9.
 
 ## Active Specs
 

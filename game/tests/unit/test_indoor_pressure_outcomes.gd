@@ -59,12 +59,16 @@ func _run_test() -> void:
 	var gate_run_state = _build_run_state(run_state_script)
 	var gate_state := _event_state_for_zone("staff_corridor_gate")
 	var health_before := float(gate_run_state.health)
+	var minute_before := int(gate_run_state.clock.minute_of_day)
 	fatigue_before = float(gate_run_state.fatigue)
 	assert_true(resolver.apply_action(gate_run_state, event_data, gate_state, "force_staff_gate"), "Forced staff gate action should resolve.")
 	assert_eq(float(gate_run_state.health), health_before - 1.0, "Forced gate pressure should chip health.")
 	assert_true(float(gate_run_state.fatigue) >= fatigue_before + 3.0, "Forced gate pressure should add fatigue on top of action time.")
 	assert_eq(int(gate_state.get("noise", 0)), 3, "Forced gate should combine base noise and pressure noise.")
 	assert_true(_string_values(gate_state.get("spent_pressure_ids", [])).has("mart_staff_gate_bang"), "Forced gate pressure should be marked spent.")
+	assert_true(_string_values(gate_state.get("resolved_noise_threshold_ids", [])).has("noise_attention_3"), "Crossing noise 3 should resolve the first noise escalation.")
+	assert_true(not String(gate_state.get("last_noise_message", "")).is_empty(), "Crossing noise 3 should leave a noise feedback message.")
+	assert_eq(int(gate_run_state.clock.minute_of_day), minute_before + 15, "Forced gate should include the extra wait from noise escalation.")
 
 	var garage_event_data: Dictionary = resolver.load_event(GARAGE_EVENT_PATH)
 	if not assert_true(not garage_event_data.is_empty(), "Garage event data should load."):
@@ -82,9 +86,14 @@ func _run_test() -> void:
 		return
 	var warehouse_run_state = _build_run_state(run_state_script)
 	var shutter_state := _event_state_for_zone("shutter_gate")
+	shutter_state["noise"] = 5
+	shutter_state["resolved_noise_threshold_ids"] = PackedStringArray(["noise_attention_3"])
+	exposure_before = float(warehouse_run_state.exposure)
 	assert_true(resolver.apply_action(warehouse_run_state, warehouse_event_data, shutter_state, "inspect_shutter_gate"), "Warehouse shutter inspection should resolve.")
-	assert_eq(int(shutter_state.get("noise", 0)), 2, "Warehouse shutter pressure should add noise.")
+	assert_eq(int(shutter_state.get("noise", 0)), 7, "Warehouse shutter pressure should add noise to existing site noise.")
 	assert_true(_string_values(shutter_state.get("spent_pressure_ids", [])).has("warehouse_shutter_rattle"), "Warehouse shutter pressure should be marked spent.")
+	assert_true(_string_values(shutter_state.get("resolved_noise_threshold_ids", [])).has("noise_attention_6"), "Crossing noise 6 should resolve the second noise escalation.")
+	assert_eq(float(warehouse_run_state.exposure), exposure_before - 3.0, "Noise 6 escalation should cost exposure while waiting.")
 
 	pass_test("INDOOR_PRESSURE_OUTCOMES_OK")
 
@@ -104,10 +113,12 @@ func _event_state_for_zone(zone_id: String) -> Dictionary:
 		"revealed_clue_ids": PackedStringArray(),
 		"spent_action_ids": PackedStringArray(),
 		"spent_pressure_ids": PackedStringArray(),
+		"resolved_noise_threshold_ids": PackedStringArray(),
 		"zone_flags": {},
 		"zone_loot_entries": {},
 		"zone_supply_sources": {},
 		"last_pressure_message": "",
+		"last_noise_message": "",
 		"noise": 0,
 	}
 

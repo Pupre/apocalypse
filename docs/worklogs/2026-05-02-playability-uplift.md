@@ -51,5 +51,15 @@ The target game fantasy is a grounded disaster-progression survival simulation: 
 ## Review Notes
 
 - Indoor pressure is intentionally deterministic for now. This keeps tests stable and makes authored risks legible before adding probabilistic hazards.
-- `noise` currently has display and memory support, but no global consequence loop yet. It is ready to drive future indoor danger escalation.
+- `noise` now has a first deterministic threshold loop at 3/6/9. Each crossed threshold resolves once and adds a short danger beat such as waiting, cold seepage, fatigue, or minor injury.
 - The frost overlay is now visual-feedback infrastructure; future cold/story beats can reuse the same asset strategy instead of relying only on flat screen tint.
+
+## Follow-up Change: Indoor Noise Escalation
+
+After the first pressure pass, `noise` was connected to gameplay consequences rather than remaining a passive status number.
+
+- Thresholds currently resolve at noise 3, 6, and 9.
+- Only one unresolved threshold resolves per action, which keeps escalation readable and prevents one loud action from stacking every penalty at once.
+- The first threshold adds a forced pause and fatigue.
+- The second threshold adds a longer pause, fatigue, and exposure loss.
+- The third threshold adds exposure loss, fatigue, a small injury, and a stronger warning message.

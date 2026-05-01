@@ -1,5 +1,32 @@
 extends RefCounted
 
+const NOISE_ESCALATION_STEPS := [
+	{
+		"id": "noise_attention_3",
+		"threshold": 3,
+		"message": "소란이 커지자 문밖의 발소리가 멎었다. 숨을 죽이느라 시간이 흘렀다.",
+		"fatigue_gain": 1.0,
+		"minutes": 5,
+	},
+	{
+		"id": "noise_attention_6",
+		"threshold": 6,
+		"message": "건물 앞에서 정체 모를 움직임이 멈췄다. 기다리는 사이 한기가 스며든다.",
+		"exposure_loss": 3.0,
+		"fatigue_gain": 2.0,
+		"minutes": 7,
+	},
+	{
+		"id": "noise_attention_9",
+		"threshold": 9,
+		"message": "큰 소리에 먼지와 유리 조각이 떨어져 팔을 긁었다. 더는 소란을 키우기 어렵다.",
+		"exposure_loss": 2.0,
+		"fatigue_gain": 3.0,
+		"health_loss": 2.0,
+		"minutes": 8,
+	},
+]
+
 
 func load_event(path: String) -> Dictionary:
 	if path.is_empty():
@@ -204,6 +231,7 @@ func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, ac
 
 	_apply_action_outcomes(event_state, action)
 	_apply_action_pressure(run_state, event_state, action)
+	_apply_noise_escalation(run_state, event_state)
 
 	if _action_consumes_on_use(action):
 		var spent_action_ids := _string_id_array(event_state.get("spent_action_ids", []))
@@ -558,6 +586,36 @@ func _apply_action_pressure(run_state, event_state: Dictionary, action: Dictiona
 		return
 
 	event_state["last_pressure_message"] = message
+	_append_feedback_message(event_state, message)
+
+
+func _apply_noise_escalation(run_state, event_state: Dictionary) -> void:
+	var noise := int(event_state.get("noise", 0))
+	if noise <= 0:
+		return
+
+	var resolved_threshold_ids := _string_id_array(event_state.get("resolved_noise_threshold_ids", []))
+	for step_variant in NOISE_ESCALATION_STEPS:
+		var step := step_variant as Dictionary
+		var threshold_id := String(step.get("id", ""))
+		if threshold_id.is_empty() or resolved_threshold_ids.has(threshold_id):
+			continue
+		if noise < int(step.get("threshold", 0)):
+			continue
+
+		if run_state != null and run_state.has_method("apply_indoor_pressure"):
+			run_state.apply_indoor_pressure(step)
+		resolved_threshold_ids.append(threshold_id)
+		event_state["resolved_noise_threshold_ids"] = resolved_threshold_ids
+		var message := String(step.get("message", ""))
+		event_state["last_noise_message"] = message
+		_append_feedback_message(event_state, message)
+		return
+
+
+func _append_feedback_message(event_state: Dictionary, message: String) -> void:
+	if message.is_empty():
+		return
 	var feedback_message := String(event_state.get("last_feedback_message", ""))
 	event_state["last_feedback_message"] = message if feedback_message.is_empty() else "%s %s" % [feedback_message, message]
 
