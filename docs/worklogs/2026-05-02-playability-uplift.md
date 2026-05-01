@@ -166,3 +166,14 @@ Verification added or refreshed around these changes:
 - `res://tests/unit/test_indoor_zone_graph.gd`
 - `res://tests/unit/test_life_world_loot_profiles.gd`
 - `res://tests/unit/test_survivor_creator.gd`
+
+## Follow-up Change: Outdoor Hazard Gear Mitigation
+
+Outdoor hazards now respond to what the survivor is wearing, not only where they step.
+
+- `apply_outdoor_hazard_contact` now scales hazard exposure, fatigue, and health losses through equipped item `outdoor_hazard_multipliers`.
+- Running shoes, shoe insoles, and padded insoles reduce black-ice fatigue and injury pressure.
+- Scarves and scarf masks reduce wind-gap exposure loss, with the scarf mask also softening wind fatigue.
+- The survival sheet item detail panel now surfaces hazard reductions alongside cold-drain and weight effects.
+
+This turns outdoor gear into a practical planning choice: lighter food still matters, but traction and face coverage can make a dangerous route less punishing.

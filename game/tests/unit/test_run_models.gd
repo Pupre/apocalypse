@@ -232,6 +232,73 @@ func _run_test() -> void:
 	assert_true(state.equipped_items.has("neck"), "Warmth gear should occupy its authored equipment layer.")
 	assert_true(state.get_outdoor_exposure_drain_multiplier() < before_warm_gear_multiplier, "Equipped warmth gear should reduce outdoor exposure drain.")
 
+	var bare_ice_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, live_content_library)
+	var prepared_ice_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, live_content_library)
+	assert_true(bare_ice_state != null and prepared_ice_state != null, "RunState should build for outdoor hazard gear checks.")
+	assert_true(prepared_ice_state.inventory.add_item(live_content_library.get_item("running_shoes")), "Hazard gear tests should add running shoes.")
+	assert_true(bool(prepared_ice_state.equip_inventory_item("running_shoes", live_content_library.get_item("running_shoes")).get("ok", false)), "Running shoes should equip for hazard checks.")
+	var black_ice_hazard := {
+		"kind": "black_ice",
+		"exposure_loss": 2.0,
+		"fatigue_gain": 2.0,
+		"health_loss": 1.0,
+	}
+	var bare_ice_health_before: float = bare_ice_state.health
+	var bare_ice_fatigue_before: float = bare_ice_state.fatigue
+	bare_ice_state.apply_outdoor_hazard_contact(black_ice_hazard)
+	var prepared_ice_health_before: float = prepared_ice_state.health
+	var prepared_ice_fatigue_before: float = prepared_ice_state.fatigue
+	prepared_ice_state.apply_outdoor_hazard_contact(black_ice_hazard)
+	assert_true(
+		(prepared_ice_health_before - prepared_ice_state.health) < (bare_ice_health_before - bare_ice_state.health),
+		"Equipped footwear should reduce black-ice injury risk."
+	)
+	assert_true(
+		(prepared_ice_state.fatigue - prepared_ice_fatigue_before) < (bare_ice_state.fatigue - bare_ice_fatigue_before),
+		"Equipped footwear should reduce black-ice fatigue pressure."
+	)
+
+	var bare_wind_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, live_content_library)
+	var prepared_wind_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, live_content_library)
+	assert_true(bare_wind_state != null and prepared_wind_state != null, "RunState should build for wind-gap gear checks.")
+	assert_true(prepared_wind_state.inventory.add_item(live_content_library.get_item("scarf_mask")), "Wind gear tests should add a scarf mask.")
+	assert_true(bool(prepared_wind_state.equip_inventory_item("scarf_mask", live_content_library.get_item("scarf_mask")).get("ok", false)), "Scarf mask should equip for wind checks.")
+	var wind_gap_hazard := {
+		"kind": "wind_gap",
+		"exposure_loss": 3.0,
+		"fatigue_gain": 1.0,
+	}
+	var bare_wind_exposure_before: float = bare_wind_state.exposure
+	var bare_wind_fatigue_before: float = bare_wind_state.fatigue
+	bare_wind_state.apply_outdoor_hazard_contact(wind_gap_hazard)
+	var prepared_wind_exposure_before: float = prepared_wind_state.exposure
+	var prepared_wind_fatigue_before: float = prepared_wind_state.fatigue
+	prepared_wind_state.apply_outdoor_hazard_contact(wind_gap_hazard)
+	assert_true(
+		(prepared_wind_exposure_before - prepared_wind_state.exposure) < (bare_wind_exposure_before - bare_wind_state.exposure),
+		"Face-cover gear should reduce wind-gap exposure loss."
+	)
+	assert_true(
+		(prepared_wind_state.fatigue - prepared_wind_fatigue_before) < (bare_wind_state.fatigue - bare_wind_fatigue_before),
+		"Face-cover gear should reduce wind-gap fatigue pressure."
+	)
+
 	for index in range(15):
 		assert_true(state.inventory.add_item({"id": "weight_%d" % index, "bulk": 1}), "Inventory should allow a few items beyond the soft limit for overload testing.")
 

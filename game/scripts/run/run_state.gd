@@ -568,9 +568,9 @@ func apply_outdoor_threat_contact() -> Dictionary:
 
 
 func apply_outdoor_hazard_contact(hazard: Dictionary) -> Dictionary:
-	exposure = max(0.0, exposure - float(hazard.get("exposure_loss", 0.0)))
-	fatigue = min(MAX_SURVIVAL_VALUE, fatigue + float(hazard.get("fatigue_gain", 0.0)))
-	health = max(0.0, health - float(hazard.get("health_loss", 0.0)))
+	exposure = max(0.0, exposure - _outdoor_hazard_effect_value(hazard, "exposure_loss"))
+	fatigue = min(MAX_SURVIVAL_VALUE, fatigue + _outdoor_hazard_effect_value(hazard, "fatigue_gain"))
+	health = max(0.0, health - _outdoor_hazard_effect_value(hazard, "health_loss"))
 	var minutes := int(hazard.get("minutes", 0))
 	if minutes > 0:
 		advance_minutes(minutes, "outdoor")
@@ -580,6 +580,39 @@ func apply_outdoor_hazard_contact(hazard: Dictionary) -> Dictionary:
 		"health": health,
 		"minute_of_day": clock.minute_of_day,
 	}
+
+
+func _outdoor_hazard_effect_value(hazard: Dictionary, effect_key: String) -> float:
+	var base_value := float(hazard.get(effect_key, 0.0))
+	if base_value <= 0.0:
+		return base_value
+
+	var hazard_kind := String(hazard.get("kind", ""))
+	var multiplier := 1.0
+	for item_variant in equipped_items.values():
+		if typeof(item_variant) != TYPE_DICTIONARY:
+			continue
+		var item := item_variant as Dictionary
+		var equip_effects_variant: Variant = item.get("equip_effects", {})
+		if typeof(equip_effects_variant) != TYPE_DICTIONARY:
+			continue
+		var equip_effects := equip_effects_variant as Dictionary
+		var hazard_multipliers_variant: Variant = equip_effects.get("outdoor_hazard_multipliers", {})
+		if typeof(hazard_multipliers_variant) != TYPE_DICTIONARY:
+			continue
+		var hazard_multipliers := hazard_multipliers_variant as Dictionary
+		multiplier *= _outdoor_hazard_multiplier_from_block(hazard_multipliers.get("all", {}), effect_key)
+		if not hazard_kind.is_empty():
+			multiplier *= _outdoor_hazard_multiplier_from_block(hazard_multipliers.get(hazard_kind, {}), effect_key)
+
+	return base_value * maxf(0.0, multiplier)
+
+
+func _outdoor_hazard_multiplier_from_block(block_variant: Variant, effect_key: String) -> float:
+	if typeof(block_variant) != TYPE_DICTIONARY:
+		return 1.0
+	var block := block_variant as Dictionary
+	return maxf(0.0, float(block.get(effect_key, 1.0)))
 
 
 func apply_indoor_pressure(pressure: Dictionary) -> Dictionary:

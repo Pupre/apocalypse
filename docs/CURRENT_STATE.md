@@ -36,6 +36,7 @@ Systems already integrated in `main`:
 - Clinic medicine storage now has rushed versus flashlight-assisted search risk.
 - Gas station fuel salvage now turns empty jerrycans into heavy portable-heat fuel.
 - Indoor loot profiles now use validated practical household item ids, and the mart back hall has a listen-first clue action.
+- Equipped footwear and face/neck gear can now mitigate authored outdoor hazard pressure.
 
 ## 2026-05-02 Checkpoint
 

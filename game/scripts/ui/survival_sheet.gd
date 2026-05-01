@@ -972,6 +972,9 @@ func _item_effect_text(item_data: Dictionary) -> String:
 		var outdoor_exposure_multiplier := float(equip_effects.get("outdoor_exposure_drain_multiplier", 1.0))
 		if outdoor_exposure_multiplier > 0.0 and outdoor_exposure_multiplier < 1.0:
 			parts.append("야외 냉기 -%d%%" % int(round((1.0 - outdoor_exposure_multiplier) * 100.0)))
+		var hazard_multipliers_variant: Variant = equip_effects.get("outdoor_hazard_multipliers", {})
+		if typeof(hazard_multipliers_variant) == TYPE_DICTIONARY:
+			parts.append_array(_outdoor_hazard_effect_texts(hazard_multipliers_variant as Dictionary))
 	var equip_slot := String(item_data.get("equip_slot", ""))
 	if not equip_slot.is_empty():
 		parts.append("장착 슬롯: %s" % _slot_label(equip_slot))
@@ -984,6 +987,49 @@ func _item_effect_text(item_data: Dictionary) -> String:
 		var charge_label := String(item_data.get("charge_label", "잔량"))
 		parts.append("%s %d/%d" % [charge_label, charges_current, charges_max])
 	return "효과 없음" if parts.is_empty() else " / ".join(parts)
+
+
+func _outdoor_hazard_effect_texts(hazard_multipliers: Dictionary) -> Array[String]:
+	var result: Array[String] = []
+	for hazard_kind_variant in hazard_multipliers.keys():
+		var hazard_kind := String(hazard_kind_variant)
+		var block_variant: Variant = hazard_multipliers.get(hazard_kind, {})
+		if typeof(block_variant) != TYPE_DICTIONARY:
+			continue
+		var block := block_variant as Dictionary
+		for effect_key in ["exposure_loss", "fatigue_gain", "health_loss"]:
+			var multiplier := float(block.get(effect_key, 1.0))
+			if multiplier > 0.0 and multiplier < 1.0:
+				result.append("%s %s -%d%%" % [
+					_hazard_kind_label(hazard_kind),
+					_hazard_effect_label(effect_key),
+					int(round((1.0 - multiplier) * 100.0)),
+				])
+	return result
+
+
+func _hazard_kind_label(hazard_kind: String) -> String:
+	match hazard_kind:
+		"black_ice":
+			return "빙판"
+		"wind_gap":
+			return "틈바람"
+		"all":
+			return "야외 위험"
+		_:
+			return hazard_kind
+
+
+func _hazard_effect_label(effect_key: String) -> String:
+	match effect_key:
+		"exposure_loss":
+			return "체온 손실"
+		"fatigue_gain":
+			return "피로"
+		"health_loss":
+			return "부상"
+		_:
+			return effect_key
 
 
 func _inventory_sheet_actions(item_data: Dictionary, item_id: String) -> Array[Dictionary]:

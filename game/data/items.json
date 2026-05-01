@@ -273,7 +273,15 @@
     "description": "밑창이 살아 있는 운동화다. 오래 걷거나 뛸 때 훨씬 편하다.",
     "category": "equipment",
     "equip_slot": "feet",
-    "move_speed_bonus": 24
+    "move_speed_bonus": 24,
+    "equip_effects": {
+      "outdoor_hazard_multipliers": {
+        "black_ice": {
+          "fatigue_gain": 0.78,
+          "health_loss": 0.45
+        }
+      }
+    }
   },
   {
     "id": "small_backpack",
@@ -1731,7 +1739,12 @@
     "item_tags": ["cloth", "warmth", "face_cover_component"],
     "equip_slot": "neck",
     "equip_effects": {
-      "outdoor_exposure_drain_multiplier": 0.96
+      "outdoor_exposure_drain_multiplier": 0.96,
+      "outdoor_hazard_multipliers": {
+        "wind_gap": {
+          "exposure_loss": 0.85
+        }
+      }
     }
   },
   {
@@ -1746,7 +1759,13 @@
     "item_tags": ["warmth", "footwear_component"],
     "equip_slot": "feet_layer",
     "equip_effects": {
-      "outdoor_exposure_drain_multiplier": 0.97
+      "outdoor_exposure_drain_multiplier": 0.97,
+      "outdoor_hazard_multipliers": {
+        "black_ice": {
+          "fatigue_gain": 0.9,
+          "health_loss": 0.8
+        }
+      }
     }
   },
   {
@@ -1930,7 +1949,13 @@
     "item_tags": ["warmth", "face_cover", "crafted_gear"],
     "equip_slot": "face",
     "equip_effects": {
-      "outdoor_exposure_drain_multiplier": 0.92
+      "outdoor_exposure_drain_multiplier": 0.92,
+      "outdoor_hazard_multipliers": {
+        "wind_gap": {
+          "exposure_loss": 0.72,
+          "fatigue_gain": 0.9
+        }
+      }
     }
   },
   {
@@ -1975,7 +2000,13 @@
     "item_tags": ["warmth", "footwear", "crafted_gear"],
     "equip_slot": "feet_layer",
     "equip_effects": {
-      "outdoor_exposure_drain_multiplier": 0.94
+      "outdoor_exposure_drain_multiplier": 0.94,
+      "outdoor_hazard_multipliers": {
+        "black_ice": {
+          "fatigue_gain": 0.82,
+          "health_loss": 0.65
+        }
+      }
     }
   },
   {
