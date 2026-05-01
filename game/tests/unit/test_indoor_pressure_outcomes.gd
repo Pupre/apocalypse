@@ -70,6 +70,20 @@ func _run_test() -> void:
 	assert_true(not String(gate_state.get("last_noise_message", "")).is_empty(), "Crossing noise 3 should leave a noise feedback message.")
 	assert_eq(int(gate_run_state.clock.minute_of_day), minute_before + 15, "Forced gate should include the extra wait from noise escalation.")
 
+	var tool_gate_run_state = _build_run_state(run_state_script)
+	assert_true(tool_gate_run_state.inventory.add_item({"id": "screwdriver", "name": "Screwdriver", "bulk": 1}), "Tool gate test should seed a screwdriver.")
+	var tool_gate_state := _event_state_for_zone("staff_corridor_gate")
+	var tool_gate_actions := _action_ids(resolver.get_actions(event_data, tool_gate_state, tool_gate_run_state))
+	assert_true(tool_gate_actions.has("jimmy_staff_gate_with_screwdriver"), "A screwdriver should unlock a quieter staff-gate option.")
+	health_before = float(tool_gate_run_state.health)
+	fatigue_before = float(tool_gate_run_state.fatigue)
+	assert_true(resolver.apply_action(tool_gate_run_state, event_data, tool_gate_state, "jimmy_staff_gate_with_screwdriver"), "Screwdriver staff-gate option should resolve.")
+	assert_eq(float(tool_gate_run_state.health), health_before, "Tool gate path should avoid the hand injury from forcing the door.")
+	assert_true(float(tool_gate_run_state.fatigue) >= fatigue_before + 1.0, "Tool gate path should still cost effort.")
+	assert_eq(int(tool_gate_state.get("noise", 0)), 0, "Tool gate path should stay quiet enough to avoid noise escalation.")
+	assert_true(_string_values(tool_gate_state.get("spent_pressure_ids", [])).has("mart_staff_gate_jimmy"), "Tool gate pressure should be marked spent.")
+	assert_true(not _action_ids(resolver.get_actions(event_data, tool_gate_state, tool_gate_run_state)).has("force_staff_gate"), "Opening the staff gate should remove the brute-force alternative.")
+
 	var garage_event_data: Dictionary = resolver.load_event(GARAGE_EVENT_PATH)
 	if not assert_true(not garage_event_data.is_empty(), "Garage event data should load."):
 		return
@@ -131,6 +145,13 @@ func _string_values(values_variant: Variant) -> PackedStringArray:
 	for value in values_variant:
 		values.append(String(value))
 	return values
+
+
+func _action_ids(actions: Array[Dictionary]) -> PackedStringArray:
+	var ids := PackedStringArray()
+	for action in actions:
+		ids.append(String(action.get("id", "")))
+	return ids
 
 
 func get_job(job_id: String) -> Dictionary:

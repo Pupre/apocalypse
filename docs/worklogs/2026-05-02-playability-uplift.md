@@ -84,3 +84,13 @@ The first block now has terrain-driven outdoor risks in addition to cold and pur
 - `wind_gap` zones cost exposure and fatigue as the survivor crosses exposed building gaps.
 - Hazard decals render on the outdoor ground layer so risky surfaces have a visible cue.
 - Hazard feedback temporarily replaces the generic movement hint, keeping the result readable without opening a modal.
+
+## Follow-up Change: Branching Indoor Resolution
+
+The mart staff-gate event now has a quieter tool-based path if the survivor has a screwdriver.
+
+- Brute force is faster, noisy, injures the survivor slightly, and can trigger noise escalation.
+- Using a screwdriver takes longer, costs effort, but avoids injury and stays quiet.
+- Once the gate is opened, the alternate path is removed through `forbidden_flag_ids`.
+
+This is the first pass at making indoor exploration feel like practical problem solving rather than repeated generic search actions.

@@ -405,7 +405,10 @@
         {
           "id": "force_staff_gate",
           "label": "직원 통로 문을 억지로 민다",
-          "requirements": {},
+          "requirements": {
+            "forbidden_flag_ids": ["staff_gate_forced"]
+          },
+          "show_when_locked": false,
           "costs": { "minutes": 10, "noise": 1 },
           "outcomes": {
             "set_flags": ["staff_gate_forced"],
@@ -415,6 +418,27 @@
               "fatigue_gain": 3.0,
               "health_loss": 1.0,
               "noise": 2,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "jimmy_staff_gate_with_screwdriver",
+          "label": "드라이버로 걸쇠를 비튼다",
+          "requirements": {
+            "required_item_ids": ["screwdriver"],
+            "forbidden_flag_ids": ["staff_gate_forced"]
+          },
+          "blocked_feedback": "작은 드라이버가 있으면 걸쇠를 덜 시끄럽게 비틀 수 있을 것 같다.",
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["staff_gate_forced"],
+            "pressure": {
+              "id": "mart_staff_gate_jimmy",
+              "message": "드라이버 끝으로 걸쇠를 천천히 밀어 올려 문을 조용히 열었다.",
+              "fatigue_gain": 1.0,
+              "noise": 0,
               "repeatable": false
             },
             "consume_on_use": true

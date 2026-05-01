@@ -482,6 +482,9 @@ func _zone_is_accessible(zone: Dictionary, event_state: Dictionary, run_state = 
 
 
 func _requirements_are_met(requirements: Dictionary, event_state: Dictionary, run_state = null) -> bool:
+	if _requirements_contain_any_ids(requirements.get("forbidden_flag_ids", []), event_state.get("zone_flags", {})):
+		return false
+
 	if not _requirements_contain_ids(requirements.get("required_flag_ids", []), event_state.get("zone_flags", {})):
 		return false
 
@@ -495,6 +498,21 @@ func _requirements_are_met(requirements: Dictionary, event_state: Dictionary, ru
 		return false
 
 	return true
+
+
+func _requirements_contain_any_ids(blocked_ids, source_values) -> bool:
+	var blocked := _string_id_array(blocked_ids)
+	if blocked.is_empty():
+		return false
+
+	var source_lookup := {}
+	for value in source_values:
+		source_lookup[String(value)] = true
+
+	for blocked_id in blocked:
+		if source_lookup.has(blocked_id):
+			return true
+	return false
 
 
 func _requirements_contain_ids(required_ids, source_values) -> bool:
