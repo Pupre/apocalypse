@@ -94,3 +94,14 @@ The mart staff-gate event now has a quieter tool-based path if the survivor has 
 - Once the gate is opened, the alternate path is removed through `forbidden_flag_ids`.
 
 This is the first pass at making indoor exploration feel like practical problem solving rather than repeated generic search actions.
+
+## Follow-up Change: Improvised Indoor Access
+
+The branching-resolution pattern now applies beyond the mart.
+
+- Garage service pit can be searched quickly and risk a cut, or searched carefully with work gloves to avoid injury.
+- Warehouse deep storage can now be reached with the original shutter key or by bracing the shutter with pliers and steel wire.
+- Indoor requirements now support `any_of` blocks, so access rules can express "key or improvised setup" without duplicating zones.
+- Indoor action outcomes can consume specific inventory items, letting reusable tools and spent materials behave differently.
+
+This moves indoor play closer to the intended survival-planning fantasy: what you brought changes what risks you can avoid, what doors you can open, and what materials you lose.

@@ -95,6 +95,20 @@ func _run_test() -> void:
 	assert_eq(int(garage_state.get("noise", 0)), 1, "Service pit pressure should add noise in the pit, not on the garage floor.")
 	assert_true(_string_values(garage_state.get("spent_pressure_ids", [])).has("garage_service_pit_slip"), "Service pit pressure should be marked spent.")
 
+	var careful_garage_run_state = _build_run_state(run_state_script)
+	assert_true(careful_garage_run_state.inventory.add_item({"id": "work_gloves", "name": "Work gloves", "bulk": 1}), "Careful pit test should seed work gloves.")
+	var careful_garage_state := _event_state_for_zone("service_pit")
+	var careful_pit_actions := _action_ids(resolver.get_actions(garage_event_data, careful_garage_state, careful_garage_run_state))
+	assert_true(careful_pit_actions.has("search_service_pit_with_gloves"), "Work gloves should unlock a safer service-pit search.")
+	health_before = float(careful_garage_run_state.health)
+	fatigue_before = float(careful_garage_run_state.fatigue)
+	assert_true(resolver.apply_action(careful_garage_run_state, garage_event_data, careful_garage_state, "search_service_pit_with_gloves"), "Careful service-pit search should resolve.")
+	assert_eq(float(careful_garage_run_state.health), health_before, "Careful service-pit search should avoid the cut from the risky descent.")
+	assert_true(float(careful_garage_run_state.fatigue) >= fatigue_before + 1.0, "Careful service-pit search should still cost effort.")
+	assert_eq(int(careful_garage_state.get("noise", 0)), 0, "Careful service-pit search should stay quiet.")
+	assert_true(_string_values(careful_garage_state.get("spent_pressure_ids", [])).has("garage_service_pit_careful_descent"), "Careful service-pit pressure should be marked spent.")
+	assert_true(not _action_ids(resolver.get_actions(garage_event_data, careful_garage_state, careful_garage_run_state)).has("search_service_pit_once"), "Clearing the pit carefully should remove the risky descent option.")
+
 	var warehouse_event_data: Dictionary = resolver.load_event(WAREHOUSE_EVENT_PATH)
 	if not assert_true(not warehouse_event_data.is_empty(), "Warehouse event data should load."):
 		return
@@ -108,6 +122,19 @@ func _run_test() -> void:
 	assert_true(_string_values(shutter_state.get("spent_pressure_ids", [])).has("warehouse_shutter_rattle"), "Warehouse shutter pressure should be marked spent.")
 	assert_true(_string_values(shutter_state.get("resolved_noise_threshold_ids", [])).has("noise_attention_6"), "Crossing noise 6 should resolve the second noise escalation.")
 	assert_eq(float(warehouse_run_state.exposure), exposure_before - 3.0, "Noise 6 escalation should cost exposure while waiting.")
+
+	var braced_warehouse_run_state = _build_run_state(run_state_script)
+	assert_true(braced_warehouse_run_state.inventory.add_item({"id": "pliers", "name": "Pliers", "bulk": 1}), "Shutter brace test should seed pliers.")
+	assert_true(braced_warehouse_run_state.inventory.add_item({"id": "steel_wire", "name": "Steel wire", "bulk": 1}), "Shutter brace test should seed steel wire.")
+	var braced_shutter_state := _event_state_for_zone("shutter_gate")
+	assert_true(not resolver.is_zone_accessible(warehouse_event_data, braced_shutter_state, "deep_storage", braced_warehouse_run_state), "Deep storage should start locked without key or braced shutter.")
+	assert_true(_action_ids(resolver.get_actions(warehouse_event_data, braced_shutter_state, braced_warehouse_run_state)).has("brace_shutter_with_wire"), "Pliers and wire should unlock an improvised shutter option.")
+	assert_true(resolver.apply_action(braced_warehouse_run_state, warehouse_event_data, braced_shutter_state, "brace_shutter_with_wire"), "Improvised shutter brace should resolve.")
+	assert_eq(braced_warehouse_run_state.inventory.count_item_by_id("steel_wire"), 0, "Bracing the shutter should consume the wire.")
+	assert_eq(braced_warehouse_run_state.inventory.count_item_by_id("pliers"), 1, "Bracing the shutter should keep the reusable tool.")
+	assert_true(_string_values(braced_shutter_state.get("spent_pressure_ids", [])).has("warehouse_shutter_wire_brace"), "Wire brace pressure should be marked spent.")
+	assert_true(resolver.is_zone_accessible(warehouse_event_data, braced_shutter_state, "deep_storage", braced_warehouse_run_state), "A braced shutter should open the deep-storage route without the key.")
+	assert_true(not bool(_move_action_by_target(resolver.get_move_actions(warehouse_event_data, braced_shutter_state, braced_warehouse_run_state), "deep_storage").get("locked", true)), "The deep-storage move action should unlock after bracing the shutter.")
 
 	pass_test("INDOOR_PRESSURE_OUTCOMES_OK")
 
@@ -152,6 +179,13 @@ func _action_ids(actions: Array[Dictionary]) -> PackedStringArray:
 	for action in actions:
 		ids.append(String(action.get("id", "")))
 	return ids
+
+
+func _move_action_by_target(actions: Array[Dictionary], target_zone_id: String) -> Dictionary:
+	for action in actions:
+		if String(action.get("target_zone_id", "")) == target_zone_id:
+			return action
+	return {}
 
 
 func get_job(job_id: String) -> Dictionary:

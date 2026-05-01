@@ -30,6 +30,7 @@ Systems already integrated in `main`:
 - First authored indoor pressure outcomes for cold, noise, fatigue, and small injuries.
 - First outdoor terrain hazard zones for black ice and wind-gap pressure.
 - First branching indoor resolution option using tools versus brute force.
+- First improvised indoor access rules using key-or-setup requirements and material consumption.
 
 ## 2026-05-02 Checkpoint
 

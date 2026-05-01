@@ -115,7 +115,10 @@
         {
           "id": "search_service_pit_once",
           "label": "정비 pit를 탐색한다",
-          "requirements": {},
+          "requirements": {
+            "forbidden_flag_ids": ["service_pit_cleared"]
+          },
+          "show_when_locked": false,
           "costs": { "minutes": 30, "noise": 0 },
           "outcomes": {
             "discover_loot": [],
@@ -128,12 +131,44 @@
                 { "id": "tarp_sheet", "weight": 2 }
               ]
             },
+            "set_flags": ["service_pit_cleared"],
             "pressure": {
               "id": "garage_service_pit_slip",
               "message": "정비 pit 아래로 내려가다 기름 묻은 철제 모서리에 팔을 부딪쳤다.",
               "fatigue_gain": 2.0,
               "health_loss": 2.0,
               "noise": 1,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "search_service_pit_with_gloves",
+          "label": "작업 장갑을 끼고 pit를 천천히 뒤진다",
+          "requirements": {
+            "required_item_ids": ["work_gloves"],
+            "forbidden_flag_ids": ["service_pit_cleared"]
+          },
+          "blocked_feedback": "날카로운 철제 모서리와 기름때 때문에 손을 보호할 장갑이 필요하다.",
+          "costs": { "minutes": 40, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "empty_jerrycan", "weight": 3 },
+                { "id": "siphon_hose", "weight": 3 },
+                { "id": "tarp_sheet", "weight": 2 }
+              ]
+            },
+            "set_flags": ["service_pit_cleared"],
+            "pressure": {
+              "id": "garage_service_pit_careful_descent",
+              "message": "장갑으로 미끄러운 모서리를 짚고 천천히 내려가자 팔을 베이지 않고 바닥까지 닿았다.",
+              "fatigue_gain": 1.0,
+              "noise": 0,
               "repeatable": false
             },
             "consume_on_use": true

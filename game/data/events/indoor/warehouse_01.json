@@ -61,7 +61,10 @@
       "first_visit_cost": 30,
       "revisit_cost": 10,
       "access_requirements": {
-        "required_item_ids": ["warehouse_shutter_key"]
+        "any_of": [
+          { "required_item_ids": ["warehouse_shutter_key"] },
+          { "required_flag_ids": ["warehouse_shutter_braced"] }
+        ]
       }
     }
   ],
@@ -181,6 +184,28 @@
               "message": "셔터를 들어 올려 보자 레일이 크게 떨리며 창고 안쪽으로 소리가 번졌다.",
               "fatigue_gain": 1.0,
               "noise": 2,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "brace_shutter_with_wire",
+          "label": "펜치와 철사로 셔터를 묶어 올린다",
+          "requirements": {
+            "required_item_ids": ["pliers", "steel_wire"],
+            "forbidden_flag_ids": ["warehouse_shutter_braced"]
+          },
+          "blocked_feedback": "셔터를 억지로 받치려면 철사를 꺾을 펜치와 묶어둘 철사가 필요하다.",
+          "costs": { "minutes": 35, "noise": 1 },
+          "outcomes": {
+            "set_flags": ["warehouse_shutter_braced"],
+            "consume_item_ids": ["steel_wire"],
+            "pressure": {
+              "id": "warehouse_shutter_wire_brace",
+              "message": "펜치로 철사를 꼬아 셔터 레일에 걸자, 무거운 셔터가 겨우 한 사람 지나갈 만큼 버텼다.",
+              "fatigue_gain": 2.0,
+              "noise": 1,
               "repeatable": false
             },
             "consume_on_use": true

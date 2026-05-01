@@ -169,6 +169,9 @@ func apply_action(run_state, event_data: Dictionary, event_state: Dictionary, ac
 	if _action_consumes_on_use(action) and _is_action_spent(event_state, action_id):
 		return false
 
+	if not _consume_action_items(run_state, action):
+		return false
+
 	if run_state != null:
 		var rest_minutes := int(action.get("rest_minutes", 0))
 		var minute_cost := int(action.get("minute_cost", 0))
@@ -457,6 +460,8 @@ func _normalize_zone_option(event: Dictionary, option: Dictionary) -> Dictionary
 			action["set_flags"] = _string_id_array(outcomes.get("set_flags", []))
 		if outcomes.has("unlock_zone_ids"):
 			action["unlock_zone_ids"] = _string_id_array(outcomes.get("unlock_zone_ids", []))
+		if outcomes.has("consume_item_ids"):
+			action["consume_item_ids"] = _string_id_array(outcomes.get("consume_item_ids", []))
 		if outcomes.has("pressure"):
 			action["pressure"] = outcomes.get("pressure", {})
 		if outcomes.has("consume_on_use"):
@@ -497,7 +502,26 @@ func _requirements_are_met(requirements: Dictionary, event_state: Dictionary, ru
 	if not _inventory_contains_ids(run_state, requirements.get("required_item_ids", [])):
 		return false
 
+	if not _any_requirement_block_is_met(requirements.get("any_of", []), event_state, run_state):
+		return false
+
 	return true
+
+
+func _any_requirement_block_is_met(requirement_blocks, event_state: Dictionary, run_state = null) -> bool:
+	if typeof(requirement_blocks) != TYPE_ARRAY:
+		return true
+	if requirement_blocks.is_empty():
+		return true
+
+	for block_variant in requirement_blocks:
+		if typeof(block_variant) != TYPE_DICTIONARY:
+			continue
+		var block := block_variant as Dictionary
+		if _requirements_are_met(block, event_state, run_state):
+			return true
+
+	return false
 
 
 func _requirements_contain_any_ids(blocked_ids, source_values) -> bool:
@@ -548,6 +572,24 @@ func _inventory_contains_ids(run_state, required_item_ids) -> bool:
 	for required_id in required:
 		if not inventory_lookup.has(required_id):
 			return false
+	return true
+
+
+func _consume_action_items(run_state, action: Dictionary) -> bool:
+	var consume_item_ids := _string_id_array(action.get("consume_item_ids", []))
+	if consume_item_ids.is_empty():
+		return true
+	if run_state == null or run_state.inventory == null:
+		return false
+
+	var removed_items: Array[Dictionary] = []
+	for item_id in consume_item_ids:
+		var removed_item: Dictionary = run_state.inventory.take_first_item_by_id(item_id)
+		if removed_item.is_empty():
+			if run_state.inventory.has_method("restore_items"):
+				run_state.inventory.restore_items(removed_items)
+			return false
+		removed_items.append(removed_item)
 	return true
 
 
