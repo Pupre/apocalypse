@@ -1,7 +1,7 @@
 {
   "id": "cafe_01",
   "name": "카페",
-  "summary": "카운터만이 아니라 안쪽 좌석과 보조 선반까지 훑어야 음료 재료가 나온다.",
+  "summary": "카운터, 좌석, 작은 준비실이 이어져 있다. 즉시 먹을 간식보다 뜨거운 음료 루프를 만들 재료가 더 중요하다.",
   "entry_zone_id": "counter",
   "zones": [
     {
@@ -9,7 +9,7 @@
       "floor_id": "floor_1",
       "label": "카운터",
       "summary": "커피 머신 옆으로 작은 음료 재료와 종이봉투가 남아 있다.",
-      "connected_zone_ids": ["seating_area"],
+      "connected_zone_ids": ["seating_area", "prep_shelf"],
       "event_ids": ["search_cafe_counter_event"],
       "map_position": [0, 0],
       "first_visit_cost": 20,
@@ -19,11 +19,22 @@
       "id": "seating_area",
       "floor_id": "floor_1",
       "label": "안쪽 좌석",
-      "summary": "창가 좌석 아래엔 뜯지 않은 간식과 티백이 굴러다닌다.",
+      "summary": "창가 좌석 아래엔 뜯지 않은 간식과 티백이 굴러다닌다. 창문 틈으로 찬 공기가 계속 밀려온다.",
       "connected_zone_ids": ["counter"],
       "event_ids": ["search_cafe_seating_event"],
       "map_position": [1, 0],
       "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "prep_shelf",
+      "floor_id": "floor_1",
+      "label": "준비 선반",
+      "summary": "종이컵 박스와 보온병, 커피 재료가 놓인 작은 선반이다. 얼어붙은 금속 선반이 손에 달라붙을 듯 차갑다.",
+      "connected_zone_ids": ["counter"],
+      "event_ids": ["search_cafe_prep_shelf_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 25,
       "revisit_cost": 10
     }
   ],
@@ -46,7 +57,8 @@
               "rolls": 2,
               "allow_duplicates": false,
               "entries": [
-                { "id": "instant_coffee", "weight": 4 },
+                { "id": "instant_coffee", "weight": 3 },
+                { "id": "instant_coffee_mix", "weight": 3 },
                 { "id": "tea_bag", "weight": 3 },
                 { "id": "paper_bag", "weight": 2 }
               ]
@@ -75,8 +87,89 @@
               "entries": [
                 { "id": "butter_cookie_box", "weight": 3 },
                 { "id": "tea_bag", "weight": 2 },
-                { "id": "shopping_bag", "weight": 2 }
+                { "id": "shopping_bag", "weight": 2 },
+                { "id": "sugar_stick", "weight": 2 }
               ]
+            },
+            "pressure": {
+              "id": "cafe_window_draft",
+              "message": "창가 아래를 뒤지는 동안 틈새 바람이 무릎까지 파고들었다.",
+              "exposure_loss": 1.0,
+              "fatigue_gain": 0.5,
+              "noise": 0,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_cafe_prep_shelf_event",
+      "zone_id": "prep_shelf",
+      "type": "search",
+      "hint_text": "준비 선반에는 보온 용기와 따뜻한 음료를 만들 재료가 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_cafe_prep_shelf_fast",
+          "label": "준비 선반을 빠르게 훑는다",
+          "requirements": {
+            "forbidden_flag_ids": ["cafe_prep_shelf_cleared"]
+          },
+          "costs": { "minutes": 20, "noise": 1 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "thermos", "weight": 3 },
+                { "id": "instant_coffee_mix", "weight": 3 },
+                { "id": "honey_stick", "weight": 2 },
+                { "id": "paper_cup", "weight": 2 },
+                { "id": "cling_wrap_roll", "weight": 1 }
+              ]
+            },
+            "set_flags": ["cafe_prep_shelf_cleared"],
+            "pressure": {
+              "id": "cafe_prep_shelf_clatter",
+              "message": "얼어붙은 선반을 급히 잡아당기자 종이컵 박스가 쏟아지며 카운터 안쪽에 소리가 울렸다.",
+              "fatigue_gain": 1.0,
+              "noise": 1,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "search_cafe_prep_shelf_with_gloves",
+          "label": "장갑을 끼고 보온 용기를 조심히 꺼낸다",
+          "requirements": {
+            "required_item_ids": ["work_gloves"],
+            "forbidden_flag_ids": ["cafe_prep_shelf_cleared"]
+          },
+          "blocked_feedback": "얼어붙은 금속 선반과 깨진 컵 조각을 다루려면 손을 보호할 장갑이 필요하다.",
+          "costs": { "minutes": 35, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 4,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "thermos", "weight": 4 },
+                { "id": "instant_coffee_mix", "weight": 3 },
+                { "id": "honey_stick", "weight": 2 },
+                { "id": "tea_bag", "weight": 2 },
+                { "id": "paper_cup", "weight": 2 }
+              ]
+            },
+            "set_flags": ["cafe_prep_shelf_cleared"],
+            "pressure": {
+              "id": "cafe_prep_shelf_careful",
+              "message": "장갑으로 선반을 받치고 천천히 꺼내자 보온병과 음료 재료를 망가뜨리지 않고 챙길 수 있었다.",
+              "fatigue_gain": 0.5,
+              "noise": 0,
+              "repeatable": false
             },
             "consume_on_use": true
           }

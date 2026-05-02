@@ -228,6 +228,23 @@ func _run_test() -> void:
 		"Clinic treatment room should expose a staff break room side route."
 	)
 
+	director.configure(run_state, "pharmacy_01")
+	assert_true(director.apply_action("move_dispensary"), "Pharmacy should allow moving behind the counter.")
+	assert_true(director.apply_action("move_medicine_cabinet"), "Pharmacy should expose a deeper medicine cabinet route.")
+	var pharmacy_actions: Array[Dictionary] = director.get_actions()
+	assert_true(
+		_action_ids(pharmacy_actions).has("search_pharmacy_cabinet_rushed"),
+		"Pharmacy cabinet should expose a rushed label-reading branch."
+	)
+	assert_true(
+		_action_ids(pharmacy_actions).has("search_pharmacy_cabinet_with_light"),
+		"Pharmacy cabinet should expose a flashlight-assisted branch."
+	)
+	assert_true(
+		String(_action_by_id(pharmacy_actions, "search_pharmacy_cabinet_with_light").get("detail_label", "")).find("필요: 손전등") != -1,
+		"Pharmacy careful branch should preview its flashlight requirement."
+	)
+
 	director.configure(run_state, "office_01")
 	assert_eq(director.get_current_zone_id(), "office_lobby", "Director should initialize at the office entry zone.")
 	assert_true(director.apply_action("move_open_office"), "Office should allow moving into the open workspace.")
@@ -275,6 +292,41 @@ func _run_test() -> void:
 	assert_true(
 		not _action_ids(director.get_actions()).has("search_restaurant_kitchen_with_gloves"),
 		"Clearing the restaurant kitchen should hide the alternative branch."
+	)
+	director.configure(run_state, "cafe_01")
+	assert_true(director.apply_action("move_prep_shelf"), "Cafe should expose the prep shelf as a warm-drink resource room.")
+	var cafe_actions: Array[Dictionary] = director.get_actions()
+	assert_true(
+		_action_ids(cafe_actions).has("search_cafe_prep_shelf_fast"),
+		"Cafe prep shelf should expose a fast noisy search."
+	)
+	assert_true(
+		_action_ids(cafe_actions).has("search_cafe_prep_shelf_with_gloves"),
+		"Cafe prep shelf should expose a glove-assisted careful search."
+	)
+	director.configure(run_state, "police_box_01")
+	assert_true(director.apply_action("move_locker_wall"), "Police box should allow moving to the locker wall.")
+	assert_true(director.apply_action("move_equipment_cabinet"), "Police box should expose a deeper equipment cabinet.")
+	var police_actions: Array[Dictionary] = director.get_actions()
+	assert_true(
+		String(_action_by_id(police_actions, "force_police_equipment_cabinet").get("detail_label", "")).find("소란 +4") != -1,
+		"Police forced cabinet branch should preview its loud combined noise."
+	)
+	assert_true(
+		String(_action_by_id(police_actions, "jimmy_police_equipment_cabinet").get("detail_label", "")).find("필요: 작은 드라이버") != -1,
+		"Police quiet cabinet branch should preview its screwdriver requirement."
+	)
+	director.configure(run_state, "residence_01")
+	assert_true(director.apply_action("move_living_room"), "Residence should allow moving into the living room.")
+	assert_true(director.apply_action("move_balcony"), "Residence should expose the balcony as a cold-risk resource route.")
+	var residence_actions: Array[Dictionary] = director.get_actions()
+	assert_true(
+		String(_action_by_id(residence_actions, "search_residence_balcony_fast").get("detail_label", "")).find("체온 손실 3") != -1,
+		"Residence balcony fast search should preview its cold exposure."
+	)
+	assert_true(
+		String(_action_by_id(residence_actions, "search_residence_balcony_with_poncho").get("detail_label", "")).find("필요: 우비") != -1,
+		"Residence balcony careful branch should preview its wind-blocking requirement."
 	)
 	director.configure(run_state, "garage_01")
 	assert_eq(

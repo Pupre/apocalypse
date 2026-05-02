@@ -7,6 +7,10 @@ const ANCHOR_MIN_ZONE_COUNTS := {
 	"warehouse_01": 4,
 	"garage_01": 3,
 	"restaurant_01": 3,
+	"pharmacy_01": 3,
+	"cafe_01": 3,
+	"police_box_01": 3,
+	"residence_01": 4,
 }
 
 const UPLIFTED_BUILDING_IDS := [

@@ -1,7 +1,7 @@
 {
   "id": "pharmacy_01",
   "name": "약국",
-  "summary": "전면 진열장과 안쪽 조제대가 나뉘어 있어 의료 물자가 뒤편에 더 남아 있다.",
+  "summary": "전면 진열장 너머로 조제대와 냉장 약품 캐비닛이 이어진다. 급히 챙기면 빠르지만, 어두운 라벨을 잘못 보면 쓸모없는 약품까지 뒤섞인다.",
   "entry_zone_id": "counter",
   "zones": [
     {
@@ -19,11 +19,22 @@
       "id": "dispensary",
       "floor_id": "floor_1",
       "label": "안쪽 조제대",
-      "summary": "조제대 뒤쪽엔 소독제와 붕대 상자가 아직 정리된 채 남아 있다.",
-      "connected_zone_ids": ["counter"],
+      "summary": "조제대 뒤쪽엔 소독제와 붕대 상자가 아직 정리된 채 남아 있고, 더 안쪽 약품 냉장고 문이 반쯤 얼어붙어 있다.",
+      "connected_zone_ids": ["counter", "medicine_cabinet"],
       "event_ids": ["search_pharmacy_dispensary"],
       "map_position": [1, 0],
-      "first_visit_cost": 20,
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "medicine_cabinet",
+      "floor_id": "floor_1",
+      "label": "약품 냉장 캐비닛",
+      "summary": "꺼진 냉장고 안쪽에 온도에 민감한 약품과 응급 처치 재료가 남아 있다.",
+      "connected_zone_ids": ["dispensary"],
+      "event_ids": ["search_pharmacy_medicine_cabinet"],
+      "map_position": [2, 0],
+      "first_visit_cost": 30,
       "revisit_cost": 10
     }
   ],
@@ -48,7 +59,8 @@
               "entries": [
                 { "id": "bandage", "weight": 3 },
                 { "id": "soap_bar", "weight": 2 },
-                { "id": "wet_wipes", "weight": 2 }
+                { "id": "wet_wipes", "weight": 2 },
+                { "id": "hand_sanitizer_gel", "weight": 2 }
               ]
             },
             "consume_on_use": true
@@ -66,17 +78,91 @@
           "id": "search_pharmacy_dispensary_once",
           "label": "안쪽 조제대를 탐색한다",
           "requirements": {},
-          "costs": { "minutes": 20, "noise": 0 },
+          "costs": { "minutes": 25, "noise": 0 },
           "outcomes": {
             "discover_loot": [],
             "loot_table": {
-              "rolls": 2,
+              "rolls": 3,
               "allow_duplicates": false,
               "entries": [
                 { "id": "bandage", "weight": 3 },
                 { "id": "rubbing_alcohol", "weight": 3 },
-                { "id": "wet_wipes", "weight": 2 }
+                { "id": "disinfectant_bottle", "weight": 2 },
+                { "id": "medical_tape", "weight": 2 },
+                { "id": "thermometer", "weight": 2 }
               ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_pharmacy_medicine_cabinet",
+      "zone_id": "medicine_cabinet",
+      "type": "search",
+      "hint_text": "어두운 냉장 캐비닛 안쪽엔 약품 라벨이 서로 겹쳐 있다.",
+      "options": [
+        {
+          "id": "search_pharmacy_cabinet_rushed",
+          "label": "라벨을 대충 훑고 약품을 챙긴다",
+          "requirements": {
+            "forbidden_flag_ids": ["pharmacy_cabinet_cleared"]
+          },
+          "costs": { "minutes": 20, "noise": 1 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "painkillers", "weight": 4 },
+                { "id": "anti_inflammatory_ointment", "weight": 3 },
+                { "id": "sterile_gauze_roll", "weight": 3 },
+                { "id": "hand_sanitizer_gel", "weight": 2 }
+              ]
+            },
+            "set_flags": ["pharmacy_cabinet_cleared"],
+            "pressure": {
+              "id": "pharmacy_rushed_label_mixup",
+              "message": "성에 낀 라벨을 급히 훑느라 약 상자를 몇 번 떨어뜨렸다. 쓸 만한 약은 챙겼지만 손끝이 얼얼하고 소리가 제법 났다.",
+              "exposure_loss": 1.5,
+              "fatigue_gain": 1.0,
+              "noise": 1,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "search_pharmacy_cabinet_with_light",
+          "label": "손전등으로 라벨을 확인하며 챙긴다",
+          "requirements": {
+            "required_item_ids": ["flashlight"],
+            "forbidden_flag_ids": ["pharmacy_cabinet_cleared"]
+          },
+          "blocked_feedback": "약품 라벨을 구분하려면 손전등이 필요하다. 대충 챙길 수도 있지만, 잘못 보면 시간이 더 아까워진다.",
+          "costs": { "minutes": 35, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 4,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "painkillers", "weight": 4 },
+                { "id": "anti_inflammatory_ointment", "weight": 3 },
+                { "id": "sterile_gauze_roll", "weight": 3 },
+                { "id": "thermometer", "weight": 2 },
+                { "id": "medical_tape", "weight": 2 }
+              ]
+            },
+            "set_flags": ["pharmacy_cabinet_cleared"],
+            "pressure": {
+              "id": "pharmacy_careful_label_check",
+              "message": "손전등 빛으로 유통기한과 라벨을 하나씩 확인했다. 오래 걸렸지만 쓸 만한 약만 골라낼 수 있었다.",
+              "fatigue_gain": 0.5,
+              "noise": 0,
+              "repeatable": false
             },
             "consume_on_use": true
           }

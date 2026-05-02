@@ -1,7 +1,7 @@
 {
   "id": "residence_01",
   "name": "다가구 주택",
-  "summary": "현관과 안쪽 생활 공간이 분리돼 있어 생활 흔적과 보온품이 뒤쪽에 더 남아 있다.",
+  "summary": "현관과 거실, 안방, 베란다가 이어져 있다. 생활 흔적이 많지만 창가와 베란다 쪽은 추위가 직접 밀려온다.",
   "entry_zone_id": "foyer",
   "zones": [
     {
@@ -19,11 +19,33 @@
       "id": "living_room",
       "floor_id": "floor_1",
       "label": "안쪽 거실",
-      "summary": "낡은 담요와 실내용 물건이 소파 주변에 남아 있다.",
-      "connected_zone_ids": ["foyer"],
+      "summary": "낡은 담요와 실내용 물건이 소파 주변에 남아 있다. 안방 문과 작은 베란다 문이 보인다.",
+      "connected_zone_ids": ["foyer", "bedroom", "balcony"],
       "event_ids": ["search_residence_living_room"],
       "map_position": [1, 0],
-      "first_visit_cost": 20,
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "bedroom",
+      "floor_id": "floor_1",
+      "label": "안방",
+      "summary": "서랍장과 침구가 어지럽게 남아 있다. 누군가 급히 떠난 생활 흔적이 선명하다.",
+      "connected_zone_ids": ["living_room"],
+      "event_ids": ["search_residence_bedroom"],
+      "map_position": [2, 0],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "balcony",
+      "floor_id": "floor_1",
+      "label": "베란다",
+      "summary": "창문이 벌어진 베란다에 세탁물과 보온재로 쓸 만한 물건이 얼어붙어 있다.",
+      "connected_zone_ids": ["living_room"],
+      "event_ids": ["search_residence_balcony"],
+      "map_position": [1, 1],
+      "first_visit_cost": 30,
       "revisit_cost": 10
     }
   ],
@@ -48,7 +70,8 @@
               "entries": [
                 { "id": "shopping_bag", "weight": 3 },
                 { "id": "paper_bag", "weight": 2 },
-                { "id": "slippers", "weight": 2 }
+                { "id": "slippers", "weight": 2 },
+                { "id": "cotton_gloves", "weight": 1 }
               ]
             },
             "consume_on_use": true
@@ -66,17 +89,120 @@
           "id": "search_residence_living_room_once",
           "label": "안쪽 거실을 탐색한다",
           "requirements": {},
-          "costs": { "minutes": 20, "noise": 0 },
+          "costs": { "minutes": 25, "noise": 0 },
           "outcomes": {
             "discover_loot": [],
             "loot_table": {
-              "rolls": 2,
+              "rolls": 3,
               "allow_duplicates": false,
               "entries": [
                 { "id": "old_blanket", "weight": 3 },
                 { "id": "soap_bar", "weight": 2 },
-                { "id": "knit_cap", "weight": 2 }
+                { "id": "knit_cap", "weight": 2 },
+                { "id": "candle", "weight": 1 }
               ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_residence_bedroom",
+      "zone_id": "bedroom",
+      "type": "search",
+      "hint_text": "서랍장과 침구 사이에 보온품과 바느질 도구가 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_residence_bedroom_once",
+          "label": "안방 서랍과 침구를 살핀다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "fleece_blanket", "weight": 3 },
+                { "id": "bed_sheet", "weight": 3 },
+                { "id": "sewing_kit", "weight": 2 },
+                { "id": "hand_warmer_pack", "weight": 2 },
+                { "id": "memo_pad", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_residence_balcony",
+      "zone_id": "balcony",
+      "type": "search",
+      "hint_text": "베란다에는 단열재로 쓸 수 있는 포장재와 세탁물이 얼어붙어 있다.",
+      "options": [
+        {
+          "id": "search_residence_balcony_fast",
+          "label": "베란다를 빠르게 뒤진다",
+          "requirements": {
+            "forbidden_flag_ids": ["residence_balcony_cleared"]
+          },
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "bubble_wrap_roll", "weight": 3 },
+                { "id": "cling_wrap_roll", "weight": 2 },
+                { "id": "towel", "weight": 2 },
+                { "id": "trash_bag_roll", "weight": 2 }
+              ]
+            },
+            "set_flags": ["residence_balcony_cleared"],
+            "pressure": {
+              "id": "residence_balcony_cold_bite",
+              "message": "베란다 문을 열자 찬 공기가 훅 밀려왔다. 물건은 챙겼지만 손끝 감각이 잠깐 무뎌졌다.",
+              "exposure_loss": 3.0,
+              "fatigue_gain": 1.0,
+              "noise": 0,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "search_residence_balcony_with_poncho",
+          "label": "우비를 걸치고 베란다를 천천히 정리한다",
+          "requirements": {
+            "required_item_ids": ["rain_poncho"],
+            "forbidden_flag_ids": ["residence_balcony_cleared"]
+          },
+          "blocked_feedback": "베란다 문틈으로 들어오는 바람이 강하다. 우비나 방풍 겉옷이 있으면 오래 버틸 수 있다.",
+          "costs": { "minutes": 35, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 4,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "bubble_wrap_roll", "weight": 3 },
+                { "id": "cling_wrap_roll", "weight": 2 },
+                { "id": "towel", "weight": 2 },
+                { "id": "trash_bag_roll", "weight": 2 },
+                { "id": "bed_sheet", "weight": 1 }
+              ]
+            },
+            "set_flags": ["residence_balcony_cleared"],
+            "pressure": {
+              "id": "residence_balcony_wind_blocked",
+              "message": "우비가 바람을 조금 막아 주는 동안 얼어붙은 세탁물과 포장재를 차분히 떼어냈다.",
+              "exposure_loss": 1.0,
+              "fatigue_gain": 0.5,
+              "noise": 0,
+              "repeatable": false
             },
             "consume_on_use": true
           }

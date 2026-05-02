@@ -1,7 +1,7 @@
 {
   "id": "police_box_01",
   "name": "파출소",
-  "summary": "근무 책상과 뒤편 사물함 벽이 분리돼 있어 문서와 소형 장비가 나뉘어 남아 있다.",
+  "summary": "근무 책상, 사물함 벽, 장비 캐비닛이 좁은 동선으로 이어진다. 쓸 만한 전자 장비는 잠긴 캐비닛 쪽에 있지만 소란을 키우기 쉽다.",
   "entry_zone_id": "desk",
   "zones": [
     {
@@ -19,11 +19,22 @@
       "id": "locker_wall",
       "floor_id": "floor_1",
       "label": "사물함 벽",
-      "summary": "뒤편 사물함 안엔 건전지와 붕대 같은 소형 비상용품이 남아 있다.",
-      "connected_zone_ids": ["desk"],
+      "summary": "뒤편 사물함 안엔 건전지와 붕대 같은 소형 비상용품이 남아 있고, 옆 장비 캐비닛은 휘어진 걸쇠로 잠겨 있다.",
+      "connected_zone_ids": ["desk", "equipment_cabinet"],
       "event_ids": ["search_police_box_lockers"],
       "map_position": [1, 0],
       "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "equipment_cabinet",
+      "floor_id": "floor_1",
+      "label": "장비 캐비닛",
+      "summary": "벽에 고정된 장비 캐비닛 안쪽으로 라디오와 램프 같은 물건이 보인다.",
+      "connected_zone_ids": ["locker_wall"],
+      "event_ids": ["open_police_equipment_cabinet"],
+      "map_position": [2, 0],
+      "first_visit_cost": 25,
       "revisit_cost": 10
     }
   ],
@@ -75,8 +86,80 @@
               "entries": [
                 { "id": "spare_batteries", "weight": 3 },
                 { "id": "bandage", "weight": 2 },
-                { "id": "work_gloves", "weight": 2 }
+                { "id": "work_gloves", "weight": 2 },
+                { "id": "flashlight", "weight": 1 }
               ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "open_police_equipment_cabinet",
+      "zone_id": "equipment_cabinet",
+      "type": "search",
+      "hint_text": "장비 캐비닛 걸쇠는 휘었지만 완전히 열리지는 않는다.",
+      "options": [
+        {
+          "id": "force_police_equipment_cabinet",
+          "label": "캐비닛을 힘으로 비튼다",
+          "requirements": {
+            "forbidden_flag_ids": ["police_equipment_cabinet_opened"]
+          },
+          "costs": { "minutes": 15, "noise": 2 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "portable_radio", "weight": 3 },
+                { "id": "spare_batteries", "weight": 3 },
+                { "id": "headlamp", "weight": 2 },
+                { "id": "duct_tape", "weight": 2 }
+              ]
+            },
+            "set_flags": ["police_equipment_cabinet_opened"],
+            "pressure": {
+              "id": "police_cabinet_forced_noise",
+              "message": "캐비닛 걸쇠가 쇳소리를 내며 튀었다. 장비는 꺼냈지만 좁은 파출소 안에 소리가 크게 울렸다.",
+              "fatigue_gain": 1.0,
+              "noise": 2,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "jimmy_police_equipment_cabinet",
+          "label": "드라이버로 걸쇠를 조심히 젖힌다",
+          "requirements": {
+            "required_item_ids": ["screwdriver"],
+            "forbidden_flag_ids": ["police_equipment_cabinet_opened"]
+          },
+          "blocked_feedback": "걸쇠 틈은 좁다. 작은 드라이버가 있으면 힘으로 비트는 것보다 훨씬 조용히 열 수 있다.",
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 4,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "portable_radio", "weight": 3 },
+                { "id": "spare_batteries", "weight": 3 },
+                { "id": "headlamp", "weight": 2 },
+                { "id": "flashlight", "weight": 2 },
+                { "id": "duct_tape", "weight": 2 }
+              ]
+            },
+            "set_flags": ["police_equipment_cabinet_opened"],
+            "pressure": {
+              "id": "police_cabinet_quiet_open",
+              "message": "드라이버 끝으로 걸쇠를 천천히 밀자 캐비닛이 작게 딸깍이며 열렸다.",
+              "fatigue_gain": 0.5,
+              "noise": 0,
+              "repeatable": false
             },
             "consume_on_use": true
           }
