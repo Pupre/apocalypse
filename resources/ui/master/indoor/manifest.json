@@ -80,6 +80,30 @@
       "purpose": "실내 탐색 카드 상단에 표시하는 재난 직후 편의점 내부 분위기 일러스트",
       "size": "960x480",
       "alpha_policy": "fully opaque illustration banner"
+    },
+    {
+      "filename": "indoor_event_medical_clinic.png",
+      "purpose": "의원과 약국 계열 실내 탐색 카드에 표시하는 얼어붙은 진료실/약품 보관 공간 일러스트",
+      "size": "960x480",
+      "alpha_policy": "fully opaque illustration banner"
+    },
+    {
+      "filename": "indoor_event_residential_stairwell.png",
+      "purpose": "아파트와 주거 계열 실내 탐색 카드에 표시하는 재난 이후 공동 복도/계단참 일러스트",
+      "size": "960x480",
+      "alpha_policy": "fully opaque illustration banner"
+    },
+    {
+      "filename": "indoor_event_industrial_garage.png",
+      "purpose": "창고, 차고, 철물점, 수리점 계열 실내 탐색 카드에 표시하는 얼어붙은 작업장/보관소 일러스트",
+      "size": "960x480",
+      "alpha_policy": "fully opaque illustration banner"
+    },
+    {
+      "filename": "indoor_event_food_kitchen.png",
+      "purpose": "식당, 카페, 구내식당 등 음식점 계열 실내 탐색 카드에 표시하는 차가운 주방 일러스트",
+      "size": "960x480",
+      "alpha_policy": "fully opaque illustration banner"
     }
   ]
 }

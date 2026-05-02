@@ -165,6 +165,8 @@ func _refresh_top_bar() -> void:
 
 
 func _refresh_reading_area() -> void:
+	_refresh_event_illustration()
+
 	if _summary_label != null and _director.has_method("get_current_zone_summary"):
 		var summary := String(_director.get_current_zone_summary())
 		var summary_lines: Array[String] = []
@@ -426,6 +428,23 @@ func _refresh_minimap() -> void:
 		_minimap.set_snapshot(snapshot)
 
 
+func _refresh_event_illustration() -> void:
+	if _event_illustration == null:
+		return
+
+	var asset_path := "indoor/indoor_event_convenience_frozen.png"
+	if _director != null and _director.has_method("get_event_illustration_asset"):
+		var candidate := String(_director.get_event_illustration_asset())
+		if not candidate.is_empty():
+			asset_path = candidate
+
+	var texture := _ui_kit_resolver.get_texture(asset_path)
+	if texture == null:
+		texture = _ui_kit_resolver.get_texture("indoor/indoor_event_convenience_frozen.png")
+	_event_illustration.texture = texture
+	_event_illustration.visible = texture != null
+
+
 func _on_map_button_pressed() -> void:
 	if _minimap_overlay == null:
 		return
@@ -533,8 +552,8 @@ func _apply_ui_skin() -> void:
 	_ui_kit_resolver.apply_panel(minimap_panel, "structure/structure_panel_bg.png")
 	_ui_kit_resolver.apply_panel(_supply_picker_overlay, "indoor/indoor_reading_panel_plain.png")
 	if _event_illustration != null:
-		_event_illustration.texture = _ui_kit_resolver.get_texture("indoor/indoor_event_convenience_frozen.png")
 		_event_illustration.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		_refresh_event_illustration()
 	_ui_kit_resolver.apply_button(
 		_map_button,
 		"hud/hud_icon_button_compact_normal.png",

@@ -44,6 +44,37 @@ func get_event_summary() -> String:
 	return String(_event_data.get("summary", ""))
 
 
+func get_event_illustration_asset() -> String:
+	var event_asset := String(_event_data.get("illustration_asset", ""))
+	if not event_asset.is_empty():
+		return event_asset
+
+	var building_asset := String(_building_data.get("illustration_asset", ""))
+	if not building_asset.is_empty():
+		return building_asset
+
+	var building_id := String(_building_data.get("id", ""))
+	match building_id:
+		"clinic_01", "pharmacy_01":
+			return "indoor/indoor_event_medical_clinic.png"
+		"apartment_01", "residence_01", "hostel_01", "row_house_01":
+			return "indoor/indoor_event_residential_stairwell.png"
+		"hardware_01", "warehouse_01", "storage_depot_01", "garage_01", "repair_shop_01", "gas_station_01":
+			return "indoor/indoor_event_industrial_garage.png"
+
+	match String(_building_data.get("category", "")):
+		"medical":
+			return "indoor/indoor_event_medical_clinic.png"
+		"residential":
+			return "indoor/indoor_event_residential_stairwell.png"
+		"industrial":
+			return "indoor/indoor_event_industrial_garage.png"
+		"food_service":
+			return "indoor/indoor_event_food_kitchen.png"
+		_:
+			return "indoor/indoor_event_convenience_frozen.png"
+
+
 func get_current_zone_id() -> String:
 	return String(_event_state.get("current_zone_id", ""))
 

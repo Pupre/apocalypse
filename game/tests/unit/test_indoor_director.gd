@@ -50,6 +50,11 @@ func _run_test() -> void:
 
 	assert_eq(director.get_current_zone_id(), "mart_entrance", "Director should initialize at the mart entry zone.")
 	assert_eq(
+		director.get_event_illustration_asset(),
+		"indoor/indoor_event_convenience_frozen.png",
+		"Retail buildings should default to the frozen store illustration."
+	)
+	assert_eq(
 		director.get_current_zone_label(),
 		"정문 진입부",
 		"Director should expose the readable label for the current zone."
@@ -160,6 +165,11 @@ func _run_test() -> void:
 
 	director.configure(run_state, "apartment_01")
 	assert_eq(director.get_current_zone_id(), "shared_entrance", "Director should initialize at the apartment entry zone.")
+	assert_eq(
+		director.get_event_illustration_asset(),
+		"indoor/indoor_event_residential_stairwell.png",
+		"Residential buildings should use the apartment corridor illustration."
+	)
 	assert_eq(director.get_current_zone_label(), "공동 현관", "Director should expose the readable apartment entry label.")
 	assert_true(
 		_action_ids(director.get_actions()).has("move_mailbox_hall"),
@@ -203,6 +213,11 @@ func _run_test() -> void:
 
 	director.configure(run_state, "clinic_01")
 	assert_eq(director.get_current_zone_id(), "clinic_lobby", "Director should initialize at the clinic entry zone.")
+	assert_eq(
+		director.get_event_illustration_asset(),
+		"indoor/indoor_event_medical_clinic.png",
+		"Medical buildings should use the clinic illustration."
+	)
 	assert_true(director.apply_action("move_treatment_room"), "Clinic should allow moving into the treatment room.")
 	assert_true(
 		_action_ids(director.get_actions()).has("move_nurse_station"),
@@ -223,6 +238,19 @@ func _run_test() -> void:
 	assert_true(
 		_action_ids(director.get_actions()).has("move_records_room"),
 		"Office workspace should still expose the records-room move."
+	)
+
+	director.configure(run_state, "restaurant_01")
+	assert_eq(
+		director.get_event_illustration_asset(),
+		"indoor/indoor_event_food_kitchen.png",
+		"Food-service buildings should use the cold kitchen illustration."
+	)
+	director.configure(run_state, "garage_01")
+	assert_eq(
+		director.get_event_illustration_asset(),
+		"indoor/indoor_event_industrial_garage.png",
+		"Industrial and utility buildings should use the garage/warehouse illustration."
 	)
 
 	director.free()

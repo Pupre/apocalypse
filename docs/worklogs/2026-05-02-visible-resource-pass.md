@@ -35,5 +35,26 @@
 
 ## 남은 판단
 
-- 실내 일러스트는 현재 모든 실내 건물에 공통으로 쓰인다. 다음 패스에서는 건물 분류별 일러스트를 나누거나, 이벤트 중요도에 따라 다른 장면을 보여주는 구조로 확장하는 편이 좋다.
+- 실내 일러스트의 공통 사용 문제는 추가 패스에서 건물 분류별 선택 구조로 해소했다. 이후에는 이벤트 중요도나 스토리 컷신에 따라 더 특수한 장면을 보여주는 방향이 좋다.
 - 야외 위험 피드백은 체감 우선으로 강하게 잡았다. 실제 플레이 확인 후 너무 과하면 알파와 흔들림 강도를 낮추면 된다.
+
+## 추가 패스: 건물 분류별 실내 일러스트
+
+편의점 패널의 방향성이 좋았기 때문에, 같은 톤의 AI 생성 일러스트를 건물 분류별로 확장했다. 목표는 실내 탐색 화면이 항상 같은 이미지로 보이지 않고, “지금 들어온 장소가 어디인지”를 읽기 카드 상단에서 즉시 느끼게 하는 것이다.
+
+### 구현 내용
+
+- 새 AI 생성 리소스 네 장을 추가했다.
+  - `resources/ui/master/indoor/indoor_event_medical_clinic.png`: 의원/약국 계열의 얼어붙은 진료실과 약품 보관 공간.
+  - `resources/ui/master/indoor/indoor_event_residential_stairwell.png`: 아파트/주거 계열의 재난 이후 공동 복도와 계단참.
+  - `resources/ui/master/indoor/indoor_event_industrial_garage.png`: 차고/창고/철물점 계열의 차가운 작업장과 보관소.
+  - `resources/ui/master/indoor/indoor_event_food_kitchen.png`: 식당/카페 계열의 얼어붙은 주방.
+- `IndoorDirector.get_event_illustration_asset()`을 추가해 이벤트 지정값, 건물 지정값, 건물 ID, 건물 분류 순서로 일러스트를 고르게 했다.
+- `IndoorMode`가 고정 편의점 이미지를 쓰지 않고, 현재 건물에 맞는 일러스트를 읽기 카드에 갱신하도록 바꾸었다.
+- `UiKitResolver`와 리소스 매니페스트에 새 실내 일러스트 별칭과 메타데이터를 등록했다.
+
+### 검증
+
+- `res://tests/unit/test_indoor_director.gd`
+- `res://tests/unit/test_indoor_mode.gd`
+- `res://tests/smoke/test_first_playable_loop.gd`
