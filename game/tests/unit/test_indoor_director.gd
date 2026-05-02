@@ -466,6 +466,38 @@ func _run_test() -> void:
 		String(_action_by_id(residence_actions, "search_residence_balcony_with_poncho").get("detail_label", "")).find("필요: 우비") != -1,
 		"Residence balcony careful branch should preview its wind-blocking requirement."
 	)
+	var residence_cutscene_run_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, self)
+	assert_true(residence_cutscene_run_state != null, "Residence cutscene test should build a clean run state.")
+	assert_true(
+		residence_cutscene_run_state.inventory.add_item(content_library.get_item("rain_poncho")),
+		"Residence cutscene test should be able to add a rain poncho."
+	)
+	director.configure(residence_cutscene_run_state, "residence_01")
+	assert_true(director.apply_action("move_living_room"), "Residence cutscene path should allow moving into the living room.")
+	assert_true(director.apply_action("move_balcony"), "Residence cutscene path should allow moving into the balcony.")
+	assert_true(
+		director.apply_action("search_residence_balcony_with_poncho"),
+		"Director should resolve the careful balcony insulation decision when the rain poncho is available."
+	)
+	assert_eq(
+		director.get_event_illustration_asset(),
+		"indoor/indoor_story_residence_balcony_insulation_success.png",
+		"Residence careful balcony search should swap the reading card to the generated balcony illustration."
+	)
+	var residence_cutscene_payload: Dictionary = director.consume_story_cutscene_payload()
+	assert_eq(
+		String(residence_cutscene_payload.get("asset", "")),
+		"indoor/indoor_story_residence_balcony_insulation_success.png",
+		"Residence careful balcony search should queue a full-screen story cutscene asset."
+	)
+	assert_true(
+		String(residence_cutscene_payload.get("title", "")).find("베란다") != -1,
+		"Residence balcony cutscene should name the decision result."
+	)
 	director.configure(run_state, "bookstore_01")
 	assert_eq(
 		director.get_event_illustration_asset(),

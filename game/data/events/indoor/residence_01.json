@@ -175,7 +175,7 @@
         },
         {
           "id": "search_residence_balcony_with_poncho",
-          "label": "우비를 걸치고 베란다를 천천히 정리한다",
+          "label": "우비를 걸치고 베란다 단열재를 천천히 떼어낸다",
           "requirements": {
             "required_item_ids": ["rain_poncho"],
             "forbidden_flag_ids": ["residence_balcony_cleared"]
@@ -203,6 +203,13 @@
               "fatigue_gain": 0.5,
               "noise": 0,
               "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_residence_balcony_insulation_success.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_residence_balcony_insulation_success.png",
+              "title": "베란다의 바람을 견뎠다",
+              "text": "열린 베란다를 급히 뒤졌다면 손끝부터 얼어붙었을 것이다. 우비를 걸친 채 오래 버틴 덕분에, 얼어붙은 세탁물과 포장재가 오늘 밤을 막아 줄 단열재로 바뀌었다.",
+              "button": "접은 단열재를 챙긴다"
             },
             "consume_on_use": true
           }

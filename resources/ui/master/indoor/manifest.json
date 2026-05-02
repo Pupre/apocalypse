@@ -242,6 +242,12 @@
       "purpose": "낡은 아파트 보일러실에서 배관과 온수병을 정리해 짧은 보온 거점을 만든 큰 결정 성공 컷신 일러스트",
       "size": "960x480",
       "alpha_policy": "fully opaque illustration banner"
+    },
+    {
+      "filename": "indoor_story_residence_balcony_insulation_success.png",
+      "purpose": "다가구 주택 베란다에서 우비를 걸치고 얼어붙은 세탁물과 포장재를 단열재로 정리한 성공 컷신 일러스트",
+      "size": "960x480",
+      "alpha_policy": "fully opaque illustration banner"
     }
   ]
 }
