@@ -39,6 +39,8 @@ Systems already integrated in `main`:
 - Equipped footwear and face/neck gear can now mitigate authored outdoor hazard pressure.
 - Convenience-store counter search now branches between rushed broken-glass risk and safer work-glove handling.
 - Convenience-store fridge stock now uses quantity supply pickup for bottled water.
+- 야외 위험 접촉은 새 휴대폰 결빙 오버레이, 경고 데칼, 짧은 카메라 흔들림으로 즉시 체감되게 했다.
+- 실내 읽기 카드에는 AI 생성 재난 편의점 일러스트와 결과 태그를 붙여 탐색 화면의 장소감을 강화했다.
 
 ## 2026-05-02 Checkpoint
 

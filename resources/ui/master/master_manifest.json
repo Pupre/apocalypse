@@ -10,7 +10,7 @@
     {
       "pack_folder": "indoor",
       "manifest": "manifest.json",
-      "png_asset_count": 6
+      "png_asset_count": 7
     },
     {
       "pack_folder": "sheet",
@@ -30,7 +30,7 @@
     {
       "pack_folder": "feedback",
       "manifest": "manifest.json",
-      "png_asset_count": 7
+      "png_asset_count": 9
     }
   ]
 }

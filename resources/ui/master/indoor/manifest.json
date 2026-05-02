@@ -74,6 +74,12 @@
         "bottom": 12
       },
       "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "indoor_event_convenience_frozen.png",
+      "purpose": "실내 탐색 카드 상단에 표시하는 재난 직후 편의점 내부 분위기 일러스트",
+      "size": "960x480",
+      "alpha_policy": "fully opaque illustration banner"
     }
   ]
 }

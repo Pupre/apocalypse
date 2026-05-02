@@ -86,6 +86,18 @@
         "bottom": 12
       },
       "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "frost_screen_overlay.png",
+      "purpose": "기존 야외 냉기 화면 테두리 오버레이. 보존용 리소스이며 기본 로딩은 더 강한 phone_ice 버전을 사용한다.",
+      "size": "480x854",
+      "alpha_policy": "중앙 플레이 영역은 투명, 서리 테두리만 반투명/불투명"
+    },
+    {
+      "filename": "frost_screen_overlay_phone_ice.png",
+      "purpose": "야외 위험 접촉과 저체온 상태에서 휴대폰 화면이 얼어붙는 느낌을 주는 고강도 서리 균열 오버레이",
+      "size": "853x1844",
+      "alpha_policy": "중앙 플레이 영역은 투명, 가장자리 균열과 결빙 테두리는 반투명/불투명"
     }
   ]
 }

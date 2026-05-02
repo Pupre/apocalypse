@@ -4,6 +4,8 @@ const ItemIconResolver = preload("res://scripts/ui/item_icon_resolver.gd")
 const UiKitResolver = preload("res://scripts/ui/ui_kit_resolver.gd")
 const TEXT_PRIMARY_COLOR := Color(0.96, 0.98, 1.0, 0.98)
 const TEXT_SECONDARY_COLOR := Color(0.88, 0.92, 0.97, 0.96)
+const TEXT_EVENT_SUCCESS_COLOR := Color(0.82, 1.0, 0.9, 0.98)
+const TEXT_EVENT_WARNING_COLOR := Color(1.0, 0.86, 0.72, 0.98)
 const TEXT_OUTLINE_COLOR := Color(0.04, 0.06, 0.09, 0.94)
 const ACTION_ICON_SIZE := 16
 
@@ -35,6 +37,7 @@ var _location_value_label: Label = null
 var _time_label: Label = null
 var _gauge_row = null
 var _inline_minimap: Control = null
+var _event_illustration: TextureRect = null
 var _summary_label: Label = null
 var _result_label: Label = null
 var _action_buttons: VBoxContainer = null
@@ -175,7 +178,10 @@ func _refresh_reading_area() -> void:
 		_summary_label.text = "\n".join(summary_lines)
 
 	if _result_label != null and _director.has_method("get_feedback_message"):
-		_result_label.text = String(_director.get_feedback_message())
+		var feedback_message := String(_director.get_feedback_message())
+		_result_label.visible = not feedback_message.is_empty()
+		_result_label.text = _format_feedback_message(feedback_message)
+		_apply_label_style(_result_label, 14, _feedback_message_color(feedback_message), 2)
 
 
 func _refresh_action_buttons() -> void:
@@ -488,6 +494,7 @@ func _cache_nodes() -> void:
 	_time_label = get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/TimeLabel") as Label
 	_gauge_row = get_node_or_null("Panel/Layout/MainColumn/TopBar/GaugeRow")
 	_inline_minimap = get_node_or_null("Panel/Layout/MainColumn/MiniMapCard/Padding/MapNodes") as Control
+	_event_illustration = get_node_or_null("Panel/Layout/MainColumn/ReadingCard/Padding/VBox/EventIllustration") as TextureRect
 	_summary_label = get_node_or_null("Panel/Layout/MainColumn/ReadingCard/Padding/VBox/SummaryLabel") as Label
 	_result_label = get_node_or_null("Panel/Layout/MainColumn/ReadingCard/Padding/VBox/ResultLabel") as Label
 	_action_buttons = get_node_or_null("Panel/Layout/MainColumn/ActionScroll/ActionButtons") as VBoxContainer
@@ -525,6 +532,9 @@ func _apply_ui_skin() -> void:
 	_ui_kit_resolver.apply_panel(minimap_card, "indoor/indoor_minimap_frame.png")
 	_ui_kit_resolver.apply_panel(minimap_panel, "structure/structure_panel_bg.png")
 	_ui_kit_resolver.apply_panel(_supply_picker_overlay, "indoor/indoor_reading_panel_plain.png")
+	if _event_illustration != null:
+		_event_illustration.texture = _ui_kit_resolver.get_texture("indoor/indoor_event_convenience_frozen.png")
+		_event_illustration.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	_ui_kit_resolver.apply_button(
 		_map_button,
 		"hud/hud_icon_button_compact_normal.png",
@@ -645,6 +655,33 @@ func _formatted_craft_feedback(outcome: Dictionary) -> String:
 	if minutes_elapsed > 0:
 		lines.append("%d분이 지났다." % minutes_elapsed)
 	return "\n".join(lines)
+
+
+func _format_feedback_message(message: String) -> String:
+	if message.is_empty():
+		return ""
+	var tone := _feedback_message_tone(message)
+	return "%s · %s" % [tone, message]
+
+
+func _feedback_message_color(message: String) -> Color:
+	var tone := _feedback_message_tone(message)
+	if tone == "위험":
+		return TEXT_EVENT_WARNING_COLOR
+	if tone == "획득":
+		return TEXT_EVENT_SUCCESS_COLOR
+	return TEXT_SECONDARY_COLOR
+
+
+func _feedback_message_tone(message: String) -> String:
+	if message.find("챙겼다") >= 0 or message.find("먹었다") >= 0 or message.find("고농축 땔감") >= 0:
+		return "획득"
+	if message.find("발견") >= 0 or message.find("확인") >= 0:
+		return "단서"
+	for keyword in ["소란", "못했다", "다쳤", "긁", "한기", "잠겨", "위험"]:
+		if message.find(keyword) >= 0:
+			return "위험"
+	return "상황"
 
 
 func _emit_feedback_toast(message: String, toast_type: String = "info", duration: float = 2.0, icon_item_id: String = "") -> void:

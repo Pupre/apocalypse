@@ -74,6 +74,7 @@ const PATH_ALIASES := {
 	"indoor/indoor_minimap_frame.png": "@master/indoor/indoor_minimap_frame.png",
 	"indoor/indoor_result_chip_compact.png": "@master/indoor/indoor_result_chip_compact.png",
 	"indoor/indoor_section_header_plain_compact.png": "@master/indoor/indoor_section_header_plain_compact.png",
+	"indoor/indoor_event_convenience_frozen.png": "@master/indoor/indoor_event_convenience_frozen.png",
 	"structure/structure_panel_bg.png": "@master/structure/structure_panel_bg.png",
 	"structure/structure_room_node_known.png": "@master/structure/structure_room_node_known.png",
 	"structure/structure_room_node_current.png": "@master/structure/structure_room_node_current.png",
@@ -87,7 +88,8 @@ const PATH_ALIASES := {
 	"feedback/status_chip_cold.png": "@master/feedback/status_chip_cold.png",
 	"feedback/status_chip_danger.png": "@master/feedback/status_chip_danger.png",
 	"feedback/status_chip_overweight.png": "@master/feedback/status_chip_overweight.png",
-	"feedback/frost_screen_overlay.png": "@master/feedback/frost_screen_overlay.png",
+	"feedback/frost_screen_overlay.png": "@master/feedback/frost_screen_overlay_phone_ice.png",
+	"feedback/frost_screen_overlay_phone_ice.png": "@master/feedback/frost_screen_overlay_phone_ice.png",
 }
 
 var _manifest_loaded := false

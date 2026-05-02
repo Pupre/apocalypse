@@ -95,6 +95,13 @@ theme_override_constants/margin_bottom = 16
 [node name="VBox" type="VBoxContainer" parent="Panel/Layout/MainColumn/ReadingCard/Padding"]
 theme_override_constants/separation = 10
 
+[node name="EventIllustration" type="TextureRect" parent="Panel/Layout/MainColumn/ReadingCard/Padding/VBox"]
+custom_minimum_size = Vector2(0, 96)
+size_flags_horizontal = 3
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
+
 [node name="SummaryLabel" type="Label" parent="Panel/Layout/MainColumn/ReadingCard/Padding/VBox"]
 autowrap_mode = 3
 text = "방 안을 살펴 단서를 찾아본다."

@@ -197,6 +197,8 @@ func _run_test() -> void:
 	assert_true(run_state.fatigue > hazard_fatigue_before, "Crossing black ice should add fatigue pressure.")
 	assert_true(run_state.health < hazard_health_before, "Crossing black ice should be able to cause a small injury.")
 	assert_true(hint_label.text != "WASD 이동", "Outdoor hazard contact should temporarily replace the generic movement hint with feedback.")
+	assert_true(frost_crystals.modulate.a >= 0.6, "Outdoor hazard contact should immediately flash the image-backed frost overlay.")
+	assert_true(world_camera.offset != Vector2(0.0, -220.0), "Outdoor hazard contact should jolt the portrait camera for tactile feedback.")
 	outdoor_mode.bind_run_state(run_state)
 
 	var before_clock_minute_of_day: int = run_state.clock.minute_of_day

@@ -195,6 +195,13 @@ func _run_test() -> void:
 		return
 	assert_eq(reading_style.texture.get_width(), 336, "Indoor reading card should use the master indoor reading panel asset.")
 	assert_eq(reading_style.texture.get_height(), 168, "Indoor reading card should use the master indoor reading panel height.")
+	var event_illustration := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/Padding/VBox/EventIllustration") as TextureRect
+	if not assert_true(event_illustration != null, "Indoor mode should expose an event illustration panel inside the reading card."):
+		indoor_mode.free()
+		return
+	assert_true(event_illustration.texture != null, "Indoor event illustration should load a generated disaster-store banner.")
+	assert_eq(event_illustration.texture.get_width(), 960, "Indoor event illustration should use the downscaled project-bound generated asset width.")
+	assert_eq(event_illustration.texture.get_height(), 480, "Indoor event illustration should use the downscaled project-bound generated asset height.")
 
 	var inline_minimap_card := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/MiniMapCard") as Control
 	if not assert_true(

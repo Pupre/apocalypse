@@ -14,6 +14,7 @@ const DEFAULT_PLAYER_POSITION := Vector2(240.0, 360.0)
 const PORTRAIT_CAMERA_OFFSET := Vector2(0.0, -220.0)
 const ENTER_RADIUS := 72.0
 const TERRAIN_TILE_SIZE := 32.0
+const HAZARD_FLASH_DURATION := 1.15
 const MOVE_LEFT_ACTION := "move_left"
 const MOVE_RIGHT_ACTION := "move_right"
 const MOVE_UP_ACTION := "move_up"
@@ -67,6 +68,8 @@ var _contact_cooldown_seconds := 0.0
 var _hazard_cooldown_seconds := 0.0
 var _hazard_message_seconds := 0.0
 var _last_hazard_message := ""
+var _hazard_flash_seconds := 0.0
+var _hazard_flash_kind := ""
 var _player_visual: Sprite2D = null
 var _camera: Camera2D = null
 var _top_ribbon: PanelContainer = null
@@ -108,6 +111,8 @@ func bind_run_state(value, building_id: String = DEFAULT_BUILDING_ID, player_pos
 	_hazard_cooldown_seconds = 0.0
 	_hazard_message_seconds = 0.0
 	_last_hazard_message = ""
+	_hazard_flash_seconds = 0.0
+	_hazard_flash_kind = ""
 	_player_walk_seconds = 0.0
 	_player_facing_id = "down"
 	_cache_nodes()
@@ -245,6 +250,7 @@ func _process(delta: float) -> void:
 	_contact_cooldown_seconds = max(0.0, _contact_cooldown_seconds - delta)
 	_hazard_cooldown_seconds = max(0.0, _hazard_cooldown_seconds - delta)
 	_hazard_message_seconds = max(0.0, _hazard_message_seconds - delta)
+	_hazard_flash_seconds = maxf(0.0, _hazard_flash_seconds - delta)
 	var direction := Input.get_vector(MOVE_LEFT_ACTION, MOVE_RIGHT_ACTION, MOVE_UP_ACTION, MOVE_DOWN_ACTION)
 	if direction != Vector2.ZERO:
 		move_player(direction, delta)
@@ -536,14 +542,27 @@ func _refresh_ground() -> void:
 		if hazard_rect.size == Vector2.ZERO:
 			continue
 		var hazard_kind := String(hazard_row.get("kind", "black_ice"))
+		var hazard_id := String(hazard_row.get("id", "Hazard"))
+		_add_hazard_warning_zone(hazard_id, hazard_rect, hazard_kind)
 		var decal_id := "wind_streak" if hazard_kind == "wind_gap" else "ice_patch"
-		var hazard_decal := _make_decal_sprite(
-			"%sHazard" % String(hazard_row.get("id", "Hazard")),
+		var decal_scale := Vector2.ONE * (2.8 if hazard_kind == "wind_gap" else 2.35)
+		var hazard_glow := _make_decal_sprite(
+			"%sHazardGlow" % hazard_id,
 			hazard_rect.position + (hazard_rect.size * 0.5),
 			art_resolver.get_decal_texture(decal_id),
-			Vector2.ONE * (2.1 if hazard_kind == "wind_gap" else 1.7)
+			decal_scale * 1.26
 		)
-		hazard_decal.modulate = Color(0.82, 0.94, 1.0, 0.68) if hazard_kind == "black_ice" else Color(0.95, 0.98, 1.0, 0.58)
+		hazard_glow.modulate = _hazard_glow_color(hazard_kind)
+		hazard_glow.z_index = 4
+		_ground_decals_host.add_child(hazard_glow)
+		var hazard_decal := _make_decal_sprite(
+			"%sHazard" % hazard_id,
+			hazard_rect.position + (hazard_rect.size * 0.5),
+			art_resolver.get_decal_texture(decal_id),
+			decal_scale
+		)
+		hazard_decal.modulate = _hazard_decal_color(hazard_kind)
+		hazard_decal.z_index = 5
 		_ground_decals_host.add_child(hazard_decal)
 
 	for block_coord in _active_block_coords:
@@ -599,7 +618,7 @@ func _sync_view() -> void:
 		_player_visual.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	if _camera != null:
 		_camera.position = _player_position
-		_camera.offset = PORTRAIT_CAMERA_OFFSET
+		_camera.offset = PORTRAIT_CAMERA_OFFSET + _hazard_screen_jolt()
 		_camera.limit_left = int(_world_bounds.position.x)
 		_camera.limit_top = int(_world_bounds.position.y)
 		_camera.limit_right = int(_world_bounds.end.x)
@@ -672,10 +691,11 @@ func _sync_threat_view(snapshot: Dictionary) -> void:
 		_threat_label.text = "추적 중" if threat_state == "chasing" else "주변이 불안하다"
 	if _frost_overlay != null and run_state != null:
 		var frost_alpha: float = clampf((65.0 - run_state.exposure) / 120.0, 0.0, 0.28)
-		_frost_overlay.color = Color(0.78, 0.88, 1.0, frost_alpha)
+		var hazard_flash_ratio := _hazard_flash_ratio()
+		_frost_overlay.color = Color(0.68, 0.86, 1.0, maxf(frost_alpha, 0.24 * hazard_flash_ratio))
 	if _frost_crystals != null and run_state != null:
 		var crystal_alpha: float = clampf((72.0 - run_state.exposure) / 62.0, 0.0, 0.88)
-		_frost_crystals.modulate = Color(1.0, 1.0, 1.0, crystal_alpha)
+		_frost_crystals.modulate = Color(1.0, 1.0, 1.0, maxf(crystal_alpha, 0.84 * _hazard_flash_ratio()))
 	var threat_rows_variant: Variant = snapshot.get("threats", [])
 	if typeof(threat_rows_variant) != TYPE_ARRAY:
 		return
@@ -824,6 +844,7 @@ func _tick_current_outdoor_hazard(delta: float) -> void:
 		_last_hazard_message = String(hazard_row.get("message", "위험한 노면을 지나며 몸의 균형이 흔들렸다."))
 		_hazard_message_seconds = 4.0
 		_hazard_cooldown_seconds = maxf(1.0, float(hazard_row.get("cooldown_seconds", 6.0)) - delta)
+		_trigger_hazard_feedback(hazard_row)
 		return
 
 
@@ -875,6 +896,57 @@ func _make_decal_sprite(name: String, world_position: Vector2, texture: Texture2
 	sprite.modulate = Color(1.0, 1.0, 1.0, 0.75)
 	sprite.z_index = 4
 	return sprite
+
+
+func _add_hazard_warning_zone(hazard_id: String, hazard_rect: Rect2, hazard_kind: String) -> void:
+	if _ground_decals_host == null:
+		return
+	var warning_zone := Polygon2D.new()
+	warning_zone.name = "%sHazardWarning" % hazard_id
+	warning_zone.position = hazard_rect.position
+	warning_zone.polygon = PackedVector2Array([
+		Vector2.ZERO,
+		Vector2(hazard_rect.size.x, 0.0),
+		hazard_rect.size,
+		Vector2(0.0, hazard_rect.size.y),
+	])
+	warning_zone.color = _hazard_warning_color(hazard_kind)
+	warning_zone.z_index = 3
+	_ground_decals_host.add_child(warning_zone)
+
+
+func _hazard_warning_color(hazard_kind: String) -> Color:
+	return Color(0.58, 0.88, 1.0, 0.18) if hazard_kind == "wind_gap" else Color(0.24, 0.62, 1.0, 0.23)
+
+
+func _hazard_glow_color(hazard_kind: String) -> Color:
+	return Color(0.74, 0.96, 1.0, 0.48) if hazard_kind == "wind_gap" else Color(0.72, 0.92, 1.0, 0.54)
+
+
+func _hazard_decal_color(hazard_kind: String) -> Color:
+	return Color(0.94, 0.99, 1.0, 0.82) if hazard_kind == "wind_gap" else Color(0.86, 0.97, 1.0, 0.9)
+
+
+func _trigger_hazard_feedback(hazard_row: Dictionary) -> void:
+	_hazard_flash_seconds = HAZARD_FLASH_DURATION
+	_hazard_flash_kind = String(hazard_row.get("kind", "black_ice"))
+
+
+func _hazard_flash_ratio() -> float:
+	if _hazard_flash_seconds <= 0.0:
+		return 0.0
+	return clampf(_hazard_flash_seconds / HAZARD_FLASH_DURATION, 0.0, 1.0)
+
+
+func _hazard_screen_jolt() -> Vector2:
+	var flash_ratio := _hazard_flash_ratio()
+	if flash_ratio <= 0.0:
+		return Vector2.ZERO
+	var strength := 9.0 if _hazard_flash_kind == "wind_gap" else 12.0
+	return Vector2(
+		sin(_hazard_flash_seconds * 54.0),
+		cos(_hazard_flash_seconds * 37.0)
+	) * strength * flash_ratio
 
 
 func _configure_bottom_center_sprite(sprite: Sprite2D) -> void:
