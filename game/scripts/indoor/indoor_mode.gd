@@ -54,6 +54,7 @@ var _supply_picker_status: Label = null
 var _supply_picker_quantity: Label = null
 var _supply_picker_minus_button: Button = null
 var _supply_picker_plus_button: Button = null
+var _supply_picker_max_button: Button = null
 var _supply_picker_cancel_button: Button = null
 var _supply_picker_confirm_button: Button = null
 var _director_connected := false
@@ -113,6 +114,8 @@ func _bind_ui_buttons() -> void:
 		_supply_picker_minus_button.pressed.connect(Callable(self, "_on_supply_picker_minus_pressed"))
 	if _supply_picker_plus_button != null and not _supply_picker_plus_button.pressed.is_connected(Callable(self, "_on_supply_picker_plus_pressed")):
 		_supply_picker_plus_button.pressed.connect(Callable(self, "_on_supply_picker_plus_pressed"))
+	if _supply_picker_max_button != null and not _supply_picker_max_button.pressed.is_connected(Callable(self, "_on_supply_picker_max_pressed")):
+		_supply_picker_max_button.pressed.connect(Callable(self, "_on_supply_picker_max_pressed"))
 	if _supply_picker_cancel_button != null and not _supply_picker_cancel_button.pressed.is_connected(Callable(self, "_on_supply_picker_cancel_pressed")):
 		_supply_picker_cancel_button.pressed.connect(Callable(self, "_on_supply_picker_cancel_pressed"))
 	if _supply_picker_confirm_button != null and not _supply_picker_confirm_button.pressed.is_connected(Callable(self, "_on_supply_picker_confirm_pressed")):
@@ -769,6 +772,7 @@ func _cache_nodes() -> void:
 	_supply_picker_quantity = get_node_or_null("SupplyPickerOverlay/Padding/VBox/QuantityRow/QuantityValueLabel") as Label
 	_supply_picker_minus_button = get_node_or_null("SupplyPickerOverlay/Padding/VBox/QuantityRow/MinusButton") as Button
 	_supply_picker_plus_button = get_node_or_null("SupplyPickerOverlay/Padding/VBox/QuantityRow/PlusButton") as Button
+	_supply_picker_max_button = get_node_or_null("SupplyPickerOverlay/Padding/VBox/QuantityRow/MaxButton") as Button
 	_supply_picker_cancel_button = get_node_or_null("SupplyPickerOverlay/Padding/VBox/ButtonRow/CancelButton") as Button
 	_supply_picker_confirm_button = get_node_or_null("SupplyPickerOverlay/Padding/VBox/ButtonRow/ConfirmButton") as Button
 	_apply_ui_skin()
@@ -815,6 +819,11 @@ func _apply_ui_skin() -> void:
 	)
 	_ui_kit_resolver.apply_button(
 		_supply_picker_plus_button,
+		"sheet/sheet_button_secondary_normal.png",
+		"sheet/sheet_button_secondary_pressed.png"
+	)
+	_ui_kit_resolver.apply_button(
+		_supply_picker_max_button,
 		"sheet/sheet_button_secondary_normal.png",
 		"sheet/sheet_button_secondary_pressed.png"
 	)
@@ -995,6 +1004,7 @@ func _refresh_supply_picker() -> void:
 	if not is_visible:
 		return
 	var item_name := String(_active_supply_picker.get("item_name", "물건"))
+	var item_id := String(_active_supply_picker.get("item_id", ""))
 	var remaining := int(_active_supply_picker.get("quantity_remaining", 0))
 	var max_quantity: int = max(0, int(_active_supply_picker.get("max_quantity", 0)))
 	var selected_quantity: int = clampi(int(_active_supply_picker.get("selected_quantity", 1)), 1, max(1, max_quantity))
@@ -1002,15 +1012,36 @@ func _refresh_supply_picker() -> void:
 	if _supply_picker_title != null:
 		_supply_picker_title.text = "%s 수량 선택" % item_name
 	if _supply_picker_status != null:
-		_supply_picker_status.text = "남은 재고 %d개 · 지금 최대 %d개" % [remaining, max_quantity]
+		_supply_picker_status.text = _supply_picker_status_text(item_id, remaining, max_quantity, selected_quantity)
 	if _supply_picker_quantity != null:
 		_supply_picker_quantity.text = str(selected_quantity)
 	if _supply_picker_minus_button != null:
 		_supply_picker_minus_button.disabled = selected_quantity <= 1
 	if _supply_picker_plus_button != null:
 		_supply_picker_plus_button.disabled = selected_quantity >= max_quantity
+	if _supply_picker_max_button != null:
+		_supply_picker_max_button.disabled = selected_quantity >= max_quantity or max_quantity <= 0
 	if _supply_picker_confirm_button != null:
 		_supply_picker_confirm_button.disabled = max_quantity <= 0
+		_supply_picker_confirm_button.text = "%d개 챙긴다" % selected_quantity if max_quantity > 0 else "챙길 수 없음"
+
+
+func _supply_picker_status_text(item_id: String, remaining: int, max_quantity: int, selected_quantity: int) -> String:
+	var parts: Array[String] = [
+		"남은 재고 %d개" % remaining,
+		"지금 최대 %d개" % max_quantity,
+	]
+	var item_weight := _supply_item_weight(item_id)
+	if item_weight > 0.0 and selected_quantity > 0:
+		parts.append("이번 무게 +%.1fkg" % (item_weight * float(selected_quantity)))
+	return " · ".join(parts)
+
+
+func _supply_item_weight(item_id: String) -> float:
+	if item_id.is_empty() or ContentLibrary == null:
+		return 0.0
+	var item_data: Dictionary = ContentLibrary.get_item(item_id)
+	return float(item_data.get("carry_weight", item_data.get("bulk", 0.0)))
 
 
 func _on_supply_picker_minus_pressed() -> void:
@@ -1025,6 +1056,13 @@ func _on_supply_picker_plus_pressed() -> void:
 		return
 	var max_quantity: int = max(1, int(_active_supply_picker.get("max_quantity", 1)))
 	_active_supply_picker["selected_quantity"] = min(max_quantity, int(_active_supply_picker.get("selected_quantity", 1)) + 1)
+	_refresh_supply_picker()
+
+
+func _on_supply_picker_max_pressed() -> void:
+	if not bool(_active_supply_picker.get("visible", false)):
+		return
+	_active_supply_picker["selected_quantity"] = max(1, int(_active_supply_picker.get("max_quantity", 1)))
 	_refresh_supply_picker()
 
 

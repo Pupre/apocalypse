@@ -228,8 +228,11 @@ func _run_test() -> void:
 
 	var supply_picker_overlay := indoor_mode.get_node_or_null("SupplyPickerOverlay") as Control
 	var supply_picker_title := indoor_mode.get_node_or_null("SupplyPickerOverlay/Padding/VBox/TitleLabel") as Label
+	var supply_picker_status := indoor_mode.get_node_or_null("SupplyPickerOverlay/Padding/VBox/StatusLabel") as Label
 	var supply_picker_quantity := indoor_mode.get_node_or_null("SupplyPickerOverlay/Padding/VBox/QuantityRow/QuantityValueLabel") as Label
-	if not assert_true(supply_picker_overlay != null and supply_picker_title != null and supply_picker_quantity != null, "Indoor mode should expose a supply quantity picker overlay."):
+	var supply_picker_max_button := indoor_mode.get_node_or_null("SupplyPickerOverlay/Padding/VBox/QuantityRow/MaxButton") as Button
+	var supply_picker_confirm_button := indoor_mode.get_node_or_null("SupplyPickerOverlay/Padding/VBox/ButtonRow/ConfirmButton") as Button
+	if not assert_true(supply_picker_overlay != null and supply_picker_title != null and supply_picker_status != null and supply_picker_quantity != null and supply_picker_max_button != null and supply_picker_confirm_button != null, "Indoor mode should expose a supply quantity picker overlay."):
 		indoor_mode.free()
 		return
 	assert_true(not supply_picker_overlay.visible, "Indoor mode should keep the supply quantity picker hidden by default.")
@@ -522,7 +525,12 @@ func _run_test() -> void:
 	await process_frame
 	assert_true(supply_picker_overlay.visible, "Indoor mode should open the supply picker when the detail supply action is pressed.")
 	assert_true(supply_picker_title.text.find("생수") >= 0, "Supply picker should name the selected supply source item.")
+	assert_true(supply_picker_status.text.find("이번 무게") >= 0, "Supply picker should preview the selected pickup weight.")
 	assert_eq(supply_picker_quantity.text, "1", "Supply picker should start at one item.")
+	indoor_mode._on_supply_picker_max_pressed()
+	await process_frame
+	assert_true(int(supply_picker_quantity.text) > 1, "Supply picker should let the player jump straight to the maximum useful quantity.")
+	assert_true(supply_picker_confirm_button.text.find(supply_picker_quantity.text) >= 0, "Supply picker confirm text should reflect the selected quantity.")
 	indoor_mode._on_supply_picker_cancel_pressed()
 	await process_frame
 	assert_true(not supply_picker_overlay.visible, "Indoor mode should hide the supply picker when cancel is pressed.")

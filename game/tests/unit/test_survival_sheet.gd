@@ -58,7 +58,7 @@ func _run_test() -> void:
 	if not assert_true(run_state != null, "RunState should build for SurvivalSheet tests."):
 		return
 
-	for item_id in ["newspaper", "cooking_oil", "lighter", "steel_food_can", "bottled_water"]:
+	for item_id in ["newspaper", "cooking_oil", "lighter", "steel_food_can", "bottled_water", "improvised_heat_note_01"]:
 		assert_true(run_state.inventory.add_item(content_library.get_item(item_id)), "Starter item '%s' should be added." % item_id)
 
 	var survival_sheet = survival_sheet_scene.instantiate()
@@ -94,10 +94,18 @@ func _run_test() -> void:
 	assert_eq(detail_style.texture.get_height(), 264, "Detail sheet should use the master inventory detail panel height.")
 	var sheet_title := _find(survival_sheet, "Sheet/VBox/Header/TitleRow/TitleLabel") as Label
 	var sheet_status := _find(survival_sheet, "Sheet/VBox/Header/StatusLabel") as Label
+	var browse_hint_label := _find(survival_sheet, "Sheet/VBox/InventoryPane/BrowseHintLabel") as Label
+	var inventory_items := _find(survival_sheet, "Sheet/VBox/InventoryPane/InventoryScroll/InventoryContent/InventoryItems") as VBoxContainer
 	if not assert_true(sheet_title != null and sheet_status != null, "SurvivalSheet should expose title and status labels."):
+		return
+	if not assert_true(browse_hint_label != null and inventory_items != null, "SurvivalSheet should expose the browse hint and item list."):
 		return
 	assert_eq(sheet_title.get_theme_font_size("font_size"), 19, "Bag title should use the larger readability-focused heading size.")
 	assert_eq(sheet_status.get_theme_font_size("font_size"), 15, "Bag status should use the larger secondary compact font size.")
+	assert_true(browse_hint_label.text.find("먹고 마실 것") != -1, "Bag browse hint should teach the survival-intent grouping.")
+	assert_true(_has_label_text(inventory_items, "먹고 마실 것"), "Bag list should group food and drink by survival intent.")
+	assert_true(_has_label_text(inventory_items, "불과 도구"), "Bag list should group tools by survival intent.")
+	assert_true(_has_label_text(inventory_items, "읽을 것"), "Bag list should group readable knowledge separately.")
 	var browse_inset_height := detail_inset.custom_minimum_size.y
 	assert_true(not detail_sheet.visible, "Opening the bag should start in list-first browse mode with no detail sheet expanded.")
 
@@ -157,6 +165,9 @@ func _run_test() -> void:
 	assert_true(survival_sheet.get_highlighted_item_ids().has("cooking_oil"), "Easy mode should still highlight the known compatible ingredient.")
 	assert_true(not detail_sheet.visible, "Craft mode should collapse the detail sheet and keep the list dominant.")
 	assert_eq(detail_inset.custom_minimum_size.y, 0.0, "Craft mode should remove the detail inset once the detail sheet is collapsed.")
+	assert_true(browse_hint_label.text.find("조합 가능") != -1, "Craft mode should retune the hint toward choosing a compatible second material.")
+	assert_true(_has_label_text(inventory_items, "기준 재료"), "Craft mode should place the initiating item under a clear anchor section.")
+	assert_true(_has_label_text(inventory_items, "조합 가능"), "Craft mode should surface compatible ingredients as their own section.")
 	var highlighted_row := _find_row_by_item_id(survival_sheet, "cooking_oil")
 	var highlighted_badge := _find_descendant_by_name(highlighted_row, "CompatibilityBadge") as Control
 	assert_true(
@@ -266,3 +277,15 @@ func _find_descendant_by_name(container: Node, expected_name: String) -> Node:
 		if nested != null:
 			return nested
 	return null
+
+
+func _has_label_text(container: Node, expected_text: String) -> bool:
+	if container == null:
+		return false
+	for child in container.get_children():
+		var label := child as Label
+		if label != null and label.text == expected_text:
+			return true
+		if _has_label_text(child, expected_text):
+			return true
+	return false

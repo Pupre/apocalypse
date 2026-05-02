@@ -423,13 +423,53 @@ func _render_inventory() -> void:
 	_item_badges.clear()
 
 	var inventory_rows := _inventory_rows_for_render()
+	if _browse_hint_label != null:
+		_browse_hint_label.text = _inventory_hint_text()
 	for row in inventory_rows:
-		_inventory_items.add_child(_create_inventory_row(row))
+		if String(row.get("kind", "")) == "section":
+			_inventory_items.add_child(_create_inventory_section_header(row))
+		else:
+			_inventory_items.add_child(_create_inventory_row(row))
 
 	_refresh_item_button_states()
 	_render_item_detail()
 	_apply_inventory_scroll_height()
 	_render_craft_card()
+
+
+func _inventory_hint_text() -> String:
+	if _sheet_state == STATE_INVENTORY_CRAFT_SELECT:
+		return "조합 가능 섹션의 물건부터 눌러 두 번째 재료를 고른다."
+	return "먹고 마실 것, 불과 도구, 입을 것을 먼저 나눠 본다."
+
+
+func _create_inventory_section_header(row: Dictionary) -> Control:
+	var panel := PanelContainer.new()
+	panel.name = "InventorySection_%s" % String(row.get("section_id", "misc"))
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	panel.add_theme_stylebox_override("panel", _inventory_section_style())
+
+	var label := Label.new()
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.text = String(row.get("label", ""))
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_apply_label_style(label, 13, TEXT_SECONDARY_COLOR, 2)
+	panel.add_child(label)
+	return panel
+
+
+func _inventory_section_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.07, 0.10, 0.13, 0.78)
+	style.border_color = Color(0.62, 0.78, 0.88, 0.24)
+	style.border_width_bottom = 1
+	style.content_margin_left = 8
+	style.content_margin_right = 8
+	style.content_margin_top = 4
+	style.content_margin_bottom = 4
+	return style
 
 
 func _layout_craft_card() -> void:
@@ -763,13 +803,12 @@ func _inventory_rows_for_render() -> Array[Dictionary]:
 			rows.append(row)
 
 	if not rows.is_empty():
-		return rows
+		return _sectioned_inventory_rows(_sorted_inventory_rows(rows))
 
 	var grouped := _group_inventory_rows_by_item_id()
 	var item_ids: Array[String] = []
 	for item_id_variant in grouped.keys():
 		item_ids.append(String(item_id_variant))
-	item_ids.sort_custom(func(a: String, b: String) -> bool: return _display_name_for_item(a) < _display_name_for_item(b))
 
 	for item_id in item_ids:
 		var item_data := _item_definition(item_id)
@@ -781,7 +820,126 @@ func _inventory_rows_for_render() -> Array[Dictionary]:
 			"charges_text": _item_charges_text(item_id, item_data),
 		})
 
-	return rows
+	return _sectioned_inventory_rows(_sorted_inventory_rows(rows))
+
+
+func _sorted_inventory_rows(rows: Array[Dictionary]) -> Array[Dictionary]:
+	var sorted_rows := rows.duplicate(true)
+	sorted_rows.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+		var a_priority := _inventory_row_priority(a)
+		var b_priority := _inventory_row_priority(b)
+		if a_priority != b_priority:
+			return a_priority < b_priority
+		var a_name := _display_name_for_item(String(a.get("item_id", "")))
+		var b_name := _display_name_for_item(String(b.get("item_id", "")))
+		return a_name < b_name
+	)
+	return sorted_rows
+
+
+func _inventory_row_priority(row: Dictionary) -> int:
+	var item_id := String(row.get("item_id", ""))
+	if _sheet_state == STATE_INVENTORY_CRAFT_SELECT:
+		if item_id == _craft_base_item_id:
+			return 0
+		if _highlighted_item_ids.has(item_id):
+			return 1
+		return 2
+	return _browse_section_priority(_browse_section_id_for_row(row))
+
+
+func _sectioned_inventory_rows(rows: Array[Dictionary]) -> Array[Dictionary]:
+	if rows.is_empty():
+		return [{
+			"kind": "section",
+			"section_id": "empty",
+			"label": "가방이 비었다",
+		}]
+
+	var sectioned: Array[Dictionary] = []
+	var current_section_id := ""
+	for row in rows:
+		var section_id := _section_id_for_row(row)
+		if section_id != current_section_id:
+			current_section_id = section_id
+			sectioned.append({
+				"kind": "section",
+				"section_id": section_id,
+				"label": _section_label(section_id),
+			})
+		sectioned.append(row)
+	return sectioned
+
+
+func _section_id_for_row(row: Dictionary) -> String:
+	var item_id := String(row.get("item_id", ""))
+	if _sheet_state == STATE_INVENTORY_CRAFT_SELECT:
+		if item_id == _craft_base_item_id:
+			return "craft_anchor"
+		if _highlighted_item_ids.has(item_id):
+			return "craft_compatible"
+		return "craft_other"
+	return _browse_section_id_for_row(row)
+
+
+func _browse_section_id_for_row(row: Dictionary) -> String:
+	var item_data := _item_definition(String(row.get("item_id", "")))
+	var category := String(item_data.get("category", ""))
+	if category == "food" or category == "drink" or category == "medical" or category == "stimulant":
+		return "survival"
+	if category == "utility":
+		return "tools"
+	if bool(item_data.get("readable", false)):
+		return "knowledge"
+	if not String(item_data.get("equip_slot", "")).is_empty():
+		return "wearable"
+	var tag_texts := _row_tag_texts(row)
+	for tag_text in tag_texts:
+		if tag_text.find("tool") >= 0 or tag_text.find("utility") >= 0 or tag_text.find("ignition") >= 0:
+			return "tools"
+	if float(item_data.get("carry_weight", item_data.get("bulk", 1))) >= 3.0:
+		return "heavy"
+	return "materials"
+
+
+func _browse_section_priority(section_id: String) -> int:
+	match section_id:
+		"survival":
+			return 0
+		"tools":
+			return 1
+		"wearable":
+			return 2
+		"knowledge":
+			return 3
+		"heavy":
+			return 4
+		_:
+			return 5
+
+
+func _section_label(section_id: String) -> String:
+	match section_id:
+		"craft_anchor":
+			return "기준 재료"
+		"craft_compatible":
+			return "조합 가능"
+		"craft_other":
+			return "다른 물건"
+		"survival":
+			return "먹고 마실 것"
+		"tools":
+			return "불과 도구"
+		"wearable":
+			return "입고 버틸 것"
+		"knowledge":
+			return "읽을 것"
+		"heavy":
+			return "무거운 짐"
+		"materials":
+			return "재료와 기타"
+		_:
+			return "그 밖의 물건"
 
 
 func _group_inventory_rows_by_item_id() -> Dictionary:

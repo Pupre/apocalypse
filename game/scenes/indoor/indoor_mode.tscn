@@ -217,6 +217,9 @@ horizontal_alignment = 1
 [node name="PlusButton" type="Button" parent="SupplyPickerOverlay/Padding/VBox/QuantityRow"]
 text = "+"
 
+[node name="MaxButton" type="Button" parent="SupplyPickerOverlay/Padding/VBox/QuantityRow"]
+text = "최대"
+
 [node name="ButtonRow" type="HBoxContainer" parent="SupplyPickerOverlay/Padding/VBox"]
 theme_override_constants/separation = 10
 
