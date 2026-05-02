@@ -16,6 +16,8 @@ const ENTER_RADIUS := 72.0
 const TERRAIN_TILE_SIZE := 32.0
 const HAZARD_FLASH_DURATION := 1.15
 const HAZARD_WARNING_MARGIN := 120.0
+const PLAYER_VISUAL_SCALE := 1.42
+const PLAYER_WALK_FRAME_RATE := 6.0
 const MOVE_LEFT_ACTION := "move_left"
 const MOVE_RIGHT_ACTION := "move_right"
 const MOVE_UP_ACTION := "move_up"
@@ -613,9 +615,9 @@ func _configure_threats() -> void:
 func _sync_view() -> void:
 	if _player_visual != null:
 		_player_visual.position = _player_position
-		_player_visual.texture = art_resolver.get_player_texture(_player_facing_id, _player_walk_seconds > 0.0, int(floor(_player_walk_seconds * 8.0)))
+		_player_visual.texture = art_resolver.get_player_texture(_player_facing_id, _player_walk_seconds > 0.0, int(floor(_player_walk_seconds * PLAYER_WALK_FRAME_RATE)))
 		_configure_bottom_center_sprite(_player_visual)
-		_player_visual.scale = Vector2.ONE * 1.28
+		_player_visual.scale = Vector2.ONE * PLAYER_VISUAL_SCALE
 		_player_visual.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	if _camera != null:
 		_camera.position = _player_position

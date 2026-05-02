@@ -160,3 +160,28 @@
 
 - `res://tests/unit/test_indoor_director.gd`
 - `res://tests/unit/test_indoor_mode.gd`
+
+## 추가 패스: 겨울 생존자 주인공 스프라이트
+
+야외 배경과 위험 피드백의 톤이 차갑고 무거워진 만큼, 기존 주인공 스프라이트도 같은 세계에 서 있는 사람처럼 보이도록 조정했다. 이번 패스는 새 애니메이션 시스템을 만드는 것보다, 기존 4방향 idle/walk 20프레임을 유지하면서 실루엣과 색감만 확실히 바꾸는 쪽에 집중했다.
+
+### 구현 내용
+
+- AI 생성 레퍼런스 `resources/world/city/player/winter_survivor_reference.png`를 추가했다.
+  - 검은 방한 파카, 후드, 올리브색 목도리/마스크, 장갑, 작은 갈색 배낭을 가진 겨울 생존자 방향 레퍼런스다.
+  - 실제 게임 프레임은 이 레퍼런스를 그대로 축소한 것이 아니라, 기존 32x32 픽셀 애니메이션을 기준으로 재채색과 실루엣 보강을 적용했다.
+- `resources/world/city/player` 아래 주인공 20프레임을 모두 갱신했다.
+  - 정면/측면/후면 모두 후드와 차가운 하이라이트가 읽히도록 했다.
+  - 목도리 또는 마스크, 올리브 장갑, 소형 배낭/스트랩을 방향별로 구분했다.
+  - 기존 프레임 이름과 해상도는 유지해 야외 런타임 교체 비용을 낮췄다.
+- 야외 컨트롤러의 주인공 표시 크기와 걷기 프레임 속도를 상수화했다.
+  - 새 스프라이트가 배경 위에서 너무 작게 묻히지 않도록 표시 크기를 키웠다.
+  - 걷기 프레임 속도는 조금 낮춰 눈 쌓인 도시를 조심스럽게 걷는 느낌에 가깝게 만들었다.
+
+### 검증
+
+- `res://tests/unit/test_outdoor_controller.gd`
+- `res://tests/unit/test_run_controller_live_transition.gd`
+- `res://tests/unit/test_survivor_creator.gd`
+- `res://tests/smoke/test_first_playable_loop.gd`
+- 주인공 20프레임 PNG 해상도 32x32 유지 확인

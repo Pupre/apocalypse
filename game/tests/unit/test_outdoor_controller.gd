@@ -78,7 +78,7 @@ func _run_test() -> void:
 		return
 	assert_true(ground.get_child_count() > 0, "Outdoor ground should render at least one visual layer.")
 	assert_true(player_sprite.texture != null, "Outdoor player visual should mount a sprite texture.")
-	assert_true(player_sprite.scale.x > 1.0, "Outdoor player visual should be scaled up beyond the raw source sprite for readability.")
+	assert_true(player_sprite.scale.x >= 1.4, "Outdoor player visual should be scaled up enough for the winter survivor sprite to read clearly.")
 	assert_true(building_markers.get_child_count() >= 28, "The authored outdoor slice should expose at least twenty-eight building markers after the 3x3 expansion.")
 	assert_true(obstacles.get_child_count() > 0, "Outdoor mode should render at least one obstacle prop.")
 
