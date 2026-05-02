@@ -18,6 +18,25 @@
       "fatigue_gain": 1.25,
       "minutes": 3,
       "cooldown_seconds": 8.0
+    },
+    {
+      "id": "school_bus_stop_black_ice",
+      "kind": "black_ice",
+      "rect": { "x": 120, "y": 230, "width": 180, "height": 130 },
+      "message": "폐교 정문 앞 버스 정류장 그늘에 남은 빙판을 밟아 몸이 휘청였다.",
+      "exposure_loss": 1.25,
+      "fatigue_gain": 1.5,
+      "health_loss": 0.5,
+      "cooldown_seconds": 7.0
+    },
+    {
+      "id": "butcher_curb_wind_gap",
+      "kind": "wind_gap",
+      "rect": { "x": 690, "y": 150, "width": 220, "height": 170 },
+      "message": "정육점 처마 아래 좁은 틈으로 몰린 바람이 옷깃을 파고들었다.",
+      "exposure_loss": 2.0,
+      "fatigue_gain": 1.0,
+      "cooldown_seconds": 7.0
     }
   ],
   "obstacles": [

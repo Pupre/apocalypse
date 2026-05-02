@@ -58,6 +58,14 @@ func _run_test() -> void:
 	assert_eq(String(hand_warmer_wrap_result.get("result_item_id", "")), "hand_warmer_wrap", "Wrapped heat-pack recipe should reuse the carry-warmth output.")
 	assert_eq(int(hand_warmer_wrap_result.get("minutes_elapsed", -1)), 0, "Outdoor crafting should not spend indoor action minutes.")
 
+	var warm_cocoa_result: Dictionary = resolver.resolve("hot_water", "instant_cocoa_mix", "indoor", content_library)
+	assert_eq(String(warm_cocoa_result.get("result_type", "")), "success", "Bakery cocoa mix should connect to the warm-drink crafting loop.")
+	assert_eq(String(warm_cocoa_result.get("result_item_id", "")), "warm_cocoa", "Hot water and cocoa mix should output warm cocoa.")
+
+	var sealed_cocoa_result: Dictionary = resolver.resolve("thermos", "warm_cocoa", "indoor", content_library)
+	assert_eq(String(sealed_cocoa_result.get("result_type", "")), "success", "Warm cocoa should be portable in a thermos like the other warm drinks.")
+	assert_eq(String(sealed_cocoa_result.get("result_item_id", "")), "sealed_warm_cocoa", "Thermos cocoa should output a sealed warm cocoa drink.")
+
 	var solvent_wipes_result: Dictionary = resolver.resolve("disinfectant_bottle", "shop_towel_bundle", "indoor", content_library)
 	assert_eq(String(solvent_wipes_result.get("result_type", "")), "success", "Disinfectant and work towels should make useful cleaning wipes.")
 	assert_eq(String(solvent_wipes_result.get("result_item_id", "")), "solvent_wipes", "Disinfectant towel recipe should output solvent wipes.")

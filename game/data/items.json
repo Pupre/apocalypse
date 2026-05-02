@@ -2071,6 +2071,29 @@
     }
   },
   {
+    "id": "warm_cocoa",
+    "name": "따뜻한 코코아",
+    "bulk": 1,
+    "carry_weight": 1,
+    "description": "뜨거운 물에 코코아 믹스를 풀어 만든 단맛이 강한 따뜻한 음료다.",
+    "usage_hint": "허기와 추위를 동시에 살짝 눌러야 할 때 좋다.",
+    "cold_hint": "카페인보다 당분과 온기로 버티는 초반 생존 음료다.",
+    "category": "drink",
+    "item_tags": ["drink", "warm_liquid", "warmth", "calorie_boost"],
+    "thirst_restore": 8,
+    "hunger_restore": 5,
+    "fatigue_restore": 3,
+    "use_minutes": 6,
+    "use_effects": {
+      "thirst_restore": 8,
+      "hunger_restore": 5,
+      "fatigue_restore": 3,
+      "exposure_restore": 12,
+      "warmth_minutes": 30,
+      "outdoor_exposure_drain_multiplier": 0.88
+    }
+  },
+  {
     "id": "hot_sugar_water",
     "name": "뜨거운 당수",
     "bulk": 1,
@@ -2303,6 +2326,29 @@
       "exposure_restore": 12,
       "warmth_minutes": 35,
       "outdoor_exposure_drain_multiplier": 0.86
+    }
+  },
+  {
+    "id": "sealed_warm_cocoa",
+    "name": "보온병 코코아",
+    "bulk": 2,
+    "carry_weight": 2,
+    "description": "보온병에 담아 단맛과 온기를 오래 붙잡아 둔 코코아다.",
+    "usage_hint": "먼 거리를 나가기 전, 배고픔과 추위를 함께 늦추는 휴대 음료다.",
+    "cold_hint": "열을 만든 뒤 바로 마시지 않고 이동용 예비 온기로 바꾼다.",
+    "category": "drink",
+    "item_tags": ["drink", "warm_liquid", "carry_warmth", "calorie_boost"],
+    "thirst_restore": 8,
+    "hunger_restore": 5,
+    "fatigue_restore": 3,
+    "use_minutes": 6,
+    "use_effects": {
+      "thirst_restore": 8,
+      "hunger_restore": 5,
+      "fatigue_restore": 3,
+      "exposure_restore": 14,
+      "warmth_minutes": 42,
+      "outdoor_exposure_drain_multiplier": 0.84
     }
   },
   {

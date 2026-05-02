@@ -11,6 +11,10 @@ const ANCHOR_MIN_ZONE_COUNTS := {
 	"cafe_01": 3,
 	"police_box_01": 3,
 	"residence_01": 4,
+	"bakery_01": 4,
+	"bookstore_01": 4,
+	"butcher_01": 4,
+	"school_gate_01": 4,
 }
 
 const UPLIFTED_BUILDING_IDS := [
@@ -65,6 +69,8 @@ const REQUIRED_NEW_ITEM_IDS := [
 	"tarp_bedroll",
 	"foil_tray_warmer",
 	"wrapped_hot_water_bottle",
+	"warm_cocoa",
+	"sealed_warm_cocoa",
 ]
 
 

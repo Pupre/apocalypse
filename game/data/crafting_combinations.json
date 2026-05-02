@@ -560,6 +560,24 @@
     "result_text": "뜨거운 물에 커피 믹스를 풀어 따뜻한 커피를 만들었다."
   },
   {
+    "id": "hot_water__instant_cocoa_mix",
+    "ingredients": ["hot_water", "instant_cocoa_mix"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "hot_water": "consume",
+      "instant_cocoa_mix": "consume"
+    },
+    "result_items": [
+      {"id": "warm_cocoa", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "warm_cocoa",
+    "indoor_minutes": 3,
+    "result_text": "뜨거운 물에 코코아 믹스를 풀어 달고 따뜻한 음료를 만들었다."
+  },
+  {
     "id": "hot_water__sugar_stick",
     "ingredients": ["hot_water", "sugar_stick"],
     "contexts": ["indoor", "outdoor"],
@@ -1188,6 +1206,24 @@
     "result_item_id": "sealed_warm_coffee",
     "indoor_minutes": 3,
     "result_text": "따뜻한 커피를 보온병에 옮겨 담아 더 오래 마실 수 있게 만들었다."
+  },
+  {
+    "id": "thermos__warm_cocoa",
+    "ingredients": ["thermos", "warm_cocoa"],
+    "contexts": ["indoor", "outdoor"],
+    "required_tags": ["insulated_container"],
+    "minutes": 3,
+    "ingredient_rules": {
+      "thermos": "consume",
+      "warm_cocoa": "consume"
+    },
+    "result_items": [
+      {"id": "sealed_warm_cocoa", "count": 1}
+    ],
+    "result_type": "success",
+    "result_item_id": "sealed_warm_cocoa",
+    "indoor_minutes": 3,
+    "result_text": "따뜻한 코코아를 보온병에 옮겨 담아 이동 중에도 단맛과 온기를 유지하게 했다."
   },
   {
     "id": "thermos__warm_soup",

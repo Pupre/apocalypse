@@ -1,29 +1,51 @@
 {
   "id": "bakery_01",
   "name": "빵집",
-  "summary": "계산대와 안쪽 준비대가 나뉘어 있어 포장재와 남은 간식이 따로 흩어져 있다.",
+  "summary": "진열장, 계산대, 준비실, 얼어붙은 뒤쪽 보관고가 이어져 있다. 남은 먹을거리보다 포장재와 따뜻한 음료 재료가 더 현실적인 수확이다.",
   "entry_zone_id": "counter",
   "zones": [
     {
       "id": "counter",
       "floor_id": "floor_1",
       "label": "계산대",
-      "summary": "진열장 앞에 종이봉투와 작은 잔돈통이 남아 있다.",
-      "connected_zone_ids": ["prep_room"],
+      "summary": "계산대 아래에는 종이봉투와 잔돈통, 손님용 작은 소모품이 뒤섞여 있다.",
+      "connected_zone_ids": ["display_case", "prep_room"],
       "event_ids": ["search_bakery_counter_event"],
       "map_position": [0, 0],
       "first_visit_cost": 20,
       "revisit_cost": 10
     },
     {
-      "id": "prep_room",
+      "id": "display_case",
       "floor_id": "floor_1",
-      "label": "안쪽 준비대",
-      "summary": "식은 작업대 위에 남은 포장지와 건조 간식 상자가 놓여 있다.",
-      "connected_zone_ids": ["counter"],
-      "event_ids": ["search_bakery_prep_event"],
+      "label": "깨진 진열장",
+      "summary": "유리 진열장 안쪽에 오래 버틴 과자 상자 몇 개가 보인다. 깨진 유리 위로 손을 넣어야 한다.",
+      "connected_zone_ids": ["counter", "prep_room"],
+      "event_ids": ["search_bakery_display_event"],
       "map_position": [1, 0],
       "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "prep_room",
+      "floor_id": "floor_1",
+      "label": "안쪽 준비실",
+      "summary": "식은 작업대 위에 포장 랩, 종이컵, 음료 가루가 흩어져 있다.",
+      "connected_zone_ids": ["counter", "display_case", "rear_freezer"],
+      "event_ids": ["search_bakery_prep_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "rear_freezer",
+      "floor_id": "floor_1",
+      "label": "뒤쪽 냉동고",
+      "summary": "문이 반쯤 얼어붙은 냉동고다. 식재료보다 보냉 가방과 보관 용기가 더 쓸 만해 보인다.",
+      "connected_zone_ids": ["prep_room"],
+      "event_ids": ["search_bakery_freezer_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 25,
       "revisit_cost": 10
     }
   ],
@@ -48,9 +70,71 @@
               "entries": [
                 { "id": "paper_bag", "weight": 4 },
                 { "id": "crackers", "weight": 3 },
-                { "id": "tea_bag", "weight": 2 }
+                { "id": "tea_bag", "weight": 2 },
+                { "id": "receipt_bundle", "weight": 2 }
               ]
             },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_bakery_display_event",
+      "zone_id": "display_case",
+      "type": "search",
+      "hint_text": "진열장 안쪽에는 남은 과자 상자가 보이지만 깨진 유리 때문에 손을 다칠 수 있다.",
+      "options": [
+        {
+          "id": "search_bakery_display_fast",
+          "label": "깨진 진열장을 급히 뒤진다",
+          "requirements": { "forbidden_flag_ids": ["bakery_display_cleared"] },
+          "costs": { "minutes": 25, "noise": 1 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "butter_cookie_box", "weight": 4 },
+                { "id": "crackers", "weight": 3 },
+                { "id": "paper_bag", "weight": 2 },
+                { "id": "old_cloth_rag", "weight": 1 }
+              ]
+            },
+            "pressure": {
+              "id": "bakery_display_glass_cut",
+              "message": "유리 조각을 서둘러 걷어내다 손끝이 길게 긁혔다.",
+              "health_loss": 1.0,
+              "fatigue_gain": 1.0,
+              "noise": 1
+            },
+            "set_flags": ["bakery_display_cleared"],
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "search_bakery_display_with_gloves",
+          "label": "장갑을 끼고 진열장을 정리한다",
+          "requirements": {
+            "required_item_ids": ["work_gloves"],
+            "forbidden_flag_ids": ["bakery_display_cleared"]
+          },
+          "blocked_feedback": "작업 장갑이 없으면 깨진 유리를 안전하게 걷어내기 어렵다.",
+          "costs": { "minutes": 35, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "butter_cookie_box", "weight": 4 },
+                { "id": "crackers", "weight": 3 },
+                { "id": "paper_bag", "weight": 2 },
+                { "id": "old_cloth_rag", "weight": 1 }
+              ]
+            },
+            "set_flags": ["bakery_display_cleared"],
             "consume_on_use": true
           }
         }
@@ -60,12 +144,41 @@
       "id": "search_bakery_prep_event",
       "zone_id": "prep_room",
       "type": "search",
-      "hint_text": "작업대 안쪽에는 포장재와 남은 간식 상자가 있다.",
+      "hint_text": "준비실엔 빵보다 포장재와 따뜻한 음료 재료가 더 많이 남아 있다.",
       "options": [
         {
           "id": "search_bakery_prep",
-          "label": "안쪽 준비대를 탐색한다",
+          "label": "안쪽 준비실을 탐색한다",
           "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "instant_cocoa_mix", "weight": 3 },
+                { "id": "paper_cup", "weight": 3 },
+                { "id": "cling_wrap_roll", "weight": 3 },
+                { "id": "tea_bag", "weight": 2 },
+                { "id": "sugar_stick", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_bakery_freezer_event",
+      "zone_id": "rear_freezer",
+      "type": "search",
+      "hint_text": "뒤쪽 냉동고는 이미 식재료를 믿기 어렵지만, 보관 용기와 보냉 가방은 쓸 수 있다.",
+      "options": [
+        {
+          "id": "search_bakery_freezer_fast",
+          "label": "냉동고 안쪽을 빠르게 훑는다",
+          "requirements": { "forbidden_flag_ids": ["bakery_freezer_cleared"] },
           "costs": { "minutes": 20, "noise": 0 },
           "outcomes": {
             "discover_loot": [],
@@ -73,11 +186,44 @@
               "rolls": 2,
               "allow_duplicates": false,
               "entries": [
-                { "id": "butter_cookie_box", "weight": 3 },
-                { "id": "cling_wrap_roll", "weight": 2 },
-                { "id": "paper_bag", "weight": 2 }
+                { "id": "cooler_bag", "weight": 3 },
+                { "id": "food_storage_container", "weight": 3 },
+                { "id": "zip_bag", "weight": 2 },
+                { "id": "ice_box", "weight": 1 }
               ]
             },
+            "pressure": {
+              "id": "bakery_freezer_cold_bite",
+              "message": "얼어붙은 금속 선반을 붙잡는 동안 손끝 감각이 둔해졌다.",
+              "exposure_loss": 2.0,
+              "fatigue_gain": 1.0
+            },
+            "set_flags": ["bakery_freezer_cleared"],
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "search_bakery_freezer_with_gloves",
+          "label": "장갑으로 냉동고를 천천히 비운다",
+          "requirements": {
+            "required_item_ids": ["work_gloves"],
+            "forbidden_flag_ids": ["bakery_freezer_cleared"]
+          },
+          "blocked_feedback": "손을 보호할 장갑이 없으면 냉동고 안쪽을 오래 뒤지기 어렵다.",
+          "costs": { "minutes": 35, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "cooler_bag", "weight": 3 },
+                { "id": "food_storage_container", "weight": 3 },
+                { "id": "zip_bag", "weight": 2 },
+                { "id": "ice_box", "weight": 1 }
+              ]
+            },
+            "set_flags": ["bakery_freezer_cleared"],
             "consume_on_use": true
           }
         }

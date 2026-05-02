@@ -1,7 +1,7 @@
 {
   "id": "school_gate_01",
   "name": "폐교 정문",
-  "summary": "정문 경비실과 안쪽 보관 선반이 나뉘어 있어 문서와 소형 장비가 따로 남아 있다.",
+  "summary": "정문 경비실, 분실물 상자, 행정 선반, 잠긴 보건함이 남아 있다. 학교 안쪽으로 들어가기 전 작은 장비와 응급품을 판단해서 챙기는 장소다.",
   "entry_zone_id": "guard_box",
   "zones": [
     {
@@ -9,25 +9,58 @@
       "floor_id": "floor_1",
       "label": "경비실",
       "summary": "젖은 안내문과 끊긴 무전기 자리만 남아 있다.",
-      "connected_zone_ids": ["admin_shelf"],
+      "connected_zone_ids": ["lost_and_found", "admin_shelf"],
       "event_ids": ["search_school_gate_guard_box"],
       "map_position": [0, 0],
       "first_visit_cost": 20,
       "revisit_cost": 10
     },
     {
-      "id": "admin_shelf",
+      "id": "lost_and_found",
       "floor_id": "floor_1",
-      "label": "안쪽 보관 선반",
-      "summary": "문서함과 소형 전지, 필기 도구가 한쪽 선반에 남아 있다.",
-      "connected_zone_ids": ["guard_box"],
-      "event_ids": ["search_school_gate_admin_shelf"],
+      "label": "분실물 상자",
+      "summary": "아이들 장갑, 낡은 우산, 체육복 조각이 뒤섞여 있다. 가볍지만 체온을 지킬 물건이 숨어 있을 수 있다.",
+      "connected_zone_ids": ["guard_box", "admin_shelf"],
+      "event_ids": ["search_school_gate_lost_and_found"],
       "map_position": [1, 0],
       "first_visit_cost": 20,
       "revisit_cost": 10
+    },
+    {
+      "id": "admin_shelf",
+      "floor_id": "floor_1",
+      "label": "행정 선반",
+      "summary": "문서함과 소형 전지, 필기 도구가 한쪽 선반에 남아 있다.",
+      "connected_zone_ids": ["guard_box", "lost_and_found", "nurse_locker"],
+      "event_ids": ["search_school_gate_admin_shelf"],
+      "map_position": [1, 1],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "nurse_locker",
+      "floor_id": "floor_1",
+      "label": "잠긴 보건함",
+      "summary": "작은 철제 보건함이 책상 아래에 고정되어 있다. 억지로 열면 꽤 큰 소리가 날 것 같다.",
+      "connected_zone_ids": ["admin_shelf"],
+      "event_ids": ["open_school_gate_nurse_locker"],
+      "map_position": [2, 1],
+      "first_visit_cost": 25,
+      "revisit_cost": 10,
+      "access_requirements": {
+        "required_flag_ids": ["school_nurse_locker_opened"]
+      },
+      "blocked_feedback": "보건함은 작은 나사로 고정되어 있다. 드라이버가 있으면 조용히 열 수 있고, 행정 선반 쪽에서 억지로 열 수도 있다."
     }
   ],
-  "clues": [],
+  "clues": [
+    {
+      "id": "school_nurse_locker_hint",
+      "label": "보건함 고정 나사",
+      "text": "보건함은 자물쇠보다 작은 나사 두 개가 문제다. 드라이버가 있으면 거의 소리 없이 열 수 있다.",
+      "visible": false
+    }
+  ],
   "events": [
     {
       "id": "search_school_gate_guard_box",
@@ -48,7 +81,37 @@
               "entries": [
                 { "id": "memo_pad", "weight": 3 },
                 { "id": "ballpoint_pen", "weight": 3 },
-                { "id": "newspaper", "weight": 1 }
+                { "id": "newspaper", "weight": 1 },
+                { "id": "portable_radio", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_school_gate_lost_and_found",
+      "zone_id": "lost_and_found",
+      "type": "search",
+      "hint_text": "분실물 상자에는 작은 보온품과 비바람을 막을 물건이 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_school_gate_lost_and_found_once",
+          "label": "분실물 상자를 뒤진다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "cotton_gloves", "weight": 3 },
+                { "id": "knitted_gloves", "weight": 2 },
+                { "id": "umbrella", "weight": 2 },
+                { "id": "track_jacket", "weight": 1 },
+                { "id": "wool_socks", "weight": 1 }
               ]
             },
             "consume_on_use": true
@@ -60,22 +123,84 @@
       "id": "search_school_gate_admin_shelf",
       "zone_id": "admin_shelf",
       "type": "search",
-      "hint_text": "안쪽 선반엔 건전지와 작은 비상물자가 남아 있을 수 있다.",
+      "hint_text": "안쪽 선반엔 건전지와 작은 비상물자가 남아 있을 수 있고, 보건함을 억지로 열 단서도 보인다.",
       "options": [
         {
           "id": "search_school_gate_admin_shelf_once",
-          "label": "안쪽 선반을 탐색한다",
+          "label": "행정 선반을 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "spare_batteries", "weight": 3 },
+                { "id": "bandage", "weight": 2 },
+                { "id": "paper_bag", "weight": 1 },
+                { "id": "pencil_pack", "weight": 2 },
+                { "id": "field_hygiene_note_01", "weight": 1 }
+              ]
+            },
+            "reveal_clue_ids": ["school_nurse_locker_hint"],
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "force_school_nurse_locker_from_shelf",
+          "label": "보건함을 억지로 뜯는다",
+          "requirements": { "forbidden_flag_ids": ["school_nurse_locker_opened"] },
+          "costs": { "minutes": 20, "noise": 3 },
+          "outcomes": {
+            "set_flags": ["school_nurse_locker_opened"],
+            "pressure": {
+              "id": "school_nurse_locker_noise",
+              "message": "철제 보건함을 비틀자 복도 쪽으로 금속 울림이 길게 퍼졌다.",
+              "fatigue_gain": 1.0,
+              "noise": 2
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "unscrew_school_nurse_locker",
+          "label": "드라이버로 보건함 나사를 푼다",
+          "requirements": {
+            "required_item_ids": ["screwdriver"],
+            "forbidden_flag_ids": ["school_nurse_locker_opened"]
+          },
+          "blocked_feedback": "작은 드라이버가 있어야 보건함 나사를 조용히 풀 수 있다.",
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["school_nurse_locker_opened"],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "open_school_gate_nurse_locker",
+      "zone_id": "nurse_locker",
+      "type": "search",
+      "hint_text": "열린 보건함 안에는 응급 처치와 위생에 쓸 물건이 남아 있다.",
+      "options": [
+        {
+          "id": "search_school_nurse_locker_once",
+          "label": "보건함 안쪽을 챙긴다",
           "requirements": {},
           "costs": { "minutes": 20, "noise": 0 },
           "outcomes": {
             "discover_loot": [],
             "loot_table": {
-              "rolls": 2,
+              "rolls": 3,
               "allow_duplicates": false,
               "entries": [
-                { "id": "spare_batteries", "weight": 3 },
-                { "id": "bandage", "weight": 2 },
-                { "id": "paper_bag", "weight": 1 }
+                { "id": "bandage", "weight": 3 },
+                { "id": "gauze_pad", "weight": 2 },
+                { "id": "alcohol_swab", "weight": 2 },
+                { "id": "painkillers", "weight": 2 },
+                { "id": "field_hygiene_note_01", "weight": 1 }
               ]
             },
             "consume_on_use": true

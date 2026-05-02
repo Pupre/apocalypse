@@ -27,6 +27,16 @@
       "exposure_loss": 2.0,
       "fatigue_gain": 1.0,
       "cooldown_seconds": 7.0
+    },
+    {
+      "id": "bakery_rear_snow_drift",
+      "kind": "snow_drift",
+      "rect": { "x": 640, "y": 610, "width": 230, "height": 170 },
+      "message": "빵집 뒤편 골목의 쌓인 눈을 헤치느라 숨이 차올랐다.",
+      "exposure_loss": 1.25,
+      "fatigue_gain": 2.0,
+      "minutes": 2,
+      "cooldown_seconds": 8.0
     }
   ],
   "obstacles": [

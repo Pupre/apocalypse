@@ -18,6 +18,15 @@
       "fatigue_gain": 2.0,
       "minutes": 2,
       "cooldown_seconds": 8.0
+    },
+    {
+      "id": "bookstore_awning_wind_gap",
+      "kind": "wind_gap",
+      "rect": { "x": 90, "y": 120, "width": 230, "height": 170 },
+      "message": "서점 차양 아래로 새어 나온 골목바람이 젖은 종이 냄새와 함께 한기를 밀어 넣었다.",
+      "exposure_loss": 2.0,
+      "fatigue_gain": 1.0,
+      "cooldown_seconds": 7.0
     }
   ],
   "obstacles": [

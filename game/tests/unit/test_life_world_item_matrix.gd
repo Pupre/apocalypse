@@ -15,7 +15,9 @@ const REPRESENTATIVE_ITEMS := {
 
 const REPRESENTATIVE_RECIPES := [
 	["hot_water", "instant_soup_powder", "warm_soup"],
+	["hot_water", "instant_cocoa_mix", "warm_cocoa"],
 	["thermos", "hot_water", "sealed_hot_water"],
+	["thermos", "warm_cocoa", "sealed_warm_cocoa"],
 	["zip_bag", "alcohol_swab", "field_hygiene_kit"],
 	["cardboard_box", "packing_tape", "storage_bundle"],
 ]

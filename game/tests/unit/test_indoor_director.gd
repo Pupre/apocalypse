@@ -344,6 +344,70 @@ func _run_test() -> void:
 		"indoor/indoor_event_bookstore_frozen.png",
 		"Bookstore buildings should use the frozen bookstore illustration."
 	)
+	assert_true(director.apply_action("move_back_stacks"), "Bookstore should allow moving into the collapsed back stacks.")
+	var bookstore_actions: Array[Dictionary] = director.get_actions()
+	assert_true(
+		_action_ids(bookstore_actions).has("search_bookstore_back_stacks_fast"),
+		"Bookstore back stacks should expose a risky collapsed-shelf search."
+	)
+	assert_true(
+		_action_ids(bookstore_actions).has("search_bookstore_back_stacks_with_gloves"),
+		"Bookstore back stacks should expose a slower work-glove branch."
+	)
+	assert_true(
+		String(_action_by_id(bookstore_actions, "search_bookstore_back_stacks_with_gloves").get("detail_label", "")).find("필요: 작업 장갑") != -1,
+		"Bookstore careful branch should preview its work-glove requirement."
+	)
+
+	director.configure(run_state, "bakery_01")
+	assert_true(director.apply_action("move_display_case"), "Bakery should expose the broken display case as a risk room.")
+	var bakery_actions: Array[Dictionary] = director.get_actions()
+	assert_true(
+		_action_ids(bakery_actions).has("search_bakery_display_fast"),
+		"Bakery display case should expose a fast glass-risk search."
+	)
+	assert_true(
+		String(_action_by_id(bakery_actions, "search_bakery_display_fast").get("detail_label", "")).find("체력 -1") != -1,
+		"Bakery fast display search should preview glass injury."
+	)
+	assert_true(
+		String(_action_by_id(bakery_actions, "search_bakery_display_with_gloves").get("detail_label", "")).find("필요: 작업 장갑") != -1,
+		"Bakery safe display search should preview its glove requirement."
+	)
+
+	director.configure(run_state, "butcher_01")
+	assert_true(director.apply_action("move_hook_lane"), "Butcher should expose the slippery hook lane.")
+	var butcher_actions: Array[Dictionary] = director.get_actions()
+	assert_true(
+		_action_ids(butcher_actions).has("search_butcher_hook_lane_fast"),
+		"Butcher hook lane should expose a fast injury-prone branch."
+	)
+	assert_true(
+		String(_action_by_id(butcher_actions, "search_butcher_hook_lane_with_scraper").get("detail_label", "")).find("필요: 성에 제거기") != -1,
+		"Butcher careful hook-lane branch should preview its ice-scraper requirement."
+	)
+
+	director.configure(run_state, "school_gate_01")
+	assert_true(director.apply_action("move_admin_shelf"), "School gate should allow moving to the admin shelf.")
+	var school_actions: Array[Dictionary] = director.get_actions()
+	assert_true(
+		_action_ids(school_actions).has("force_school_nurse_locker_from_shelf"),
+		"School admin shelf should expose a loud way to open the nurse locker."
+	)
+	assert_true(
+		String(_action_by_id(school_actions, "force_school_nurse_locker_from_shelf").get("detail_label", "")).find("소란 +5") != -1,
+		"School forced nurse locker branch should preview combined noise."
+	)
+	assert_true(
+		bool(_action_by_id(school_actions, "unscrew_school_nurse_locker").get("locked", false)),
+		"School quiet nurse locker branch should be visible but locked without a screwdriver."
+	)
+	assert_true(director.apply_action("force_school_nurse_locker_from_shelf"), "School forced nurse locker opening should resolve.")
+	assert_true(director.apply_action("move_nurse_locker"), "Opening the nurse locker should unlock movement into it.")
+	assert_true(
+		_action_ids(director.get_actions()).has("search_school_nurse_locker_once"),
+		"Open school nurse locker should expose a medical search."
+	)
 	director.configure(run_state, "chapel_01")
 	assert_eq(
 		director.get_event_illustration_asset(),

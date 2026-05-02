@@ -1,33 +1,62 @@
 {
   "id": "bookstore_01",
   "name": "중고 서점",
-  "summary": "입구 계산대 뒤쪽으로 무너진 안쪽 서가가 이어져 있어 종이류를 두 번 훑어야 한다.",
+  "summary": "입구 계산대, 읽기 자리, 무너진 안쪽 서가, 직원 책상이 좁게 이어져 있다. 종이와 메모가 단순 잡동사니가 아니라 지식과 점화재의 원천이 된다.",
   "entry_zone_id": "bookstore_entry",
   "zones": [
     {
       "id": "bookstore_entry",
       "floor_id": "floor_1",
-      "label": "입구",
+      "label": "입구 계산대",
       "summary": "계산대와 얇은 서가가 젖은 종이 냄새를 풍긴다.",
-      "connected_zone_ids": ["back_stacks"],
+      "connected_zone_ids": ["reading_corner", "back_stacks"],
       "event_ids": ["search_bookstore_entry"],
       "map_position": [0, 0],
       "first_visit_cost": 20,
       "revisit_cost": 10
     },
     {
+      "id": "reading_corner",
+      "floor_id": "floor_1",
+      "label": "작은 읽기 자리",
+      "summary": "창가에 놓인 의자와 작은 탁자 주변에 메모지, 잡지, 촛농 자국이 남아 있다.",
+      "connected_zone_ids": ["bookstore_entry", "staff_desk"],
+      "event_ids": ["search_bookstore_reading_corner"],
+      "map_position": [0, 1],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
       "id": "back_stacks",
       "floor_id": "floor_1",
-      "label": "안쪽 서가",
-      "summary": "무너진 서가 뒤쪽에 필기구와 종이묶음이 덜 젖은 채 남아 있다.",
-      "connected_zone_ids": ["bookstore_entry"],
+      "label": "무너진 안쪽 서가",
+      "summary": "무너진 서가 뒤쪽에 덜 젖은 책과 필기구가 남아 있다. 밀면 크게 무너질 것 같다.",
+      "connected_zone_ids": ["bookstore_entry", "staff_desk"],
       "event_ids": ["search_bookstore_back_stacks"],
       "map_position": [1, 0],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "staff_desk",
+      "floor_id": "floor_1",
+      "label": "직원 책상",
+      "summary": "장부와 포스트잇이 어지럽게 붙어 있다. 누군가 따뜻한 물을 만드는 조합을 적어둔 흔적이 있다.",
+      "connected_zone_ids": ["reading_corner", "back_stacks"],
+      "event_ids": ["search_bookstore_staff_desk"],
+      "map_position": [1, 1],
       "first_visit_cost": 20,
       "revisit_cost": 10
     }
   ],
-  "clues": [],
+  "clues": [
+    {
+      "id": "bookstore_warm_drink_margin",
+      "label": "책장 여백의 조합 메모",
+      "text": "책장 여백에 '뜨거운 물 + 차, 수프, 커피는 체온보다 시간을 산다'고 적혀 있다.",
+      "visible": false
+    }
+  ],
   "events": [
     {
       "id": "search_bookstore_entry",
@@ -39,7 +68,7 @@
           "id": "search_bookstore_entry_once",
           "label": "서점 입구를 탐색한다",
           "requirements": {},
-          "costs": { "minutes": 30, "noise": 0 },
+          "costs": { "minutes": 25, "noise": 0 },
           "outcomes": {
             "discover_loot": [],
             "loot_table": {
@@ -48,7 +77,36 @@
               "entries": [
                 { "id": "newspaper", "weight": 4 },
                 { "id": "paper_bag", "weight": 2 },
-                { "id": "memo_pad", "weight": 3 }
+                { "id": "memo_pad", "weight": 3 },
+                { "id": "old_magazine", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_bookstore_reading_corner",
+      "zone_id": "reading_corner",
+      "type": "search",
+      "hint_text": "읽기 자리에는 젖지 않은 잡지와 작은 불빛 흔적이 남아 있다.",
+      "options": [
+        {
+          "id": "search_bookstore_reading_corner_once",
+          "label": "읽기 자리를 살핀다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "old_magazine", "weight": 3 },
+                { "id": "tea_light_candle", "weight": 2 },
+                { "id": "notebook", "weight": 2 },
+                { "id": "ballpoint_pen", "weight": 2 }
               ]
             },
             "consume_on_use": true
@@ -60,24 +118,92 @@
       "id": "search_bookstore_back_stacks",
       "zone_id": "back_stacks",
       "type": "search",
-      "hint_text": "무너진 서가 뒤편엔 필기구와 덜 젖은 문서가 남아 있다.",
+      "hint_text": "무너진 서가 뒤편엔 필기구와 덜 젖은 문서가 남아 있지만, 서가가 다시 쏟아질 수 있다.",
       "options": [
         {
-          "id": "search_bookstore_back_stacks_once",
-          "label": "안쪽 서가를 탐색한다",
-          "requirements": {},
-          "costs": { "minutes": 30, "noise": 0 },
+          "id": "search_bookstore_back_stacks_fast",
+          "label": "무너진 서가를 비집고 들어간다",
+          "requirements": { "forbidden_flag_ids": ["bookstore_back_stacks_cleared"] },
+          "costs": { "minutes": 25, "noise": 2 },
           "outcomes": {
             "discover_loot": [],
             "loot_table": {
-              "rolls": 2,
+              "rolls": 3,
               "allow_duplicates": false,
               "entries": [
                 { "id": "memo_pad", "weight": 3 },
                 { "id": "ballpoint_pen", "weight": 3 },
-                { "id": "newspaper", "weight": 2 }
+                { "id": "newspaper", "weight": 2 },
+                { "id": "old_magazine", "weight": 2 },
+                { "id": "survival_cooking_note_01", "weight": 1 }
               ]
             },
+            "pressure": {
+              "id": "bookstore_shelf_collapse",
+              "message": "서가를 억지로 밀어 넣자 책더미가 어깨 위로 쏟아졌다.",
+              "health_loss": 1.0,
+              "fatigue_gain": 1.5,
+              "noise": 2
+            },
+            "reveal_clue_ids": ["bookstore_warm_drink_margin"],
+            "set_flags": ["bookstore_back_stacks_cleared"],
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "search_bookstore_back_stacks_with_gloves",
+          "label": "장갑으로 서가를 천천히 걷어낸다",
+          "requirements": {
+            "required_item_ids": ["work_gloves"],
+            "forbidden_flag_ids": ["bookstore_back_stacks_cleared"]
+          },
+          "blocked_feedback": "날카로운 책장 모서리와 젖은 종이를 걷어낼 장갑이 필요하다.",
+          "costs": { "minutes": 40, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "memo_pad", "weight": 3 },
+                { "id": "ballpoint_pen", "weight": 3 },
+                { "id": "newspaper", "weight": 2 },
+                { "id": "old_magazine", "weight": 2 },
+                { "id": "survival_cooking_note_01", "weight": 1 }
+              ]
+            },
+            "reveal_clue_ids": ["bookstore_warm_drink_margin"],
+            "set_flags": ["bookstore_back_stacks_cleared"],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_bookstore_staff_desk",
+      "zone_id": "staff_desk",
+      "type": "search",
+      "hint_text": "직원 책상에는 문구류와 장부, 읽을 만한 메모가 남아 있다.",
+      "options": [
+        {
+          "id": "search_bookstore_staff_desk_once",
+          "label": "직원 책상을 정리한다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "binder_clip_box", "weight": 3 },
+                { "id": "notebook", "weight": 3 },
+                { "id": "file_folder", "weight": 2 },
+                { "id": "pencil_pack", "weight": 2 },
+                { "id": "survival_cooking_note_01", "weight": 1 }
+              ]
+            },
+            "reveal_clue_ids": ["bookstore_warm_drink_margin"],
             "consume_on_use": true
           }
         }

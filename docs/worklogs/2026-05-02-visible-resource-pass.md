@@ -57,6 +57,50 @@
 
 - `res://tests/unit/test_indoor_director.gd`
 - `res://tests/unit/test_indoor_mode.gd`
+
+## 추가 패스: 얕은 실내 네 곳의 게임성 확장
+
+플레이어가 같은 명령을 반복하지 않아도 큰 배치로 이어가기 위해, 아직 2구역/2행동 구조에 머물던 장소 중 체감이 큰 네 곳을 먼저 끌어올렸다. 이번 기준은 “그 장소라서 납득되는 물건이 나오고, 서두르면 손해가 생기며, 도구를 준비하면 다른 선택지가 열린다”이다.
+
+### 구현 내용
+
+- `bakery_01`을 계산대, 깨진 진열장, 준비실, 뒤쪽 냉동고 4구역으로 확장했다.
+  - 깨진 진열장은 빠르게 뒤지면 유리 부상과 소란을 감수하고, 작업 장갑이 있으면 더 오래 걸리지만 안전하게 정리한다.
+  - 준비실과 냉동고는 포장재, 종이컵, 코코아 믹스, 보관 용기처럼 빵집에서 현실적으로 남을 만한 물건 중심으로 조정했다.
+- `bookstore_01`을 입구 계산대, 작은 읽기 자리, 무너진 안쪽 서가, 직원 책상 4구역으로 확장했다.
+  - 무너진 서가는 빠른 수색과 작업 장갑 수색으로 갈라지고, 따뜻한 음료 조합을 암시하는 단서를 드러낸다.
+- `butcher_01`을 포장대, 작업 통로, 냉장실, 뒤쪽 보관 선반 4구역으로 확장했다.
+  - 정육점은 상한 식량보다 포장재, 보냉 장비, 작업 도구가 더 현실적인 보상으로 나오게 했다.
+  - 작업 통로와 냉장실은 각각 미끄러짐, 한기 위험을 가진다.
+- `school_gate_01`을 경비실, 분실물 상자, 행정 선반, 잠긴 보건함 4구역으로 확장했다.
+  - 보건함은 억지로 뜯으면 큰 소란을 내고, 작은 드라이버가 있으면 조용히 열 수 있다.
+  - 분실물 상자는 장갑, 우산, 양말처럼 폐교 정문에서 자연스럽게 찾을 수 있는 보온품을 제공한다.
+
+### 아이템/조합 연결
+
+- 새 아이템 `warm_cocoa`, `sealed_warm_cocoa`를 추가했다.
+- `hot_water + instant_cocoa_mix -> warm_cocoa` 조합을 추가했다.
+- `thermos + warm_cocoa -> sealed_warm_cocoa` 조합을 추가했다.
+- 빵집에서 찾은 코코아 믹스가 단순 루팅 보상이 아니라, 실제 야외 이동 전 준비 루프로 이어지게 했다.
+
+### 야외 연결
+
+- `1_0` 블록 빵집 뒤편에 눈더미 위험을 추가했다.
+- `1_2` 블록 폐교 정문 앞에 빙판, 정육점 처마 쪽에 틈바람 위험을 추가했다.
+- `2_0` 블록 서점 차양 아래에 틈바람 위험을 추가했다.
+- 새 실내가 좋아져도 건물까지 가는 길이 비어 보이지 않도록, 진입 전 야외 판단 압력을 함께 보강했다.
+
+### 검증
+
+- `res://tests/unit/test_indoor_director.gd`
+- `res://tests/unit/test_indoor_content_depth.gd`
+- `res://tests/unit/test_indoor_actions.gd`
+- `res://tests/unit/test_indoor_loot_tables.gd`
+- `res://tests/unit/test_crafting_resolver.gd`
+- `res://tests/unit/test_life_world_item_matrix.gd`
+- `res://tests/unit/test_outdoor_controller.gd`
+- `res://tests/unit/test_outdoor_world_runtime.gd`
+- `res://tests/unit/test_outdoor_map_view.gd`
 - `res://tests/smoke/test_first_playable_loop.gd`
 
 ## 추가 패스: 식당 주방 분기와 행동 위험 미리보기
