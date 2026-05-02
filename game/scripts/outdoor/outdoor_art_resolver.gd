@@ -27,16 +27,22 @@ func get_building_texture(building_data: Dictionary) -> Texture2D:
 			file_name = "building_clinic.png"
 		"pharmacy_01":
 			file_name = "building_pharmacy.png"
-		"office_01", "laundry_01":
+		"office_01":
 			file_name = "building_office.png"
-		"hardware_01", "warehouse_01":
+		"laundry_01":
+			file_name = "building_laundry.png"
+		"hardware_01":
+			file_name = "building_hardware.png"
+		"warehouse_01":
 			file_name = "building_warehouse.png"
 		"repair_shop_01":
-			file_name = "building_garage.png"
+			file_name = "building_repair_shop.png"
 		"gas_station_01":
 			file_name = "building_gas_station.png"
-		"cafe_01", "restaurant_01":
+		"cafe_01":
 			file_name = "building_cafe.png"
+		"restaurant_01":
+			file_name = "building_restaurant.png"
 		"bakery_01":
 			file_name = "building_bakery.png"
 		"police_box_01":
@@ -55,8 +61,10 @@ func get_building_texture(building_data: Dictionary) -> Texture2D:
 			file_name = "building_garage.png"
 		"canteen_01":
 			file_name = "building_canteen.png"
-		"church_01", "chapel_01":
+		"church_01":
 			file_name = "building_church.png"
+		"chapel_01":
+			file_name = "building_chapel.png"
 		"corner_store_01":
 			file_name = "building_corner_store.png"
 		"school_gate_01":
@@ -65,6 +73,8 @@ func get_building_texture(building_data: Dictionary) -> Texture2D:
 			file_name = "building_row_house.png"
 		"tea_shop_01":
 			file_name = "building_tea_shop.png"
+		"residence_01":
+			file_name = "building_residence.png"
 		_:
 			var category := String(building_data.get("category", ""))
 			match category:

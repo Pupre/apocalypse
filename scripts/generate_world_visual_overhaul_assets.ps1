@@ -588,6 +588,104 @@ function Import-BuildingSheet {
     }
 }
 
+function Import-SecondaryBuildingSheet {
+    param([string] $SheetPath)
+    if (-not (Test-Path -LiteralPath $SheetPath)) {
+        return
+    }
+
+    $names = @(
+        "building_hardware.png",
+        "building_laundry.png",
+        "building_residence.png",
+        "building_repair_shop.png",
+        "building_storage_depot.png",
+        "building_garage.png",
+        "building_canteen.png",
+        "building_tea_shop.png",
+        "building_deli.png",
+        "building_hostel.png",
+        "building_chapel.png",
+        "building_corner_store.png",
+        "building_warehouse.png",
+        "building_office.png",
+        "building_restaurant.png",
+        "building_cafe.png"
+    )
+
+    $sheet = [System.Drawing.Bitmap]::FromFile($SheetPath)
+    try {
+        $cellW = $sheet.Width / 4.0
+        $cellH = $sheet.Height / 4.0
+        for ($index = 0; $index -lt $names.Length; $index++) {
+            $col = $index % 4
+            $row = [int][Math]::Floor($index / 4.0)
+            $cell = [System.Drawing.Bitmap]::new([Math]::Ceiling($cellW), [Math]::Ceiling($cellH), [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
+            $cellGraphics = [System.Drawing.Graphics]::FromImage($cell)
+            $cellGraphics.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
+            $cellGraphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
+            $src = [System.Drawing.RectangleF]::new($col * $cellW, $row * $cellH, $cellW, $cellH)
+            $dst = [System.Drawing.RectangleF]::new(0, 0, $cell.Width, $cell.Height)
+            $cellGraphics.DrawImage($sheet, $dst, $src, [System.Drawing.GraphicsUnit]::Pixel)
+            $cellGraphics.Dispose()
+
+            $minX = $cell.Width
+            $minY = $cell.Height
+            $maxX = -1
+            $maxY = -1
+            $clearPixel = [System.Drawing.Color]::FromArgb(0, 0, 0, 0)
+            for ($y = 0; $y -lt $cell.Height; $y++) {
+                for ($x = 0; $x -lt $cell.Width; $x++) {
+                    $px = $cell.GetPixel($x, $y)
+                    if (Test-ChromaPixel $px) {
+                        $cell.SetPixel($x, $y, $clearPixel)
+                        continue
+                    }
+                    if ($px.A -le 8) {
+                        $cell.SetPixel($x, $y, $clearPixel)
+                        continue
+                    }
+                    $minX = [Math]::Min($minX, $x)
+                    $minY = [Math]::Min($minY, $y)
+                    $maxX = [Math]::Max($maxX, $x)
+                    $maxY = [Math]::Max($maxY, $y)
+                }
+            }
+
+            if ($maxX -lt 0 -or $maxY -lt 0) {
+                $cell.Dispose()
+                continue
+            }
+
+            $trimW = $maxX - $minX + 1
+            $trimH = $maxY - $minY + 1
+            $canvasW = 192
+            $canvasH = 160
+            $scale = [Math]::Min(($canvasW - 6) / [double]$trimW, ($canvasH - 4) / [double]$trimH)
+            $drawW = [int][Math]::Round($trimW * $scale)
+            $drawH = [int][Math]::Round($trimH * $scale)
+            $out = [System.Drawing.Bitmap]::new($canvasW, $canvasH, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
+            $outGraphics = [System.Drawing.Graphics]::FromImage($out)
+            $outGraphics.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
+            $outGraphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
+            $outGraphics.Clear([System.Drawing.Color]::Transparent)
+            $outX = [int][Math]::Round(($canvasW - $drawW) / 2.0)
+            $outY = $canvasH - $drawH
+            $sourceRect = [System.Drawing.Rectangle]::new($minX, $minY, $trimW, $trimH)
+            $destRect = [System.Drawing.Rectangle]::new($outX, $outY, $drawW, $drawH)
+            $outGraphics.DrawImage($cell, $destRect, $sourceRect, [System.Drawing.GraphicsUnit]::Pixel)
+            $outGraphics.Dispose()
+
+            $target = New-AssetPath "resources/world/city/buildings_cutout/$($names[$index])"
+            $out.Save($target, [System.Drawing.Imaging.ImageFormat]::Png)
+            $out.Dispose()
+            $cell.Dispose()
+        }
+    } finally {
+        $sheet.Dispose()
+    }
+}
+
 function Import-PropSheet {
     param([string] $SheetPath)
     if (-not (Test-Path -LiteralPath $SheetPath)) {
@@ -821,6 +919,7 @@ if ($latestDirection -ne $null) {
 }
 
 Import-BuildingSheet (Join-Path $cityRoot "reference/outdoor_building_sheet_2026-05-02.png")
+Import-SecondaryBuildingSheet (Join-Path $cityRoot "reference/outdoor_secondary_building_sheet_2026-05-02.png")
 Import-PropSheet (Join-Path $cityRoot "reference/outdoor_prop_sheet_2026-05-02.png")
 Import-TerrainSheet (Join-Path $cityRoot "reference/outdoor_terrain_sheet_2026-05-02.png")
 

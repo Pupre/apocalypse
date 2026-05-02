@@ -260,3 +260,31 @@
 
 - 이번 패스는 야외 첫인상을 크게 바꾸는 1차 작업이다. 다만 일부 보조 건물은 아직 절차형 컷아웃 기반이므로, 다음 리소스 패스에서는 보조 건물 전용 AI 시트를 한 번 더 뽑아 차고, 물류 보관소, 구내 식당, 찻집, 호스텔 계열까지 같은 밀도로 끌어올리는 것이 좋다.
 - 지형 타일은 시각 밀도가 크게 올라갔지만 반복 타일로 쓰일 때 경계가 아주 완벽한 타일링은 아니다. 실제 플레이 화면에서 반복감이 거슬리면 가장 많이 보이는 `road_plain`, `slush_road`, `snow_ground`, `sidewalk_snow`부터 별도 무봉합 타일로 다시 생성한다.
+
+## 추가 패스: 보조 건물 AI 컷아웃 2차
+
+1차 야외 리소스 교체 뒤에도 일부 보조 건물이 절차형 컷아웃으로 남아 있어, 장거리 이동 시 외형 밀도가 떨어질 수 있다고 판단했다. 그래서 별도 AI 생성 시트를 하나 더 만들어 세탁소, 주택, 수리점, 차고, 물류 보관소, 구내 식당, 찻집, 호스텔, 식당 계열까지 같은 방향의 외형으로 맞췄다.
+
+### 구현 내용
+
+- `resources/world/city/reference/outdoor_secondary_building_sheet_2026-05-02.png`를 추가했다.
+- 생성 스크립트가 보조 건물 시트를 잘라 다음 런타임 PNG를 만들도록 확장했다.
+  - `building_hardware.png`
+  - `building_laundry.png`
+  - `building_residence.png`
+  - `building_repair_shop.png`
+  - `building_restaurant.png`
+  - `building_chapel.png`
+  - 기존 `building_storage_depot.png`, `building_garage.png`, `building_canteen.png`, `building_tea_shop.png`, `building_deli.png`, `building_hostel.png`도 AI 컷아웃으로 덮어썼다.
+- `OutdoorArtResolver`의 건물 매핑을 더 세분화했다.
+  - 철물점, 세탁소, 단독 주택, 수리점, 식당, 예배당이 더 이상 범용 창고/사무실/카페 외형을 공유하지 않는다.
+
+### 검증
+
+- `res://tests/unit/test_outdoor_controller.gd`
+- `res://tests/smoke/test_first_playable_loop.gd`
+- `git diff --check`
+
+### 남은 판단
+
+- AI 시트 기반 컷아웃은 실제 인게임 축소 상태에서 품질이 좋지만, 마젠타 크로마키 잔상이 일부 어두운 그림자 가장자리에 아주 조금 남을 수 있다. 현재 직접 확인한 세탁소와 물류 보관소는 플레이 화면에서 문제될 수준은 아니라고 판단했다.

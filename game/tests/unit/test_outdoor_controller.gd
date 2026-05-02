@@ -472,8 +472,13 @@ func _assert_outdoor_resource_mapping(content_library) -> void:
 	assert_true(resolver_script != null, "Outdoor art resolver should load for visual resource mapping checks.")
 	var resolver = resolver_script.new()
 	for building_id in [
+		"hardware_01",
+		"laundry_01",
+		"residence_01",
+		"repair_shop_01",
 		"bookstore_01",
 		"bakery_01",
+		"restaurant_01",
 		"deli_01",
 		"butcher_01",
 		"storage_depot_01",
@@ -483,6 +488,7 @@ func _assert_outdoor_resource_mapping(content_library) -> void:
 		"corner_store_01",
 		"school_gate_01",
 		"row_house_01",
+		"chapel_01",
 		"tea_shop_01",
 	]:
 		assert_true(resolver.get_building_texture(content_library.get_building(building_id)) != null, "Outdoor building '%s' should resolve to a generated exterior texture." % building_id)
