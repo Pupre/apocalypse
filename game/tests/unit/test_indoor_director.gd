@@ -272,6 +272,48 @@ func _run_test() -> void:
 	var room_201_move := _action_by_id(director.get_actions(), "move_unit_201_room")
 	assert_true(not room_201_move.is_empty(), "Apartment should expose the 201 room move at the doorway.")
 	assert_true(not bool(room_201_move.get("locked", true)), "Taking the 201 key should unlock room 201.")
+	assert_true(director.apply_action("move_unit_201_room"), "Apartment should allow entering room 201.")
+	assert_true(director.apply_action("search_unit_201_room"), "Apartment should allow searching room 201.")
+	var take_boiler_key_action_id := _action_id_by_label_prefix(director.get_actions(), "보일러실 열쇠 챙긴다")
+	assert_true(not take_boiler_key_action_id.is_empty(), "Apartment room 201 search should surface the boiler-room key.")
+	assert_true(director.apply_action(take_boiler_key_action_id), "Apartment should allow taking the boiler-room key.")
+	assert_true(director.apply_action("move_unit_201_door"), "Apartment should allow stepping back to the 201 doorway.")
+	assert_true(director.apply_action("move_second_floor_hall"), "Apartment should allow returning to the second-floor hall.")
+	assert_true(director.apply_action("move_stairwell"), "Apartment should allow returning to the stairwell.")
+	assert_true(director.apply_action("move_boiler_stair"), "Apartment should allow descending toward the boiler room.")
+	var boiler_room_move := _action_by_id(director.get_actions(), "move_boiler_room")
+	assert_true(not boiler_room_move.is_empty(), "Apartment should expose the boiler room move after descending.")
+	assert_true(not bool(boiler_room_move.get("locked", true)), "Taking the boiler key should unlock the boiler room.")
+	assert_true(director.apply_action("move_boiler_room"), "Apartment should allow entering the boiler room.")
+	var boiler_action_ids := _action_ids(director.get_actions())
+	assert_true(
+		boiler_action_ids.has("search_boiler_room"),
+		"Apartment boiler room should keep a quick shelf-search option."
+	)
+	assert_true(
+		boiler_action_ids.has("stabilize_boiler_warmth_point"),
+		"Apartment boiler room should expose the major warmth-preparation decision."
+	)
+	assert_true(director.apply_action("stabilize_boiler_warmth_point"), "Director should resolve the major boiler warmth decision.")
+	assert_eq(
+		director.get_event_illustration_asset(),
+		"indoor/indoor_story_apartment_boiler_warmth_success.png",
+		"Boiler warmth decision should swap the reading card to the generated apartment illustration."
+	)
+	var apartment_cutscene_payload: Dictionary = director.consume_story_cutscene_payload()
+	assert_eq(
+		String(apartment_cutscene_payload.get("asset", "")),
+		"indoor/indoor_story_apartment_boiler_warmth_success.png",
+		"Boiler warmth decision should queue a full-screen story cutscene asset."
+	)
+	assert_true(
+		String(apartment_cutscene_payload.get("title", "")).find("보일러실") != -1,
+		"Boiler warmth cutscene should name the decision result."
+	)
+	assert_true(
+		not _action_ids(director.get_actions()).has("search_boiler_room"),
+		"Resolving the major boiler decision should close the quick boiler shelf search."
+	)
 
 	director.configure(run_state, "clinic_01")
 	assert_eq(director.get_current_zone_id(), "clinic_lobby", "Director should initialize at the clinic entry zone.")

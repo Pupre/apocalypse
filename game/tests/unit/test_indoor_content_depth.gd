@@ -82,6 +82,9 @@ const REQUIRED_ACTION_IDS_BY_BUILDING := {
 		"search_freezer_row",
 		"commit_locked_storage_cache",
 	],
+	"apartment_01": [
+		"stabilize_boiler_warmth_point",
+	],
 	"corner_store_01": [
 		"search_corner_cashier_fast",
 		"search_corner_cashier_with_gloves",

@@ -236,6 +236,12 @@
       "purpose": "의원 약품 보관실에서 손전등으로 쓸 만한 약품을 선별한 큰 결정 성공 컷신 일러스트",
       "size": "960x480",
       "alpha_policy": "fully opaque illustration banner"
+    },
+    {
+      "filename": "indoor_story_apartment_boiler_warmth_success.png",
+      "purpose": "낡은 아파트 보일러실에서 배관과 온수병을 정리해 짧은 보온 거점을 만든 큰 결정 성공 컷신 일러스트",
+      "size": "960x480",
+      "alpha_policy": "fully opaque illustration banner"
     }
   ]
 }

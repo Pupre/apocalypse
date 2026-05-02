@@ -94,6 +94,7 @@ const PATH_ALIASES := {
 	"indoor/indoor_story_mart_freezer_risk.png": "@master/indoor/indoor_story_mart_freezer_risk.png",
 	"indoor/indoor_story_mart_storage_cache_success.png": "@master/indoor/indoor_story_mart_storage_cache_success.png",
 	"indoor/indoor_story_clinic_medicine_sort_success.png": "@master/indoor/indoor_story_clinic_medicine_sort_success.png",
+	"indoor/indoor_story_apartment_boiler_warmth_success.png": "@master/indoor/indoor_story_apartment_boiler_warmth_success.png",
 	"structure/structure_panel_bg.png": "@master/structure/structure_panel_bg.png",
 	"structure/structure_room_node_known.png": "@master/structure/structure_room_node_known.png",
 	"structure/structure_room_node_current.png": "@master/structure/structure_room_node_current.png",

@@ -379,8 +379,10 @@
       "options": [
         {
           "id": "search_boiler_room",
-          "label": "보일러실을 탐색한다",
-          "requirements": {},
+          "label": "보일러실 선반만 빠르게 살핀다",
+          "requirements": {
+            "forbidden_flag_ids": ["apartment_boiler_room_cleared"]
+          },
           "costs": { "minutes": 30, "noise": 0 },
           "outcomes": {
             "discover_loot": [],
@@ -393,6 +395,48 @@
                 { "id": "bottled_water", "weight": 2 }
               ]
             },
+            "set_flags": ["apartment_boiler_room_cleared"],
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "stabilize_boiler_warmth_point",
+          "label": "시간을 들여 배관과 온수병을 정리한다",
+          "requirements": {
+            "forbidden_flag_ids": ["apartment_boiler_room_cleared"]
+          },
+          "costs": { "minutes": 60, "noise": 1 },
+          "outcomes": {
+            "discover_loot": [
+              { "id": "wrapped_hot_water_bottle", "bulk": 1 },
+              { "id": "patched_blanket", "bulk": 1 }
+            ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "hot_water_bottle", "weight": 3 },
+                { "id": "old_blanket", "weight": 3 },
+                { "id": "bottled_water", "weight": 2 },
+                { "id": "clear_plastic_sheet", "weight": 2 }
+              ]
+            },
+            "pressure": {
+              "id": "apartment_boiler_pipe_stabilized",
+              "message": "배관 얼음을 긁어내고 천을 둘러 묶는 동안 시간이 크게 흘렀다. 대신 몸에 지니고 나갈 수 있는 보온 준비물이 또렷하게 남았다.",
+              "exposure_loss": 4.0,
+              "fatigue_gain": 2.0,
+              "noise": 1,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_apartment_boiler_warmth_success.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_apartment_boiler_warmth_success.png",
+              "title": "보일러실의 온기를 붙잡았다",
+              "text": "급히 뒤졌다면 낡은 담요와 빈 병 몇 개만 보였을 것이다. 시간을 들여 얼어붙은 배관을 정리한 덕분에, 밖으로 나가기 전 마지막으로 믿을 수 있는 보온 준비물을 챙겼다.",
+              "button": "온수병을 가방에 넣는다"
+            },
+            "set_flags": ["apartment_boiler_room_cleared", "apartment_boiler_warmth_point"],
             "consume_on_use": true
           }
         }
