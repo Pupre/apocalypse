@@ -58,8 +58,28 @@ theme_override_constants/separation = 12
 size_flags_horizontal = 3
 text = "도시 지도"
 
+[node name="StatusLabel" type="Label" parent="Panel/VBox/Header"]
+size_flags_horizontal = 3
+text = "탐색 기록 확인 중"
+horizontal_alignment = 2
+
+[node name="FocusButton" type="Button" parent="Panel/VBox/Header"]
+text = "현재 위치"
+
 [node name="CloseButton" type="Button" parent="Panel/VBox/Header"]
 text = "닫기"
+
+[node name="LegendRow" type="HBoxContainer" parent="Panel/VBox"]
+theme_override_constants/separation = 8
+
+[node name="PlayerLegendLabel" type="Label" parent="Panel/VBox/LegendRow"]
+text = "노란 점: 현재 위치"
+
+[node name="KnownLegendLabel" type="Label" parent="Panel/VBox/LegendRow"]
+text = "밝은 구역: 확인한 거리"
+
+[node name="FogLegendLabel" type="Label" parent="Panel/VBox/LegendRow"]
+text = "검은 구역: 아직 모름"
 
 [node name="Margin" type="MarginContainer" parent="Panel/VBox"]
 size_flags_horizontal = 3

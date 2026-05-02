@@ -56,6 +56,7 @@ func _run_test() -> void:
 	var difficulty_status_label := survivor_creator.get_node_or_null("Center/Panel/VBox/DifficultyStatusLabel") as Label
 	var athlete_button := survivor_creator.get_node_or_null("Center/Panel/VBox/TraitButtons/AthleteButton") as CheckButton
 	var unlucky_button := survivor_creator.get_node_or_null("Center/Panel/VBox/TraitButtons/UnluckyButton") as CheckButton
+	var summary_label := survivor_creator.get_node_or_null("Center/Panel/VBox/SummaryLabel") as Label
 	var confirm_button := survivor_creator.get_node_or_null("Center/Panel/VBox/ConfirmButton") as Button
 
 	if not assert_true(courier_button != null, "Courier button is missing."):
@@ -70,14 +71,15 @@ func _run_test() -> void:
 	if not assert_true(unlucky_button != null, "Unlucky trait button is missing."):
 		bootstrap.free()
 		return
-	if not assert_true(confirm_button != null, "Confirm button is missing."):
+	if not assert_true(summary_label != null and confirm_button != null, "Summary and confirm controls are missing."):
 		bootstrap.free()
 		return
 
 	assert_true(confirm_button.disabled, "Confirm should be gated until the selection is valid.")
 	assert_true(easy_button.disabled, "Easy should be selected by default.")
 	assert_true(not hard_button.disabled, "Hard should be available when the creator opens.")
-	assert_eq(difficulty_status_label.text, "난이도: 이지", "Creator should describe the default difficulty.")
+	assert_true(difficulty_status_label.text.find("이지") != -1, "Creator should describe the default difficulty.")
+	assert_true(summary_label.text.find("출발 준비 중") != -1, "Creator should summarize that the loadout is not ready yet.")
 
 	courier_button.emit_signal("pressed")
 	hard_button.emit_signal("pressed")
@@ -89,9 +91,11 @@ func _run_test() -> void:
 	assert_eq(survivor_creator.trait_ids, ["athlete", "unlucky"], "Traits should preserve selection order.")
 	assert_eq(survivor_creator.remaining_points, 0, "Expected selected traits to spend all points.")
 	assert_true(not easy_button.disabled and hard_button.disabled, "Pressing hard should flip the selected difficulty button.")
-	assert_eq(difficulty_status_label.text, "난이도: 하드", "Creator should refresh the visible difficulty status after selection.")
+	assert_true(difficulty_status_label.text.find("하드") != -1, "Creator should refresh the visible difficulty status after selection.")
 	assert_eq(String(survivor_creator.get_survivor_config().get("difficulty", "")), "hard", "Survivor config should preserve the selected difficulty.")
 	assert_true(not confirm_button.disabled, "Confirm should enable once the selection is valid.")
+	assert_eq(confirm_button.text, "이 생존자로 시작", "Valid selections should switch the CTA into a clear start command.")
+	assert_true(summary_label.text.find("출발 가능") != -1, "Creator summary should surface that the final loadout can start.")
 
 	confirm_button.emit_signal("pressed")
 

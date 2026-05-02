@@ -81,6 +81,7 @@ func _run_test() -> void:
 	var difficulty_status_label := survivor_creator.get_node_or_null("Center/Panel/VBox/DifficultyStatusLabel") as Label
 	var athlete_button := survivor_creator.get_node_or_null("Center/Panel/VBox/TraitButtons/AthleteButton") as CheckButton
 	var unlucky_button := survivor_creator.get_node_or_null("Center/Panel/VBox/TraitButtons/UnluckyButton") as CheckButton
+	var creator_summary_label := survivor_creator.get_node_or_null("Center/Panel/VBox/SummaryLabel") as Label
 	var confirm_button := survivor_creator.get_node_or_null("Center/Panel/VBox/ConfirmButton") as Button
 
 	if not assert_true(courier_button != null, "Courier button is missing."):
@@ -95,13 +96,14 @@ func _run_test() -> void:
 	if not assert_true(unlucky_button != null, "Unlucky trait button is missing."):
 		bootstrap.free()
 		return
-	if not assert_true(confirm_button != null, "Confirm button is missing."):
+	if not assert_true(creator_summary_label != null and confirm_button != null, "Summary or confirm button is missing."):
 		bootstrap.free()
 		return
 
 	assert_true(easy_button.disabled, "Easy should be the default selected difficulty.")
 	assert_true(not hard_button.disabled, "Hard should start available.")
-	assert_eq(difficulty_status_label.text, "난이도: 이지", "The creator should surface the default easy difficulty.")
+	assert_true(difficulty_status_label.text.find("이지") != -1, "The creator should surface the default easy difficulty.")
+	assert_true(creator_summary_label.text.find("출발 준비 중") != -1, "The creator should surface an early loadout readiness summary.")
 
 	courier_button.emit_signal("pressed")
 	athlete_button.button_pressed = true
@@ -113,6 +115,7 @@ func _run_test() -> void:
 	assert_eq(int(survivor_config.get("remaining_points", -1)), 0, "The creator payload should spend all available points.")
 	assert_eq(String(survivor_config.get("difficulty", "")), "easy", "The creator payload should default new runs to easy difficulty.")
 	assert_true(not confirm_button.disabled, "The creator confirm button should be enabled before confirmation.")
+	assert_true(creator_summary_label.text.find("출발 가능") != -1, "The creator should update the summary once the loadout is valid.")
 
 	confirm_button.emit_signal("pressed")
 	assert_eq(_confirmed_job_id, "courier", "Confirm should emit the selected job id.")

@@ -118,6 +118,8 @@ func _run_test() -> void:
 	var frost_crystals := outdoor_mode.get_node_or_null("CanvasLayer/FrostCrystals") as TextureRect
 	var map_overlay := outdoor_mode.get_node_or_null("MapOverlay") as CanvasLayer
 	var full_map_view := outdoor_mode.get_node_or_null("MapOverlay/Panel/VBox/Margin/MapView") as Control
+	var map_status_label := outdoor_mode.get_node_or_null("MapOverlay/Panel/VBox/Header/StatusLabel") as Label
+	var map_focus_button := outdoor_mode.get_node_or_null("MapOverlay/Panel/VBox/Header/FocusButton") as Button
 	var overlay_close := outdoor_mode.get_node_or_null("MapOverlay/Panel/VBox/Header/CloseButton") as Button
 	if not assert_true(top_ribbon != null, "Outdoor mode should expose a compact outdoor status ribbon."):
 		outdoor_mode.free()
@@ -146,7 +148,7 @@ func _run_test() -> void:
 	if not assert_true(full_map_view != null, "Outdoor overlay should mount a full-map renderer."):
 		outdoor_mode.free()
 		return
-	if not assert_true(overlay_close != null, "Outdoor map overlay should expose a close button above the HUD."):
+	if not assert_true(map_status_label != null and map_focus_button != null and overlay_close != null, "Outdoor map overlay should expose status, focus, and close controls above the map."):
 		outdoor_mode.free()
 		return
 	if not assert_true(outdoor_mode.has_method("get_world_bounds"), "Outdoor mode should expose get_world_bounds() for district-scale verification."):
@@ -167,6 +169,8 @@ func _run_test() -> void:
 	outdoor_mode.bind_run_state(run_state)
 	outdoor_mode.show_map_overlay()
 	assert_true(map_overlay.visible, "show_map_overlay() should reveal the full-screen map.")
+	assert_true(map_status_label.text.find("탐색") >= 0, "Outdoor map overlay should summarize explored map coverage.")
+	assert_true(map_focus_button.icon != null, "Outdoor map overlay should expose an icon button for returning to the player's position.")
 	var minute_before_pause: int = run_state.clock.minute_of_day
 	outdoor_mode.simulate_seconds(60.0)
 	assert_eq(run_state.clock.minute_of_day, minute_before_pause, "Outdoor simulation should pause while the full map overlay is open.")

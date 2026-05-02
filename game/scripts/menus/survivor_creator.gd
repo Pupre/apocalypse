@@ -2,6 +2,14 @@ extends Control
 
 signal survivor_confirmed(job_id: String, trait_ids: Array[String])
 
+const UiKitResolver = preload("res://scripts/ui/ui_kit_resolver.gd")
+
+const TEXT_PRIMARY_COLOR := Color(1.0, 1.0, 1.0, 1.0)
+const TEXT_SECONDARY_COLOR := Color(0.92, 0.96, 1.0, 0.98)
+const TEXT_MUTED_COLOR := Color(0.76, 0.84, 0.90, 0.96)
+const TEXT_WARNING_COLOR := Color(1.0, 0.88, 0.66, 1.0)
+const TEXT_GOOD_COLOR := Color(0.76, 1.0, 0.86, 1.0)
+const TEXT_OUTLINE_COLOR := Color(0.0, 0.02, 0.04, 1.0)
 const BASE_POINTS := 0
 const DEFAULT_DIFFICULTY := "easy"
 const JOB_BUTTON_PATHS := {
@@ -23,6 +31,7 @@ const DIFFICULTY_STATUS_LABEL_PATH := "Center/Panel/VBox/DifficultyStatusLabel"
 const TRAIT_STATUS_LABEL_PATH := "Center/Panel/VBox/TraitStatusLabel"
 const POINTS_LABEL_PATH := "Center/Panel/VBox/PointsLabel"
 const CONFIRM_BUTTON_PATH := "Center/Panel/VBox/ConfirmButton"
+const SUMMARY_LABEL_PATH := "Center/Panel/VBox/SummaryLabel"
 
 var job_id: String = ""
 var trait_ids: Array[String] = []
@@ -39,9 +48,12 @@ var _job_status_label: Label
 var _difficulty_status_label: Label
 var _trait_status_label: Label
 var _points_label: Label
+var _summary_label: Label
 var _confirm_button: Button
 var _ui_bound := false
 var _content_loaded := false
+var _skin_applied := false
+var _ui_kit_resolver := UiKitResolver.new()
 
 
 func _ready() -> void:
@@ -65,6 +77,7 @@ func load_content() -> void:
 		_bind_ui()
 		_ui_bound = true
 
+	_apply_ui_skin()
 	_refresh_view()
 	_content_loaded = true
 
@@ -143,6 +156,7 @@ func _cache_ui() -> void:
 	_difficulty_status_label = get_node_or_null(DIFFICULTY_STATUS_LABEL_PATH) as Label
 	_trait_status_label = get_node_or_null(TRAIT_STATUS_LABEL_PATH) as Label
 	_points_label = get_node_or_null(POINTS_LABEL_PATH) as Label
+	_summary_label = get_node_or_null(SUMMARY_LABEL_PATH) as Label
 	_confirm_button = get_node_or_null(CONFIRM_BUTTON_PATH) as Button
 
 
@@ -230,10 +244,20 @@ func _refresh_view() -> void:
 		_trait_status_label.text = _trait_status_text()
 
 	if _points_label != null:
-		_points_label.text = "남은 포인트: %d" % remaining_points
+		_points_label.text = _points_status_text()
+		_apply_label_style(
+			_points_label,
+			15,
+			TEXT_GOOD_COLOR if remaining_points == 0 else TEXT_WARNING_COLOR,
+			2
+		)
+
+	if _summary_label != null:
+		_summary_label.text = _summary_text()
 
 	if _confirm_button != null:
 		_confirm_button.disabled = not is_valid_selection()
+		_confirm_button.text = "이 생존자로 시작" if is_valid_selection() else "직업과 균형을 맞춰야 한다"
 
 
 func _on_job_button_pressed(job_key: String) -> void:
@@ -259,27 +283,156 @@ func _selected_trait_cost_total() -> int:
 
 func _job_status_text() -> String:
 	if job_id == "":
-		return "직업: 선택 안 함"
+		return "아직 정하지 않았다. 첫 동선과 가방 여유를 바꿀 선택이다."
 
 	var job_data: Dictionary = _jobs.get(job_id, {})
-	return "직업: %s" % String(job_data.get("name", job_id))
+	var job_name := String(job_data.get("name", job_id))
+	if job_id == "clerk":
+		return "%s · 매장과 창고 수색에 익숙하고 가방 여유가 조금 늘어난다." % job_name
+	if job_id == "courier":
+		return "%s · 바깥길을 빠르게 읽고 오래 걸어도 피로가 덜 쌓인다." % job_name
+	return "%s · %s" % [job_name, String(job_data.get("description", ""))]
 
 
 func _trait_status_text() -> String:
 	if trait_ids.is_empty():
-		return "특성: 선택 안 함"
+		return "특성 없음 · 안정적이지만 강점도 약점도 흐릿하다."
 
 	var selected_traits: Array[String] = []
 	for trait_key in trait_ids:
 		var trait_data: Dictionary = _traits.get(trait_key, {})
-		selected_traits.append(String(trait_data.get("name", trait_key)))
+		selected_traits.append(_trait_summary(trait_key, trait_data))
 
-	return "특성: %s" % ", ".join(selected_traits)
+	return " / ".join(selected_traits)
 
 
 func _difficulty_status_text() -> String:
 	var difficulty_name := "이지" if difficulty_id == "easy" else "하드"
-	return "난이도: %s" % difficulty_name
+	if difficulty_id == "easy":
+		return "%s · 조합 실험과 초반 판단을 더 너그럽게 받아준다." % difficulty_name
+	return "%s · 조합 힌트가 줄어들어 알고 있는 선택의 무게가 커진다." % difficulty_name
+
+
+func _points_status_text() -> String:
+	if remaining_points == 0:
+		return "균형: 맞음"
+	if remaining_points > 0:
+		return "균형: 약점 보상이 %d 남음" % remaining_points
+	return "균형: 강점 대가가 %d 부족함" % abs(remaining_points)
+
+
+func _summary_text() -> String:
+	var parts: Array[String] = []
+	if job_id.is_empty():
+		parts.append("직업 미정")
+	else:
+		parts.append(String((_jobs.get(job_id, {}) as Dictionary).get("name", job_id)))
+	parts.append("이지" if difficulty_id == "easy" else "하드")
+	if trait_ids.is_empty():
+		parts.append("특성 없음")
+	else:
+		var names: Array[String] = []
+		for trait_key in trait_ids:
+			names.append(String((_traits.get(trait_key, {}) as Dictionary).get("name", trait_key)))
+		parts.append(", ".join(names))
+	var verdict := "출발 가능" if is_valid_selection() else "출발 준비 중"
+	return "%s · %s" % [" / ".join(parts), verdict]
+
+
+func _trait_summary(trait_key: String, trait_data: Dictionary) -> String:
+	var trait_name := String(trait_data.get("name", trait_key))
+	match trait_key:
+		"athlete":
+			return "%s: 이동과 피로에 강하지만 대가가 크다." % trait_name
+		"light_sleeper":
+			return "%s: 잠을 덜 자도 반응이 빠르다." % trait_name
+		"unlucky":
+			return "%s: 수색 운이 나쁘지만 강점 비용을 메워준다." % trait_name
+		"heavy_sleeper":
+			return "%s: 회복은 길어지지만 아침 대응이 늦다." % trait_name
+	return "%s (%+d)" % [trait_name, int(trait_data.get("cost", 0))]
+
+
+func _apply_ui_skin() -> void:
+	if _skin_applied:
+		return
+	_skin_applied = true
+
+	var panel := get_node_or_null("Center/Panel") as PanelContainer
+	_ui_kit_resolver.apply_panel(panel, "sheet/sheet_bg_compact.png")
+
+	var labels := [
+		get_node_or_null("Center/Panel/VBox/TitleLabel") as Label,
+		get_node_or_null("Center/Panel/VBox/SubtitleLabel") as Label,
+		get_node_or_null("Center/Panel/VBox/JobHeadingLabel") as Label,
+		get_node_or_null("Center/Panel/VBox/DifficultyHeadingLabel") as Label,
+		get_node_or_null("Center/Panel/VBox/TraitHeadingLabel") as Label,
+	]
+	_apply_label_style(labels[0], 24, TEXT_PRIMARY_COLOR, 4)
+	_apply_label_style(labels[1], 15, TEXT_SECONDARY_COLOR, 2)
+	_apply_label_style(labels[2], 16, TEXT_PRIMARY_COLOR, 3)
+	_apply_label_style(labels[3], 16, TEXT_PRIMARY_COLOR, 3)
+	_apply_label_style(labels[4], 16, TEXT_PRIMARY_COLOR, 3)
+	_apply_label_style(_job_status_label, 15, TEXT_SECONDARY_COLOR, 2)
+	_apply_label_style(_difficulty_status_label, 15, TEXT_SECONDARY_COLOR, 2)
+	_apply_label_style(_trait_status_label, 15, TEXT_SECONDARY_COLOR, 2)
+	_apply_label_style(_summary_label, 16, TEXT_PRIMARY_COLOR, 3)
+	_apply_label_style(_points_label, 15, TEXT_GOOD_COLOR, 2)
+
+	for button_variant in _job_buttons.values():
+		_apply_choice_button(button_variant as Button)
+	for button_variant in _difficulty_buttons.values():
+		_apply_choice_button(button_variant as Button)
+	for button_variant in _trait_buttons.values():
+		_apply_choice_button(button_variant as Button)
+	_apply_primary_button(_confirm_button)
+
+
+func _apply_choice_button(button: Button) -> void:
+	if button == null:
+		return
+	button.custom_minimum_size = Vector2(0, 48)
+	button.focus_mode = Control.FOCUS_NONE
+	_ui_kit_resolver.apply_button(
+		button,
+		"sheet/sheet_button_secondary_normal.png",
+		"sheet/sheet_button_secondary_pressed.png",
+		"sheet/sheet_button_secondary_pressed.png",
+		"sheet/sheet_button_primary_pressed.png"
+	)
+	button.add_theme_font_size_override("font_size", 15)
+	button.add_theme_color_override("font_color", TEXT_PRIMARY_COLOR)
+	button.add_theme_color_override("font_outline_color", TEXT_OUTLINE_COLOR)
+	button.add_theme_constant_override("outline_size", 2)
+
+
+func _apply_primary_button(button: Button) -> void:
+	if button == null:
+		return
+	button.custom_minimum_size = Vector2(0, 56)
+	button.focus_mode = Control.FOCUS_NONE
+	_ui_kit_resolver.apply_button(
+		button,
+		"sheet/sheet_button_primary_normal.png",
+		"sheet/sheet_button_primary_pressed.png",
+		"sheet/sheet_button_primary_pressed.png",
+		"sheet/sheet_button_secondary_normal.png"
+	)
+	button.add_theme_font_size_override("font_size", 17)
+	button.add_theme_color_override("font_color", TEXT_PRIMARY_COLOR)
+	button.add_theme_color_override("font_outline_color", TEXT_OUTLINE_COLOR)
+	button.add_theme_constant_override("outline_size", 3)
+
+
+func _apply_label_style(label: Label, font_size: int, font_color: Color, outline_size: int) -> void:
+	if label == null:
+		return
+	label.modulate = font_color
+	label.add_theme_font_size_override("font_size", font_size)
+	label.add_theme_color_override("font_color", font_color)
+	label.add_theme_color_override("font_outline_color", TEXT_OUTLINE_COLOR)
+	label.add_theme_constant_override("outline_size", outline_size)
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 
 
 func _get_content_library() -> Node:
