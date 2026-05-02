@@ -123,6 +123,34 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 18
 theme_override_constants/margin_bottom = 16
 
+[node name="DecisionStrip" type="PanelContainer" parent="Panel/Layout/MainColumn"]
+custom_minimum_size = Vector2(0, 66)
+size_flags_horizontal = 3
+
+[node name="Padding" type="MarginContainer" parent="Panel/Layout/MainColumn/DecisionStrip"]
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 8
+
+[node name="HBox" type="HBoxContainer" parent="Panel/Layout/MainColumn/DecisionStrip/Padding"]
+theme_override_constants/separation = 10
+
+[node name="TextColumn" type="VBoxContainer" parent="Panel/Layout/MainColumn/DecisionStrip/Padding/HBox"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="TitleLabel" type="Label" parent="Panel/Layout/MainColumn/DecisionStrip/Padding/HBox/TextColumn"]
+text = "추천 흐름"
+
+[node name="DetailLabel" type="Label" parent="Panel/Layout/MainColumn/DecisionStrip/Padding/HBox/TextColumn"]
+text = "현재 행동을 정리하는 중"
+text_overrun_behavior = 3
+
+[node name="RecommendedActionButton" type="Button" parent="Panel/Layout/MainColumn/DecisionStrip/Padding/HBox"]
+custom_minimum_size = Vector2(104, 36)
+text = "바로 실행"
+
 [node name="ActionScroll" type="ScrollContainer" parent="Panel/Layout/MainColumn"]
 custom_minimum_size = Vector2(0, 360)
 size_flags_horizontal = 3

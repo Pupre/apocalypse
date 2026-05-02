@@ -226,6 +226,22 @@ func _run_test() -> void:
 		indoor_mode.free()
 		return
 
+	var decision_strip := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/DecisionStrip") as PanelContainer
+	var decision_title := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/DecisionStrip/Padding/HBox/TextColumn/TitleLabel") as Label
+	var decision_detail := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/DecisionStrip/Padding/HBox/TextColumn/DetailLabel") as Label
+	var decision_button := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/DecisionStrip/Padding/HBox/RecommendedActionButton") as Button
+	if not assert_true(decision_strip != null and decision_title != null and decision_detail != null and decision_button != null, "Indoor mode should expose a compact recommended-action decision strip."):
+		indoor_mode.free()
+		return
+	assert_true(decision_strip.visible, "Indoor decision strip should be visible when the current room has useful actions.")
+	assert_true(decision_title.text.length() > 0, "Indoor decision strip should name the recommended next action.")
+	assert_true(decision_detail.text.length() > 0, "Indoor decision strip should explain why the recommendation is useful.")
+	assert_true(not decision_button.disabled, "Indoor decision strip should offer a one-tap shortcut for the recommended action.")
+	var decision_style := decision_strip.get_theme_stylebox("panel") as StyleBoxTexture
+	if not assert_true(decision_style != null and decision_style.texture != null, "Indoor decision strip should use the compact texture-backed section style."):
+		indoor_mode.free()
+		return
+
 	var supply_picker_overlay := indoor_mode.get_node_or_null("SupplyPickerOverlay") as Control
 	var supply_picker_title := indoor_mode.get_node_or_null("SupplyPickerOverlay/Padding/VBox/TitleLabel") as Label
 	var supply_picker_status := indoor_mode.get_node_or_null("SupplyPickerOverlay/Padding/VBox/StatusLabel") as Label
@@ -324,6 +340,10 @@ func _run_test() -> void:
 	if not assert_true(action_scroll != null, "Indoor mode should expose a scrollable action list container."):
 		indoor_mode.free()
 		return
+	assert_true(
+		decision_strip.global_position.y < action_scroll.global_position.y,
+		"Indoor decision strip should sit above the scrolling action list so it guides the next tap before the long list."
+	)
 	assert_true(
 		action_scroll.custom_minimum_size.y >= 320.0,
 		"Indoor mode should reserve a larger portrait baseline for the main action list."

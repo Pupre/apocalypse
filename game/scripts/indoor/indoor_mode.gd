@@ -41,6 +41,10 @@ var _event_illustration: TextureRect = null
 var _summary_label: Label = null
 var _zone_status_row: HBoxContainer = null
 var _result_label: Label = null
+var _decision_strip: PanelContainer = null
+var _decision_title_label: Label = null
+var _decision_detail_label: Label = null
+var _decision_action_button: Button = null
 var _action_buttons: VBoxContainer = null
 var _map_button: Button = null
 var _bag_button: Button = null
@@ -65,6 +69,7 @@ var _ui_kit_resolver = UiKitResolver.new()
 var _skin_applied := false
 var _last_toast_feedback_message := ""
 var _active_supply_picker: Dictionary = {"visible": false}
+var _recommended_action_id := ""
 
 
 func configure(run_state, building_id: String = "mart_01") -> void:
@@ -110,6 +115,8 @@ func _bind_ui_buttons() -> void:
 		_survival_sheet.craft_applied.connect(Callable(self, "_on_survival_sheet_craft_applied"))
 	if _minimap_close_button != null and not _minimap_close_button.pressed.is_connected(Callable(self, "_on_minimap_close_pressed")):
 		_minimap_close_button.pressed.connect(Callable(self, "_on_minimap_close_pressed"))
+	if _decision_action_button != null and not _decision_action_button.pressed.is_connected(Callable(self, "_on_recommended_action_pressed")):
+		_decision_action_button.pressed.connect(Callable(self, "_on_recommended_action_pressed"))
 	if _supply_picker_minus_button != null and not _supply_picker_minus_button.pressed.is_connected(Callable(self, "_on_supply_picker_minus_pressed")):
 		_supply_picker_minus_button.pressed.connect(Callable(self, "_on_supply_picker_minus_pressed"))
 	if _supply_picker_plus_button != null and not _supply_picker_plus_button.pressed.is_connected(Callable(self, "_on_supply_picker_plus_pressed")):
@@ -209,6 +216,7 @@ func _refresh_action_buttons() -> void:
 		return
 
 	var grouped_actions := _group_actions(_director.get_actions())
+	_refresh_decision_strip(grouped_actions)
 	for section_id in ACTION_SECTION_ORDER:
 		var actions = grouped_actions.get(section_id, [])
 		if actions.is_empty():
@@ -290,6 +298,67 @@ func _group_actions(actions: Array[Dictionary]) -> Dictionary:
 		grouped[section_id] = bucket
 
 	return grouped
+
+
+func _refresh_decision_strip(grouped_actions: Dictionary) -> void:
+	if _decision_strip == null or _decision_title_label == null or _decision_detail_label == null or _decision_action_button == null:
+		return
+
+	var recommended := _recommended_action_from_groups(grouped_actions)
+	_recommended_action_id = String(recommended.get("id", ""))
+	_decision_strip.visible = not _recommended_action_id.is_empty()
+	if _recommended_action_id.is_empty():
+		_decision_title_label.text = "추천 흐름"
+		_decision_detail_label.text = "현재 선택지를 정리하는 중입니다."
+		_decision_action_button.disabled = true
+		return
+
+	var section_id := _section_for_action(recommended)
+	_decision_title_label.text = "추천: %s" % String(recommended.get("label", _recommended_action_id))
+	_decision_detail_label.text = _recommended_action_reason(recommended, section_id)
+	_decision_action_button.disabled = bool(recommended.get("locked", false))
+	_decision_action_button.tooltip_text = "%s\n%s" % [_decision_title_label.text, _decision_detail_label.text]
+
+
+func _recommended_action_from_groups(grouped_actions: Dictionary) -> Dictionary:
+	for section_id in ["interaction", "loot", "move"]:
+		for action_variant in grouped_actions.get(section_id, []):
+			var action := action_variant as Dictionary
+			if _is_recommendable_action(action, false):
+				return action
+	for section_id in ["interaction", "loot", "move"]:
+		for action_variant in grouped_actions.get(section_id, []):
+			var action := action_variant as Dictionary
+			if _is_recommendable_action(action, true):
+				return action
+	return {}
+
+
+func _is_recommendable_action(action: Dictionary, allow_risk: bool) -> bool:
+	if action.is_empty() or bool(action.get("locked", false)):
+		return false
+	var action_type := String(action.get("type", ""))
+	if action_type == "exit":
+		return false
+	if not allow_risk and _action_has_risk(action):
+		return false
+	return true
+
+
+func _recommended_action_reason(action: Dictionary, section_id: String) -> String:
+	if _action_has_risk(action):
+		return "위험이 있지만 진행 가능한 선택입니다. 비용을 확인하고 누르세요."
+	if section_id == "loot":
+		return "이미 확인된 물건입니다. 가방 여유를 보고 챙기기 좋습니다."
+	if section_id == "move":
+		return "현재 방에서 더 할 일이 적습니다. 다음 구역으로 흐름을 이어갑니다."
+	if _action_can_find_items(action) and _action_reveals_route_or_clue(action):
+		return "물건과 단서가 함께 열릴 수 있는 낮은 위험 탐색입니다."
+	if _action_can_find_items(action):
+		return "낮은 위험으로 물건을 확인할 수 있는 탐색입니다."
+	if _action_reveals_route_or_clue(action):
+		return "동선을 넓히는 단서 확인입니다. 먼저 눌러두기 좋습니다."
+	return "현재 위치를 안전하게 파악하는 선택입니다."
 
 
 func _action_should_come_first(a: Dictionary, b: Dictionary, section_id: String) -> bool:
@@ -842,6 +911,12 @@ func _on_minimap_close_pressed() -> void:
 		_minimap_overlay.visible = false
 
 
+func _on_recommended_action_pressed() -> void:
+	if _recommended_action_id.is_empty():
+		return
+	_on_action_pressed(_recommended_action_id)
+
+
 func _close_bag_sheet() -> void:
 	if _survival_sheet != null and _survival_sheet.visible and _survival_sheet.has_method("close_sheet"):
 		_survival_sheet.close_sheet()
@@ -874,6 +949,10 @@ func _cache_nodes() -> void:
 	_summary_label = get_node_or_null("Panel/Layout/MainColumn/ReadingCard/Padding/VBox/SummaryLabel") as Label
 	_zone_status_row = get_node_or_null("Panel/Layout/MainColumn/ReadingCard/Padding/VBox/ZoneStatusRow") as HBoxContainer
 	_result_label = get_node_or_null("Panel/Layout/MainColumn/ReadingCard/Padding/VBox/ResultLabel") as Label
+	_decision_strip = get_node_or_null("Panel/Layout/MainColumn/DecisionStrip") as PanelContainer
+	_decision_title_label = get_node_or_null("Panel/Layout/MainColumn/DecisionStrip/Padding/HBox/TextColumn/TitleLabel") as Label
+	_decision_detail_label = get_node_or_null("Panel/Layout/MainColumn/DecisionStrip/Padding/HBox/TextColumn/DetailLabel") as Label
+	_decision_action_button = get_node_or_null("Panel/Layout/MainColumn/DecisionStrip/Padding/HBox/RecommendedActionButton") as Button
 	_action_buttons = get_node_or_null("Panel/Layout/MainColumn/ActionScroll/ActionButtons") as VBoxContainer
 	_map_button = get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/MapButton") as Button
 	_bag_button = get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/BagButton") as Button
@@ -908,6 +987,7 @@ func _apply_ui_skin() -> void:
 	_ui_kit_resolver.apply_panel(location_strip, "indoor/indoor_location_strip_compact.png")
 	_ui_kit_resolver.apply_panel(reading_card, "indoor/indoor_reading_panel_plain.png")
 	_ui_kit_resolver.apply_panel(minimap_card, "indoor/indoor_minimap_frame.png")
+	_ui_kit_resolver.apply_panel(_decision_strip, "indoor/indoor_section_header_plain_compact.png")
 	_ui_kit_resolver.apply_panel(minimap_panel, "structure/structure_panel_bg.png")
 	_ui_kit_resolver.apply_panel(_supply_picker_overlay, "indoor/indoor_reading_panel_plain.png")
 	if _event_illustration != null:
@@ -952,6 +1032,11 @@ func _apply_ui_skin() -> void:
 		"sheet/sheet_button_secondary_normal.png",
 		"sheet/sheet_button_secondary_pressed.png"
 	)
+	_ui_kit_resolver.apply_button(
+		_decision_action_button,
+		"sheet/sheet_button_primary_normal.png",
+		"sheet/sheet_button_primary_pressed.png"
+	)
 	if _title_label != null:
 		_apply_label_style(_title_label, 15, TEXT_PRIMARY_COLOR, 3)
 	if _time_label != null:
@@ -964,6 +1049,12 @@ func _apply_ui_skin() -> void:
 		_apply_label_style(_summary_label, 16, TEXT_PRIMARY_COLOR, 3)
 	if _result_label != null:
 		_apply_label_style(_result_label, 15, TEXT_SECONDARY_COLOR, 3)
+	if _decision_title_label != null:
+		_apply_label_style(_decision_title_label, 14, TEXT_PRIMARY_COLOR, 2)
+	if _decision_detail_label != null:
+		_apply_label_style(_decision_detail_label, 12, TEXT_SECONDARY_COLOR, 2)
+	if _decision_action_button != null:
+		_apply_button_text_style(_decision_action_button, 13, TEXT_PRIMARY_COLOR, 2)
 	if _supply_picker_title != null:
 		_apply_label_style(_supply_picker_title, 16, TEXT_PRIMARY_COLOR, 2)
 	if _supply_picker_status != null:
