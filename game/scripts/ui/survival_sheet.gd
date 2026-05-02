@@ -548,7 +548,63 @@ func _create_inventory_row(row: Dictionary) -> Control:
 		_apply_label_style(meta_label, 13, TEXT_MUTED_COLOR, 1)
 		box.add_child(meta_label)
 
+	var tag_texts := _row_tag_texts(row)
+	if not tag_texts.is_empty():
+		var tag_row := HBoxContainer.new()
+		tag_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		tag_row.add_theme_constant_override("separation", 6)
+		box.add_child(tag_row)
+		for tag_text in tag_texts.slice(0, 3):
+			tag_row.add_child(_create_inventory_tag_chip(tag_text))
+
 	return panel
+
+
+func _row_tag_texts(row: Dictionary) -> Array[String]:
+	var tag_texts: Array[String] = []
+	var tag_texts_variant: Variant = row.get("tag_texts", [])
+	if typeof(tag_texts_variant) != TYPE_ARRAY:
+		return tag_texts
+	for tag_variant in tag_texts_variant:
+		var tag_text := String(tag_variant)
+		if tag_text.is_empty():
+			continue
+		tag_texts.append(tag_text)
+	return tag_texts
+
+
+func _create_inventory_tag_chip(text: String) -> PanelContainer:
+	var chip := PanelContainer.new()
+	chip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	chip.add_theme_stylebox_override("panel", _inventory_tag_chip_style())
+
+	var label := Label.new()
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.text = text
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_apply_label_style(label, 10, TEXT_SECONDARY_COLOR, 1)
+	chip.add_child(label)
+	return chip
+
+
+func _inventory_tag_chip_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.11, 0.18, 0.22, 0.92)
+	style.border_color = Color(0.55, 0.75, 0.82, 0.42)
+	style.border_width_left = 1
+	style.border_width_top = 1
+	style.border_width_right = 1
+	style.border_width_bottom = 1
+	style.corner_radius_top_left = 5
+	style.corner_radius_top_right = 5
+	style.corner_radius_bottom_left = 5
+	style.corner_radius_bottom_right = 5
+	style.content_margin_left = 6
+	style.content_margin_right = 6
+	style.content_margin_top = 2
+	style.content_margin_bottom = 2
+	return style
 
 
 func _render_item_detail() -> void:

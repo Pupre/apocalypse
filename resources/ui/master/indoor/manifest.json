@@ -4,6 +4,90 @@
   "source_rules": "Game-ready 2D sprite assets with transparent background outside intended shape only; no baked text; grounded frozen-city palette; 9-slice values when applicable.",
   "assets": [
     {
+      "filename": "indoor_action_row_compact_idle.png",
+      "purpose": "Default indoor action row for low-risk movement and interactions",
+      "size": "620x50",
+      "nine_slice": {
+        "left": 18,
+        "right": 18,
+        "top": 14,
+        "bottom": 14
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "indoor_action_row_compact_pressed.png",
+      "purpose": "Pressed indoor action row for low-risk movement and interactions",
+      "size": "620x50",
+      "nine_slice": {
+        "left": 18,
+        "right": 18,
+        "top": 14,
+        "bottom": 14
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "indoor_action_row_risk_idle.png",
+      "purpose": "Indoor action row for noisy, harmful, cold, or uncertain actions",
+      "size": "620x50",
+      "nine_slice": {
+        "left": 18,
+        "right": 18,
+        "top": 14,
+        "bottom": 14
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "indoor_action_row_risk_pressed.png",
+      "purpose": "Pressed indoor action row for noisy, harmful, cold, or uncertain actions",
+      "size": "620x50",
+      "nine_slice": {
+        "left": 18,
+        "right": 18,
+        "top": 14,
+        "bottom": 14
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "indoor_action_row_loot_idle.png",
+      "purpose": "Indoor action row for picking up discovered loot or supplies",
+      "size": "620x50",
+      "nine_slice": {
+        "left": 18,
+        "right": 18,
+        "top": 14,
+        "bottom": 14
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "indoor_action_row_loot_pressed.png",
+      "purpose": "Pressed indoor action row for picking up discovered loot or supplies",
+      "size": "620x50",
+      "nine_slice": {
+        "left": 18,
+        "right": 18,
+        "top": 14,
+        "bottom": 14
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
+      "filename": "indoor_action_row_locked_idle.png",
+      "purpose": "Muted indoor action row for locked routes that explain why they are blocked",
+      "size": "620x50",
+      "nine_slice": {
+        "left": 18,
+        "right": 18,
+        "top": 14,
+        "bottom": 14
+      },
+      "alpha_policy": "outside transparent only; interior opaque"
+    },
+    {
       "filename": "indoor_surface_panel_compact.png",
       "purpose": "Shared opaque indoor surface panel for location, reading, minimap, and result cards",
       "size": "320x192",

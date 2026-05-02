@@ -87,6 +87,9 @@ Historical docs live in `docs/handoffs/` and `docs/worklogs/`. Use these when yo
   - [2026-04-02 Indoor UI Restructure](handoffs/2026-04-02-indoor-ui-restructure.md)
   - [2026-04-02 Outdoor Visual Refresh](handoffs/2026-04-02-outdoor-visual-refresh.md)
 - Worklogs
+  - [2026-05-02 UI/UX 고급화 1차 패스](worklogs/2026-05-02-ui-ux-polish-pass.md)
+  - [2026-05-02 시각 리소스 및 체감 피드백 패스](worklogs/2026-05-02-visible-resource-pass.md)
+  - [2026-05-02 플레이어블 완성도 개선](worklogs/2026-05-02-playability-uplift.md)
   - [2026-04-01 Indoor Prototype Iteration](worklogs/2026-04-01-indoor-prototype-iteration.md)
   - [2026-04-02 Indoor UI Clarity Follow-up](worklogs/2026-04-02-indoor-ui-clarity-follow-up.md)
   - [2026-04-02 Indoor UI Restructure](worklogs/2026-04-02-indoor-ui-restructure.md)

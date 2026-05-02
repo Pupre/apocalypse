@@ -52,6 +52,8 @@ Systems already integrated in `main`:
 - 빵집, 서점, 정육점, 폐교 정문 주변 야외 블록에는 건물 진입 전 판단 압력을 주는 눈더미, 빙판, 틈바람 위험이 추가되었다.
 - 주인공 야외 스프라이트는 64px 기반 4방향 idle + 8프레임 walk로 교체해 큰 픽셀 덩어리감을 줄였고, 선형 필터링과 부드러운 상하 bob으로 배경 톤에 더 맞는 이동 애니메이션을 만든다.
 - 구멍가게, 반찬 가게, 수리점, 물류 보관소는 4구역 구조와 빠른 위험 수색/도구 기반 안전 수색 분기로 확장했고, 각 진입 블록에는 건물 앞 빙판, 틈바람, 눈더미 위험을 추가했다.
+- HUD, 실내 행동 카드, 생존 시트의 주요 UI PNG를 새 AI 방향 레퍼런스 기반의 결빙 휴대폰 UI 톤으로 재생성했고, 실내 행동은 `이동/탐색/획득/위험/막힘` 칩과 시간/위험/보상 보조 라벨을 함께 보여준다.
+- 가방 시트는 무게, 운반 상태, 야외 이동속도를 한 줄로 요약하고, 인벤토리 행에는 아이템 태그 칩을 붙여 조합/장착/소모 판단에 필요한 정보를 더 빨리 읽게 했다.
 
 ## 2026-05-02 Checkpoint
 
@@ -123,6 +125,7 @@ For the full active plan inventory, use `docs/INDEX.md`. The list below is the n
 - Keep the city globally open while revealing map knowledge per run from visited blocks only.
 - Replace the mismatched outdoor minimap/full-map split with a coherent spatial map stack: local minimap, draggable full outdoor map, fog-of-war, and separate indoor building-detail layer.
 - Keep the codex, note unlocks, lighter charges, and tool requirements aligned with the active crafting UI.
+- Continue the UI/UX uplift from the new frozen-phone kit: title/survivor creation, map overlay, supply picker, codex, and future story illustration panels should use the same decision-first visual language.
 - Continuously remove dead code, obsolete UI paths, temporary scaffolding, and other local junk that would otherwise pollute future implementation patterns.
 
 ## Temporary Development Conditions

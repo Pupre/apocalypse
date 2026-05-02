@@ -16,6 +16,7 @@ var _top_ribbon: PanelContainer
 var _header_shell: PanelContainer
 var _gauge_shell: PanelContainer
 var _title_label: Label
+var _status_label: Label
 var _clock_label: Label
 var _map_button: Button
 var _bag_button: Button
@@ -59,6 +60,8 @@ func refresh() -> void:
 
 	if _clock_label != null:
 		_clock_label.text = run_state.clock.get_clock_label()
+	if _status_label != null:
+		_status_label.text = _outdoor_status_line()
 	if _gauge_row != null and _gauge_row.has_method("set_run_state"):
 		_gauge_row.set_run_state(run_state)
 
@@ -68,6 +71,7 @@ func _cache_nodes() -> void:
 	_header_shell = get_node_or_null("TopRibbon/Margin/Stack/HeaderShell") as PanelContainer
 	_gauge_shell = get_node_or_null("TopRibbon/Margin/Stack/GaugeShell") as PanelContainer
 	_title_label = get_node_or_null("TopRibbon/Margin/Stack/HeaderShell/HeaderMargin/HeaderRow/TitleLabel") as Label
+	_status_label = get_node_or_null("TopRibbon/Margin/Stack/HeaderShell/HeaderMargin/HeaderRow/StatusLabel") as Label
 	_clock_label = get_node_or_null("TopRibbon/Margin/Stack/HeaderShell/HeaderMargin/HeaderRow/ClockLabel") as Label
 	_map_button = get_node_or_null("TopRibbon/Margin/Stack/HeaderShell/HeaderMargin/HeaderRow/MapButton") as Button
 	_bag_button = get_node_or_null("TopRibbon/Margin/Stack/HeaderShell/HeaderMargin/HeaderRow/BagButton") as Button
@@ -103,6 +107,9 @@ func _apply_ui_skin() -> void:
 	)
 	if _title_label != null:
 		_apply_label_style(_title_label, 14, TEXT_PRIMARY_COLOR, 2)
+	if _status_label != null:
+		_apply_label_style(_status_label, 13, TEXT_SECONDARY_COLOR, 1)
+		_status_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	if _clock_label != null:
 		_apply_label_style(_clock_label, 14, TEXT_SECONDARY_COLOR, 2)
 	if _map_button != null:
@@ -122,10 +129,26 @@ func _apply_ui_skin() -> void:
 
 
 func _set_empty_state() -> void:
+	if _status_label != null:
+		_status_label.text = "상태 확인 중"
 	if _clock_label != null:
 		_clock_label.text = "시각: --"
 	if _gauge_row != null and _gauge_row.has_method("set_run_state"):
 		_gauge_row.set_run_state(null)
+
+
+func _outdoor_status_line() -> String:
+	if run_state == null:
+		return "상태 확인 중"
+	var parts: Array[String] = []
+	if run_state.has_method("get_temperature_stage"):
+		parts.append("추위 %s" % String(run_state.get_temperature_stage()))
+	if run_state.has_method("get_carry_state_label"):
+		parts.append("가방 %s" % String(run_state.get_carry_state_label()))
+	if run_state.has_method("get_outdoor_move_speed") and float(run_state.move_speed) > 0.0:
+		var speed_ratio := float(run_state.get_outdoor_move_speed()) / float(run_state.move_speed)
+		parts.append("속도 %d%%" % int(round(speed_ratio * 100.0)))
+	return " · ".join(parts)
 
 
 func _on_map_button_pressed() -> void:

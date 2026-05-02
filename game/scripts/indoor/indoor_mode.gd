@@ -286,23 +286,20 @@ func _create_action_button(action: Dictionary, section_id: String) -> Button:
 	var action_id := String(action.get("id", ""))
 	var button := Button.new()
 	button.text = ""
-	button.custom_minimum_size = Vector2(0, 50)
+	button.custom_minimum_size = Vector2(0, 66)
 	button.focus_mode = Control.FOCUS_NONE
 	button.set_meta("action_id", action_id)
-	_ui_kit_resolver.apply_button(
-		button,
-		"indoor/indoor_action_row_compact_idle.png",
-		"indoor/indoor_action_row_compact_pressed.png"
-	)
+	var style_paths := _action_style_paths(action, section_id)
+	_ui_kit_resolver.apply_button(button, String(style_paths[0]), String(style_paths[1]))
 	button.add_theme_constant_override("h_separation", 0)
 
 	var padding := MarginContainer.new()
 	padding.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	padding.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	padding.add_theme_constant_override("margin_left", 10)
-	padding.add_theme_constant_override("margin_top", 8)
+	padding.add_theme_constant_override("margin_left", 12)
+	padding.add_theme_constant_override("margin_top", 7)
 	padding.add_theme_constant_override("margin_right", 12)
-	padding.add_theme_constant_override("margin_bottom", 8)
+	padding.add_theme_constant_override("margin_bottom", 7)
 	button.add_child(padding)
 
 	var row := HBoxContainer.new()
@@ -345,7 +342,7 @@ func _create_action_button(action: Dictionary, section_id: String) -> Button:
 	text_column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	text_column.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	text_column.alignment = BoxContainer.ALIGNMENT_CENTER
-	text_column.add_theme_constant_override("separation", 0)
+	text_column.add_theme_constant_override("separation", 2)
 	row.add_child(text_column)
 
 	var label := Label.new()
@@ -358,19 +355,175 @@ func _create_action_button(action: Dictionary, section_id: String) -> Button:
 	_apply_label_style(label, 15, TEXT_PRIMARY_COLOR, 2)
 	text_column.add_child(label)
 
-	var detail_text := String(action.get("detail_label", ""))
-	if not detail_text.is_empty():
-		var detail_label := Label.new()
-		detail_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		detail_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		detail_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		detail_label.autowrap_mode = TextServer.AUTOWRAP_OFF
-		detail_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-		detail_label.text = detail_text
-		_apply_label_style(detail_label, 12, TEXT_SECONDARY_COLOR, 1)
-		text_column.add_child(detail_label)
+	var detail_text := _action_detail_text(action, section_id)
+	var detail_label := Label.new()
+	detail_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	detail_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	detail_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	detail_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	detail_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	detail_label.text = detail_text
+	_apply_label_style(detail_label, 12, _action_detail_color(action, section_id), 1)
+	text_column.add_child(detail_label)
 
+	var meta_column := VBoxContainer.new()
+	meta_column.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	meta_column.custom_minimum_size = Vector2(76, 0)
+	meta_column.alignment = BoxContainer.ALIGNMENT_CENTER
+	meta_column.add_theme_constant_override("separation", 3)
+	row.add_child(meta_column)
+
+	var chip := _create_action_chip(_action_chip_text(action, section_id), _action_chip_color(action, section_id))
+	meta_column.add_child(chip)
+
+	var time_text := _action_time_text(action)
+	if not time_text.is_empty():
+		var time_label := Label.new()
+		time_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		time_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		time_label.text = time_text
+		_apply_label_style(time_label, 11, TEXT_SECONDARY_COLOR, 1)
+		meta_column.add_child(time_label)
+
+	button.tooltip_text = "%s\n%s" % [label.text, detail_text] if not detail_text.is_empty() else label.text
 	return button
+
+
+func _action_style_paths(action: Dictionary, section_id: String) -> Array[String]:
+	if bool(action.get("locked", false)):
+		return ["indoor/indoor_action_row_locked_idle.png", "indoor/indoor_action_row_locked_idle.png"]
+	if _action_has_risk(action):
+		return ["indoor/indoor_action_row_risk_idle.png", "indoor/indoor_action_row_risk_pressed.png"]
+	if section_id == "loot":
+		return ["indoor/indoor_action_row_loot_idle.png", "indoor/indoor_action_row_loot_pressed.png"]
+	return ["indoor/indoor_action_row_compact_idle.png", "indoor/indoor_action_row_compact_pressed.png"]
+
+
+func _action_detail_text(action: Dictionary, section_id: String) -> String:
+	var explicit_detail := String(action.get("detail_label", ""))
+	if not explicit_detail.is_empty():
+		return explicit_detail
+	if bool(action.get("locked", false)):
+		var blocked := String(action.get("blocked_feedback", ""))
+		return blocked if not blocked.is_empty() else "조건을 맞춰야 열린다"
+	match section_id:
+		"move":
+			return "위치를 바꾸면 시간이 흐른다"
+		"loot":
+			return _loot_action_detail(action)
+		"interaction":
+			return "결과에 따라 다음 선택지가 열린다"
+		_:
+			return ""
+
+
+func _loot_action_detail(action: Dictionary) -> String:
+	var action_type := String(action.get("type", ""))
+	if action_type == "take_supply_detail":
+		var item_name := String(action.get("item_name", "물건"))
+		var max_quantity := int(action.get("max_quantity", 0))
+		if max_quantity > 0:
+			return "%s · 최대 %d개까지 선택" % [item_name, max_quantity]
+		return "%s · 지금은 챙길 수 없음" % item_name
+	if action_type == "take_supply":
+		var quantity_remaining := int(action.get("quantity_remaining", 0))
+		return "남은 재고 %d개" % quantity_remaining if quantity_remaining > 0 else "재고 확인 필요"
+	var loot_variant: Variant = action.get("loot", {})
+	if typeof(loot_variant) == TYPE_DICTIONARY:
+		var loot := loot_variant as Dictionary
+		var loot_name := String(loot.get("name", loot.get("id", "물건")))
+		return "%s · 가방 여유 확인" % loot_name
+	return "가방 여유 확인"
+
+
+func _action_detail_color(action: Dictionary, section_id: String) -> Color:
+	if bool(action.get("locked", false)) or _action_has_risk(action):
+		return TEXT_EVENT_WARNING_COLOR
+	if section_id == "loot":
+		return TEXT_EVENT_SUCCESS_COLOR
+	return TEXT_SECONDARY_COLOR
+
+
+func _action_time_text(action: Dictionary) -> String:
+	var minutes := int(action.get("minute_cost", action.get("sleep_minutes", action.get("rest_minutes", 0))))
+	return "%d분" % minutes if minutes > 0 else ""
+
+
+func _action_chip_text(action: Dictionary, section_id: String) -> String:
+	if bool(action.get("locked", false)):
+		return "막힘"
+	if _action_has_risk(action):
+		return "위험"
+	if section_id == "loot":
+		return "획득"
+	if String(action.get("type", "")) == "move":
+		return "이동"
+	if int(action.get("rest_minutes", 0)) > 0:
+		return "회복"
+	if int(action.get("sleep_minutes", 0)) > 0:
+		return "수면"
+	return "탐색"
+
+
+func _action_chip_color(action: Dictionary, section_id: String) -> Color:
+	if bool(action.get("locked", false)):
+		return Color(0.18, 0.21, 0.24, 0.94)
+	if _action_has_risk(action):
+		return Color(0.58, 0.27, 0.16, 0.96)
+	if section_id == "loot":
+		return Color(0.16, 0.42, 0.34, 0.96)
+	if String(action.get("type", "")) == "move":
+		return Color(0.18, 0.36, 0.45, 0.96)
+	return Color(0.24, 0.31, 0.39, 0.96)
+
+
+func _create_action_chip(text: String, color: Color) -> PanelContainer:
+	var panel := PanelContainer.new()
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	panel.custom_minimum_size = Vector2(58, 19)
+	panel.add_theme_stylebox_override("panel", _action_chip_style(color))
+
+	var label := Label.new()
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.text = text
+	_apply_label_style(label, 10, TEXT_PRIMARY_COLOR, 1)
+	panel.add_child(label)
+	return panel
+
+
+func _action_chip_style(color: Color) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = color
+	style.border_color = Color(0.72, 0.86, 0.92, 0.52)
+	style.border_width_left = 1
+	style.border_width_top = 1
+	style.border_width_right = 1
+	style.border_width_bottom = 1
+	style.corner_radius_top_left = 5
+	style.corner_radius_top_right = 5
+	style.corner_radius_bottom_left = 5
+	style.corner_radius_bottom_right = 5
+	style.content_margin_left = 6
+	style.content_margin_right = 6
+	style.content_margin_top = 2
+	style.content_margin_bottom = 2
+	return style
+
+
+func _action_has_risk(action: Dictionary) -> bool:
+	var pressure: Dictionary = {}
+	var pressure_variant: Variant = action.get("pressure", {})
+	if typeof(pressure_variant) == TYPE_DICTIONARY:
+		pressure = pressure_variant as Dictionary
+	var noise := int(action.get("noise_cost", 0)) + int(pressure.get("noise", 0))
+	if noise > 0:
+		return true
+	for key in ["health_loss", "exposure_loss", "fatigue_gain"]:
+		if float(pressure.get(key, 0.0)) > 0.0:
+			return true
+	return false
 
 
 func _create_exit_shortcut_button(exit_action: Dictionary) -> Button:
@@ -411,6 +564,11 @@ func _action_icon(action: Dictionary, section_id: String) -> Texture2D:
 			var item_icon := _item_icon_resolver.get_item_icon(loot_id)
 			if item_icon != null:
 				return item_icon
+	if action_type == "take_supply" or action_type == "take_supply_detail":
+		var supply_item_id := String(action.get("item_id", ""))
+		var supply_icon := _item_icon_resolver.get_item_icon(supply_item_id)
+		if supply_icon != null:
+			return supply_icon
 	if action_type == "exit":
 		return _load_icon(String(ACTION_ICON_PATHS.get("exit", "")))
 	return _load_icon(String(ACTION_ICON_PATHS.get(section_id, "")))

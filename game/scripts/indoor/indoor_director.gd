@@ -235,13 +235,16 @@ func get_inventory_status_text() -> String:
 		return ""
 
 	var state_label: String = _run_state.get_carry_state_label() if _run_state.has_method("get_carry_state_label") else "적정"
-	if state_label == "적정":
-		return "적정"
+	var summary: Dictionary = _run_state.get_carry_weight_summary() if _run_state.has_method("get_carry_weight_summary") else {}
+	var weight_text := "%.1f/%.1fkg" % [
+		float(summary.get("total_weight", 0.0)),
+		float(summary.get("carry_capacity", 0.0))
+	]
 	if not _run_state.has_method("get_outdoor_move_speed") or _run_state.move_speed <= 0.0:
-		return state_label
+		return "가방 %s · %s" % [state_label, weight_text]
 
 	var speed_ratio := float(_run_state.get_outdoor_move_speed()) / float(_run_state.move_speed)
-	return "%s: 실외 이동속도 %d%%" % [state_label, int(round(speed_ratio * 100.0))]
+	return "가방 %s · %s · 야외 속도 %d%%" % [state_label, weight_text, int(round(speed_ratio * 100.0))]
 
 
 func get_inventory_rows() -> Array[Dictionary]:
