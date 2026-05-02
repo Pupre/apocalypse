@@ -1,9 +1,9 @@
 extends CanvasLayer
 
 const UiKitResolver = preload("res://scripts/ui/ui_kit_resolver.gd")
-const TEXT_PRIMARY_COLOR := Color(0.96, 0.98, 1.0, 0.98)
-const TEXT_SECONDARY_COLOR := Color(0.9, 0.94, 0.98, 0.96)
-const TEXT_OUTLINE_COLOR := Color(0.04, 0.06, 0.09, 0.94)
+const TEXT_PRIMARY_COLOR := Color(1.0, 1.0, 1.0, 1.0)
+const TEXT_SECONDARY_COLOR := Color(0.94, 0.97, 1.0, 0.98)
+const TEXT_OUTLINE_COLOR := Color(0.0, 0.02, 0.04, 1.0)
 
 signal bag_requested
 signal map_requested
@@ -106,12 +106,12 @@ func _apply_ui_skin() -> void:
 		"hud/hud_icon_button_compact_disabled.png"
 	)
 	if _title_label != null:
-		_apply_label_style(_title_label, 14, TEXT_PRIMARY_COLOR, 2)
+		_apply_label_style(_title_label, 15, TEXT_PRIMARY_COLOR, 3)
 	if _status_label != null:
-		_apply_label_style(_status_label, 13, TEXT_SECONDARY_COLOR, 1)
+		_apply_label_style(_status_label, 14, TEXT_SECONDARY_COLOR, 2)
 		_status_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	if _clock_label != null:
-		_apply_label_style(_clock_label, 14, TEXT_SECONDARY_COLOR, 2)
+		_apply_label_style(_clock_label, 15, TEXT_SECONDARY_COLOR, 3)
 	if _map_button != null:
 		_map_button.text = ""
 		_map_button.tooltip_text = "지도"

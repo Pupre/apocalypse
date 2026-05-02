@@ -173,8 +173,8 @@ func _run_test() -> void:
 	assert_eq(location_style.texture.get_width(), 336, "Indoor location strip should use the master indoor location strip asset.")
 	assert_eq(location_style.texture.get_height(), 44, "Indoor location strip should use the master indoor location strip height.")
 	assert_true(location_caption != null, "Indoor mode should keep a location caption label.")
-	assert_eq(location_caption.get_theme_font_size("font_size"), 13, "Indoor location caption should use the larger secondary compact font size.")
-	assert_eq(location_value.get_theme_font_size("font_size"), 15, "Indoor location value should use the stronger primary card label font size.")
+	assert_eq(location_caption.get_theme_font_size("font_size"), 14, "Indoor location caption should use the larger secondary compact font size.")
+	assert_eq(location_value.get_theme_font_size("font_size"), 17, "Indoor location value should use the stronger primary card label font size.")
 
 	var context_row := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ContextRow") as Control
 	if not assert_true(context_row == null, "Indoor mode should remove the old ContextRow wrapper in portrait mode."):
@@ -286,10 +286,15 @@ func _run_test() -> void:
 		"Indoor mode should not fall back to the building-level summary when a current zone summary exists."
 	)
 	assert_true(
-		summary_label.text.find("남아 있는 물건 0개") != -1,
-		"Indoor mode should append room status rows to the reading summary."
+		summary_label.text.find("남아 있는 물건 0개") == -1,
+		"Indoor mode should keep mechanical room status out of the prose summary."
 	)
-	assert_eq(summary_label.get_theme_font_size("font_size"), 15, "Indoor reading summary should use the larger compact body font size.")
+	var zone_status_row := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/Padding/VBox/ZoneStatusRow") as HBoxContainer
+	if not assert_true(zone_status_row != null and zone_status_row.visible, "Indoor mode should expose current-room status as readable chips below the prose summary."):
+		indoor_mode.free()
+		return
+	assert_true(_section_labels(zone_status_row).has("남아 있는 물건 0개"), "Indoor mode should surface current-room loot status in a dedicated chip row.")
+	assert_eq(summary_label.get_theme_font_size("font_size"), 16, "Indoor reading summary should use the larger compact body font size.")
 
 	var sleep_preview_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/SleepPreviewLabel") as Label
 	if not assert_true(sleep_preview_label == null, "Indoor mode should hide sleep preview from the main reading surface."):
@@ -310,7 +315,7 @@ func _run_test() -> void:
 	if not assert_true(result_label != null, "Indoor mode should expose a ResultLabel."):
 		indoor_mode.free()
 		return
-	assert_eq(result_label.get_theme_font_size("font_size"), 14, "Indoor result text should use the larger secondary compact font size.")
+	assert_eq(result_label.get_theme_font_size("font_size"), 15, "Indoor result text should use the larger secondary compact font size.")
 
 	var action_scroll := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ActionScroll") as ScrollContainer
 	if not assert_true(action_scroll != null, "Indoor mode should expose a scrollable action list container."):
@@ -325,14 +330,14 @@ func _run_test() -> void:
 		indoor_mode.free()
 		return
 	assert_true(
-		_section_labels(action_buttons).has("이동"),
+		_section_labels(action_buttons).has("다른 구역"),
 		"Indoor mode should group movement actions under a dedicated section."
 	)
 	assert_true(
-		_section_labels(action_buttons).has("탐색 / 상호작용"),
+		_section_labels(action_buttons).has("여기서 할 일"),
 		"Indoor mode should group local interactions under a dedicated section."
 	)
-	var move_section_header := _find_section_header_panel_by_text(action_buttons, "이동")
+	var move_section_header := _find_section_header_panel_by_text(action_buttons, "다른 구역")
 	if not assert_true(move_section_header != null, "Indoor mode should render section titles inside a dedicated compact header strip."):
 		indoor_mode.free()
 		return
@@ -419,7 +424,7 @@ func _run_test() -> void:
 		["?", "?", "계산대", "정문 진입부"],
 		"Indoor mode should keep visited zones visible and only reveal newly adjacent unknown zones."
 	)
-	move_section_header = _find_section_header_panel_by_text(action_buttons, "이동")
+	move_section_header = _find_section_header_panel_by_text(action_buttons, "다른 구역")
 	exit_button = _find_descendant_by_name_and_type(move_section_header, "ExitShortcutButton", "Button") as Button
 	assert_eq(exit_button.tooltip_text, "건물 밖으로 나간다 (10분)", "Indoor mode should move the shortest-route leave-building shortcut into the move-section header button.")
 
@@ -451,7 +456,7 @@ func _run_test() -> void:
 		"Discovered-loot actions should prefer the actual item icon over the generic loot basket."
 	)
 	assert_true(
-		_section_labels(action_buttons).has("발견한 물건"),
+		_section_labels(action_buttons).has("챙길 물건"),
 		"Indoor mode should surface discovered loot in a dedicated section."
 	)
 	assert_true(
@@ -598,7 +603,7 @@ func _run_test() -> void:
 		"시각: 1일차 12:00",
 		"Indoor mode should include the supply search and portrait craft time before walking back through known zones."
 	)
-	move_section_header = _find_section_header_panel_by_text(action_buttons, "이동")
+	move_section_header = _find_section_header_panel_by_text(action_buttons, "다른 구역")
 	exit_button = _find_descendant_by_name_and_type(move_section_header, "ExitShortcutButton", "Button") as Button
 	assert_eq(exit_button.tooltip_text, "건물 밖으로 나간다", "Indoor mode should reset the move-section exit button once back at the entrance.")
 	exit_button.emit_signal("pressed")

@@ -1,8 +1,8 @@
 extends HBoxContainer
 
 const UiKitResolver = preload("res://scripts/ui/ui_kit_resolver.gd")
-const LABEL_COLOR := Color(0.96, 0.98, 1.0, 0.98)
-const LABEL_OUTLINE_COLOR := Color(0.05, 0.07, 0.1, 0.92)
+const LABEL_COLOR := Color(1.0, 1.0, 1.0, 1.0)
+const LABEL_OUTLINE_COLOR := Color(0.0, 0.02, 0.04, 1.0)
 
 var run_state = null
 
@@ -70,11 +70,11 @@ func _apply_ui_skin() -> void:
 
 func _apply_gauge_skin(label_node: Label, bar_node: ProgressBar, fill_path: String) -> void:
 	if label_node != null:
-		_apply_label_style(label_node, 13, LABEL_COLOR, 2)
-		label_node.add_theme_font_size_override("font_size", 13)
+		_apply_label_style(label_node, 14, LABEL_COLOR, 3)
+		label_node.add_theme_font_size_override("font_size", 14)
 		label_node.visible = true
 	if bar_node != null:
-		bar_node.custom_minimum_size = Vector2(0, 12)
+		bar_node.custom_minimum_size = Vector2(0, 14)
 		_ui_kit_resolver.apply_progress_bar(bar_node, "hud/gauge_frame_short_compact.png", fill_path)
 
 

@@ -44,3 +44,21 @@
 
 - 이번 패스는 HUD/실내/가방 기준선이다. 다음 UI 패스에서는 타이틀, 생존자 생성, 야외 지도 오버레이, 수량 선택 팝업, 도감 패널을 같은 톤으로 맞추는 것이 좋다.
 - 모든 이미지 리소스의 완전 교체는 한 번의 커밋보다 여러 안정 단위가 낫다. 이번 패스에서 반복 생성 스크립트를 만들었으므로 이후 패스에서 UI와 월드 리소스 교체 속도를 더 높일 수 있다.
+
+## 후속 패스: 보행 방향과 실내 UX 재정렬
+
+사용자 확인에서 주인공 발 모양이 모든 방향에서 오른쪽 이동 기준으로 보인다는 문제가 드러났다. `scripts/generate_player_walk_sprites.ps1`를 추가하고 주인공 4방향 idle/walk PNG를 다시 생성해, 좌우 이동은 각 방향으로 발이 뻗고 상하 이동은 하체가 좌우로 교차하도록 조정했다. `test_outdoor_controller.gd`에는 하체 픽셀 범위를 검사하는 회귀 테스트를 추가해 같은 문제가 다시 들어오지 않게 했다.
+
+UI는 컨셉 일치보다 가독성과 흐름이 부족하다는 피드백을 반영했다. HUD, 생존 시트, 실내 화면의 주요 라벨 크기와 외곽선 대비를 올렸고, 실내 본문에는 장소 설명만 남기고 남은 물건/설치물/소란/완료 상태는 `ZoneStatusRow` 칩으로 분리했다.
+
+실내 탐색 UX는 사용자가 먼저 “지금 이 장소에서 무엇을 할 수 있는지” 판단하도록 섹션 순서를 바꾸었다. 기존 이동 우선 흐름은 `여기서 할 일 -> 챙길 물건 -> 다른 구역 -> 막힌 길` 순서로 재정렬했고, 섹션 제목도 기능명이 아니라 플레이어 의도에 가까운 문장으로 바꾸었다. 이 변경은 아직 첫 구조 개선이므로, 이후 패스에서는 행동 카드 선택 전 미리보기, 위험 비교, 수량 선택, 지도/가방 전환 흐름까지 더 크게 손볼 수 있다.
+
+추가 검증:
+
+- `res://tests/unit/test_outdoor_controller.gd`
+- `res://tests/unit/test_indoor_mode.gd`
+- `res://tests/unit/test_survival_sheet.gd`
+- `res://tests/unit/test_hud_presenter.gd`
+- `res://tests/unit/test_survivor_creator.gd`
+- `res://tests/unit/test_ui_theme.gd`
+- `res://tests/smoke/test_first_playable_loop.gd`

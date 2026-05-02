@@ -2,23 +2,23 @@ extends Control
 
 const ItemIconResolver = preload("res://scripts/ui/item_icon_resolver.gd")
 const UiKitResolver = preload("res://scripts/ui/ui_kit_resolver.gd")
-const TEXT_PRIMARY_COLOR := Color(0.96, 0.98, 1.0, 0.98)
-const TEXT_SECONDARY_COLOR := Color(0.88, 0.92, 0.97, 0.96)
-const TEXT_EVENT_SUCCESS_COLOR := Color(0.82, 1.0, 0.9, 0.98)
-const TEXT_EVENT_WARNING_COLOR := Color(1.0, 0.86, 0.72, 0.98)
-const TEXT_OUTLINE_COLOR := Color(0.04, 0.06, 0.09, 0.94)
+const TEXT_PRIMARY_COLOR := Color(1.0, 1.0, 1.0, 1.0)
+const TEXT_SECONDARY_COLOR := Color(0.94, 0.97, 1.0, 0.98)
+const TEXT_EVENT_SUCCESS_COLOR := Color(0.82, 1.0, 0.9, 1.0)
+const TEXT_EVENT_WARNING_COLOR := Color(1.0, 0.9, 0.72, 1.0)
+const TEXT_OUTLINE_COLOR := Color(0.0, 0.02, 0.04, 1.0)
 const ACTION_ICON_SIZE := 16
 
 signal state_changed
 signal exit_requested
 signal toast_requested(toast_type: String, message: String, duration: float, icon_item_id: String)
 
-const ACTION_SECTION_ORDER := ["move", "interaction", "loot", "locked"]
+const ACTION_SECTION_ORDER := ["interaction", "loot", "move", "locked"]
 const ACTION_SECTION_TITLES := {
-	"move": "이동",
-	"interaction": "탐색 / 상호작용",
-	"loot": "발견한 물건",
-	"locked": "잠긴 길",
+	"interaction": "여기서 할 일",
+	"loot": "챙길 물건",
+	"move": "다른 구역",
+	"locked": "막힌 길",
 }
 const ACTION_ICON_PATHS := {
 	"move": "res://assets/ui/third_party/kenney/game-icons/PNG/White/1x/arrowRight.png",
@@ -39,6 +39,7 @@ var _gauge_row = null
 var _inline_minimap: Control = null
 var _event_illustration: TextureRect = null
 var _summary_label: Label = null
+var _zone_status_row: HBoxContainer = null
 var _result_label: Label = null
 var _action_buttons: VBoxContainer = null
 var _map_button: Button = null
@@ -169,21 +170,31 @@ func _refresh_reading_area() -> void:
 
 	if _summary_label != null and _director.has_method("get_current_zone_summary"):
 		var summary := String(_director.get_current_zone_summary())
-		var summary_lines: Array[String] = []
-		summary_lines.append(summary if not summary.is_empty() else "방 안을 살펴 단서를 찾아본다.")
-		if _director.has_method("get_current_zone_status_rows"):
-			var status_rows: Array[String] = _director.get_current_zone_status_rows()
-			if not status_rows.is_empty():
-				summary_lines.append("")
-				for row in status_rows:
-					summary_lines.append(row)
-		_summary_label.text = "\n".join(summary_lines)
+		_summary_label.text = summary if not summary.is_empty() else "방 안을 살펴 단서를 찾아본다."
+	_refresh_zone_status_row()
 
 	if _result_label != null and _director.has_method("get_feedback_message"):
 		var feedback_message := String(_director.get_feedback_message())
 		_result_label.visible = not feedback_message.is_empty()
 		_result_label.text = _format_feedback_message(feedback_message)
-		_apply_label_style(_result_label, 14, _feedback_message_color(feedback_message), 2)
+		_apply_label_style(_result_label, 15, _feedback_message_color(feedback_message), 3)
+
+
+func _refresh_zone_status_row() -> void:
+	if _zone_status_row == null:
+		return
+	_clear_children(_zone_status_row)
+	if _director == null or not _director.has_method("get_current_zone_status_rows"):
+		_zone_status_row.visible = false
+		return
+
+	var status_rows: Array[String] = _director.get_current_zone_status_rows()
+	_zone_status_row.visible = not status_rows.is_empty()
+	for status_text in status_rows:
+		if status_text.strip_edges().is_empty():
+			continue
+		_zone_status_row.add_child(_create_status_chip(status_text))
+	_zone_status_row.queue_sort()
 
 
 func _refresh_action_buttons() -> void:
@@ -222,7 +233,7 @@ func _refresh_action_buttons() -> void:
 
 		var heading := Label.new()
 		heading.text = String(ACTION_SECTION_TITLES.get(section_id, section_id))
-		_apply_label_style(heading, 14, TEXT_PRIMARY_COLOR, 1)
+		_apply_label_style(heading, 15, TEXT_PRIMARY_COLOR, 2)
 		heading.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		heading_row.add_child(heading)
 
@@ -352,7 +363,7 @@ func _create_action_button(action: Dictionary, section_id: String) -> Button:
 	label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	label.text = String(action.get("label", action_id))
-	_apply_label_style(label, 15, TEXT_PRIMARY_COLOR, 2)
+	_apply_label_style(label, 16, TEXT_PRIMARY_COLOR, 3)
 	text_column.add_child(label)
 
 	var detail_text := _action_detail_text(action, section_id)
@@ -363,7 +374,7 @@ func _create_action_button(action: Dictionary, section_id: String) -> Button:
 	detail_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	detail_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	detail_label.text = detail_text
-	_apply_label_style(detail_label, 12, _action_detail_color(action, section_id), 1)
+	_apply_label_style(detail_label, 13, _action_detail_color(action, section_id), 2)
 	text_column.add_child(detail_label)
 
 	var meta_column := VBoxContainer.new()
@@ -382,7 +393,7 @@ func _create_action_button(action: Dictionary, section_id: String) -> Button:
 		time_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		time_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		time_label.text = time_text
-		_apply_label_style(time_label, 11, TEXT_SECONDARY_COLOR, 1)
+		_apply_label_style(time_label, 12, TEXT_SECONDARY_COLOR, 2)
 		meta_column.add_child(time_label)
 
 	button.tooltip_text = "%s\n%s" % [label.text, detail_text] if not detail_text.is_empty() else label.text
@@ -488,9 +499,58 @@ func _create_action_chip(text: String, color: Color) -> PanelContainer:
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.text = text
-	_apply_label_style(label, 10, TEXT_PRIMARY_COLOR, 1)
+	_apply_label_style(label, 11, TEXT_PRIMARY_COLOR, 2)
 	panel.add_child(label)
 	return panel
+
+
+func _create_status_chip(text: String) -> PanelContainer:
+	var panel := PanelContainer.new()
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	panel.add_theme_stylebox_override("panel", _status_chip_style(text))
+
+	var label := Label.new()
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.text = text
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_apply_label_style(label, 12, _status_chip_text_color(text), 2)
+	panel.add_child(label)
+	return panel
+
+
+func _status_chip_style(text: String) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = _status_chip_color(text)
+	style.border_color = Color(0.78, 0.9, 0.96, 0.48)
+	style.border_width_left = 1
+	style.border_width_top = 1
+	style.border_width_right = 1
+	style.border_width_bottom = 1
+	style.corner_radius_top_left = 6
+	style.corner_radius_top_right = 6
+	style.corner_radius_bottom_left = 6
+	style.corner_radius_bottom_right = 6
+	style.content_margin_left = 8
+	style.content_margin_right = 8
+	style.content_margin_top = 3
+	style.content_margin_bottom = 3
+	return style
+
+
+func _status_chip_color(text: String) -> Color:
+	if text.find("소란") >= 0:
+		return Color(0.52, 0.25, 0.16, 0.96)
+	if text.find("수색 완료") >= 0:
+		return Color(0.14, 0.35, 0.32, 0.96)
+	if text.find("남아 있는 물건") >= 0:
+		return Color(0.15, 0.30, 0.40, 0.96)
+	return Color(0.18, 0.24, 0.30, 0.96)
+
+
+func _status_chip_text_color(text: String) -> Color:
+	return TEXT_EVENT_WARNING_COLOR if text.find("소란") >= 0 else TEXT_SECONDARY_COLOR
 
 
 func _action_chip_style(color: Color) -> StyleBoxFlat:
@@ -694,6 +754,7 @@ func _cache_nodes() -> void:
 	_inline_minimap = get_node_or_null("Panel/Layout/MainColumn/MiniMapCard/Padding/MapNodes") as Control
 	_event_illustration = get_node_or_null("Panel/Layout/MainColumn/ReadingCard/Padding/VBox/EventIllustration") as TextureRect
 	_summary_label = get_node_or_null("Panel/Layout/MainColumn/ReadingCard/Padding/VBox/SummaryLabel") as Label
+	_zone_status_row = get_node_or_null("Panel/Layout/MainColumn/ReadingCard/Padding/VBox/ZoneStatusRow") as HBoxContainer
 	_result_label = get_node_or_null("Panel/Layout/MainColumn/ReadingCard/Padding/VBox/ResultLabel") as Label
 	_action_buttons = get_node_or_null("Panel/Layout/MainColumn/ActionScroll/ActionButtons") as VBoxContainer
 	_map_button = get_node_or_null("Panel/Layout/MainColumn/TopBar/HeaderRow/MapButton") as Button
@@ -768,17 +829,17 @@ func _apply_ui_skin() -> void:
 		"sheet/sheet_button_secondary_pressed.png"
 	)
 	if _title_label != null:
-		_apply_label_style(_title_label, 14, TEXT_PRIMARY_COLOR, 2)
+		_apply_label_style(_title_label, 15, TEXT_PRIMARY_COLOR, 3)
 	if _time_label != null:
-		_apply_label_style(_time_label, 14, TEXT_SECONDARY_COLOR, 2)
+		_apply_label_style(_time_label, 15, TEXT_SECONDARY_COLOR, 3)
 	if _location_caption_label != null:
-		_apply_label_style(_location_caption_label, 13, TEXT_SECONDARY_COLOR, 1)
+		_apply_label_style(_location_caption_label, 14, TEXT_SECONDARY_COLOR, 2)
 	if _location_value_label != null:
-		_apply_label_style(_location_value_label, 15, TEXT_PRIMARY_COLOR, 2)
+		_apply_label_style(_location_value_label, 17, TEXT_PRIMARY_COLOR, 3)
 	if _summary_label != null:
-		_apply_label_style(_summary_label, 15, TEXT_PRIMARY_COLOR, 2)
+		_apply_label_style(_summary_label, 16, TEXT_PRIMARY_COLOR, 3)
 	if _result_label != null:
-		_apply_label_style(_result_label, 14, TEXT_SECONDARY_COLOR, 2)
+		_apply_label_style(_result_label, 15, TEXT_SECONDARY_COLOR, 3)
 	if _supply_picker_title != null:
 		_apply_label_style(_supply_picker_title, 16, TEXT_PRIMARY_COLOR, 2)
 	if _supply_picker_status != null:

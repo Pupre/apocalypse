@@ -28,10 +28,10 @@ const INVENTORY_ICON_SLOT_STYLE := {
 	"bg": Color(0.16, 0.18, 0.22, 0.96),
 	"border": Color(0.34, 0.38, 0.44, 0.92),
 }
-const TEXT_PRIMARY_COLOR := Color(0.96, 0.98, 1.0, 0.98)
-const TEXT_SECONDARY_COLOR := Color(0.88, 0.92, 0.97, 0.96)
-const TEXT_MUTED_COLOR := Color(0.82, 0.86, 0.9, 0.96)
-const TEXT_OUTLINE_COLOR := Color(0.04, 0.06, 0.09, 0.94)
+const TEXT_PRIMARY_COLOR := Color(1.0, 1.0, 1.0, 1.0)
+const TEXT_SECONDARY_COLOR := Color(0.94, 0.97, 1.0, 0.98)
+const TEXT_MUTED_COLOR := Color(0.90, 0.94, 0.98, 0.98)
+const TEXT_OUTLINE_COLOR := Color(0.0, 0.02, 0.04, 1.0)
 
 var run_state = null
 var _mode_name := "indoor"
@@ -1488,9 +1488,9 @@ func _apply_ui_skin() -> void:
 	if _title_label != null:
 		_apply_label_style(_title_label, 19, TEXT_PRIMARY_COLOR, 2)
 	if _status_label != null:
-		_apply_label_style(_status_label, 14, TEXT_SECONDARY_COLOR, 2)
+		_apply_label_style(_status_label, 15, TEXT_SECONDARY_COLOR, 3)
 	if _browse_hint_label != null:
-		_apply_label_style(_browse_hint_label, 14, TEXT_SECONDARY_COLOR, 2)
+		_apply_label_style(_browse_hint_label, 15, TEXT_SECONDARY_COLOR, 3)
 	if _inventory_tab_button != null:
 		_apply_button_text_style(_inventory_tab_button, 15, TEXT_PRIMARY_COLOR, 2)
 	if _codex_tab_button != null:
@@ -1522,11 +1522,11 @@ func _apply_ui_skin() -> void:
 	if _item_name_label != null:
 		_apply_label_style(_item_name_label, 17, TEXT_PRIMARY_COLOR, 2)
 	if _item_description_label != null:
-		_apply_label_style(_item_description_label, 15, TEXT_PRIMARY_COLOR, 2)
+		_apply_label_style(_item_description_label, 16, TEXT_PRIMARY_COLOR, 3)
 	if _item_effect_label != null:
-		_apply_label_style(_item_effect_label, 14, TEXT_SECONDARY_COLOR, 2)
+		_apply_label_style(_item_effect_label, 15, TEXT_SECONDARY_COLOR, 3)
 	if _mode_message_label != null:
-		_apply_label_style(_mode_message_label, 14, TEXT_SECONDARY_COLOR, 2)
+		_apply_label_style(_mode_message_label, 15, TEXT_SECONDARY_COLOR, 3)
 	if _close_button != null:
 		_close_button.text = ""
 		_close_button.tooltip_text = "닫기"

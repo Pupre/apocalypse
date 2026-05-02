@@ -106,6 +106,9 @@ stretch_mode = 6
 autowrap_mode = 3
 text = "방 안을 살펴 단서를 찾아본다."
 
+[node name="ZoneStatusRow" type="HBoxContainer" parent="Panel/Layout/MainColumn/ReadingCard/Padding/VBox"]
+theme_override_constants/separation = 6
+
 [node name="ResultLabel" type="Label" parent="Panel/Layout/MainColumn/ReadingCard/Padding/VBox"]
 autowrap_mode = 3
 text = ""

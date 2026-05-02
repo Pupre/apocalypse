@@ -190,7 +190,7 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 	assert_true(_count_buttons(action_buttons) >= 1, "Mart indoor mode should expose at least one indoor action.")
-	assert_true(_section_labels(action_buttons).has("이동"), "Indoor UI should expose a movement section in the creator flow.")
+	assert_true(_section_labels(action_buttons).has("다른 구역"), "Indoor UI should expose a movement section in the creator flow.")
 	assert_true(
 		_find_button_by_action_id(action_buttons, "search_checkout_drawer") == null,
 		"The mart entrance should not expose checkout-only search actions."

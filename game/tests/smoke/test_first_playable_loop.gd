@@ -359,8 +359,13 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 	assert_true(summary_label.text.find("깨진 자동문과 쓰러진 장바구니가") != -1, "Indoor mode should describe the current entrance zone.")
-	assert_true(summary_label.text.find("남아 있는 물건 0개") != -1, "Indoor mode should surface current-room loot status.")
-	assert_true(summary_label.text.find("설치물 0개") != -1, "Indoor mode should surface current-room deployment status.")
+	var zone_status_row := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/Padding/VBox/ZoneStatusRow") as HBoxContainer
+	if not assert_true(zone_status_row != null and zone_status_row.visible, "Indoor mode should expose current-room status as readable chips."):
+		bootstrap.free()
+		return
+	assert_true(summary_label.text.find("남아 있는 물건 0개") == -1, "Indoor mode should keep room status out of the prose summary.")
+	assert_true(_section_labels(zone_status_row).has("남아 있는 물건 0개"), "Indoor mode should surface current-room loot status.")
+	assert_true(_section_labels(zone_status_row).has("설치물 0개"), "Indoor mode should surface current-room deployment status.")
 	var inline_minimap_card := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/MiniMapCard") as Control
 	if not assert_true(inline_minimap_card != null and inline_minimap_card.visible, "Indoor mode should keep a small inline minimap visible."):
 		bootstrap.free()
@@ -379,8 +384,8 @@ func _run_test() -> void:
 	if not assert_true(_count_buttons(action_buttons) > 0, "The indoor UI should expose at least one action button."):
 		bootstrap.free()
 		return
-	assert_true(_section_labels(action_buttons).has("이동"), "Indoor actions should expose a movement section.")
-	assert_true(_section_labels(action_buttons).has("탐색 / 상호작용"), "Indoor actions should expose an interaction section.")
+	assert_true(_section_labels(action_buttons).has("다른 구역"), "Indoor actions should expose a movement section.")
+	assert_true(_section_labels(action_buttons).has("여기서 할 일"), "Indoor actions should expose an interaction section.")
 	assert_true(
 		_buttons_include_text(action_buttons, "계산대로 이동한다 (30분)"),
 		"The entrance zone should show move actions with their time cost."
@@ -389,7 +394,7 @@ func _run_test() -> void:
 		not _buttons_include_text(action_buttons, "한 시간 쉰다 (60분)"),
 		"Indoor mode should not expose the removed flat rest action."
 	)
-	var move_section_header := _find_section_header_panel_by_text(action_buttons, "이동")
+	var move_section_header := _find_section_header_panel_by_text(action_buttons, "다른 구역")
 	var exit_button := _find_descendant_by_name_and_type(move_section_header, "ExitShortcutButton", "Button") as Button
 	if not assert_true(exit_button != null, "Indoor mode should expose the leave-building shortcut in the move section header."):
 		bootstrap.free()
@@ -469,7 +474,7 @@ func _run_test() -> void:
 	assert_true(checkout_map_labels.has("정문 진입부"), "Indoor minimap should keep the visited entrance visible after moving.")
 	map_button.emit_signal("pressed")
 	await process_frame
-	move_section_header = _find_section_header_panel_by_text(action_buttons, "이동")
+	move_section_header = _find_section_header_panel_by_text(action_buttons, "다른 구역")
 	exit_button = _find_descendant_by_name_and_type(move_section_header, "ExitShortcutButton", "Button") as Button
 	assert_eq(exit_button.tooltip_text, "건물 밖으로 나간다 (10분)", "Leaving the building away from the entrance should update the move-section exit shortcut tooltip.")
 
@@ -609,7 +614,7 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 	assert_eq(indoor_time_label.text, "시각: 1일차 13:00", "Indoor mode should keep the visible time in sync after returning to the entrance.")
-	move_section_header = _find_section_header_panel_by_text(action_buttons, "이동")
+	move_section_header = _find_section_header_panel_by_text(action_buttons, "다른 구역")
 	exit_button = _find_descendant_by_name_and_type(move_section_header, "ExitShortcutButton", "Button") as Button
 	assert_eq(exit_button.tooltip_text, "건물 밖으로 나간다", "Returning to the entrance should restore the zero-cost move-section exit shortcut tooltip.")
 
@@ -675,10 +680,10 @@ func _run_test() -> void:
 	assert_true(director.apply_action("drop_inventory_newspaper"), "Indoor smoke loop should allow dropping an item into the room memory.")
 	indoor_mode.refresh_view()
 	await process_frame
-	assert_true(summary_label.text.find("남아 있는 물건 1개") != -1, "Indoor summary should show dropped room loot.")
-	assert_true(summary_label.text.find("설치물 1개") != -1, "Indoor summary should show installed room deployments.")
+	assert_true(_section_labels(zone_status_row).has("남아 있는 물건 1개"), "Indoor status chips should show dropped room loot.")
+	assert_true(_section_labels(zone_status_row).has("설치물 1개"), "Indoor status chips should show installed room deployments.")
 
-	move_section_header = _find_section_header_panel_by_text(action_buttons, "이동")
+	move_section_header = _find_section_header_panel_by_text(action_buttons, "다른 구역")
 	exit_button = _find_descendant_by_name_and_type(move_section_header, "ExitShortcutButton", "Button") as Button
 	if not assert_true(exit_button != null, "Indoor move section should continue exposing an exit shortcut after later view refreshes."):
 		bootstrap.free()
@@ -745,7 +750,7 @@ func _run_test() -> void:
 		return
 	assert_eq(location_label.text, "출입구", "Office should open at its entry zone.")
 
-	move_section_header = _find_section_header_panel_by_text(action_buttons, "이동")
+	move_section_header = _find_section_header_panel_by_text(action_buttons, "다른 구역")
 	exit_button = _find_descendant_by_name_and_type(move_section_header, "ExitShortcutButton", "Button") as Button
 	if not assert_true(exit_button != null, "Office entrance should expose the move-section leave-building button."):
 		bootstrap.free()
@@ -799,8 +804,12 @@ func _run_test() -> void:
 		bootstrap.free()
 		return
 	assert_eq(location_label.text, "정문 진입부", "Mart re-entry should still start from the entry zone.")
-	assert_true(summary_label.text.find("남아 있는 물건 1개") != -1, "Mart re-entry should remember dropped room loot.")
-	assert_true(summary_label.text.find("설치물 1개") != -1, "Mart re-entry should remember installed room deployments.")
+	zone_status_row = indoor_mode.get_node_or_null("Panel/Layout/MainColumn/ReadingCard/Padding/VBox/ZoneStatusRow") as HBoxContainer
+	if not assert_true(zone_status_row != null and zone_status_row.visible, "Mart re-entry should rebuild the room status chip row."):
+		bootstrap.free()
+		return
+	assert_true(_section_labels(zone_status_row).has("남아 있는 물건 1개"), "Mart re-entry should remember dropped room loot.")
+	assert_true(_section_labels(zone_status_row).has("설치물 1개"), "Mart re-entry should remember installed room deployments.")
 	assert_true(_buttons_include_text(action_buttons, "신문지 챙긴다"), "Mart re-entry should surface the dropped newspaper as floor loot.")
 
 	move_checkout_button = _find_button_by_prefix(action_buttons, "계산대로 이동한다")

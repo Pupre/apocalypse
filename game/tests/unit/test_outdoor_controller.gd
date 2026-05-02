@@ -81,6 +81,7 @@ func _run_test() -> void:
 	assert_true(player_sprite.texture.get_width() >= 64, "Outdoor player visual should use the smoother high-resolution survivor sprite.")
 	assert_true(player_sprite.texture.get_height() * player_sprite.scale.y >= 46.0, "Outdoor player visual should stay readable after downscaling the smoother sprite.")
 	assert_eq(player_sprite.texture_filter, CanvasItem.TEXTURE_FILTER_LINEAR, "Outdoor player visual should use linear filtering so the survivor does not read as blocky.")
+	_assert_player_walk_direction_sprites()
 	var idle_player_texture := player_sprite.texture
 	var idle_player_offset := player_sprite.offset
 	outdoor_mode.bind_run_state(run_state, "mart_01", Vector2(0.0, 0.0))
@@ -444,6 +445,37 @@ func get_job(job_id: String) -> Dictionary:
 
 func get_trait(trait_id: String) -> Dictionary:
 	return _test_traits.get(trait_id, {})
+
+
+func _assert_player_walk_direction_sprites() -> void:
+	var resolver_script := load("res://scripts/outdoor/outdoor_art_resolver.gd") as Script
+	assert_true(resolver_script != null, "Outdoor art resolver should load for player sprite direction checks.")
+	var resolver = resolver_script.new()
+	var left_bounds := _lower_opaque_bounds((resolver.get_player_texture("left", true, 2) as Texture2D).get_image())
+	var right_bounds := _lower_opaque_bounds((resolver.get_player_texture("right", true, 2) as Texture2D).get_image())
+	var up_bounds := _lower_opaque_bounds((resolver.get_player_texture("up", true, 2) as Texture2D).get_image())
+	var down_bounds := _lower_opaque_bounds((resolver.get_player_texture("down", true, 2) as Texture2D).get_image())
+	assert_true(left_bounds.end.x < right_bounds.end.x, "Left and right walk frames should move their feet along opposite horizontal directions.")
+	assert_true(up_bounds.position.x < 24.0 and up_bounds.end.x > 40.0, "Up-walk frames should keep alternating feet on both sides instead of drifting to one side.")
+	assert_true(down_bounds.position.x < 24.0 and down_bounds.end.x > 40.0, "Down-walk frames should keep alternating feet on both sides instead of drifting to one side.")
+
+
+func _lower_opaque_bounds(image: Image) -> Rect2:
+	var min_x := image.get_width()
+	var min_y := image.get_height()
+	var max_x := -1
+	var max_y := -1
+	for y in range(42, image.get_height()):
+		for x in range(image.get_width()):
+			if image.get_pixel(x, y).a <= 0.12:
+				continue
+			min_x = mini(min_x, x)
+			min_y = mini(min_y, y)
+			max_x = maxi(max_x, x)
+			max_y = maxi(max_y, y)
+	if max_x < 0:
+		return Rect2()
+	return Rect2(Vector2(min_x, min_y), Vector2(max_x - min_x + 1, max_y - min_y + 1))
 
 
 func _polygon_min_y(points: PackedVector2Array) -> float:

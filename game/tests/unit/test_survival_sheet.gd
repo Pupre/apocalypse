@@ -97,7 +97,7 @@ func _run_test() -> void:
 	if not assert_true(sheet_title != null and sheet_status != null, "SurvivalSheet should expose title and status labels."):
 		return
 	assert_eq(sheet_title.get_theme_font_size("font_size"), 19, "Bag title should use the larger readability-focused heading size.")
-	assert_eq(sheet_status.get_theme_font_size("font_size"), 14, "Bag status should use the larger secondary compact font size.")
+	assert_eq(sheet_status.get_theme_font_size("font_size"), 15, "Bag status should use the larger secondary compact font size.")
 	var browse_inset_height := detail_inset.custom_minimum_size.y
 	assert_true(not detail_sheet.visible, "Opening the bag should start in list-first browse mode with no detail sheet expanded.")
 
@@ -115,8 +115,8 @@ func _run_test() -> void:
 	var item_effect_label := _find(survival_sheet, "ItemDetailSheet/VBox/DetailScroll/DetailBody/ItemEffectLabel") as Label
 	assert_true(item_name_label != null and item_description_label != null and item_effect_label != null, "Detail sheet should expose title and body labels.")
 	assert_eq(item_name_label.get_theme_font_size("font_size"), 17, "Item title should use the stronger detail heading size.")
-	assert_eq(item_description_label.get_theme_font_size("font_size"), 15, "Item description should use the larger compact body font size.")
-	assert_eq(item_effect_label.get_theme_font_size("font_size"), 14, "Item effect text should use the larger secondary compact font size.")
+	assert_eq(item_description_label.get_theme_font_size("font_size"), 16, "Item description should use the larger compact body font size.")
+	assert_eq(item_effect_label.get_theme_font_size("font_size"), 15, "Item effect text should use the larger secondary compact font size.")
 	var mode_message_label := _find(survival_sheet, "ItemDetailSheet/VBox/DetailScroll/DetailBody/ModeMessageLabel") as Label
 	if not assert_true(mode_message_label != null, "Detail sheet should expose a mode message label."):
 		return

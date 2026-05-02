@@ -1,7 +1,7 @@
 extends Node
 
 const APP_FONT_PATH := "res://assets/fonts/NotoSansKR-VF.ttf"
-const APP_FONT_SIZE := 15
+const APP_FONT_SIZE := 16
 
 func _ready() -> void:
 	_install_ui_theme()
