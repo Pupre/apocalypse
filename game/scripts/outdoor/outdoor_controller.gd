@@ -16,6 +16,7 @@ const ENTER_RADIUS := 72.0
 const TERRAIN_TILE_SIZE := 32.0
 const HAZARD_FLASH_DURATION := 1.15
 const HAZARD_WARNING_MARGIN := 120.0
+const OUTDOOR_PROP_TEXTURE_SIZE := 128.0
 const PLAYER_VISUAL_SCALE := 0.78
 const PLAYER_WALK_FRAME_RATE := 10.0
 const PLAYER_WALK_FRAME_COUNT := 8
@@ -552,12 +553,12 @@ func _refresh_ground() -> void:
 		var hazard_id := String(hazard_row.get("id", "Hazard"))
 		_add_hazard_warning_zone(hazard_id, hazard_rect, hazard_kind)
 		var decal_id := _hazard_decal_texture_id(hazard_kind)
-		var decal_scale := _hazard_decal_scale(hazard_kind)
+		var decal_scale := _hazard_decal_scale(hazard_kind, hazard_rect)
 		var hazard_glow := _make_decal_sprite(
 			"%sHazardGlow" % hazard_id,
 			hazard_rect.position + (hazard_rect.size * 0.5),
 			art_resolver.get_decal_texture(decal_id),
-			decal_scale * 1.26
+			decal_scale * 1.08
 		)
 		hazard_glow.modulate = _hazard_glow_color(hazard_kind)
 		hazard_glow.z_index = 4
@@ -978,16 +979,18 @@ func _hazard_decal_texture_id(hazard_kind: String) -> String:
 			return "ice_patch"
 
 
-func _hazard_decal_scale(hazard_kind: String) -> Vector2:
+func _hazard_decal_scale(hazard_kind: String, hazard_rect: Rect2 = Rect2()) -> Vector2:
+	var rect_scale := _fit_scale_for_rect(hazard_rect, OUTDOOR_PROP_TEXTURE_SIZE)
+	var scale_multiplier := 0.92
 	match hazard_kind:
 		"wind_gap":
-			return Vector2.ONE * 2.8
+			scale_multiplier = 0.84
 		"whiteout":
-			return Vector2.ONE * 3.05
+			scale_multiplier = 0.88
 		"snow_drift":
-			return Vector2.ONE * 2.45
-		_:
-			return Vector2.ONE * 2.35
+			scale_multiplier = 0.82
+	var scalar := clampf(rect_scale * scale_multiplier, 0.78, 1.72)
+	return Vector2.ONE * scalar
 
 
 func _trigger_hazard_feedback(hazard_row: Dictionary) -> void:
@@ -1115,24 +1118,44 @@ func _road_texture_id(road_row: Dictionary, road_rect: Rect2, is_horizontal: boo
 
 
 func _obstacle_scale(obstacle_kind: String, obstacle_rect: Rect2, asset_id: String = "") -> float:
+	var base_scale := _fit_scale_for_rect(obstacle_rect, OUTDOOR_PROP_TEXTURE_SIZE)
+	var scale_multiplier := 1.0
 	match asset_id:
 		"street_lamp", "bus_stop_sign":
-			return 1.35
+			scale_multiplier = 1.0
 		"snow_drift":
-			return 1.25
+			scale_multiplier = 0.95
 		"barrel_fire", "barrel_empty", "traffic_cone":
-			return 0.95
-	match obstacle_kind:
-		"vehicle":
-			return 1.35
-		"rubble":
-			return 1.15 if obstacle_rect.size.x >= 100.0 else 1.05
-		"light", "sign":
-			return 1.35
-		"snow":
-			return 1.25
+			scale_multiplier = 1.0
+		"frozen_car":
+			scale_multiplier = 1.25
+		"shopping_cart":
+			scale_multiplier = 1.05
+		"barricade_wood", "sandbags", "tire_pile":
+			scale_multiplier = 0.95
+		"dumpster_snow", "crate_stack", "utility_box":
+			scale_multiplier = 0.98
 		_:
-			return 1.05
+			match obstacle_kind:
+				"vehicle":
+					scale_multiplier = 1.25
+				"rubble":
+					scale_multiplier = 0.98
+				"barrier":
+					scale_multiplier = 0.95
+				"light", "sign":
+					scale_multiplier = 1.0
+				"snow":
+					scale_multiplier = 0.95
+				_:
+					scale_multiplier = 1.0
+	return clampf(base_scale * scale_multiplier, 0.32, 1.35)
+
+
+func _fit_scale_for_rect(rect: Rect2, source_size: float) -> float:
+	if rect.size.x <= 0.0 or rect.size.y <= 0.0 or source_size <= 0.0:
+		return 1.0
+	return maxf(rect.size.x / source_size, rect.size.y / source_size)
 
 
 func _resolve_facing_id(direction: Vector2) -> String:

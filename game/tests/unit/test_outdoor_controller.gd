@@ -111,6 +111,9 @@ func _run_test() -> void:
 	var collision_rect: Rect2 = outdoor_mode._effective_obstacle_rect(sample_obstacle)
 	assert_true(collision_rect.size.x < 120.0 and collision_rect.size.y < 80.0, "Outdoor obstacle collision should be smaller than the authored staging rect.")
 	assert_true(is_equal_approx(collision_rect.end.y, 260.0), "Outdoor obstacle collision should stay anchored to the bottom edge of the authored rect.")
+	assert_true(outdoor_mode._obstacle_scale("vehicle", Rect2(0.0, 0.0, 52.0, 52.0), "frozen_car") < 0.7, "Vehicle props should no longer render as oversized fixed-scale cutouts.")
+	assert_true(outdoor_mode._obstacle_scale("sign", Rect2(0.0, 0.0, 45.0, 82.0), "bus_stop_sign") < 0.8, "Tall sign props should respect authored rect height instead of the old fixed scale.")
+	assert_true(outdoor_mode._hazard_decal_scale("black_ice", Rect2(0.0, 0.0, 150.0, 150.0)).x < 1.2, "Black-ice decals should stay close to their authored hazard rect instead of covering half the street.")
 
 	var top_ribbon := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon") as Control
 	var hint_label := outdoor_mode.get_node_or_null("CanvasLayer/TopRibbon/Margin/VBox/HintLabel") as Label
