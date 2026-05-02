@@ -230,6 +230,12 @@
       "purpose": "마트 보관실 비상 캐시를 확보한 큰 결정 성공 컷신 일러스트",
       "size": "960x480",
       "alpha_policy": "fully opaque illustration banner"
+    },
+    {
+      "filename": "indoor_story_clinic_medicine_sort_success.png",
+      "purpose": "의원 약품 보관실에서 손전등으로 쓸 만한 약품을 선별한 큰 결정 성공 컷신 일러스트",
+      "size": "960x480",
+      "alpha_policy": "fully opaque illustration banner"
     }
   ]
 }

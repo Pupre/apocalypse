@@ -280,6 +280,12 @@ func _run_test() -> void:
 		"indoor/indoor_event_medical_clinic.png",
 		"Medical buildings should use the clinic illustration."
 	)
+	assert_true(director.apply_action("move_reception"), "Clinic should allow moving into the reception counter.")
+	assert_true(director.apply_action("search_reception"), "Clinic reception should reveal the medicine storage key.")
+	var take_clinic_storage_key_action_id := _action_id_by_label_prefix(director.get_actions(), "약품 보관실 열쇠 챙긴다")
+	assert_true(not take_clinic_storage_key_action_id.is_empty(), "Clinic reception search should surface the medicine storage key pickup.")
+	assert_true(director.apply_action(take_clinic_storage_key_action_id), "Director should allow taking the clinic medicine storage key.")
+	assert_true(director.apply_action("move_clinic_lobby"), "Clinic should allow returning to the lobby from reception.")
 	assert_true(director.apply_action("move_treatment_room"), "Clinic should allow moving into the treatment room.")
 	assert_true(
 		_action_ids(director.get_actions()).has("move_nurse_station"),
@@ -288,6 +294,24 @@ func _run_test() -> void:
 	assert_true(
 		_action_ids(director.get_actions()).has("move_staff_break_room"),
 		"Clinic treatment room should expose a staff break room side route."
+	)
+	assert_true(run_state.inventory.add_item(content_library.get_item("flashlight")), "Clinic cutscene test should be able to add a flashlight.")
+	assert_true(director.apply_action("move_medicine_storage"), "Clinic should allow moving into the medicine storage room.")
+	assert_true(
+		_action_ids(director.get_actions()).has("search_medicine_storage_with_flashlight"),
+		"Clinic medicine storage should expose the flashlight-assisted careful sort branch."
+	)
+	assert_true(director.apply_action("search_medicine_storage_with_flashlight"), "Director should resolve the clinic careful medicine sort.")
+	assert_eq(
+		director.get_event_illustration_asset(),
+		"indoor/indoor_story_clinic_medicine_sort_success.png",
+		"Clinic careful medicine sort should swap the reading card to the generated medicine illustration."
+	)
+	var clinic_cutscene_payload: Dictionary = director.consume_story_cutscene_payload()
+	assert_eq(
+		String(clinic_cutscene_payload.get("asset", "")),
+		"indoor/indoor_story_clinic_medicine_sort_success.png",
+		"Clinic careful medicine sort should queue a full-screen story cutscene asset."
 	)
 
 	director.configure(run_state, "pharmacy_01")

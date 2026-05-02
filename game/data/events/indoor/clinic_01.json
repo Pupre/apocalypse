@@ -448,6 +448,13 @@
               "noise": 0,
               "repeatable": false
             },
+            "result_illustration_asset": "indoor/indoor_story_clinic_medicine_sort_success.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_clinic_medicine_sort_success.png",
+              "title": "쓸 만한 약품을 골라냈다",
+              "text": "급하게 쓸어 담았다면 위험한 약과 깨진 유리를 함께 집어 넣었을 것이다. 손전등을 켠 선택 덕분에 치료에 쓸 수 있는 것만 조용히 분류했다.",
+              "button": "약품 가방을 닫는다"
+            },
             "consume_on_use": true
           }
         }
