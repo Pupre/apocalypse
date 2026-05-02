@@ -91,6 +91,8 @@ const PATH_ALIASES := {
 	"indoor/indoor_event_bookstore_frozen.png": "@master/indoor/indoor_event_bookstore_frozen.png",
 	"indoor/indoor_event_civic_shelter.png": "@master/indoor/indoor_event_civic_shelter.png",
 	"indoor/indoor_story_mart_shelf_choice.png": "@master/indoor/indoor_story_mart_shelf_choice.png",
+	"indoor/indoor_story_mart_freezer_risk.png": "@master/indoor/indoor_story_mart_freezer_risk.png",
+	"indoor/indoor_story_mart_storage_cache_success.png": "@master/indoor/indoor_story_mart_storage_cache_success.png",
 	"structure/structure_panel_bg.png": "@master/structure/structure_panel_bg.png",
 	"structure/structure_room_node_known.png": "@master/structure/structure_room_node_known.png",
 	"structure/structure_room_node_current.png": "@master/structure/structure_room_node_current.png",

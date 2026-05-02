@@ -78,6 +78,10 @@ const REQUIRED_NEW_ITEM_IDS := [
 ]
 
 const REQUIRED_ACTION_IDS_BY_BUILDING := {
+	"mart_01": [
+		"search_freezer_row",
+		"commit_locked_storage_cache",
+	],
 	"corner_store_01": [
 		"search_corner_cashier_fast",
 		"search_corner_cashier_with_gloves",

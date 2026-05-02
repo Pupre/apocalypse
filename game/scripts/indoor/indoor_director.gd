@@ -31,6 +31,7 @@ func configure(run_state, building_id: String) -> void:
 	else:
 		_event_state = _create_initial_event_state(entry_zone_id)
 	_event_state.erase("last_illustration_asset")
+	_event_state.erase("pending_story_cutscene")
 	state_changed.emit()
 
 
@@ -215,6 +216,16 @@ func get_sleep_preview() -> Dictionary:
 
 func get_feedback_message() -> String:
 	return String(_event_state.get("last_feedback_message", ""))
+
+
+func consume_story_cutscene_payload() -> Dictionary:
+	var payload_variant: Variant = _event_state.get("pending_story_cutscene", {})
+	if typeof(payload_variant) != TYPE_DICTIONARY:
+		return {}
+
+	var payload := (payload_variant as Dictionary).duplicate(true)
+	_event_state.erase("pending_story_cutscene")
+	return payload
 
 
 func get_inventory_entries() -> Array[String]:
@@ -571,6 +582,7 @@ func _create_initial_event_state(current_zone_id: String = "") -> Dictionary:
 		"last_pressure_message": "",
 		"last_noise_message": "",
 		"last_illustration_asset": "",
+		"pending_story_cutscene": {},
 		"noise": 0,
 	}
 

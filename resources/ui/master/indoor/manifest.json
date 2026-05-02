@@ -218,6 +218,18 @@
       "purpose": "예배당과 임시 대피 공간 계열 실내 탐색 카드에 표시하는 차가운 공동 쉼터 일러스트",
       "size": "960x480",
       "alpha_policy": "fully opaque illustration banner"
+    },
+    {
+      "filename": "indoor_story_mart_freezer_risk.png",
+      "purpose": "마트 냉장고 줄 탐색 결과를 보여 주는 차가운 위험 선택 장면 일러스트",
+      "size": "960x480",
+      "alpha_policy": "fully opaque illustration banner"
+    },
+    {
+      "filename": "indoor_story_mart_storage_cache_success.png",
+      "purpose": "마트 보관실 비상 캐시를 확보한 큰 결정 성공 컷신 일러스트",
+      "size": "960x480",
+      "alpha_policy": "fully opaque illustration banner"
     }
   ]
 }

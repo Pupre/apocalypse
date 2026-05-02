@@ -481,6 +481,8 @@ func _assert_player_walk_direction_sprites() -> void:
 	assert_true(left_bounds.end.x < right_bounds.end.x, "Left and right walk frames should move their feet along opposite horizontal directions.")
 	assert_true(up_bounds.position.x < 24.0 and up_bounds.end.x > 40.0, "Up-walk frames should keep alternating feet on both sides instead of drifting to one side.")
 	assert_true(down_bounds.position.x < 24.0 and down_bounds.end.x > 40.0, "Down-walk frames should keep alternating feet on both sides instead of drifting to one side.")
+	_assert_vertical_walk_stride(resolver, "up")
+	_assert_vertical_walk_stride(resolver, "down")
 
 
 func _assert_outdoor_resource_mapping(content_library) -> void:
@@ -532,6 +534,35 @@ func _lower_opaque_bounds(image: Image) -> Rect2:
 	if max_x < 0:
 		return Rect2()
 	return Rect2(Vector2(min_x, min_y), Vector2(max_x - min_x + 1, max_y - min_y + 1))
+
+
+func _assert_vertical_walk_stride(resolver, direction: String) -> void:
+	var min_diff := INF
+	var max_diff := -INF
+	for frame_index in range(1, 9):
+		var texture := resolver.get_player_texture(direction, true, frame_index) as Texture2D
+		var image := texture.get_image()
+		var left_max_y := _lower_opaque_max_y_for_side(image, true)
+		var right_max_y := _lower_opaque_max_y_for_side(image, false)
+		var diff := left_max_y - right_max_y
+		min_diff = minf(min_diff, diff)
+		max_diff = maxf(max_diff, diff)
+	assert_true(
+		min_diff <= -3.0 and max_diff >= 3.0,
+		"%s-walk frames should alternate front/back foot depth instead of only opening and closing sideways." % direction.capitalize()
+	)
+
+
+func _lower_opaque_max_y_for_side(image: Image, left_side: bool) -> float:
+	var max_y := -1.0
+	var start_x := 0 if left_side else int(image.get_width() / 2)
+	var end_x := int(image.get_width() / 2) if left_side else image.get_width()
+	for y in range(48, image.get_height()):
+		for x in range(start_x, end_x):
+			if image.get_pixel(x, y).a <= 0.12:
+				continue
+			max_y = maxf(max_y, float(y))
+	return max_y
 
 
 func _assert_prop_cutout_has_sparse_ground(image: Image, asset_id: String) -> void:

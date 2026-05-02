@@ -259,4 +259,60 @@ text = "취소"
 size_flags_horizontal = 3
 text = "챙긴다"
 
+[node name="StoryCutsceneOverlay" type="Control" parent="."]
+visible = false
+z_index = 70
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 0
+
+[node name="SceneImage" type="TextureRect" parent="StoryCutsceneOverlay"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="DimLayer" type="ColorRect" parent="StoryCutsceneOverlay"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0, 0.015, 0.025, 0.32)
+
+[node name="TextPanel" type="PanelContainer" parent="StoryCutsceneOverlay"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = -198.0
+offset_right = -14.0
+offset_bottom = -14.0
+mouse_filter = 0
+
+[node name="Padding" type="MarginContainer" parent="StoryCutsceneOverlay/TextPanel"]
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 16
+
+[node name="VBox" type="VBoxContainer" parent="StoryCutsceneOverlay/TextPanel/Padding"]
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="StoryCutsceneOverlay/TextPanel/Padding/VBox"]
+text = "결정의 결과"
+autowrap_mode = 3
+
+[node name="BodyLabel" type="Label" parent="StoryCutsceneOverlay/TextPanel/Padding/VBox"]
+size_flags_vertical = 3
+text = "방금 내린 선택이 생존 계획을 바꿨다."
+autowrap_mode = 3
+
+[node name="CloseButton" type="Button" parent="StoryCutsceneOverlay/TextPanel/Padding/VBox"]
+custom_minimum_size = Vector2(0, 42)
+size_flags_horizontal = 3
+text = "계속"
+
 [node name="SurvivalSheet" parent="." instance=ExtResource("4")]

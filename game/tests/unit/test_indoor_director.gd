@@ -132,6 +132,46 @@ func _run_test() -> void:
 		["back_hall|household_goods", "back_hall|staff_corridor_gate", "checkout|staff_corridor_gate", "food_aisle|household_goods", "food_aisle|mart_entrance", "staff_corridor_gate|stair_landing"],
 		"At the staff door, the minimap should only add routes that can be seen directly from the current position."
 	)
+	assert_true(director.apply_action("force_staff_gate"), "Director should allow forcing the staff door before reaching the second floor.")
+	assert_true(director.apply_action("move_stair_landing"), "Director should allow reaching the second-floor landing after opening the staff door.")
+	assert_true(director.apply_action("move_office"), "Director should allow moving into the mart office.")
+	assert_true(director.apply_action("search_office_drawer"), "Director should allow searching the mart office for the storage key.")
+	var take_storage_key_action_id := _action_id_by_label_prefix(director.get_actions(), "보관실 열쇠 챙긴다")
+	assert_true(not take_storage_key_action_id.is_empty(), "Office search should surface the mart storage key pickup.")
+	assert_true(director.apply_action(take_storage_key_action_id), "Director should allow taking the mart storage key.")
+	assert_true(director.apply_action("move_stair_landing"), "Director should allow returning to the second-floor landing.")
+	assert_true(director.apply_action("move_warehouse"), "Director should allow moving into the back warehouse.")
+	var locked_storage_move := _action_by_id(director.get_actions(), "move_locked_storage")
+	assert_true(not locked_storage_move.is_empty(), "Warehouse should expose the locked storage room route.")
+	assert_true(not bool(locked_storage_move.get("locked", true)), "Taking the storage key should unlock the mart storage room route.")
+	assert_true(director.apply_action("move_locked_storage"), "Director should allow entering the mart storage room with the key.")
+	var storage_action_ids := _action_ids(director.get_actions())
+	assert_true(storage_action_ids.has("search_locked_storage_cache"), "Storage room should still offer a quick cache search.")
+	assert_true(storage_action_ids.has("commit_locked_storage_cache"), "Storage room should offer a major decision to sort the emergency cache.")
+	assert_true(director.apply_action("commit_locked_storage_cache"), "Director should resolve the major emergency-cache decision.")
+	assert_eq(
+		director.get_event_illustration_asset(),
+		"indoor/indoor_story_mart_storage_cache_success.png",
+		"Major storage cache success should swap the reading card to the generated cache illustration."
+	)
+	var cutscene_payload: Dictionary = director.consume_story_cutscene_payload()
+	assert_eq(
+		String(cutscene_payload.get("asset", "")),
+		"indoor/indoor_story_mart_storage_cache_success.png",
+		"Major storage cache success should queue the full-screen story cutscene asset."
+	)
+	assert_true(
+		String(cutscene_payload.get("title", "")).find("보관실") != -1,
+		"Major storage cache cutscene should name the decision result."
+	)
+	assert_true(
+		not _action_ids(director.get_actions()).has("search_locked_storage_cache"),
+		"Resolving the major storage cache decision should close the quick alternate cache search."
+	)
+	assert_true(
+		director.consume_story_cutscene_payload().is_empty(),
+		"Consuming a story cutscene should clear it so it does not replay every refresh."
+	)
 
 	director.configure(run_state, "mart_01")
 	assert_true(director.apply_action("move_checkout"), "Director should allow moving to checkout.")

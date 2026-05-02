@@ -468,6 +468,8 @@ func _normalize_zone_option(event: Dictionary, option: Dictionary) -> Dictionary
 			action["pressure"] = outcomes.get("pressure", {})
 		if outcomes.has("result_illustration_asset"):
 			action["result_illustration_asset"] = String(outcomes.get("result_illustration_asset", ""))
+		if outcomes.has("story_cutscene"):
+			action["story_cutscene"] = outcomes.get("story_cutscene", {})
 		if outcomes.has("consume_on_use"):
 			action["consume_on_use"] = bool(outcomes.get("consume_on_use", false))
 
@@ -618,6 +620,18 @@ func _apply_action_outcomes(event_state: Dictionary, action: Dictionary) -> void
 	var result_illustration_asset := String(action.get("result_illustration_asset", ""))
 	if not result_illustration_asset.is_empty():
 		event_state["last_illustration_asset"] = result_illustration_asset
+
+	var story_cutscene_variant: Variant = action.get("story_cutscene", {})
+	if typeof(story_cutscene_variant) == TYPE_DICTIONARY:
+		var story_cutscene := story_cutscene_variant as Dictionary
+		var story_cutscene_asset := String(story_cutscene.get("asset", ""))
+		if not story_cutscene_asset.is_empty():
+			event_state["pending_story_cutscene"] = {
+				"asset": story_cutscene_asset,
+				"title": String(story_cutscene.get("title", action.get("label", ""))),
+				"text": String(story_cutscene.get("text", event_state.get("last_feedback_message", ""))),
+				"button": String(story_cutscene.get("button", "계속")),
+			}
 
 	var noise_cost := int(action.get("noise_cost", 0))
 	if noise_cost != 0:

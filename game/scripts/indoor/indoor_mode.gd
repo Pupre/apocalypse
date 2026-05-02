@@ -61,6 +61,12 @@ var _supply_picker_plus_button: Button = null
 var _supply_picker_max_button: Button = null
 var _supply_picker_cancel_button: Button = null
 var _supply_picker_confirm_button: Button = null
+var _story_cutscene_overlay: Control = null
+var _story_cutscene_panel: PanelContainer = null
+var _story_cutscene_image: TextureRect = null
+var _story_cutscene_title_label: Label = null
+var _story_cutscene_body_label: Label = null
+var _story_cutscene_close_button: Button = null
 var _director_connected := false
 var _buttons_bound := false
 var _icon_cache: Dictionary = {}
@@ -127,6 +133,8 @@ func _bind_ui_buttons() -> void:
 		_supply_picker_cancel_button.pressed.connect(Callable(self, "_on_supply_picker_cancel_pressed"))
 	if _supply_picker_confirm_button != null and not _supply_picker_confirm_button.pressed.is_connected(Callable(self, "_on_supply_picker_confirm_pressed")):
 		_supply_picker_confirm_button.pressed.connect(Callable(self, "_on_supply_picker_confirm_pressed"))
+	if _story_cutscene_close_button != null and not _story_cutscene_close_button.pressed.is_connected(Callable(self, "_on_story_cutscene_close_pressed")):
+		_story_cutscene_close_button.pressed.connect(Callable(self, "_on_story_cutscene_close_pressed"))
 
 	_buttons_bound = true
 
@@ -933,7 +941,48 @@ func _on_action_pressed(action_id: String) -> void:
 		return
 
 	if _director != null and _director.has_method("apply_action"):
-		_director.apply_action(action_id)
+		var applied := bool(_director.apply_action(action_id))
+		if applied:
+			_show_pending_story_cutscene()
+
+
+func _show_pending_story_cutscene() -> void:
+	if _story_cutscene_overlay == null or _director == null:
+		return
+	if not _director.has_method("consume_story_cutscene_payload"):
+		return
+
+	var payload: Dictionary = _director.consume_story_cutscene_payload()
+	if payload.is_empty():
+		return
+
+	var texture: Texture2D = null
+	var asset_path := String(payload.get("asset", ""))
+	if not asset_path.is_empty():
+		texture = _ui_kit_resolver.get_texture(asset_path)
+	if texture == null:
+		texture = _ui_kit_resolver.get_texture("indoor/indoor_event_convenience_frozen.png")
+	if _story_cutscene_image != null:
+		_story_cutscene_image.texture = texture
+	if _story_cutscene_title_label != null:
+		_story_cutscene_title_label.text = String(payload.get("title", "결정의 결과"))
+	if _story_cutscene_body_label != null:
+		_story_cutscene_body_label.text = String(payload.get("text", "방금 내린 선택이 생존 계획을 바꿨다."))
+	if _story_cutscene_close_button != null:
+		_story_cutscene_close_button.text = String(payload.get("button", "계속"))
+
+	_close_bag_sheet()
+	if _minimap_overlay != null:
+		_minimap_overlay.visible = false
+	if _supply_picker_overlay != null:
+		_supply_picker_overlay.visible = false
+	_story_cutscene_overlay.visible = true
+	_story_cutscene_overlay.move_to_front()
+
+
+func _on_story_cutscene_close_pressed() -> void:
+	if _story_cutscene_overlay != null:
+		_story_cutscene_overlay.visible = false
 
 
 func _cache_nodes() -> void:
@@ -969,6 +1018,12 @@ func _cache_nodes() -> void:
 	_supply_picker_max_button = get_node_or_null("SupplyPickerOverlay/Padding/VBox/QuantityRow/MaxButton") as Button
 	_supply_picker_cancel_button = get_node_or_null("SupplyPickerOverlay/Padding/VBox/ButtonRow/CancelButton") as Button
 	_supply_picker_confirm_button = get_node_or_null("SupplyPickerOverlay/Padding/VBox/ButtonRow/ConfirmButton") as Button
+	_story_cutscene_overlay = get_node_or_null("StoryCutsceneOverlay") as Control
+	_story_cutscene_panel = get_node_or_null("StoryCutsceneOverlay/TextPanel") as PanelContainer
+	_story_cutscene_image = get_node_or_null("StoryCutsceneOverlay/SceneImage") as TextureRect
+	_story_cutscene_title_label = get_node_or_null("StoryCutsceneOverlay/TextPanel/Padding/VBox/TitleLabel") as Label
+	_story_cutscene_body_label = get_node_or_null("StoryCutsceneOverlay/TextPanel/Padding/VBox/BodyLabel") as Label
+	_story_cutscene_close_button = get_node_or_null("StoryCutsceneOverlay/TextPanel/Padding/VBox/CloseButton") as Button
 	_apply_ui_skin()
 
 
@@ -990,9 +1045,12 @@ func _apply_ui_skin() -> void:
 	_ui_kit_resolver.apply_panel(_decision_strip, "indoor/indoor_section_header_plain_compact.png")
 	_ui_kit_resolver.apply_panel(minimap_panel, "structure/structure_panel_bg.png")
 	_ui_kit_resolver.apply_panel(_supply_picker_overlay, "indoor/indoor_reading_panel_plain.png")
+	_ui_kit_resolver.apply_panel(_story_cutscene_panel, "indoor/indoor_reading_panel_plain.png")
 	if _event_illustration != null:
 		_event_illustration.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		_refresh_event_illustration()
+	if _story_cutscene_image != null:
+		_story_cutscene_image.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	_ui_kit_resolver.apply_button(
 		_map_button,
 		"hud/hud_icon_button_compact_normal.png",
@@ -1037,6 +1095,11 @@ func _apply_ui_skin() -> void:
 		"sheet/sheet_button_primary_normal.png",
 		"sheet/sheet_button_primary_pressed.png"
 	)
+	_ui_kit_resolver.apply_button(
+		_story_cutscene_close_button,
+		"sheet/sheet_button_primary_normal.png",
+		"sheet/sheet_button_primary_pressed.png"
+	)
 	if _title_label != null:
 		_apply_label_style(_title_label, 15, TEXT_PRIMARY_COLOR, 3)
 	if _time_label != null:
@@ -1061,6 +1124,12 @@ func _apply_ui_skin() -> void:
 		_apply_label_style(_supply_picker_status, 13, TEXT_SECONDARY_COLOR, 1)
 	if _supply_picker_quantity != null:
 		_apply_label_style(_supply_picker_quantity, 18, TEXT_PRIMARY_COLOR, 2)
+	if _story_cutscene_title_label != null:
+		_apply_label_style(_story_cutscene_title_label, 22, TEXT_PRIMARY_COLOR, 4)
+	if _story_cutscene_body_label != null:
+		_apply_label_style(_story_cutscene_body_label, 16, TEXT_SECONDARY_COLOR, 3)
+	if _story_cutscene_close_button != null:
+		_apply_button_text_style(_story_cutscene_close_button, 15, TEXT_PRIMARY_COLOR, 2)
 	if _map_button != null:
 		_map_button.text = ""
 		_map_button.tooltip_text = "구조도"

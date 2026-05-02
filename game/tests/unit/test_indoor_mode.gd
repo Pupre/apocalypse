@@ -253,6 +253,19 @@ func _run_test() -> void:
 		return
 	assert_true(not supply_picker_overlay.visible, "Indoor mode should keep the supply quantity picker hidden by default.")
 
+	var story_cutscene_overlay := indoor_mode.get_node_or_null("StoryCutsceneOverlay") as Control
+	var story_cutscene_image := indoor_mode.get_node_or_null("StoryCutsceneOverlay/SceneImage") as TextureRect
+	var story_cutscene_title := indoor_mode.get_node_or_null("StoryCutsceneOverlay/TextPanel/Padding/VBox/TitleLabel") as Label
+	var story_cutscene_body := indoor_mode.get_node_or_null("StoryCutsceneOverlay/TextPanel/Padding/VBox/BodyLabel") as Label
+	var story_cutscene_close := indoor_mode.get_node_or_null("StoryCutsceneOverlay/TextPanel/Padding/VBox/CloseButton") as Button
+	if not assert_true(
+		story_cutscene_overlay != null and story_cutscene_image != null and story_cutscene_title != null and story_cutscene_body != null and story_cutscene_close != null,
+		"Indoor mode should expose a full-screen story cutscene overlay for major successful decisions."
+	):
+		indoor_mode.free()
+		return
+	assert_true(not story_cutscene_overlay.visible, "Indoor story cutscene overlay should stay hidden until a story-worthy action resolves.")
+
 	var gauge_row := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/GaugeRow")
 	var health_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/GaugeRow/HealthGauge/StageLabel") as Label
 	var hunger_label := indoor_mode.get_node_or_null("Panel/Layout/MainColumn/TopBar/GaugeRow/HungerGauge/StageLabel") as Label
@@ -280,6 +293,21 @@ func _run_test() -> void:
 	if not assert_true(director != null and director.has_method("apply_action"), "Indoor mode should expose its Director node."):
 		indoor_mode.free()
 		return
+
+	director._event_state["pending_story_cutscene"] = {
+		"asset": "indoor/indoor_story_mart_storage_cache_success.png",
+		"title": "보관실 캐시를 확보했다",
+		"text": "큰 선택의 성공 결과가 전체화면 일러스트로 떠야 한다.",
+		"button": "계속",
+	}
+	indoor_mode._show_pending_story_cutscene()
+	await process_frame
+	assert_true(story_cutscene_overlay.visible, "Indoor mode should show the full-screen story cutscene when the director queues one.")
+	assert_true(story_cutscene_image.texture != null, "Indoor story cutscene should load its generated illustration asset.")
+	assert_eq(story_cutscene_title.text, "보관실 캐시를 확보했다", "Indoor story cutscene should expose the authored result title.")
+	story_cutscene_close.emit_signal("pressed")
+	await process_frame
+	assert_true(not story_cutscene_overlay.visible, "Indoor story cutscene close button should return to the indoor decision screen.")
 
 	bag_button.emit_signal("pressed")
 	await process_frame

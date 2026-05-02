@@ -148,6 +148,11 @@ For the full active plan inventory, use `docs/INDEX.md`. The list below is the n
 - 새 결빙 휴대폰 UI 키트 기준으로 타이틀, 생존자 생성, 지도 오버레이, 수량 선택, 도감, 스토리 일러스트 패널까지 같은 `결정 우선` 시각 언어로 계속 끌어올린다.
 - 전용 스토리/결과 일러스트는 단순 장식이 아니라 의미 있는 선택, 위험, 서사 순간을 강화할 때 우선 추가한다.
 - Continuously remove dead code, obsolete UI paths, temporary scaffolding, and other local junk that would otherwise pollute future implementation patterns.
+- 2026-05-03 마트 실내 선택지에는 큰 결정 성공 컷신의 첫 구현이 들어갔다.
+  - 실내 액션 결과에 `story_cutscene` 훅을 추가해, 특정 선택 성공 후 읽기 카드 이미지와 별도로 전체화면 일러스트 연출을 띄울 수 있다.
+  - 마트 냉장고 줄 탐색은 새 AI 생성 일러스트와 추위 압박 결과를 보여 주며, 보관실은 빠른 수색과 긴 비상 캐시 재분류 중 하나를 고르는 결정 구조로 바뀌었다.
+  - 보관실 비상 캐시 재분류 성공 시 물자 확보 결과와 함께 전체화면 컷신이 한 번만 재생되고, 같은 캐시를 다시 훑는 대체 선택지는 닫힌다.
+  - 주인공 상하 걷기 프레임은 좌우로만 벌어지는 하체가 아니라 앞뒤 보폭이 교차하도록 다시 그렸고, 테스트도 상하 보행의 세로 발 디딤을 검증한다.
 
 ## Temporary Development Conditions
 

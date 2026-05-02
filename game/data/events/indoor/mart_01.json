@@ -9,9 +9,17 @@
       "floor_id": "floor_1",
       "label": "정문 진입부",
       "summary": "깨진 자동문과 쓰러진 장바구니가 입구를 막고 있다.",
-      "connected_zone_ids": ["checkout", "food_aisle"],
-      "event_ids": ["entrance_search_event"],
-      "map_position": [0, 1],
+      "connected_zone_ids": [
+        "checkout",
+        "food_aisle"
+      ],
+      "event_ids": [
+        "entrance_search_event"
+      ],
+      "map_position": [
+        0,
+        1
+      ],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -20,9 +28,18 @@
       "floor_id": "floor_1",
       "label": "계산대",
       "summary": "계산대 안쪽에 직원 통로로 이어지는 잠긴 문이 보인다.",
-      "connected_zone_ids": ["mart_entrance", "snack_aisle", "staff_corridor_gate"],
-      "event_ids": ["checkout_drawer_event"],
-      "map_position": [1, 1],
+      "connected_zone_ids": [
+        "mart_entrance",
+        "snack_aisle",
+        "staff_corridor_gate"
+      ],
+      "event_ids": [
+        "checkout_drawer_event"
+      ],
+      "map_position": [
+        1,
+        1
+      ],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -31,9 +48,18 @@
       "floor_id": "floor_1",
       "label": "식품 진열대",
       "summary": "즉석식품과 말린 간식 코너가 반쯤 비어 있다.",
-      "connected_zone_ids": ["mart_entrance", "household_goods", "freezer_row"],
-      "event_ids": ["food_aisle_search_event"],
-      "map_position": [0, 2],
+      "connected_zone_ids": [
+        "mart_entrance",
+        "household_goods",
+        "freezer_row"
+      ],
+      "event_ids": [
+        "food_aisle_search_event"
+      ],
+      "map_position": [
+        0,
+        2
+      ],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -42,9 +68,17 @@
       "floor_id": "floor_1",
       "label": "간식 코너",
       "summary": "작은 과자 상자와 뜯어진 봉투가 바닥에 흩어져 있다.",
-      "connected_zone_ids": ["checkout", "household_goods"],
-      "event_ids": ["snack_aisle_search_event"],
-      "map_position": [1, 0],
+      "connected_zone_ids": [
+        "checkout",
+        "household_goods"
+      ],
+      "event_ids": [
+        "snack_aisle_search_event"
+      ],
+      "map_position": [
+        1,
+        0
+      ],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -53,9 +87,18 @@
       "floor_id": "floor_1",
       "label": "생활용품 코너",
       "summary": "포장재와 작은 생활 보온품, 비상용 물건들이 남아 있다.",
-      "connected_zone_ids": ["food_aisle", "snack_aisle", "back_hall"],
-      "event_ids": ["household_goods_search_event"],
-      "map_position": [1, 2],
+      "connected_zone_ids": [
+        "food_aisle",
+        "snack_aisle",
+        "back_hall"
+      ],
+      "event_ids": [
+        "household_goods_search_event"
+      ],
+      "map_position": [
+        1,
+        2
+      ],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -64,9 +107,17 @@
       "floor_id": "floor_1",
       "label": "냉장고 줄",
       "summary": "전원이 끊긴 냉장고 줄 사이로 아직 봉인된 음료와 혼합 분말이 남아 있다.",
-      "connected_zone_ids": ["food_aisle", "cold_storage"],
-      "event_ids": ["freezer_row_search_event"],
-      "map_position": [0, 3],
+      "connected_zone_ids": [
+        "food_aisle",
+        "cold_storage"
+      ],
+      "event_ids": [
+        "freezer_row_search_event"
+      ],
+      "map_position": [
+        0,
+        3
+      ],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -75,9 +126,18 @@
       "floor_id": "floor_1",
       "label": "매장 뒤편",
       "summary": "쓰러진 음료 상자와 직원용 적재 카트가 통로를 막고 있다.",
-      "connected_zone_ids": ["household_goods", "staff_corridor_gate", "cold_storage"],
-      "event_ids": ["back_hall_supply_event"],
-      "map_position": [2, 2],
+      "connected_zone_ids": [
+        "household_goods",
+        "staff_corridor_gate",
+        "cold_storage"
+      ],
+      "event_ids": [
+        "back_hall_supply_event"
+      ],
+      "map_position": [
+        2,
+        2
+      ],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -86,9 +146,18 @@
       "floor_id": "floor_1",
       "label": "직원 통로 문",
       "summary": "문고리가 휘어 있지만 안쪽 계단은 아직 멀쩡해 보인다.",
-      "connected_zone_ids": ["checkout", "back_hall", "stair_landing"],
-      "event_ids": ["staff_gate_event"],
-      "map_position": [2, 1],
+      "connected_zone_ids": [
+        "checkout",
+        "back_hall",
+        "stair_landing"
+      ],
+      "event_ids": [
+        "staff_gate_event"
+      ],
+      "map_position": [
+        2,
+        1
+      ],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -97,9 +166,17 @@
       "floor_id": "floor_1",
       "label": "냉장 보관실",
       "summary": "문이 덜 닫힌 채 남아 있어 안쪽 상자와 박스음료가 아직 남아 있다.",
-      "connected_zone_ids": ["freezer_row", "back_hall"],
-      "event_ids": ["cold_storage_search_event"],
-      "map_position": [1, 3],
+      "connected_zone_ids": [
+        "freezer_row",
+        "back_hall"
+      ],
+      "event_ids": [
+        "cold_storage_search_event"
+      ],
+      "map_position": [
+        1,
+        3
+      ],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -110,13 +187,23 @@
       "move_label": "2층으로 올라간다",
       "blocked_feedback": "직원 통로 문이 걸려 있어 위층으로 올라갈 수 없다.",
       "summary": "먼지 위에 남은 최근 발자국이 위층 안쪽으로 이어진다.",
-      "connected_zone_ids": ["staff_corridor_gate", "break_room", "office", "warehouse"],
+      "connected_zone_ids": [
+        "staff_corridor_gate",
+        "break_room",
+        "office",
+        "warehouse"
+      ],
       "event_ids": [],
-      "map_position": [3, 1],
+      "map_position": [
+        3,
+        1
+      ],
       "first_visit_cost": 30,
       "revisit_cost": 10,
       "access_requirements": {
-        "required_flag_ids": ["staff_gate_forced"]
+        "required_flag_ids": [
+          "staff_gate_forced"
+        ]
       }
     },
     {
@@ -126,9 +213,16 @@
       "summary": "식다 만 코코아컵과 접히지 않은 담요가 그대로 남아 있다.",
       "rest_minutes": 60,
       "sleep_allowed": true,
-      "connected_zone_ids": ["stair_landing"],
-      "event_ids": ["break_room_supplies_event"],
-      "map_position": [4, 0],
+      "connected_zone_ids": [
+        "stair_landing"
+      ],
+      "event_ids": [
+        "break_room_supplies_event"
+      ],
+      "map_position": [
+        4,
+        0
+      ],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -137,9 +231,16 @@
       "floor_id": "floor_2",
       "label": "사무실",
       "summary": "뒤집힌 서류철과 장부 틈에 따로 감춘 열쇠 흔적이 남아 있다.",
-      "connected_zone_ids": ["stair_landing"],
-      "event_ids": ["office_drawer_event"],
-      "map_position": [4, 1],
+      "connected_zone_ids": [
+        "stair_landing"
+      ],
+      "event_ids": [
+        "office_drawer_event"
+      ],
+      "map_position": [
+        4,
+        1
+      ],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -148,9 +249,17 @@
       "floor_id": "floor_2",
       "label": "후면 창고",
       "summary": "반쯤 뜯긴 박스와 종이 포장재 더미가 창고 안쪽으로 이어진다.",
-      "connected_zone_ids": ["stair_landing", "locked_storage"],
-      "event_ids": ["warehouse_crate_event"],
-      "map_position": [4, 2],
+      "connected_zone_ids": [
+        "stair_landing",
+        "locked_storage"
+      ],
+      "event_ids": [
+        "warehouse_crate_event"
+      ],
+      "map_position": [
+        4,
+        2
+      ],
       "first_visit_cost": 30,
       "revisit_cost": 10
     },
@@ -159,13 +268,22 @@
       "floor_id": "floor_2",
       "label": "보관실",
       "summary": "따로 빼둔 생활 보온품과 포장재 묶음이 아직 손대지 않은 채 남아 있다.",
-      "connected_zone_ids": ["warehouse"],
-      "event_ids": ["locked_storage_cache_event"],
-      "map_position": [5, 2],
+      "connected_zone_ids": [
+        "warehouse"
+      ],
+      "event_ids": [
+        "locked_storage_cache_event"
+      ],
+      "map_position": [
+        5,
+        2
+      ],
       "first_visit_cost": 30,
       "revisit_cost": 10,
       "access_requirements": {
-        "required_item_ids": ["storage_key"]
+        "required_item_ids": [
+          "storage_key"
+        ]
       }
     }
   ],
@@ -196,19 +314,41 @@
         {
           "id": "search_mart_entrance",
           "label": "정문 주변을 탐색한다",
-          "requirements": {},
-          "costs": { "minutes": 30, "noise": 0 },
+        "requirements": {
+          "forbidden_flag_ids": [
+            "locked_storage_cache_taken"
+          ]
+        },
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
           "outcomes": {
             "discover_loot": [],
             "loot_table": {
               "rolls": 2,
               "allow_duplicates": false,
               "entries": [
-                { "id": "shopping_bag", "weight": 4 },
-                { "id": "zip_bag", "weight": 4 },
-                { "id": "wet_wipes", "weight": 3 },
-                { "id": "paper_bag", "weight": 3 },
-                { "id": "trash_bag_roll", "weight": 2 }
+                {
+                  "id": "shopping_bag",
+                  "weight": 4
+                },
+                {
+                  "id": "zip_bag",
+                  "weight": 4
+                },
+                {
+                  "id": "wet_wipes",
+                  "weight": 3
+                },
+                {
+                  "id": "paper_bag",
+                  "weight": 3
+                },
+                {
+                  "id": "trash_bag_roll",
+                  "weight": 2
+                }
               ]
             },
             "pressure": {
@@ -234,22 +374,42 @@
           "id": "search_checkout_drawer",
           "label": "계산대를 탐색한다",
           "requirements": {},
-          "costs": { "minutes": 30, "noise": 0 },
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
           "outcomes": {
             "discover_loot": [
-              { "id": "lighter", "bulk": 1 }
+              {
+                "id": "lighter",
+                "bulk": 1
+              }
             ],
             "loot_table": {
               "rolls": 2,
               "allow_duplicates": false,
               "entries": [
-                { "id": "butter_cookie_box", "weight": 3 },
-                { "id": "crackers", "weight": 3 },
-                { "id": "receipt_bundle", "weight": 2 },
-                { "id": "ballpoint_pen", "weight": 2 }
+                {
+                  "id": "butter_cookie_box",
+                  "weight": 3
+                },
+                {
+                  "id": "crackers",
+                  "weight": 3
+                },
+                {
+                  "id": "receipt_bundle",
+                  "weight": 2
+                },
+                {
+                  "id": "ballpoint_pen",
+                  "weight": 2
+                }
               ]
             },
-            "reveal_clue_ids": ["staff_gate_hint"],
+            "reveal_clue_ids": [
+              "staff_gate_hint"
+            ],
             "consume_on_use": true
           }
         }
@@ -265,22 +425,45 @@
           "id": "search_food_aisle",
           "label": "식품 진열대를 탐색한다",
           "requirements": {},
-          "costs": { "minutes": 30, "noise": 0 },
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
           "outcomes": {
             "discover_loot": [],
             "supply_sources": [
-              { "id": "water_shelf", "item_id": "bottled_water", "quantity": 12 },
-              { "id": "soup_case", "item_id": "instant_soup_powder", "quantity": 8 }
+              {
+                "id": "water_shelf",
+                "item_id": "bottled_water",
+                "quantity": 12
+              },
+              {
+                "id": "soup_case",
+                "item_id": "instant_soup_powder",
+                "quantity": 8
+              }
             ],
             "result_illustration_asset": "indoor/indoor_story_mart_shelf_choice.png",
             "loot_table": {
               "rolls": 3,
               "allow_duplicates": false,
               "entries": [
-                { "id": "instant_soup_powder", "weight": 3 },
-                { "id": "butter_cookie_box", "weight": 3 },
-                { "id": "instant_cocoa_mix", "weight": 3 },
-                { "id": "tea_bag", "weight": 2 }
+                {
+                  "id": "instant_soup_powder",
+                  "weight": 3
+                },
+                {
+                  "id": "butter_cookie_box",
+                  "weight": 3
+                },
+                {
+                  "id": "instant_cocoa_mix",
+                  "weight": 3
+                },
+                {
+                  "id": "tea_bag",
+                  "weight": 2
+                }
               ]
             },
             "consume_on_use": true
@@ -298,16 +481,28 @@
           "id": "search_snack_aisle",
           "label": "간식 코너를 탐색한다",
           "requirements": {},
-          "costs": { "minutes": 30, "noise": 0 },
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
           "outcomes": {
             "discover_loot": [],
             "loot_table": {
               "rolls": 2,
               "allow_duplicates": false,
               "entries": [
-                { "id": "butter_cookie_box", "weight": 4 },
-                { "id": "crackers", "weight": 3 },
-                { "id": "tea_bag", "weight": 2 }
+                {
+                  "id": "butter_cookie_box",
+                  "weight": 4
+                },
+                {
+                  "id": "crackers",
+                  "weight": 3
+                },
+                {
+                  "id": "tea_bag",
+                  "weight": 2
+                }
               ]
             },
             "consume_on_use": true
@@ -325,21 +520,45 @@
           "id": "search_household_goods",
           "label": "생활용품 코너를 탐색한다",
           "requirements": {},
-          "costs": { "minutes": 30, "noise": 0 },
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
           "outcomes": {
             "discover_loot": [
-              { "id": "small_backpack", "bulk": 1 }
+              {
+                "id": "small_backpack",
+                "bulk": 1
+              }
             ],
             "loot_table": {
               "rolls": 3,
               "allow_duplicates": false,
               "entries": [
-                { "id": "cling_wrap_roll", "weight": 4 },
-                { "id": "foil_tray_pack", "weight": 4 },
-                { "id": "dish_soap", "weight": 3 },
-                { "id": "scrub_sponge", "weight": 3 },
-                { "id": "hand_warmer_pack", "weight": 3 },
-                { "id": "zip_bag", "weight": 2 }
+                {
+                  "id": "cling_wrap_roll",
+                  "weight": 4
+                },
+                {
+                  "id": "foil_tray_pack",
+                  "weight": 4
+                },
+                {
+                  "id": "dish_soap",
+                  "weight": 3
+                },
+                {
+                  "id": "scrub_sponge",
+                  "weight": 3
+                },
+                {
+                  "id": "hand_warmer_pack",
+                  "weight": 3
+                },
+                {
+                  "id": "zip_bag",
+                  "weight": 2
+                }
               ]
             },
             "consume_on_use": true
@@ -357,19 +576,40 @@
           "id": "search_freezer_row",
           "label": "냉장고 줄을 탐색한다",
           "requirements": {},
-          "costs": { "minutes": 30, "noise": 0 },
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
           "outcomes": {
             "discover_loot": [],
             "loot_table": {
               "rolls": 2,
               "allow_duplicates": false,
               "entries": [
-                { "id": "bottled_water", "weight": 3 },
-                { "id": "instant_cocoa_mix", "weight": 3 },
-                { "id": "butter_cookie_box", "weight": 2 }
+                {
+                  "id": "bottled_water",
+                  "weight": 3
+                },
+                {
+                  "id": "instant_cocoa_mix",
+                  "weight": 3
+                },
+                {
+                  "id": "butter_cookie_box",
+                  "weight": 2
+                }
               ]
             },
-            "consume_on_use": true
+            "consume_on_use": true,
+            "result_illustration_asset": "indoor/indoor_story_mart_freezer_risk.png",
+            "pressure": {
+              "id": "mart_freezer_row_open_case",
+          "message": "서리 낀 냉장고 뚜껑을 붙잡고 오래 버틴 탓에 손끝 감각이 둔해졌다.",
+              "exposure_loss": 4.0,
+              "fatigue_gain": 1.0,
+              "noise": 0,
+              "repeatable": false
+            }
           }
         }
       ]
@@ -384,21 +624,38 @@
           "id": "search_back_hall",
           "label": "매장 뒤편을 뒤진다",
           "requirements": {},
-          "costs": { "minutes": 30, "noise": 0 },
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
           "outcomes": {
             "discover_loot": [
-              { "id": "mart_stock_note_01", "bulk": 1 }
+              {
+                "id": "mart_stock_note_01",
+                "bulk": 1
+              }
             ],
             "loot_table": {
               "rolls": 2,
               "allow_duplicates": false,
               "entries": [
-                { "id": "foil_tray_pack", "weight": 3 },
-                { "id": "trash_bag_roll", "weight": 2 },
-                { "id": "shopping_bag", "weight": 2 }
+                {
+                  "id": "foil_tray_pack",
+                  "weight": 3
+                },
+                {
+                  "id": "trash_bag_roll",
+                  "weight": 2
+                },
+                {
+                  "id": "shopping_bag",
+                  "weight": 2
+                }
               ]
             },
-            "reveal_clue_ids": ["staff_gate_hint"],
+            "reveal_clue_ids": [
+              "staff_gate_hint"
+            ],
             "consume_on_use": true
           }
         },
@@ -406,9 +663,14 @@
           "id": "wait_and_listen",
           "label": "숨을 죽이고 인기척을 살핀다",
           "requirements": {},
-          "costs": { "minutes": 10, "noise": 0 },
+          "costs": {
+            "minutes": 10,
+            "noise": 0
+          },
           "outcomes": {
-            "reveal_clue_ids": ["recent_human_presence_hint"],
+            "reveal_clue_ids": [
+              "recent_human_presence_hint"
+            ],
             "consume_on_use": true
           }
         }
@@ -424,12 +686,19 @@
           "id": "force_staff_gate",
           "label": "직원 통로 문을 억지로 민다",
           "requirements": {
-            "forbidden_flag_ids": ["staff_gate_forced"]
+            "forbidden_flag_ids": [
+              "staff_gate_forced"
+            ]
           },
           "show_when_locked": false,
-          "costs": { "minutes": 10, "noise": 1 },
+          "costs": {
+            "minutes": 10,
+            "noise": 1
+          },
           "outcomes": {
-            "set_flags": ["staff_gate_forced"],
+            "set_flags": [
+              "staff_gate_forced"
+            ],
             "pressure": {
               "id": "mart_staff_gate_bang",
               "message": "문을 밀어붙이는 동안 금속이 크게 울리고 손바닥이 얼얼해졌다.",
@@ -445,13 +714,22 @@
           "id": "jimmy_staff_gate_with_screwdriver",
           "label": "드라이버로 걸쇠를 비튼다",
           "requirements": {
-            "required_item_ids": ["screwdriver"],
-            "forbidden_flag_ids": ["staff_gate_forced"]
+            "required_item_ids": [
+              "screwdriver"
+            ],
+            "forbidden_flag_ids": [
+              "staff_gate_forced"
+            ]
           },
           "blocked_feedback": "작은 드라이버가 있으면 걸쇠를 덜 시끄럽게 비틀 수 있을 것 같다.",
-          "costs": { "minutes": 20, "noise": 0 },
+          "costs": {
+            "minutes": 20,
+            "noise": 0
+          },
           "outcomes": {
-            "set_flags": ["staff_gate_forced"],
+            "set_flags": [
+              "staff_gate_forced"
+            ],
             "pressure": {
               "id": "mart_staff_gate_jimmy",
               "message": "드라이버 끝으로 걸쇠를 천천히 밀어 올려 문을 조용히 열었다.",
@@ -474,16 +752,28 @@
           "id": "search_cold_storage",
           "label": "냉장 보관실을 탐색한다",
           "requirements": {},
-          "costs": { "minutes": 30, "noise": 0 },
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
           "outcomes": {
             "discover_loot": [],
             "loot_table": {
               "rolls": 3,
               "allow_duplicates": false,
               "entries": [
-                { "id": "bottled_water", "weight": 3 },
-                { "id": "instant_cocoa_mix", "weight": 3 },
-                { "id": "hand_warmer_pack", "weight": 2 }
+                {
+                  "id": "bottled_water",
+                  "weight": 3
+                },
+                {
+                  "id": "instant_cocoa_mix",
+                  "weight": 3
+                },
+                {
+                  "id": "hand_warmer_pack",
+                  "weight": 2
+                }
               ]
             },
             "pressure": {
@@ -509,17 +799,32 @@
           "id": "search_break_room",
           "label": "직원 휴게실을 탐색한다",
           "requirements": {},
-          "costs": { "minutes": 30, "noise": 0 },
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
           "outcomes": {
             "discover_loot": [],
             "loot_table": {
               "rolls": 3,
               "allow_duplicates": false,
               "entries": [
-                { "id": "old_blanket", "weight": 3 },
-                { "id": "instant_cocoa_mix", "weight": 3 },
-                { "id": "tea_bag", "weight": 2 },
-                { "id": "hand_warmer_pack", "weight": 2 }
+                {
+                  "id": "old_blanket",
+                  "weight": 3
+                },
+                {
+                  "id": "instant_cocoa_mix",
+                  "weight": 3
+                },
+                {
+                  "id": "tea_bag",
+                  "weight": 2
+                },
+                {
+                  "id": "hand_warmer_pack",
+                  "weight": 2
+                }
               ]
             },
             "consume_on_use": true
@@ -537,23 +842,46 @@
           "id": "search_office_drawer",
           "label": "사무실 서랍을 뒤진다",
           "requirements": {},
-          "costs": { "minutes": 30, "noise": 0 },
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
           "outcomes": {
             "discover_loot": [
-              { "id": "storage_key", "bulk": 1 }
+              {
+                "id": "storage_key",
+                "bulk": 1
+              }
             ],
             "loot_table": {
               "rolls": 2,
               "allow_duplicates": false,
               "entries": [
-                { "id": "memo_pad", "weight": 2 },
-                { "id": "ballpoint_pen", "weight": 2 },
-                { "id": "receipt_bundle", "weight": 2 },
-                { "id": "improvised_heat_note_01", "weight": 1 },
-                { "id": "survival_cooking_note_01", "weight": 1 }
+                {
+                  "id": "memo_pad",
+                  "weight": 2
+                },
+                {
+                  "id": "ballpoint_pen",
+                  "weight": 2
+                },
+                {
+                  "id": "receipt_bundle",
+                  "weight": 2
+                },
+                {
+                  "id": "improvised_heat_note_01",
+                  "weight": 1
+                },
+                {
+                  "id": "survival_cooking_note_01",
+                  "weight": 1
+                }
               ]
             },
-            "reveal_clue_ids": ["storage_key_hint"],
+            "reveal_clue_ids": [
+              "storage_key_hint"
+            ],
             "consume_on_use": true
           }
         }
@@ -569,17 +897,32 @@
           "id": "search_warehouse_crates",
           "label": "후면 창고를 탐색한다",
           "requirements": {},
-          "costs": { "minutes": 30, "noise": 0 },
+          "costs": {
+            "minutes": 30,
+            "noise": 0
+          },
           "outcomes": {
             "discover_loot": [],
             "loot_table": {
               "rolls": 3,
               "allow_duplicates": false,
               "entries": [
-                { "id": "cling_wrap_roll", "weight": 3 },
-                { "id": "foil_tray_pack", "weight": 3 },
-                { "id": "shopping_bag", "weight": 2 },
-                { "id": "instant_soup_powder", "weight": 2 }
+                {
+                  "id": "cling_wrap_roll",
+                  "weight": 3
+                },
+                {
+                  "id": "foil_tray_pack",
+                  "weight": 3
+                },
+                {
+                  "id": "shopping_bag",
+                  "weight": 2
+                },
+                {
+                  "id": "instant_soup_powder",
+                  "weight": 2
+                }
               ]
             },
             "consume_on_use": true
@@ -591,25 +934,130 @@
       "id": "locked_storage_cache_event",
       "zone_id": "locked_storage",
       "type": "search",
-      "hint_text": "따로 빼둔 보관실이라 더 좋은 생활 보온품과 포장재가 아직 남아 있다.",
+      "hint_text": "따로 빼둔 보관실이라 더 좋은 생활 보온품과 포장재가 남아 있다. 오래 뒤지면 확실한 캐시를 만들 수 있지만, 시간과 체온을 크게 잃는다.",
       "options": [
-        {
-          "id": "search_locked_storage_cache",
-          "label": "보관실을 샅샅이 뒤진다",
-          "requirements": {},
-          "costs": { "minutes": 30, "noise": 0 },
+      {
+        "id": "search_locked_storage_cache",
+        "label": "보관실 선반만 빠르게 훑는다",
+        "requirements": {
+          "forbidden_flag_ids": [
+            "locked_storage_cache_taken"
+          ]
+        },
+          "costs": {
+            "minutes": 25,
+            "noise": 0
+          },
           "outcomes": {
             "discover_loot": [],
             "loot_table": {
-              "rolls": 4,
+              "rolls": 2,
               "allow_duplicates": false,
               "entries": [
-                { "id": "hand_warmer_pack", "weight": 3 },
-                { "id": "foil_tray_pack", "weight": 3 },
-                { "id": "hot_water_bottle", "weight": 2 },
-                { "id": "clear_plastic_sheet", "weight": 2 }
+                {
+                  "id": "hand_warmer_pack",
+                  "weight": 3
+                },
+                {
+                  "id": "foil_tray_pack",
+                  "weight": 3
+                },
+                {
+                  "id": "hot_water_bottle",
+                  "weight": 2
+                },
+                {
+                  "id": "clear_plastic_sheet",
+                  "weight": 2
+                }
               ]
             },
+          "result_illustration_asset": "indoor/indoor_story_mart_storage_cache_success.png",
+          "set_flags": [
+            "locked_storage_cache_taken"
+          ],
+          "consume_on_use": true
+        }
+      },
+        {
+          "id": "commit_locked_storage_cache",
+          "label": "시간을 들여 비상 캐시를 재분류한다",
+        "requirements": {
+          "forbidden_flag_ids": [
+            "locked_storage_cache_taken"
+          ]
+        },
+          "costs": {
+            "minutes": 55,
+            "noise": 1
+          },
+          "outcomes": {
+            "discover_loot": [
+              {
+                "id": "hand_warmer_pack",
+                "bulk": 1
+              },
+              {
+                "id": "hot_water_bottle",
+                "bulk": 2
+              },
+              {
+                "id": "instant_cocoa_mix",
+                "bulk": 1
+              }
+            ],
+            "supply_sources": [
+              {
+                "id": "locked_storage_water_cache",
+                "item_id": "bottled_water",
+                "quantity": 5
+              }
+            ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                {
+                  "id": "foil_tray_pack",
+                  "weight": 3
+                },
+                {
+                  "id": "clear_plastic_sheet",
+                  "weight": 3
+                },
+                {
+                  "id": "hand_warmer_pack",
+                  "weight": 2
+                },
+                {
+                  "id": "instant_cocoa_mix",
+                  "weight": 2
+                },
+                {
+                  "id": "butter_cookie_box",
+                  "weight": 1
+                }
+              ]
+            },
+            "pressure": {
+              "id": "mart_locked_storage_deep_sort",
+              "message": "문을 등으로 막고 상자를 다시 묶는 동안 시간이 크게 흘렀다. 대신 가져갈 가치가 있는 물자만 또렷하게 남았다.",
+              "exposure_loss": 5.0,
+              "fatigue_gain": 2.0,
+              "noise": 1,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_mart_storage_cache_success.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_mart_storage_cache_success.png",
+              "title": "보관실 캐시를 확보했다",
+              "text": "시간은 잃었지만 판단은 맞았다. 물, 핫팩, 온수병, 포장재를 한데 묶자 이 건물은 단순한 마트가 아니라 다음 이동을 준비할 수 있는 짧은 거점이 됐다.",
+              "button": "다음 선택으로"
+            },
+          "set_flags": [
+            "locked_storage_cache_taken",
+            "locked_storage_cache_sorted"
+          ],
             "consume_on_use": true
           }
         }
