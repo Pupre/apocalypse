@@ -61,6 +61,14 @@ func get_event_illustration_asset() -> String:
 			return "indoor/indoor_event_residential_stairwell.png"
 		"hardware_01", "warehouse_01", "storage_depot_01", "garage_01", "repair_shop_01", "gas_station_01":
 			return "indoor/indoor_event_industrial_garage.png"
+		"office_01":
+			return "indoor/indoor_event_office_records.png"
+		"police_box_01", "school_gate_01":
+			return "indoor/indoor_event_security_station.png"
+		"bookstore_01":
+			return "indoor/indoor_event_bookstore_frozen.png"
+		"church_01", "chapel_01":
+			return "indoor/indoor_event_civic_shelter.png"
 
 	match String(_building_data.get("category", "")):
 		"medical":
@@ -71,6 +79,10 @@ func get_event_illustration_asset() -> String:
 			return "indoor/indoor_event_industrial_garage.png"
 		"food_service":
 			return "indoor/indoor_event_food_kitchen.png"
+		"security":
+			return "indoor/indoor_event_security_station.png"
+		"office":
+			return "indoor/indoor_event_office_records.png"
 		_:
 			return "indoor/indoor_event_convenience_frozen.png"
 

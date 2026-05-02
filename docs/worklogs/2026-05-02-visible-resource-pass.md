@@ -97,3 +97,22 @@
 - `res://tests/unit/test_outdoor_controller.gd`
 - `res://tests/unit/test_outdoor_world_runtime.gd`
 - `res://tests/unit/test_outdoor_map_view.gd`
+
+## 추가 패스: 사무실/보안/서점/대피 공간 실내 일러스트
+
+편의점 공통 이미지로 떨어지던 건물군을 줄이기 위해 AI 생성 실내 배너 네 장을 추가했다. 이번 리소스는 단순히 예쁜 배경을 늘리는 목적보다, “내가 들어온 장소가 어떤 종류의 판단을 요구하는지”를 카드 상단에서 바로 읽히게 하는 목적이다.
+
+### 구현 내용
+
+- 새 AI 생성 리소스 네 장을 추가했다.
+  - `resources/ui/master/indoor/indoor_event_office_records.png`: 사무실과 기록보관 공간.
+  - `resources/ui/master/indoor/indoor_event_security_station.png`: 파출소, 경비실, 장비 캐비닛 공간.
+  - `resources/ui/master/indoor/indoor_event_bookstore_frozen.png`: 얼어붙은 서점과 종이 더미.
+  - `resources/ui/master/indoor/indoor_event_civic_shelter.png`: 예배당과 임시 대피 공간.
+- `IndoorDirector.get_event_illustration_asset()`에 사무실, 보안, 서점, 예배당 계열 매핑을 추가했다.
+- `UiKitResolver`와 실내 리소스 매니페스트에 새 배너들을 등록했다.
+
+### 검증
+
+- `res://tests/unit/test_indoor_director.gd`
+- `res://tests/unit/test_indoor_mode.gd`

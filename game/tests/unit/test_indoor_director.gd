@@ -247,6 +247,11 @@ func _run_test() -> void:
 
 	director.configure(run_state, "office_01")
 	assert_eq(director.get_current_zone_id(), "office_lobby", "Director should initialize at the office entry zone.")
+	assert_eq(
+		director.get_event_illustration_asset(),
+		"indoor/indoor_event_office_records.png",
+		"Office buildings should use the frozen office records illustration."
+	)
 	assert_true(director.apply_action("move_open_office"), "Office should allow moving into the open workspace.")
 	assert_true(
 		_action_ids(director.get_actions()).has("move_meeting_room"),
@@ -305,6 +310,11 @@ func _run_test() -> void:
 		"Cafe prep shelf should expose a glove-assisted careful search."
 	)
 	director.configure(run_state, "police_box_01")
+	assert_eq(
+		director.get_event_illustration_asset(),
+		"indoor/indoor_event_security_station.png",
+		"Security buildings should use the police/security station illustration."
+	)
 	assert_true(director.apply_action("move_locker_wall"), "Police box should allow moving to the locker wall.")
 	assert_true(director.apply_action("move_equipment_cabinet"), "Police box should expose a deeper equipment cabinet.")
 	var police_actions: Array[Dictionary] = director.get_actions()
@@ -327,6 +337,18 @@ func _run_test() -> void:
 	assert_true(
 		String(_action_by_id(residence_actions, "search_residence_balcony_with_poncho").get("detail_label", "")).find("필요: 우비") != -1,
 		"Residence balcony careful branch should preview its wind-blocking requirement."
+	)
+	director.configure(run_state, "bookstore_01")
+	assert_eq(
+		director.get_event_illustration_asset(),
+		"indoor/indoor_event_bookstore_frozen.png",
+		"Bookstore buildings should use the frozen bookstore illustration."
+	)
+	director.configure(run_state, "chapel_01")
+	assert_eq(
+		director.get_event_illustration_asset(),
+		"indoor/indoor_event_civic_shelter.png",
+		"Chapel buildings should use the civic shelter illustration."
 	)
 	director.configure(run_state, "garage_01")
 	assert_eq(

@@ -104,6 +104,30 @@
       "purpose": "식당, 카페, 구내식당 등 음식점 계열 실내 탐색 카드에 표시하는 차가운 주방 일러스트",
       "size": "960x480",
       "alpha_policy": "fully opaque illustration banner"
+    },
+    {
+      "filename": "indoor_event_office_records.png",
+      "purpose": "사무실과 기록보관 계열 실내 탐색 카드에 표시하는 얼어붙은 사무실/서류 공간 일러스트",
+      "size": "960x480",
+      "alpha_policy": "fully opaque illustration banner"
+    },
+    {
+      "filename": "indoor_event_security_station.png",
+      "purpose": "파출소와 경비실 계열 실내 탐색 카드에 표시하는 얼어붙은 장비실/사물함 일러스트",
+      "size": "960x480",
+      "alpha_policy": "fully opaque illustration banner"
+    },
+    {
+      "filename": "indoor_event_bookstore_frozen.png",
+      "purpose": "서점 계열 실내 탐색 카드에 표시하는 얼어붙은 책장과 종이 더미 일러스트",
+      "size": "960x480",
+      "alpha_policy": "fully opaque illustration banner"
+    },
+    {
+      "filename": "indoor_event_civic_shelter.png",
+      "purpose": "예배당과 임시 대피 공간 계열 실내 탐색 카드에 표시하는 차가운 공동 쉼터 일러스트",
+      "size": "960x480",
+      "alpha_policy": "fully opaque illustration banner"
     }
   ]
 }
