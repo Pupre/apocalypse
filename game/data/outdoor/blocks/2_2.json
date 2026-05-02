@@ -1,12 +1,17 @@
 {
   "block_coord": { "x": 2, "y": 2 },
   "roads": [
-    { "id": "north_south", "rect": { "x": 360, "y": 0, "width": 240, "height": 960 } },
-    { "id": "east_west", "rect": { "x": 0, "y": 320, "width": 960, "height": 280 } }
+    { "id": "north_south", "texture_id": "road_lane_v", "rect": { "x": 360, "y": 0, "width": 240, "height": 960 } },
+    { "id": "east_west", "texture_id": "slush_road", "rect": { "x": 0, "y": 320, "width": 960, "height": 280 } },
+    { "id": "church_courtyard", "texture_id": "sidewalk_snow", "rect": { "x": 75, "y": 155, "width": 270, "height": 115 } },
+    { "id": "corner_store_awning_alley", "texture_id": "alley_dark", "rect": { "x": 650, "y": 160, "width": 280, "height": 90 } },
+    { "id": "snow_square_lot", "texture_id": "road_plain", "rect": { "x": 265, "y": 560, "width": 420, "height": 105 } }
   ],
   "snow_fields": [
     { "id": "north_open_snow", "rect": { "x": 0, "y": 0, "width": 280, "height": 240 } },
-    { "id": "east_open_snow", "rect": { "x": 680, "y": 640, "width": 280, "height": 320 } }
+    { "id": "east_open_snow", "rect": { "x": 680, "y": 640, "width": 280, "height": 320 } },
+    { "id": "corner_store_curb_snow", "rect": { "x": 720, "y": 280, "width": 205, "height": 100 } },
+    { "id": "square_drift_snow", "rect": { "x": 300, "y": 665, "width": 260, "height": 125 } }
   ],
   "hazards": [
     {
@@ -31,8 +36,12 @@
     }
   ],
   "obstacles": [
-    { "kind": "vehicle", "rect": { "x": 120, "y": 450, "width": 56, "height": 56 } },
-    { "kind": "rubble", "rect": { "x": 760, "y": 720, "width": 120, "height": 90 } }
+    { "kind": "vehicle", "asset_id": "frozen_car", "rect": { "x": 120, "y": 450, "width": 56, "height": 56 } },
+    { "kind": "rubble", "asset_id": "dumpster_snow", "rect": { "x": 760, "y": 720, "width": 120, "height": 90 } },
+    { "kind": "tree", "asset_id": "dead_tree", "rect": { "x": 285, "y": 185, "width": 68, "height": 96 } },
+    { "kind": "cart", "asset_id": "shopping_cart", "rect": { "x": 725, "y": 360, "width": 70, "height": 58 } },
+    { "kind": "light", "asset_id": "street_lamp", "rect": { "x": 600, "y": 535, "width": 42, "height": 80 } },
+    { "kind": "snow", "asset_id": "snow_drift", "rect": { "x": 440, "y": 690, "width": 180, "height": 90 } }
   ],
   "building_anchors": {
     "church_anchor": { "x": 200, "y": 200 },

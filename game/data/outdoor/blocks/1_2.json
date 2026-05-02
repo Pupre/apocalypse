@@ -1,12 +1,17 @@
 {
   "block_coord": { "x": 1, "y": 2 },
   "roads": [
-    { "id": "north_south", "rect": { "x": 360, "y": 0, "width": 240, "height": 960 } },
-    { "id": "east_west", "rect": { "x": 0, "y": 320, "width": 960, "height": 280 } }
+    { "id": "north_south", "texture_id": "slush_road", "rect": { "x": 360, "y": 0, "width": 240, "height": 960 } },
+    { "id": "east_west", "texture_id": "road_cracked", "rect": { "x": 0, "y": 320, "width": 960, "height": 280 } },
+    { "id": "school_gate_forecourt", "texture_id": "sidewalk_snow", "rect": { "x": 70, "y": 165, "width": 285, "height": 115 } },
+    { "id": "butcher_delivery_alley", "texture_id": "alley_dark", "rect": { "x": 650, "y": 155, "width": 270, "height": 85 } },
+    { "id": "row_house_lane", "texture_id": "road_plain", "rect": { "x": 55, "y": 650, "width": 330, "height": 80 } }
   ],
   "snow_fields": [
     { "id": "west_snow", "rect": { "x": 0, "y": 640, "width": 280, "height": 300 } },
-    { "id": "north_snow", "rect": { "x": 660, "y": 0, "width": 260, "height": 200 } }
+    { "id": "north_snow", "rect": { "x": 660, "y": 0, "width": 260, "height": 200 } },
+    { "id": "school_bus_snow", "rect": { "x": 55, "y": 285, "width": 230, "height": 85 } },
+    { "id": "butcher_cold_snow", "rect": { "x": 730, "y": 310, "width": 190, "height": 105 } }
   ],
   "hazards": [
     {
@@ -40,8 +45,12 @@
     }
   ],
   "obstacles": [
-    { "kind": "vehicle", "rect": { "x": 760, "y": 450, "width": 56, "height": 56 } },
-    { "kind": "rubble", "rect": { "x": 180, "y": 180, "width": 110, "height": 70 } }
+    { "kind": "vehicle", "asset_id": "frozen_car", "rect": { "x": 760, "y": 450, "width": 56, "height": 56 } },
+    { "kind": "rubble", "asset_id": "dumpster_snow", "rect": { "x": 180, "y": 180, "width": 110, "height": 70 } },
+    { "kind": "sign", "asset_id": "bus_stop_sign", "rect": { "x": 105, "y": 300, "width": 44, "height": 80 } },
+    { "kind": "barrier", "asset_id": "sandbags", "rect": { "x": 305, "y": 190, "width": 95, "height": 42 } },
+    { "kind": "crate", "asset_id": "barrel_empty", "rect": { "x": 690, "y": 250, "width": 52, "height": 54 } },
+    { "kind": "tree", "asset_id": "dead_tree", "rect": { "x": 315, "y": 730, "width": 68, "height": 96 } }
   ],
   "building_anchors": {
     "school_gate_anchor": { "x": 200, "y": 200 },

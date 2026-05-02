@@ -1,12 +1,17 @@
 {
   "block_coord": { "x": 0, "y": 2 },
   "roads": [
-    { "id": "north_south", "rect": { "x": 360, "y": 0, "width": 240, "height": 960 } },
-    { "id": "east_west", "rect": { "x": 0, "y": 320, "width": 960, "height": 280 } }
+    { "id": "north_south", "texture_id": "slush_road", "rect": { "x": 360, "y": 0, "width": 240, "height": 960 } },
+    { "id": "east_west", "texture_id": "road_cracked", "rect": { "x": 0, "y": 320, "width": 960, "height": 280 } },
+    { "id": "chapel_courtyard", "texture_id": "sidewalk_snow", "rect": { "x": 80, "y": 160, "width": 245, "height": 110 } },
+    { "id": "tea_shop_alley", "texture_id": "alley_dark", "rect": { "x": 645, "y": 185, "width": 260, "height": 85 } },
+    { "id": "open_lot_service", "texture_id": "road_plain", "rect": { "x": 205, "y": 555, "width": 450, "height": 95 } }
   ],
   "snow_fields": [
     { "id": "west_open_snow", "rect": { "x": 0, "y": 0, "width": 300, "height": 260 } },
-    { "id": "south_open_snow", "rect": { "x": 620, "y": 660, "width": 320, "height": 300 } }
+    { "id": "south_open_snow", "rect": { "x": 620, "y": 660, "width": 320, "height": 300 } },
+    { "id": "chapel_steps_snow", "rect": { "x": 40, "y": 250, "width": 210, "height": 90 } },
+    { "id": "tea_shop_roof_snow", "rect": { "x": 695, "y": 60, "width": 205, "height": 95 } }
   ],
   "hazards": [
     {
@@ -21,8 +26,12 @@
     }
   ],
   "obstacles": [
-    { "kind": "vehicle", "rect": { "x": 150, "y": 450, "width": 56, "height": 56 } },
-    { "kind": "rubble", "rect": { "x": 760, "y": 180, "width": 120, "height": 80 } }
+    { "kind": "vehicle", "asset_id": "frozen_car", "rect": { "x": 150, "y": 450, "width": 56, "height": 56 } },
+    { "kind": "rubble", "asset_id": "dumpster_snow", "rect": { "x": 760, "y": 180, "width": 120, "height": 80 } },
+    { "kind": "tree", "asset_id": "dead_tree", "rect": { "x": 255, "y": 135, "width": 70, "height": 96 } },
+    { "kind": "light", "asset_id": "street_lamp", "rect": { "x": 610, "y": 305, "width": 42, "height": 80 } },
+    { "kind": "snow", "asset_id": "snow_drift", "rect": { "x": 420, "y": 620, "width": 170, "height": 86 } },
+    { "kind": "barrier", "asset_id": "barricade_wood", "rect": { "x": 735, "y": 535, "width": 120, "height": 48 } }
   ],
   "building_anchors": {
     "chapel_anchor": { "x": 200, "y": 200 },

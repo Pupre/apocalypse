@@ -225,3 +225,38 @@
 - `res://tests/unit/test_life_world_item_matrix.gd`
 - `res://tests/smoke/test_first_playable_loop.gd`
 - 전체 `game/tests/unit/*.gd` 및 `game/tests/smoke/*.gd` 통과
+## 추가 패스: 야외 리소스 대격변 1차
+
+플레이어가 처음 보는 야외 화면의 인상을 끌어올리기 위해, 이번 패스는 단순한 단일 PNG 교체가 아니라 AI 생성 원본 시트, 런타임 PNG 추출, 맵 데이터 연결을 한 덩어리로 묶어 진행했다.
+
+### 구현 내용
+
+- `resources/world/city/reference/`에 야외 스타일 보드와 AI 생성 원본 시트를 보관했다.
+  - `world_visual_overhaul_direction.png`: 야외 전체 톤 기준 보드.
+  - `outdoor_building_sheet_2026-05-02.png`: 4x4 건물 외형 시트.
+  - `outdoor_prop_sheet_2026-05-02.png`: 4x4 소품 시트.
+  - `outdoor_terrain_sheet_2026-05-02.png`: 4x4 도로/눈/보도 타일 시트.
+- `scripts/generate_world_visual_overhaul_assets.ps1`을 추가해 야외 리소스를 재생성 가능하게 만들었다.
+  - 기본 절차형 리소스를 먼저 만든 뒤, AI 원본 시트가 있으면 건물/소품/지형 타일을 잘라 런타임 PNG로 덮어쓴다.
+  - 마젠타 크로마키 배경을 제거해 Godot에서 바로 쓸 수 있는 투명 컷아웃으로 변환한다.
+- 야외 건물 외형 매핑을 확장했다.
+  - 빵집, 중고 서점, 정육점, 교회, 학교 정문, 코너 가게, 연립 주택 등은 별도 건물 PNG로 보인다.
+  - 수리점/차고, 물류 보관소, 구내 식당, 찻집 등도 최소한 구분 가능한 외형 파일을 갖는다.
+- 야외 소품 배치가 `asset_id`를 직접 지정할 수 있게 했다.
+  - 같은 `rubble`이라도 덤프스터, 바리케이드, 타이어 더미처럼 다른 그림을 놓을 수 있다.
+  - 가로등, 버스 정류장 표지, 쇼핑카트, 눈더미, 불붙은 드럼통 같은 소품이 맵 데이터에서 직접 연결된다.
+- 3x3 야외 블록의 도로 구조를 조금 더 비대칭적으로 바꿨다.
+  - 각 블록에 전면 공간, 좁은 골목, 서비스 차선, 주차장 느낌의 포장을 추가했다.
+  - 기존 직선 십자 도로는 유지하되, 주변 건물 앞에 목적지가 느껴지는 바닥 질감과 소품을 더했다.
+
+### 검증
+
+- `res://tests/unit/test_outdoor_controller.gd`
+- `res://tests/unit/test_outdoor_map_view.gd`
+- `res://tests/smoke/test_first_playable_loop.gd`
+- `git diff --check`
+
+### 남은 판단
+
+- 이번 패스는 야외 첫인상을 크게 바꾸는 1차 작업이다. 다만 일부 보조 건물은 아직 절차형 컷아웃 기반이므로, 다음 리소스 패스에서는 보조 건물 전용 AI 시트를 한 번 더 뽑아 차고, 물류 보관소, 구내 식당, 찻집, 호스텔 계열까지 같은 밀도로 끌어올리는 것이 좋다.
+- 지형 타일은 시각 밀도가 크게 올라갔지만 반복 타일로 쓰일 때 경계가 아주 완벽한 타일링은 아니다. 실제 플레이 화면에서 반복감이 거슬리면 가장 많이 보이는 `road_plain`, `slush_road`, `snow_ground`, `sidewalk_snow`부터 별도 무봉합 타일로 다시 생성한다.

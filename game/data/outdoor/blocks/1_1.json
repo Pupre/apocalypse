@@ -1,12 +1,18 @@
 {
   "block_coord": { "x": 1, "y": 1 },
   "roads": [
-    { "id": "north_south", "rect": { "x": 360, "y": 0, "width": 240, "height": 960 } },
-    { "id": "east_west", "rect": { "x": 0, "y": 320, "width": 960, "height": 280 } }
+    { "id": "north_south", "texture_id": "road_lane_v", "rect": { "x": 360, "y": 0, "width": 240, "height": 960 } },
+    { "id": "east_west", "texture_id": "slush_road", "rect": { "x": 0, "y": 320, "width": 960, "height": 280 } },
+    { "id": "hardware_loading_yard", "texture_id": "road_plain", "rect": { "x": 610, "y": 180, "width": 285, "height": 150 } },
+    { "id": "warehouse_yard_lane", "texture_id": "road_cracked", "rect": { "x": 585, "y": 610, "width": 305, "height": 125 } },
+    { "id": "repair_shop_service_alley", "texture_id": "alley_dark", "rect": { "x": 75, "y": 610, "width": 280, "height": 90 } },
+    { "id": "laundry_sidewalk", "texture_id": "sidewalk_snow", "rect": { "x": 70, "y": 185, "width": 250, "height": 80 } }
   ],
   "snow_fields": [
     { "id": "central_snow", "rect": { "x": 640, "y": 640, "width": 320, "height": 320 } },
-    { "id": "warehouse_snow", "rect": { "x": 0, "y": 0, "width": 260, "height": 240 } }
+    { "id": "warehouse_snow", "rect": { "x": 0, "y": 0, "width": 260, "height": 240 } },
+    { "id": "hardware_curb_snow", "rect": { "x": 720, "y": 55, "width": 200, "height": 115 } },
+    { "id": "repair_shop_oil_snow", "rect": { "x": 70, "y": 755, "width": 220, "height": 100 } }
   ],
   "hazards": [
     {
@@ -40,8 +46,12 @@
     }
   ],
   "obstacles": [
-    { "kind": "vehicle", "rect": { "x": 780, "y": 440, "width": 56, "height": 56 } },
-    { "kind": "rubble", "rect": { "x": 180, "y": 700, "width": 120, "height": 90 } }
+    { "kind": "vehicle", "asset_id": "frozen_car", "rect": { "x": 780, "y": 440, "width": 56, "height": 56 } },
+    { "kind": "rubble", "asset_id": "dumpster_snow", "rect": { "x": 180, "y": 700, "width": 120, "height": 90 } },
+    { "kind": "crate", "asset_id": "crate_stack", "rect": { "x": 720, "y": 325, "width": 88, "height": 64 } },
+    { "kind": "utility", "asset_id": "utility_box", "rect": { "x": 285, "y": 225, "width": 60, "height": 70 } },
+    { "kind": "fire", "asset_id": "barrel_fire", "rect": { "x": 615, "y": 760, "width": 54, "height": 54 } },
+    { "kind": "barrier", "asset_id": "tire_pile", "rect": { "x": 90, "y": 625, "width": 105, "height": 58 } }
   ],
   "building_anchors": {
     "laundry_anchor": { "x": 180, "y": 180 },

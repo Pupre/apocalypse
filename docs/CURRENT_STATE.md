@@ -15,6 +15,11 @@
 
 Systems already integrated in `main`:
 
+- 2026-05-02 야외 가시 리소스 대격변 1차가 들어갔다.
+  - AI 생성 스타일 보드, 건물 시트, 소품 시트, 지형 타일 시트를 `resources/world/city/reference/`에 보관한다.
+  - 실제 런타임 야외 건물/소품/도로/눈/보도 PNG는 `scripts/generate_world_visual_overhaul_assets.ps1`로 재생성한다.
+  - 주요 3x3 야외 블록은 직선 십자 도로만 반복하지 않도록 전면 공간, 골목, 서비스 차선, 눈더미, 가로등, 쇼핑카트, 바리케이드, 덤프스터 등 시각 소품을 추가했다.
+  - `OutdoorArtResolver`는 건물 ID별 외형과 블록 데이터의 명시적 `asset_id` 소품을 해석한다.
 - Life-world item and recipe expansion.
 - Building-specific indoor loot.
 - Shared crafting baseline.

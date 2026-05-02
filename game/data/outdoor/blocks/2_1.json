@@ -1,12 +1,17 @@
 {
   "block_coord": { "x": 2, "y": 1 },
   "roads": [
-    { "id": "north_south", "rect": { "x": 360, "y": 0, "width": 240, "height": 960 } },
-    { "id": "east_west", "rect": { "x": 0, "y": 320, "width": 960, "height": 280 } }
+    { "id": "north_south", "texture_id": "slush_road", "rect": { "x": 360, "y": 0, "width": 240, "height": 960 } },
+    { "id": "east_west", "texture_id": "road_cracked", "rect": { "x": 0, "y": 320, "width": 960, "height": 280 } },
+    { "id": "storage_loading_yard", "texture_id": "road_plain", "rect": { "x": 65, "y": 130, "width": 290, "height": 145 } },
+    { "id": "garage_service_lane", "texture_id": "alley_dark", "rect": { "x": 615, "y": 210, "width": 285, "height": 92 } },
+    { "id": "canteen_open_lot", "texture_id": "road_plain", "rect": { "x": 560, "y": 605, "width": 330, "height": 125 } }
   ],
   "snow_fields": [
     { "id": "yard_snow", "rect": { "x": 620, "y": 20, "width": 320, "height": 240 } },
-    { "id": "south_lot_snow", "rect": { "x": 0, "y": 660, "width": 300, "height": 260 } }
+    { "id": "south_lot_snow", "rect": { "x": 0, "y": 660, "width": 300, "height": 260 } },
+    { "id": "storage_gate_snow", "rect": { "x": 35, "y": 265, "width": 220, "height": 85 } },
+    { "id": "canteen_side_snow", "rect": { "x": 710, "y": 780, "width": 215, "height": 120 } }
   ],
   "hazards": [
     {
@@ -40,8 +45,12 @@
     }
   ],
   "obstacles": [
-    { "kind": "vehicle", "rect": { "x": 480, "y": 450, "width": 56, "height": 56 } },
-    { "kind": "rubble", "rect": { "x": 150, "y": 730, "width": 120, "height": 90 } }
+    { "kind": "vehicle", "asset_id": "frozen_car", "rect": { "x": 480, "y": 450, "width": 56, "height": 56 } },
+    { "kind": "rubble", "asset_id": "dumpster_snow", "rect": { "x": 150, "y": 730, "width": 120, "height": 90 } },
+    { "kind": "crate", "asset_id": "crate_stack", "rect": { "x": 115, "y": 290, "width": 92, "height": 62 } },
+    { "kind": "barrier", "asset_id": "tire_pile", "rect": { "x": 680, "y": 315, "width": 105, "height": 58 } },
+    { "kind": "utility", "asset_id": "utility_box", "rect": { "x": 850, "y": 230, "width": 60, "height": 70 } },
+    { "kind": "snow", "asset_id": "snow_drift", "rect": { "x": 620, "y": 705, "width": 160, "height": 86 } }
   ],
   "building_anchors": {
     "storage_depot_anchor": { "x": 180, "y": 200 },

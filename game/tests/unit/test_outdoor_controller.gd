@@ -102,6 +102,8 @@ func _run_test() -> void:
 		return
 	assert_true(tile_host.get_child_count() > 0, "Outdoor terrain should place at least one runtime tile sprite.")
 	assert_true(_children_named_with(tile_host, "road_cracked").size() > 0 or _children_named_with(tile_host, "slush_road").size() > 0, "Outdoor terrain should mix cracked or slushy road variants instead of a single repeated lane texture.")
+	assert_true(_children_named_with(tile_host, "alley_dark").size() > 0, "Outdoor terrain should render authored alley tiles that break up the straight crossing pattern.")
+	assert_eq(outdoor_mode._road_texture_id({"id": "test_alley", "texture_id": "alley_dark"}, Rect2(), true), "alley_dark", "Outdoor road rows should be able to select an explicit art texture.")
 	assert_true(_children_named_with(decal_host, "Hazard").size() >= 8, "The starting active block window should render multiple authored hazard decals across nearby blocks.")
 	assert_true(_max_visual_scale(obstacles) > 1.0, "Outdoor obstacle props should be scaled up to fit the authored city block better.")
 	assert_true(outdoor_mode.has_method("_effective_obstacle_rect"), "Outdoor controller should expose an internal obstacle hitbox helper for collision debugging.")
@@ -288,6 +290,7 @@ func _run_test() -> void:
 		"chapel_01", "tea_shop_01"
 	]:
 		assert_true(content_library.get_building(building_id).size() > 0, "Building '%s' should exist in the expanded district." % building_id)
+	_assert_outdoor_resource_mapping(content_library)
 
 	var unprotected_exposure_state = run_state_script.from_survivor_config({
 		"job_id": "courier",
@@ -462,6 +465,30 @@ func _assert_player_walk_direction_sprites() -> void:
 	assert_true(left_bounds.end.x < right_bounds.end.x, "Left and right walk frames should move their feet along opposite horizontal directions.")
 	assert_true(up_bounds.position.x < 24.0 and up_bounds.end.x > 40.0, "Up-walk frames should keep alternating feet on both sides instead of drifting to one side.")
 	assert_true(down_bounds.position.x < 24.0 and down_bounds.end.x > 40.0, "Down-walk frames should keep alternating feet on both sides instead of drifting to one side.")
+
+
+func _assert_outdoor_resource_mapping(content_library) -> void:
+	var resolver_script := load("res://scripts/outdoor/outdoor_art_resolver.gd") as Script
+	assert_true(resolver_script != null, "Outdoor art resolver should load for visual resource mapping checks.")
+	var resolver = resolver_script.new()
+	for building_id in [
+		"bookstore_01",
+		"bakery_01",
+		"deli_01",
+		"butcher_01",
+		"storage_depot_01",
+		"garage_01",
+		"canteen_01",
+		"church_01",
+		"corner_store_01",
+		"school_gate_01",
+		"row_house_01",
+		"tea_shop_01",
+	]:
+		assert_true(resolver.get_building_texture(content_library.get_building(building_id)) != null, "Outdoor building '%s' should resolve to a generated exterior texture." % building_id)
+	assert_true(resolver.get_prop_texture("light", Rect2(), "street_lamp") != null, "Outdoor props should allow explicit lamp art ids from block data.")
+	assert_true(resolver.get_prop_texture("cart", Rect2(), "shopping_cart") != null, "Outdoor props should allow explicit cart art ids from block data.")
+	assert_true(resolver.get_prop_texture("snow", Rect2(), "snow_drift") != null, "Outdoor props should allow explicit snow-drift art ids from block data.")
 
 
 func _lower_opaque_bounds(image: Image) -> Rect2:

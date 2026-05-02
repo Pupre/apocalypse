@@ -367,9 +367,11 @@ func _refresh_obstacles() -> void:
 
 		var prop_sprite := Sprite2D.new()
 		prop_sprite.name = "Visual"
-		prop_sprite.texture = art_resolver.get_prop_texture(String(obstacle_row.get("kind", "")), obstacle_rect)
+		var obstacle_kind := String(obstacle_row.get("kind", ""))
+		var obstacle_asset_id := String(obstacle_row.get("asset_id", ""))
+		prop_sprite.texture = art_resolver.get_prop_texture(obstacle_kind, obstacle_rect, obstacle_asset_id)
 		_configure_bottom_center_sprite(prop_sprite)
-		prop_sprite.scale = Vector2.ONE * _obstacle_scale(String(obstacle_row.get("kind", "")), obstacle_rect)
+		prop_sprite.scale = Vector2.ONE * _obstacle_scale(obstacle_kind, obstacle_rect, obstacle_asset_id)
 		prop_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		obstacle_root.add_child(prop_sprite)
 
@@ -1095,7 +1097,16 @@ func _player_walk_bob_offset(frame_index: int) -> float:
 
 
 func _road_texture_id(road_row: Dictionary, road_rect: Rect2, is_horizontal: bool) -> String:
+	var explicit_texture_id := String(road_row.get("texture_id", ""))
+	if not explicit_texture_id.is_empty():
+		return explicit_texture_id
 	var road_id := String(road_row.get("id", ""))
+	if road_id.find("alley") >= 0:
+		return "alley_dark"
+	if road_id.find("forecourt") >= 0 or road_id.find("lot") >= 0 or road_id.find("yard") >= 0:
+		return "road_plain"
+	if road_id.find("service") >= 0 or road_id.find("driveway") >= 0:
+		return "slush_road"
 	if road_id == "east_west" and int(road_rect.position.y / 320.0) % 2 == 0:
 		return "road_cracked"
 	if road_id == "north_south" and int(road_rect.position.x / 360.0) % 2 == 1:
@@ -1103,12 +1114,23 @@ func _road_texture_id(road_row: Dictionary, road_rect: Rect2, is_horizontal: boo
 	return "road_lane_h" if is_horizontal else "road_lane_v"
 
 
-func _obstacle_scale(obstacle_kind: String, obstacle_rect: Rect2) -> float:
+func _obstacle_scale(obstacle_kind: String, obstacle_rect: Rect2, asset_id: String = "") -> float:
+	match asset_id:
+		"street_lamp", "bus_stop_sign":
+			return 1.35
+		"snow_drift":
+			return 1.25
+		"barrel_fire", "barrel_empty", "traffic_cone":
+			return 0.95
 	match obstacle_kind:
 		"vehicle":
 			return 1.35
 		"rubble":
 			return 1.15 if obstacle_rect.size.x >= 100.0 else 1.05
+		"light", "sign":
+			return 1.35
+		"snow":
+			return 1.25
 		_:
 			return 1.05
 

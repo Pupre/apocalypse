@@ -29,14 +29,42 @@ func get_building_texture(building_data: Dictionary) -> Texture2D:
 			file_name = "building_pharmacy.png"
 		"office_01", "laundry_01":
 			file_name = "building_office.png"
-		"hardware_01", "warehouse_01", "repair_shop_01":
+		"hardware_01", "warehouse_01":
 			file_name = "building_warehouse.png"
+		"repair_shop_01":
+			file_name = "building_garage.png"
 		"gas_station_01":
 			file_name = "building_gas_station.png"
-		"cafe_01", "restaurant_01", "bakery_01":
+		"cafe_01", "restaurant_01":
 			file_name = "building_cafe.png"
+		"bakery_01":
+			file_name = "building_bakery.png"
 		"police_box_01":
 			file_name = "building_police.png"
+		"bookstore_01":
+			file_name = "building_bookstore.png"
+		"deli_01":
+			file_name = "building_deli.png"
+		"butcher_01":
+			file_name = "building_butcher.png"
+		"hostel_01":
+			file_name = "building_hostel.png"
+		"storage_depot_01":
+			file_name = "building_storage_depot.png"
+		"garage_01":
+			file_name = "building_garage.png"
+		"canteen_01":
+			file_name = "building_canteen.png"
+		"church_01", "chapel_01":
+			file_name = "building_church.png"
+		"corner_store_01":
+			file_name = "building_corner_store.png"
+		"school_gate_01":
+			file_name = "building_school.png"
+		"row_house_01":
+			file_name = "building_row_house.png"
+		"tea_shop_01":
+			file_name = "building_tea_shop.png"
 		_:
 			var category := String(building_data.get("category", ""))
 			match category:
@@ -56,7 +84,13 @@ func get_building_texture(building_data: Dictionary) -> Texture2D:
 	return _load_texture("%s/%s" % [BUILDING_DIR, file_name])
 
 
-func get_prop_texture(obstacle_kind: String, obstacle_rect: Rect2 = Rect2()) -> Texture2D:
+func get_prop_texture(obstacle_kind: String, obstacle_rect: Rect2 = Rect2(), asset_id: String = "") -> Texture2D:
+	if not asset_id.is_empty():
+		var explicit_file_name := asset_id if asset_id.ends_with(".png") else "%s.png" % asset_id
+		var explicit_texture := _load_texture("%s/%s" % [PROP_DIR, explicit_file_name])
+		if explicit_texture != null:
+			return explicit_texture
+
 	var file_name := "crate_stack.png"
 	match obstacle_kind:
 		"vehicle":
@@ -67,6 +101,18 @@ func get_prop_texture(obstacle_kind: String, obstacle_rect: Rect2 = Rect2()) -> 
 			file_name = "dead_tree.png"
 		"barrier":
 			file_name = "sandbags.png"
+		"light":
+			file_name = "street_lamp.png"
+		"cart":
+			file_name = "shopping_cart.png"
+		"snow":
+			file_name = "snow_drift.png"
+		"fire":
+			file_name = "barrel_fire.png"
+		"cone":
+			file_name = "traffic_cone.png"
+		"sign":
+			file_name = "bus_stop_sign.png"
 	return _load_texture("%s/%s" % [PROP_DIR, file_name])
 
 

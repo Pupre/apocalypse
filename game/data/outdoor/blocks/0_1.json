@@ -1,12 +1,17 @@
 {
   "block_coord": { "x": 0, "y": 1 },
   "roads": [
-    { "id": "north_south", "rect": { "x": 360, "y": 0, "width": 240, "height": 960 } },
-    { "id": "east_west", "rect": { "x": 0, "y": 320, "width": 960, "height": 280 } }
+    { "id": "north_south", "texture_id": "road_lane_v", "rect": { "x": 360, "y": 0, "width": 240, "height": 960 } },
+    { "id": "east_west", "texture_id": "slush_road", "rect": { "x": 0, "y": 320, "width": 960, "height": 280 } },
+    { "id": "gas_station_forecourt", "texture_id": "road_plain", "rect": { "x": 620, "y": 205, "width": 280, "height": 180 } },
+    { "id": "restaurant_alley", "texture_id": "alley_dark", "rect": { "x": 590, "y": 600, "width": 300, "height": 95 } },
+    { "id": "residence_lane", "texture_id": "sidewalk_snow", "rect": { "x": 55, "y": 635, "width": 285, "height": 85 } }
   ],
   "snow_fields": [
     { "id": "southwest_snow", "rect": { "x": 0, "y": 640, "width": 320, "height": 320 } },
-    { "id": "mid_snow", "rect": { "x": 660, "y": 0, "width": 280, "height": 220 } }
+    { "id": "mid_snow", "rect": { "x": 660, "y": 0, "width": 280, "height": 220 } },
+    { "id": "apartment_entry_snow", "rect": { "x": 55, "y": 120, "width": 230, "height": 130 } },
+    { "id": "restaurant_back_snow", "rect": { "x": 705, "y": 785, "width": 210, "height": 130 } }
   ],
   "hazards": [
     {
@@ -30,8 +35,12 @@
     }
   ],
   "obstacles": [
-    { "kind": "vehicle", "rect": { "x": 120, "y": 460, "width": 52, "height": 52 } },
-    { "kind": "rubble", "rect": { "x": 760, "y": 720, "width": 120, "height": 90 } }
+    { "kind": "vehicle", "asset_id": "frozen_car", "rect": { "x": 120, "y": 460, "width": 52, "height": 52 } },
+    { "kind": "rubble", "asset_id": "dumpster_snow", "rect": { "x": 760, "y": 720, "width": 120, "height": 90 } },
+    { "kind": "fire", "asset_id": "barrel_fire", "rect": { "x": 690, "y": 405, "width": 54, "height": 54 } },
+    { "kind": "barrier", "asset_id": "sandbags", "rect": { "x": 815, "y": 260, "width": 90, "height": 44 } },
+    { "kind": "sign", "asset_id": "bus_stop_sign", "rect": { "x": 315, "y": 535, "width": 45, "height": 82 } },
+    { "kind": "snow", "asset_id": "snow_drift", "rect": { "x": 30, "y": 750, "width": 150, "height": 88 } }
   ],
   "building_anchors": {
     "apartment_anchor": { "x": 180, "y": 180 },
