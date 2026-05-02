@@ -6,6 +6,7 @@ const ANCHOR_MIN_ZONE_COUNTS := {
 	"apartment_01": 13,
 	"warehouse_01": 4,
 	"garage_01": 3,
+	"restaurant_01": 3,
 }
 
 const UPLIFTED_BUILDING_IDS := [

@@ -241,10 +241,40 @@ func _run_test() -> void:
 	)
 
 	director.configure(run_state, "restaurant_01")
+	assert_eq(director.get_current_zone_id(), "hall", "Restaurant should start in the hall before the deeper kitchen route.")
 	assert_eq(
 		director.get_event_illustration_asset(),
 		"indoor/indoor_event_food_kitchen.png",
 		"Food-service buildings should use the cold kitchen illustration."
+	)
+	assert_true(director.apply_action("move_kitchen"), "Restaurant should now expose the kitchen as a meaningful middle room.")
+	var kitchen_actions: Array[Dictionary] = director.get_actions()
+	assert_true(
+		_action_ids(kitchen_actions).has("search_restaurant_kitchen_fast"),
+		"Restaurant kitchen should expose a fast but risky search branch."
+	)
+	assert_true(
+		_action_ids(kitchen_actions).has("search_restaurant_kitchen_with_gloves"),
+		"Restaurant kitchen should expose a safer work-glove branch."
+	)
+	var fast_kitchen_action := _action_by_id(kitchen_actions, "search_restaurant_kitchen_fast")
+	var fast_detail := String(fast_kitchen_action.get("detail_label", ""))
+	assert_true(fast_detail.find("소란 +2") != -1, "Risk preview should include combined action and pressure noise.")
+	assert_true(fast_detail.find("체력 -1") != -1, "Risk preview should include health loss.")
+	assert_true(fast_detail.find("피로 +1") != -1, "Risk preview should include fatigue gain.")
+	var glove_kitchen_action := _action_by_id(kitchen_actions, "search_restaurant_kitchen_with_gloves")
+	assert_true(
+		String(glove_kitchen_action.get("detail_label", "")).find("필요: 작업 장갑") != -1,
+		"Safer restaurant branch should explain its required protective item."
+	)
+	assert_true(director.apply_action("search_restaurant_kitchen_fast"), "Restaurant risky kitchen search should resolve.")
+	assert_true(
+		director.get_feedback_message().find("손등") != -1,
+		"Restaurant risky search should read like a concrete pressure event."
+	)
+	assert_true(
+		not _action_ids(director.get_actions()).has("search_restaurant_kitchen_with_gloves"),
+		"Clearing the restaurant kitchen should hide the alternative branch."
 	)
 	director.configure(run_state, "garage_01")
 	assert_eq(

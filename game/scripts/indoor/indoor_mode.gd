@@ -340,14 +340,35 @@ func _create_action_button(action: Dictionary, section_id: String) -> Button:
 	icon_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	icon_center.add_child(icon_rect)
 
+	var text_column := VBoxContainer.new()
+	text_column.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	text_column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	text_column.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	text_column.alignment = BoxContainer.ALIGNMENT_CENTER
+	text_column.add_theme_constant_override("separation", 0)
+	row.add_child(text_column)
+
 	var label := Label.new()
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	label.text = String(action.get("label", action_id))
 	_apply_label_style(label, 15, TEXT_PRIMARY_COLOR, 2)
-	row.add_child(label)
+	text_column.add_child(label)
+
+	var detail_text := String(action.get("detail_label", ""))
+	if not detail_text.is_empty():
+		var detail_label := Label.new()
+		detail_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		detail_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		detail_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		detail_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+		detail_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		detail_label.text = detail_text
+		_apply_label_style(detail_label, 12, TEXT_SECONDARY_COLOR, 1)
+		text_column.add_child(detail_label)
 
 	return button
 

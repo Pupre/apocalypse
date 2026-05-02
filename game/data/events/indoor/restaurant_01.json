@@ -1,18 +1,29 @@
 {
   "id": "restaurant_01",
   "name": "작은 식당",
-  "summary": "홀과 안쪽 식재 공간이 나뉘어 있어 포장재와 식사 재료를 따로 훑어야 한다.",
+  "summary": "홀과 주방, 안쪽 식재 보관실이 나뉘어 있다. 남은 식재료를 챙기려면 얼어붙은 조리대와 냉장고를 어떻게 열지 판단해야 한다.",
   "entry_zone_id": "hall",
   "zones": [
     {
       "id": "hall",
       "floor_id": "floor_1",
       "label": "홀",
-      "summary": "뒤집힌 의자와 빈 냄비가 식은 채 남아 있다.",
-      "connected_zone_ids": ["pantry"],
+      "summary": "뒤집힌 의자와 빈 냄비가 식은 채 남아 있고, 주방 쪽 미닫이문은 반쯤 얼어붙어 있다.",
+      "connected_zone_ids": ["kitchen"],
       "event_ids": ["search_restaurant_hall"],
       "map_position": [0, 0],
       "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "kitchen",
+      "floor_id": "floor_1",
+      "label": "주방",
+      "summary": "성에 낀 조리대와 꺼진 냉장고, 기름때가 언 바닥이 한데 엉켜 있다.",
+      "connected_zone_ids": ["hall", "pantry"],
+      "event_ids": ["search_restaurant_kitchen"],
+      "map_position": [1, 0],
+      "first_visit_cost": 30,
       "revisit_cost": 10
     },
     {
@@ -20,9 +31,9 @@
       "floor_id": "floor_1",
       "label": "안쪽 보관실",
       "summary": "작은 식재 선반과 종이 포장이 아직 정리된 채 남아 있다.",
-      "connected_zone_ids": ["hall"],
+      "connected_zone_ids": ["kitchen"],
       "event_ids": ["search_restaurant_pantry"],
-      "map_position": [1, 0],
+      "map_position": [2, 0],
       "first_visit_cost": 20,
       "revisit_cost": 10
     }
@@ -50,6 +61,81 @@
                 { "id": "paper_bag", "weight": 2 },
                 { "id": "tea_bag", "weight": 2 }
               ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_restaurant_kitchen",
+      "zone_id": "kitchen",
+      "type": "search",
+      "hint_text": "성에 낀 조리대와 냉장고 안쪽에 조리 도구와 따뜻한 식사 재료가 남아 있다.",
+      "options": [
+        {
+          "id": "search_restaurant_kitchen_fast",
+          "label": "성에 낀 조리대를 빠르게 뒤진다",
+          "requirements": {
+            "forbidden_flag_ids": ["restaurant_kitchen_cleared"]
+          },
+          "costs": { "minutes": 25, "noise": 1 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "instant_soup_powder", "weight": 4 },
+                { "id": "foil_tray_pack", "weight": 3 },
+                { "id": "pot", "weight": 2 },
+                { "id": "kettle", "weight": 2 },
+                { "id": "metal_bowl", "weight": 2 },
+                { "id": "cling_wrap_roll", "weight": 2 }
+              ]
+            },
+            "set_flags": ["restaurant_kitchen_cleared"],
+            "pressure": {
+              "id": "restaurant_kitchen_fast_cut",
+              "message": "성에를 손으로 뜯어내다 깨진 플라스틱 모서리에 손등을 긁었다. 냉장고 문이 덜컹이며 소리도 퍼졌다.",
+              "health_loss": 1.0,
+              "fatigue_gain": 1.0,
+              "noise": 1,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "search_restaurant_kitchen_with_gloves",
+          "label": "작업 장갑으로 얼어붙은 손잡이를 천천히 푼다",
+          "requirements": {
+            "required_item_ids": ["work_gloves"],
+            "forbidden_flag_ids": ["restaurant_kitchen_cleared"]
+          },
+          "blocked_feedback": "성에와 깨진 플라스틱을 맨손으로 오래 잡기엔 위험하다. 작업 장갑이 있으면 훨씬 조용하고 안전하게 열 수 있다.",
+          "costs": { "minutes": 35, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "instant_soup_powder", "weight": 4 },
+                { "id": "foil_tray_pack", "weight": 3 },
+                { "id": "pot", "weight": 2 },
+                { "id": "kettle", "weight": 2 },
+                { "id": "metal_bowl", "weight": 2 },
+                { "id": "cling_wrap_roll", "weight": 2 }
+              ]
+            },
+            "set_flags": ["restaurant_kitchen_cleared"],
+            "pressure": {
+              "id": "restaurant_kitchen_careful_open",
+              "message": "장갑으로 성에를 털어내고 손잡이를 천천히 풀자, 소리 없이 안쪽 식재와 조리 도구가 드러났다.",
+              "fatigue_gain": 0.5,
+              "noise": 0,
+              "repeatable": false
             },
             "consume_on_use": true
           }

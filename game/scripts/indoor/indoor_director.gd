@@ -563,6 +563,9 @@ func _format_action_labels(actions: Array[Dictionary]) -> Array[Dictionary]:
 	for action in actions:
 		var formatted := action.duplicate(true)
 		formatted["label"] = _format_action_label(formatted)
+		var detail_label := _format_action_detail_label(action)
+		if not detail_label.is_empty():
+			formatted["detail_label"] = detail_label
 		formatted_actions.append(formatted)
 	return formatted_actions
 
@@ -577,6 +580,59 @@ func _format_action_label(action: Dictionary) -> String:
 		return base_label
 
 	return "%s (%d분)" % [base_label, time_cost_minutes]
+
+
+func _format_action_detail_label(action: Dictionary) -> String:
+	var parts: Array[String] = []
+
+	var requirements: Dictionary = {}
+	var requirements_variant: Variant = action.get("requirements", {})
+	if typeof(requirements_variant) == TYPE_DICTIONARY:
+		requirements = requirements_variant as Dictionary
+
+	var required_item_ids := _string_ids(requirements.get("required_item_ids", []))
+	if not required_item_ids.is_empty():
+		parts.append("필요: %s" % _item_names(required_item_ids))
+
+	var consume_item_ids := _string_ids(action.get("consume_item_ids", []))
+	if not consume_item_ids.is_empty():
+		parts.append("소모: %s" % _item_names(consume_item_ids))
+
+	var pressure: Dictionary = {}
+	var pressure_variant: Variant = action.get("pressure", {})
+	if typeof(pressure_variant) == TYPE_DICTIONARY:
+		pressure = pressure_variant as Dictionary
+
+	var total_noise := int(action.get("noise_cost", 0)) + int(pressure.get("noise", 0))
+	if total_noise > 0:
+		parts.append("소란 +%d" % total_noise)
+
+	var health_loss := float(pressure.get("health_loss", 0.0))
+	if health_loss > 0.0:
+		parts.append("체력 -%s" % _compact_number(health_loss))
+
+	var exposure_loss := float(pressure.get("exposure_loss", 0.0))
+	if exposure_loss > 0.0:
+		parts.append("체온 손실 %s" % _compact_number(exposure_loss))
+
+	var fatigue_gain := float(pressure.get("fatigue_gain", 0.0))
+	if fatigue_gain > 0.0:
+		parts.append("피로 +%s" % _compact_number(fatigue_gain))
+
+	return " · ".join(parts)
+
+
+func _item_names(item_ids: Array[String]) -> String:
+	var names: Array[String] = []
+	for item_id in item_ids:
+		names.append(_inventory_item_name(item_id))
+	return ", ".join(names)
+
+
+func _compact_number(value: float) -> String:
+	if is_equal_approx(value, roundf(value)):
+		return str(int(roundf(value)))
+	return "%.1f" % value
 
 
 func _append_unique(target: Array[String], value: String) -> void:

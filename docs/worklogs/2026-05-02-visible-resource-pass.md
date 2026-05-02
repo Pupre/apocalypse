@@ -58,3 +58,25 @@
 - `res://tests/unit/test_indoor_director.gd`
 - `res://tests/unit/test_indoor_mode.gd`
 - `res://tests/smoke/test_first_playable_loop.gd`
+
+## 추가 패스: 식당 주방 분기와 행동 위험 미리보기
+
+건물별 일러스트가 붙은 뒤에는, 그 이미지가 단순 장식으로 끝나지 않도록 식당 내부의 선택 구조를 먼저 깊게 만들었다. 작은 식당은 이제 홀과 보관실 사이에 주방이 있고, 주방 수색은 “빨리 뒤져서 다칠 위험을 감수한다”와 “작업 장갑으로 시간을 더 쓰고 조용히 연다” 사이의 선택으로 바뀌었다.
+
+### 구현 내용
+
+- `restaurant_01` 실내 이벤트를 홀, 주방, 안쪽 보관실 3구역 구조로 확장했다.
+- 주방 수색에 두 가지 분기를 추가했다.
+  - 빠른 수색: 25분, 소란, 손등 부상, 피로 증가를 감수하고 조리 도구와 온식 재료를 찾는다.
+  - 작업 장갑 수색: 작업 장갑이 필요하고 35분이 걸리지만 소란과 부상 없이 같은 핵심 재료를 찾는다.
+- 행동 버튼에 보조 라벨을 붙여 `필요: 작업 장갑`, `소란 +2`, `체력 -1`, `피로 +1` 같은 위험 정보를 행동 전에 볼 수 있게 했다.
+- 이 보조 라벨은 기존 행동명 텍스트를 바꾸지 않아서 기존 UI 테스트와 버튼 탐색 흐름을 유지한다.
+
+### 검증
+
+- `res://tests/unit/test_indoor_director.gd`
+- `res://tests/unit/test_indoor_mode.gd`
+- `res://tests/unit/test_indoor_content_depth.gd`
+- `res://tests/unit/test_indoor_actions.gd`
+- `res://tests/unit/test_indoor_loot_tables.gd`
+- `res://tests/smoke/test_first_playable_loop.gd`
