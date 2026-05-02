@@ -282,7 +282,37 @@ func _group_actions(actions: Array[Dictionary]) -> Dictionary:
 		bucket.append(action)
 		grouped[section_id] = bucket
 
+	for section_id in grouped.keys():
+		var bucket: Array = grouped.get(section_id, [])
+		bucket.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+			return _action_should_come_first(a, b, String(section_id))
+		)
+		grouped[section_id] = bucket
+
 	return grouped
+
+
+func _action_should_come_first(a: Dictionary, b: Dictionary, section_id: String) -> bool:
+	var a_priority := _action_decision_priority(a, section_id)
+	var b_priority := _action_decision_priority(b, section_id)
+	if a_priority == b_priority:
+		return String(a.get("label", "")) < String(b.get("label", ""))
+	return a_priority < b_priority
+
+
+func _action_decision_priority(action: Dictionary, section_id: String) -> int:
+	var priority := 0
+	if bool(action.get("locked", false)):
+		priority += 10000
+	if section_id == "interaction":
+		if _action_has_risk(action):
+			priority += 1000
+		if _action_has_required_items(action):
+			priority += 100
+	elif section_id == "loot":
+		priority += 0 if int(action.get("max_quantity", 0)) > 0 else 20
+	priority += _action_minutes(action)
+	return priority
 
 
 func _section_for_action(action: Dictionary) -> String:
@@ -426,9 +456,94 @@ func _action_detail_text(action: Dictionary, section_id: String) -> String:
 		"loot":
 			return _loot_action_detail(action)
 		"interaction":
-			return "결과에 따라 다음 선택지가 열린다"
+			return _interaction_action_detail(action)
 		_:
 			return ""
+
+
+func _interaction_action_detail(action: Dictionary) -> String:
+	var pressure_detail := _action_pressure_detail(action)
+	if not pressure_detail.is_empty():
+		return pressure_detail
+	if int(action.get("rest_minutes", 0)) > 0:
+		return "짧은 회복 · 허기와 갈증도 흐른다"
+	if int(action.get("sleep_minutes", 0)) > 0:
+		return "긴 회복 · 바깥 상황도 함께 흐른다"
+	var can_find_items := _action_can_find_items(action)
+	var reveals_route_or_clue := _action_reveals_route_or_clue(action)
+	if can_find_items and reveals_route_or_clue:
+		return "물건/단서 확인 · 새 길이 열릴 수 있음"
+	if reveals_route_or_clue:
+		return "단서 확인 · 새 길이 열릴 수 있음"
+	if can_find_items:
+		return "물건 확인 · 직접 피해 없음"
+	return "조용한 확인 · 직접 피해 없음"
+
+
+func _action_pressure_detail(action: Dictionary) -> String:
+	var pressure: Dictionary = {}
+	var pressure_variant: Variant = action.get("pressure", {})
+	if typeof(pressure_variant) == TYPE_DICTIONARY:
+		pressure = pressure_variant as Dictionary
+
+	var parts: Array[String] = []
+	var total_noise := int(action.get("noise_cost", 0)) + int(pressure.get("noise", 0))
+	if total_noise > 0:
+		parts.append("소란 +%d" % total_noise)
+
+	var health_loss := float(pressure.get("health_loss", 0.0))
+	if health_loss > 0.0:
+		parts.append("체력 -%s" % _compact_action_number(health_loss))
+
+	var exposure_loss := float(pressure.get("exposure_loss", 0.0))
+	if exposure_loss > 0.0:
+		parts.append("체온 손실 %s" % _compact_action_number(exposure_loss))
+
+	var fatigue_gain := float(pressure.get("fatigue_gain", 0.0))
+	if fatigue_gain > 0.0:
+		parts.append("피로 +%s" % _compact_action_number(fatigue_gain))
+
+	return " · ".join(parts)
+
+
+func _action_reveals_route_or_clue(action: Dictionary) -> bool:
+	return not _action_string_array(action.get("reveal_clue_ids", [])).is_empty() \
+		or not _action_string_array(action.get("unlock_zone_ids", [])).is_empty() \
+		or not _action_string_array(action.get("set_flags", [])).is_empty()
+
+
+func _action_can_find_items(action: Dictionary) -> bool:
+	if action.has("loot") or action.has("discover_loot") or action.has("loot_table"):
+		return true
+	var supply_sources_variant: Variant = action.get("supply_sources", [])
+	return typeof(supply_sources_variant) == TYPE_ARRAY and not (supply_sources_variant as Array).is_empty()
+
+
+func _action_has_required_items(action: Dictionary) -> bool:
+	var requirements_variant: Variant = action.get("requirements", {})
+	if typeof(requirements_variant) != TYPE_DICTIONARY:
+		return false
+	var requirements := requirements_variant as Dictionary
+	return not _action_string_array(requirements.get("required_item_ids", [])).is_empty()
+
+
+func _action_minutes(action: Dictionary) -> int:
+	return int(action.get("minute_cost", action.get("sleep_minutes", action.get("rest_minutes", 0))))
+
+
+func _compact_action_number(value: float) -> String:
+	if is_equal_approx(value, roundf(value)):
+		return str(int(roundf(value)))
+	return "%.1f" % value
+
+
+func _action_string_array(values) -> Array[String]:
+	var strings: Array[String] = []
+	if typeof(values) != TYPE_ARRAY and typeof(values) != TYPE_PACKED_STRING_ARRAY:
+		return strings
+	for value in values:
+		strings.append(String(value))
+	return strings
 
 
 func _loot_action_detail(action: Dictionary) -> String:

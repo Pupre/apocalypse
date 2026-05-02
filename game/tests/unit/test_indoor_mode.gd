@@ -419,9 +419,58 @@ func _run_test() -> void:
 		"Indoor mode should show time cost on local zone actions."
 	)
 	assert_true(
+		_button_detail_text(_find_button_by_text(action_buttons, "계산대를 탐색한다 (30분)")).find("물건/단서 확인") != -1,
+		"Indoor interaction rows should explain the concrete choice before the player presses them."
+	)
+	assert_true(
 		_button_has_icon(_find_button_by_text(action_buttons, "계산대를 탐색한다 (30분)")),
 		"Indoor mode should attach an icon to interaction actions."
 	)
+	var pressure_preview: String = indoor_mode._action_detail_text({
+		"id": "preview_pressure",
+		"noise_cost": 1,
+		"pressure": {
+			"noise": 2,
+			"health_loss": 1.0,
+			"fatigue_gain": 1.5,
+			"exposure_loss": 2.0,
+		},
+	}, "interaction")
+	assert_true(
+		pressure_preview.find("소란 +3") != -1
+			and pressure_preview.find("체력 -1") != -1
+			and pressure_preview.find("피로 +1.5") != -1
+			and pressure_preview.find("체온 손실 2") != -1,
+		"Indoor interaction fallback detail should preview combined pressure costs."
+	)
+	var preview_actions: Array[Dictionary] = [
+		{
+			"id": "risky_search",
+			"type": "search",
+			"label": "위험한 수색",
+			"pressure": {"health_loss": 1.0},
+			"minute_cost": 10,
+		},
+		{
+			"id": "locked_tool",
+			"type": "search",
+			"label": "도구 수색",
+			"locked": true,
+			"requirements": {"required_item_ids": ["work_gloves"]},
+			"minute_cost": 5,
+		},
+		{
+			"id": "safe_search",
+			"type": "search",
+			"label": "조용한 확인",
+			"minute_cost": 30,
+		},
+	]
+	var sorted_preview: Dictionary = indoor_mode._group_actions(preview_actions)
+	var sorted_interactions: Array = sorted_preview.get("interaction", [])
+	assert_eq(String((sorted_interactions[0] as Dictionary).get("id", "")), "safe_search", "Indoor mode should show safer available local actions first.")
+	assert_eq(String((sorted_interactions[1] as Dictionary).get("id", "")), "risky_search", "Indoor mode should keep risky shortcuts visible but lower than safe choices.")
+	assert_eq(String((sorted_interactions[2] as Dictionary).get("id", "")), "locked_tool", "Indoor mode should push locked local alternatives behind available choices.")
 	assert_eq(
 		_map_labels(minimap_nodes),
 		["?", "?", "계산대", "정문 진입부"],
@@ -758,6 +807,23 @@ func _button_label_text(button: Button) -> String:
 		return button.text
 	var nested_label := _find_first_label(button)
 	return nested_label.text.strip_edges() if nested_label != null else ""
+
+
+func _button_detail_text(button: Button) -> String:
+	var texts := _label_texts(button)
+	return texts[1] if texts.size() > 1 else ""
+
+
+func _label_texts(container: Node) -> Array[String]:
+	var texts: Array[String] = []
+	if container == null:
+		return texts
+	for child in container.get_children():
+		var label := child as Label
+		if label != null:
+			texts.append(label.text.strip_edges())
+		texts.append_array(_label_texts(child))
+	return texts
 
 
 func _button_has_icon(button: Button) -> bool:
