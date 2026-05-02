@@ -185,3 +185,39 @@
 - `res://tests/unit/test_survivor_creator.gd`
 - `res://tests/smoke/test_first_playable_loop.gd`
 - 주인공 20프레임 PNG 해상도 32x32 유지 확인
+
+## 추가 패스: 네 개 소형 탐색지의 깊이 확장
+
+구멍가게, 반찬 가게, 수리점, 물류 보관소는 아직 2구역 구조라 “이동 후 탐색”만 반복되는 느낌이 강했다. 이번 패스에서는 네 장소를 모두 4구역 구조로 확장하고, 서두르면 다치거나 소란이 생기지만 도구를 갖추면 더 안전하게 처리할 수 있는 분기를 붙였다.
+
+### 구현 내용
+
+- `corner_store_01`은 앞 선반, 재고 구석, 낡은 계산대, 뒤쪽 냉장고 구조가 되었다.
+  - 계산대는 급히 젖히면 아크릴 조각에 다치고 소란이 생긴다.
+  - 작업 장갑이 있으면 더 오래 걸리지만 안전하게 정리한다.
+  - 재고 구석은 생수 수량 공급원으로 연결된다.
+- `deli_01`은 포장대, 깨진 반찬 진열장, 안쪽 준비대, 작은 냉장 보관실 구조가 되었다.
+  - 즉석밥, 조미김, 어묵 통조림, 양념류, 포일 트레이처럼 실제 반찬 가게에서 납득되는 보상을 중심으로 재구성했다.
+  - 진열장은 빠른 위험 수색과 장갑 기반 안전 수색으로 갈라진다.
+- `repair_shop_01`은 작업대, 부품 선반, 공구 캐비닛, 뒤쪽 정비 베이 구조가 되었다.
+  - 공구 캐비닛은 억지로 뜯으면 큰 금속음과 손상 위험을 감수하고, 드라이버가 있으면 조용히 연다.
+  - 정비 베이는 사이펀 호스, 작업용 수건, 실링제, 호스 밴드 같은 보수/이송 루프 아이템을 제공한다.
+- `storage_depot_01`은 적재문 앞, 안쪽 보관 랙, 관리 케이지, 무너진 팔레트 더미 구조가 되었다.
+  - 팔레트 더미는 빠르게 헤집으면 적재물이 무너지고, 작업 장갑을 쓰면 안전하게 정리한다.
+  - 포장재, 방수포, 빈 제리캔, 로프, 플라스틱 상자처럼 무겁지만 의미 있는 물류 보상을 준다.
+- 네 장소 앞 야외 블록에 건물 진입 전 판단 압력을 추가했다.
+  - 수리점 앞 언 기름물, 반찬 가게 배송 골목 틈바람, 물류 보관소 적재문 앞 눈더미, 구멍가게 차양 밑 빙판을 추가했다.
+
+### 검증
+
+- `res://tests/unit/test_indoor_content_depth.gd`
+- `res://tests/unit/test_indoor_loot_tables.gd`
+- `res://tests/unit/test_indoor_actions.gd`
+- `res://tests/unit/test_indoor_director.gd`
+- `res://tests/unit/test_outdoor_controller.gd`
+- `res://tests/unit/test_outdoor_world_runtime.gd`
+- `res://tests/unit/test_outdoor_map_view.gd`
+- `res://tests/unit/test_crafting_resolver.gd`
+- `res://tests/unit/test_life_world_item_matrix.gd`
+- `res://tests/smoke/test_first_playable_loop.gd`
+- 전체 `game/tests/unit/*.gd` 및 `game/tests/smoke/*.gd` 통과

@@ -1,15 +1,15 @@
 {
   "id": "storage_depot_01",
   "name": "물류 보관소",
-  "summary": "적재문 앞과 안쪽 보관 랙이 나뉘어 있어 큰 자재는 더 안쪽에 남아 있다.",
+  "summary": "적재문 앞, 안쪽 보관 랙, 작은 관리 케이지, 무너진 팔레트 더미가 이어진 물류 보관소다. 큰 자재는 유용하지만 무겁고, 서두르면 적재물이 흔들려 다칠 수 있다.",
   "entry_zone_id": "loading_bay",
   "zones": [
     {
       "id": "loading_bay",
       "floor_id": "floor_1",
       "label": "적재문 앞",
-      "summary": "반쯤 열린 적재문 앞에 포장재가 흩어져 있다.",
-      "connected_zone_ids": ["inner_rack"],
+      "summary": "반쯤 열린 적재문 앞에 포장재가 흩어져 있다. 안쪽 랙과 작은 관리 케이지가 보인다.",
+      "connected_zone_ids": ["inner_rack", "office_cage"],
       "event_ids": ["search_storage_depot_loading_bay"],
       "map_position": [0, 0],
       "first_visit_cost": 20,
@@ -19,11 +19,33 @@
       "id": "inner_rack",
       "floor_id": "floor_1",
       "label": "안쪽 보관 랙",
-      "summary": "안쪽 랙엔 덮개와 용기 이송 도구가 아직 남아 있다.",
-      "connected_zone_ids": ["loading_bay"],
+      "summary": "안쪽 랙엔 덮개와 용기 이송 도구가 아직 남아 있다. 더 깊은 쪽에는 무너진 팔레트 더미가 통로를 막고 있다.",
+      "connected_zone_ids": ["loading_bay", "pallet_stack"],
       "event_ids": ["search_storage_depot_inner_rack"],
       "map_position": [1, 0],
       "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "office_cage",
+      "floor_id": "floor_1",
+      "label": "관리 케이지",
+      "summary": "철망으로 둘러싼 작은 관리 칸이다. 출고 전표와 묶음 자재, 잃어버린 열쇠가 섞여 있다.",
+      "connected_zone_ids": ["loading_bay"],
+      "event_ids": ["search_storage_depot_office_cage"],
+      "map_position": [0, 1],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "pallet_stack",
+      "floor_id": "floor_1",
+      "label": "무너진 팔레트 더미",
+      "summary": "무너진 팔레트와 박스 더미 사이로 큰 방수포와 플라스틱 상자가 보인다. 건드리면 쉽게 쏟아질 듯하다.",
+      "connected_zone_ids": ["inner_rack"],
+      "event_ids": ["search_storage_depot_pallet_stack"],
+      "map_position": [2, 0],
+      "first_visit_cost": 25,
       "revisit_cost": 10
     }
   ],
@@ -42,13 +64,17 @@
           "costs": { "minutes": 20, "noise": 0 },
           "outcomes": {
             "discover_loot": [],
+            "supply_sources": [
+              { "id": "storage_depot_bag_rolls", "item_id": "trash_bag_roll", "quantity": 5 }
+            ],
             "loot_table": {
               "rolls": 2,
               "allow_duplicates": false,
               "entries": [
                 { "id": "bubble_wrap_roll", "weight": 3 },
                 { "id": "zip_bag", "weight": 2 },
-                { "id": "trash_bag_roll", "weight": 2 }
+                { "id": "trash_bag_roll", "weight": 2 },
+                { "id": "cardboard_box", "weight": 2 }
               ]
             },
             "consume_on_use": true
@@ -75,9 +101,104 @@
               "entries": [
                 { "id": "tarp_sheet", "weight": 3 },
                 { "id": "drain_funnel", "weight": 3 },
-                { "id": "empty_jerrycan", "weight": 2 }
+                { "id": "empty_jerrycan", "weight": 2 },
+                { "id": "rope_bundle", "weight": 2 },
+                { "id": "plastic_storage_bin", "weight": 1 }
               ]
             },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_storage_depot_office_cage",
+      "zone_id": "office_cage",
+      "type": "search",
+      "hint_text": "관리 케이지 안에는 출고 전표와 작은 보수 재료가 남아 있다.",
+      "options": [
+        {
+          "id": "search_storage_office_cage",
+          "label": "관리 케이지를 탐색한다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "memo_pad", "weight": 2 },
+                { "id": "packing_tape", "weight": 3 },
+                { "id": "twine_bundle", "weight": 3 },
+                { "id": "warehouse_shutter_key", "weight": 1 },
+                { "id": "ballpoint_pen", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_storage_depot_pallet_stack",
+      "zone_id": "pallet_stack",
+      "type": "search",
+      "hint_text": "팔레트 더미 뒤에는 큰 방수포와 빈 용기가 보인다. 손으로 잡아 빼면 더미가 무너질 수 있다.",
+      "options": [
+        {
+          "id": "search_storage_pallet_fast",
+          "label": "팔레트 더미를 급히 헤집는다",
+          "requirements": { "forbidden_flag_ids": ["storage_pallet_cleared"] },
+          "costs": { "minutes": 25, "noise": 2 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "tarp_sheet", "weight": 4 },
+                { "id": "empty_jerrycan", "weight": 3 },
+                { "id": "plastic_storage_bin", "weight": 2 },
+                { "id": "cardboard_box", "weight": 2 },
+                { "id": "rope_bundle", "weight": 2 }
+              ]
+            },
+            "pressure": {
+              "id": "storage_pallet_collapse",
+              "message": "박스 더미가 한꺼번에 주저앉아 어깨를 부딪쳤고, 빈 창고 안으로 큰 소리가 울렸다.",
+              "health_loss": 1.0,
+              "fatigue_gain": 2.0,
+              "noise": 2,
+              "repeatable": false
+            },
+            "set_flags": ["storage_pallet_cleared"],
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "search_storage_pallet_with_gloves",
+          "label": "장갑을 끼고 팔레트 더미를 천천히 치운다",
+          "requirements": {
+            "required_item_ids": ["work_gloves"],
+            "forbidden_flag_ids": ["storage_pallet_cleared"]
+          },
+          "blocked_feedback": "거친 팔레트와 박스 철심을 천천히 치우려면 작업 장갑이 필요하다.",
+          "costs": { "minutes": 40, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "tarp_sheet", "weight": 4 },
+                { "id": "empty_jerrycan", "weight": 3 },
+                { "id": "plastic_storage_bin", "weight": 2 },
+                { "id": "cardboard_box", "weight": 2 },
+                { "id": "rope_bundle", "weight": 2 }
+              ]
+            },
+            "set_flags": ["storage_pallet_cleared"],
             "consume_on_use": true
           }
         }

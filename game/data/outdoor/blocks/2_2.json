@@ -18,6 +18,16 @@
       "fatigue_gain": 1.5,
       "minutes": 3,
       "cooldown_seconds": 8.0
+    },
+    {
+      "id": "corner_store_awning_black_ice",
+      "kind": "black_ice",
+      "rect": { "x": 675, "y": 155, "width": 230, "height": 165 },
+      "message": "구멍가게 차양 밑에 얼어붙은 물자국을 밟아 몸이 문 쪽으로 쏠렸다.",
+      "exposure_loss": 1.25,
+      "fatigue_gain": 1.5,
+      "health_loss": 0.5,
+      "cooldown_seconds": 7.0
     }
   ],
   "obstacles": [

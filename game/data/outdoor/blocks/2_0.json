@@ -27,6 +27,15 @@
       "exposure_loss": 2.0,
       "fatigue_gain": 1.0,
       "cooldown_seconds": 7.0
+    },
+    {
+      "id": "deli_delivery_alley_wind_gap",
+      "kind": "wind_gap",
+      "rect": { "x": 675, "y": 135, "width": 230, "height": 170 },
+      "message": "반찬 가게 배송 골목 사이로 몰린 바람이 젖은 장갑 안쪽까지 파고들었다.",
+      "exposure_loss": 2.0,
+      "fatigue_gain": 1.0,
+      "cooldown_seconds": 7.0
     }
   ],
   "obstacles": [

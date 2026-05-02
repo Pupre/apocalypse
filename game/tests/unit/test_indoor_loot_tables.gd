@@ -18,8 +18,11 @@ const INDOOR_EVENT_PATHS := [
 	"res://data/events/indoor/warehouse_01.json",
 	"res://data/events/indoor/cafe_01.json",
 	"res://data/events/indoor/police_box_01.json",
+	"res://data/events/indoor/corner_store_01.json",
+	"res://data/events/indoor/deli_01.json",
 	"res://data/events/indoor/repair_shop_01.json",
 	"res://data/events/indoor/residence_01.json",
+	"res://data/events/indoor/storage_depot_01.json",
 ]
 const MART_DETERMINISM_CASES := [
 	{

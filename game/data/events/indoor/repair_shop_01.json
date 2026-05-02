@@ -1,15 +1,15 @@
 {
   "id": "repair_shop_01",
   "name": "수리점",
-  "summary": "작업대와 안쪽 부품 선반이 분리돼 있어 금속 자재와 보수 재료가 따로 남아 있다.",
+  "summary": "작업대, 부품 선반, 잠긴 공구 캐비닛, 뒤쪽 정비 베이가 이어진 작은 수리점이다. 손을 쓰면 빠르지만 다치기 쉽고, 공구가 있으면 조용히 더 좋은 보수 재료에 접근할 수 있다.",
   "entry_zone_id": "bench",
   "zones": [
     {
       "id": "bench",
       "floor_id": "floor_1",
       "label": "작업대",
-      "summary": "금속 조각과 공구함이 작업대 위에 흩어져 있다.",
-      "connected_zone_ids": ["parts_rack"],
+      "summary": "금속 조각과 공구함이 작업대 위에 흩어져 있다. 부품 선반과 공구 캐비닛이 안쪽으로 이어진다.",
+      "connected_zone_ids": ["parts_rack", "tool_locker"],
       "event_ids": ["search_repair_shop_bench"],
       "map_position": [0, 0],
       "first_visit_cost": 20,
@@ -19,11 +19,33 @@
       "id": "parts_rack",
       "floor_id": "floor_1",
       "label": "부품 선반",
-      "summary": "안쪽 선반엔 철사, 접착재, 작은 보수 부품이 남아 있다.",
-      "connected_zone_ids": ["bench"],
+      "summary": "안쪽 선반엔 철사, 접착재, 작은 보수 부품이 남아 있다. 뒤쪽 정비 베이로 좁은 통로가 뚫려 있다.",
+      "connected_zone_ids": ["bench", "service_bay"],
       "event_ids": ["search_repair_shop_parts_rack"],
       "map_position": [1, 0],
       "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "tool_locker",
+      "floor_id": "floor_1",
+      "label": "공구 캐비닛",
+      "summary": "얇은 캐비닛 문은 잠겨 있지만 경첩이 약해 보인다. 억지로 열면 소리가 크게 날 듯하다.",
+      "connected_zone_ids": ["bench"],
+      "event_ids": ["open_repair_shop_tool_locker"],
+      "map_position": [0, 1],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "service_bay",
+      "floor_id": "floor_1",
+      "label": "뒤쪽 정비 베이",
+      "summary": "미끄러운 바닥과 낮은 리프트 주변에 호스, 천, 실링제가 남아 있다.",
+      "connected_zone_ids": ["parts_rack"],
+      "event_ids": ["search_repair_shop_service_bay"],
+      "map_position": [2, 0],
+      "first_visit_cost": 25,
       "revisit_cost": 10
     }
   ],
@@ -48,7 +70,8 @@
               "entries": [
                 { "id": "duct_tape", "weight": 3 },
                 { "id": "steel_wire", "weight": 3 },
-                { "id": "work_gloves", "weight": 2 }
+                { "id": "work_gloves", "weight": 2 },
+                { "id": "measuring_tape", "weight": 1 }
               ]
             },
             "consume_on_use": true
@@ -75,9 +98,137 @@
               "entries": [
                 { "id": "epoxy_putty", "weight": 3 },
                 { "id": "steel_wire", "weight": 2 },
-                { "id": "hose_clamp", "weight": 2 }
+                { "id": "hose_clamp", "weight": 2 },
+                { "id": "rubber_gasket", "weight": 2 },
+                { "id": "sealant_tube", "weight": 1 }
               ]
             },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "open_repair_shop_tool_locker",
+      "zone_id": "tool_locker",
+      "type": "search",
+      "hint_text": "공구 캐비닛은 잠겨 있다. 힘으로 뜯을 수는 있지만 드라이버가 있으면 훨씬 조용하다.",
+      "options": [
+        {
+          "id": "force_repair_tool_locker",
+          "label": "캐비닛 문을 억지로 비튼다",
+          "requirements": { "forbidden_flag_ids": ["repair_tool_locker_opened"] },
+          "costs": { "minutes": 25, "noise": 2 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "pliers", "weight": 3 },
+                { "id": "screwdriver", "weight": 3 },
+                { "id": "hammer", "weight": 2 },
+                { "id": "electrical_tape", "weight": 2 }
+              ]
+            },
+            "pressure": {
+              "id": "repair_tool_locker_forced",
+              "message": "캐비닛 문이 꺾이며 큰 금속음이 났고, 손바닥에 둔한 통증이 남았다.",
+              "health_loss": 1.0,
+              "fatigue_gain": 1.5,
+              "noise": 2,
+              "repeatable": false
+            },
+            "set_flags": ["repair_tool_locker_opened"],
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "open_repair_tool_locker_with_screwdriver",
+          "label": "드라이버로 캐비닛 경첩을 푼다",
+          "requirements": {
+            "required_item_ids": ["screwdriver"],
+            "forbidden_flag_ids": ["repair_tool_locker_opened"]
+          },
+          "blocked_feedback": "캐비닛 경첩을 조용히 풀려면 작은 드라이버가 필요하다.",
+          "costs": { "minutes": 35, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "pliers", "weight": 3 },
+                { "id": "screwdriver", "weight": 3 },
+                { "id": "hammer", "weight": 2 },
+                { "id": "electrical_tape", "weight": 2 }
+              ]
+            },
+            "set_flags": ["repair_tool_locker_opened"],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_repair_shop_service_bay",
+      "zone_id": "service_bay",
+      "type": "search",
+      "hint_text": "뒤쪽 정비 베이에는 호스와 작업용 천, 실링제가 남아 있다. 얼어붙은 바닥이 미끄럽다.",
+      "options": [
+        {
+          "id": "search_repair_service_bay_fast",
+          "label": "정비 베이를 빠르게 뒤진다",
+          "requirements": { "forbidden_flag_ids": ["repair_service_bay_cleared"] },
+          "costs": { "minutes": 25, "noise": 1 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "siphon_hose", "weight": 3 },
+                { "id": "shop_towel_bundle", "weight": 3 },
+                { "id": "sealant_tube", "weight": 2 },
+                { "id": "hose_clamp", "weight": 2 },
+                { "id": "duct_tape", "weight": 2 }
+              ]
+            },
+            "pressure": {
+              "id": "repair_service_bay_slip",
+              "message": "얼어붙은 정비 베이 바닥에서 발이 미끄러져 리프트 모서리에 무릎을 부딪쳤다.",
+              "health_loss": 1.0,
+              "fatigue_gain": 2.0,
+              "noise": 1,
+              "repeatable": false
+            },
+            "set_flags": ["repair_service_bay_cleared"],
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "search_repair_service_bay_with_gloves",
+          "label": "장갑을 끼고 정비 베이를 차분히 정리한다",
+          "requirements": {
+            "required_item_ids": ["work_gloves"],
+            "forbidden_flag_ids": ["repair_service_bay_cleared"]
+          },
+          "blocked_feedback": "기름 묻은 차가운 부품을 오래 만지려면 작업 장갑이 필요하다.",
+          "costs": { "minutes": 40, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "siphon_hose", "weight": 3 },
+                { "id": "shop_towel_bundle", "weight": 3 },
+                { "id": "sealant_tube", "weight": 2 },
+                { "id": "hose_clamp", "weight": 2 },
+                { "id": "duct_tape", "weight": 2 }
+              ]
+            },
+            "set_flags": ["repair_service_bay_cleared"],
             "consume_on_use": true
           }
         }

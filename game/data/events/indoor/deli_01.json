@@ -1,17 +1,28 @@
 {
   "id": "deli_01",
   "name": "반찬 가게",
-  "summary": "전면 포장대와 안쪽 준비대가 분리돼 있어 즉석 식품과 용기를 따로 살펴야 한다.",
+  "summary": "포장대, 반찬 진열장, 안쪽 준비대, 작은 냉장 보관실이 이어진 반찬 가게다. 바로 먹을 음식보다 보관 용기, 국물 재료, 밥과 함께 챙길 양념이 더 현실적인 수확이다.",
   "entry_zone_id": "counter",
   "zones": [
     {
       "id": "counter",
       "floor_id": "floor_1",
       "label": "포장대",
-      "summary": "작은 용기와 종이봉투가 카운터 주변에 남아 있다.",
-      "connected_zone_ids": ["prep_table"],
+      "summary": "작은 용기와 종이봉투가 카운터 주변에 남아 있다. 진열장과 준비대가 양쪽으로 보인다.",
+      "connected_zone_ids": ["display_case", "prep_table"],
       "event_ids": ["search_deli_counter"],
       "map_position": [0, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "display_case",
+      "floor_id": "floor_1",
+      "label": "깨진 반찬 진열장",
+      "summary": "진열장 유리는 금이 갔고, 안쪽엔 오래 보관 가능한 포장 반찬과 밥류가 조금 남아 있다.",
+      "connected_zone_ids": ["counter", "prep_table"],
+      "event_ids": ["search_deli_display_case"],
+      "map_position": [1, 0],
       "first_visit_cost": 20,
       "revisit_cost": 10
     },
@@ -19,11 +30,22 @@
       "id": "prep_table",
       "floor_id": "floor_1",
       "label": "안쪽 준비대",
-      "summary": "뒤편 준비대엔 수프 재료와 작은 통조림이 놓여 있다.",
-      "connected_zone_ids": ["counter"],
+      "summary": "뒤편 준비대엔 수프 재료와 작은 통조림, 양념류가 놓여 있다.",
+      "connected_zone_ids": ["counter", "display_case", "cold_room"],
       "event_ids": ["search_deli_prep_table"],
-      "map_position": [1, 0],
+      "map_position": [1, 1],
       "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "cold_room",
+      "floor_id": "floor_1",
+      "label": "작은 냉장 보관실",
+      "summary": "뒤쪽 냉장 보관실은 이미 전기가 끊겼지만 포일 트레이와 밀폐용기, 보냉 가방은 아직 쓸 수 있다.",
+      "connected_zone_ids": ["prep_table"],
+      "event_ids": ["search_deli_cold_room"],
+      "map_position": [2, 1],
+      "first_visit_cost": 25,
       "revisit_cost": 10
     }
   ],
@@ -48,9 +70,72 @@
               "entries": [
                 { "id": "paper_bag", "weight": 3 },
                 { "id": "steel_food_can", "weight": 2 },
-                { "id": "zip_bag", "weight": 2 }
+                { "id": "zip_bag", "weight": 2 },
+                { "id": "food_storage_container", "weight": 2 }
               ]
             },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_deli_display_case",
+      "zone_id": "display_case",
+      "type": "search",
+      "hint_text": "깨진 진열장 안쪽에 즉석밥과 김, 통조림이 보인다. 급히 손을 넣으면 다칠 수 있다.",
+      "options": [
+        {
+          "id": "search_deli_display_fast",
+          "label": "진열장 안쪽을 급히 뒤진다",
+          "requirements": { "forbidden_flag_ids": ["deli_display_cleared"] },
+          "costs": { "minutes": 25, "noise": 1 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "instant_rice_bowl", "weight": 3 },
+                { "id": "seasoned_seaweed", "weight": 3 },
+                { "id": "fish_cake_can", "weight": 2 },
+                { "id": "food_storage_container", "weight": 2 }
+              ]
+            },
+            "pressure": {
+              "id": "deli_display_glass_cut",
+              "message": "금 간 진열장 틈으로 손을 넣다가 손목이 얕게 긁혔다.",
+              "health_loss": 1.0,
+              "fatigue_gain": 1.0,
+              "noise": 1,
+              "repeatable": false
+            },
+            "set_flags": ["deli_display_cleared"],
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "search_deli_display_with_gloves",
+          "label": "장갑을 끼고 진열장을 정리한다",
+          "requirements": {
+            "required_item_ids": ["work_gloves"],
+            "forbidden_flag_ids": ["deli_display_cleared"]
+          },
+          "blocked_feedback": "깨진 진열장 틈을 오래 뒤지려면 손을 보호할 작업 장갑이 필요하다.",
+          "costs": { "minutes": 35, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "instant_rice_bowl", "weight": 3 },
+                { "id": "seasoned_seaweed", "weight": 3 },
+                { "id": "fish_cake_can", "weight": 2 },
+                { "id": "food_storage_container", "weight": 2 }
+              ]
+            },
+            "set_flags": ["deli_display_cleared"],
             "consume_on_use": true
           }
         }
@@ -75,8 +160,46 @@
               "entries": [
                 { "id": "instant_soup_powder", "weight": 3 },
                 { "id": "tea_bag", "weight": 2 },
-                { "id": "foil_tray_pack", "weight": 2 }
+                { "id": "foil_tray_pack", "weight": 2 },
+                { "id": "gochujang_tube", "weight": 2 },
+                { "id": "soy_sauce_bottle", "weight": 2 },
+                { "id": "sesame_oil_bottle", "weight": 1 }
               ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_deli_cold_room",
+      "zone_id": "cold_room",
+      "type": "search",
+      "hint_text": "냉장 보관실 안쪽에는 식재료보다 포장 용기와 보냉 장비가 더 쓸 만하다.",
+      "options": [
+        {
+          "id": "search_deli_cold_room",
+          "label": "냉장 보관실을 훑는다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "cooler_bag", "weight": 3 },
+                { "id": "foil_tray_pack", "weight": 3 },
+                { "id": "food_storage_container", "weight": 2 },
+                { "id": "salt_packet", "weight": 1 }
+              ]
+            },
+            "pressure": {
+              "id": "deli_cold_room_stale_air",
+              "message": "전기가 끊긴 냉장 보관실의 축축한 한기가 옷깃 안쪽으로 스며들었다.",
+              "exposure_loss": 1.5,
+              "fatigue_gain": 1.0,
+              "repeatable": false
             },
             "consume_on_use": true
           }

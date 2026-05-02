@@ -1,15 +1,15 @@
 {
   "id": "corner_store_01",
   "name": "구멍가게",
-  "summary": "앞 선반 뒤쪽으로 작은 재고 구석이 있어 음료와 생활 소모품이 나뉘어 남아 있다.",
+  "summary": "낡은 앞 선반, 계산대, 작은 재고 구석, 멈춘 냉장고가 좁게 이어진다. 작은 가게답게 보상은 많지 않지만 바로 쓸 수 있는 소모품과 물이 남아 있다.",
   "entry_zone_id": "front_shelf",
   "zones": [
     {
       "id": "front_shelf",
       "floor_id": "floor_1",
       "label": "앞 선반",
-      "summary": "잡과자와 음료 흔적이 남은 좁은 선반 앞이다.",
-      "connected_zone_ids": ["stock_nook"],
+      "summary": "잡과자와 음료 흔적이 남은 좁은 선반 앞이다. 계산대와 재고 구석으로 길이 갈라진다.",
+      "connected_zone_ids": ["stock_nook", "cashier_counter"],
       "event_ids": ["search_corner_store_front"],
       "map_position": [0, 0],
       "first_visit_cost": 20,
@@ -19,11 +19,33 @@
       "id": "stock_nook",
       "floor_id": "floor_1",
       "label": "재고 구석",
-      "summary": "안쪽 작은 재고 칸에 생수와 포장지가 밀려 있다.",
-      "connected_zone_ids": ["front_shelf"],
+      "summary": "안쪽 작은 재고 칸에 생수와 포장지가 밀려 있다. 더 뒤쪽에는 전원이 꺼진 냉장고가 붙어 있다.",
+      "connected_zone_ids": ["front_shelf", "rear_fridge"],
       "event_ids": ["search_corner_store_stock"],
       "map_position": [1, 0],
       "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "cashier_counter",
+      "floor_id": "floor_1",
+      "label": "낡은 계산대",
+      "summary": "계산대 아래 작은 서랍은 비틀려 있고, 깨진 아크릴 조각이 손을 긁을 듯 걸려 있다.",
+      "connected_zone_ids": ["front_shelf"],
+      "event_ids": ["search_corner_store_cashier"],
+      "map_position": [0, 1],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "rear_fridge",
+      "floor_id": "floor_1",
+      "label": "뒤쪽 냉장고",
+      "summary": "꺼진 냉장고 안에는 얼다 녹은 음료와 즉석식 흔적이 남아 있다. 오래 뒤지면 손끝이 빠르게 식는다.",
+      "connected_zone_ids": ["stock_nook"],
+      "event_ids": ["search_corner_store_rear_fridge"],
+      "map_position": [2, 0],
+      "first_visit_cost": 25,
       "revisit_cost": 10
     }
   ],
@@ -48,7 +70,8 @@
               "entries": [
                 { "id": "crackers", "weight": 3 },
                 { "id": "paper_bag", "weight": 2 },
-                { "id": "shopping_bag", "weight": 2 }
+                { "id": "shopping_bag", "weight": 2 },
+                { "id": "receipt_bundle", "weight": 2 }
               ]
             },
             "consume_on_use": true
@@ -69,14 +92,115 @@
           "costs": { "minutes": 20, "noise": 0 },
           "outcomes": {
             "discover_loot": [],
+            "supply_sources": [
+              { "id": "corner_store_water_stack", "item_id": "bottled_water", "quantity": 4 }
+            ],
             "loot_table": {
               "rolls": 2,
               "allow_duplicates": false,
               "entries": [
                 { "id": "bottled_water", "weight": 3 },
                 { "id": "zip_bag", "weight": 2 },
-                { "id": "trash_bag_roll", "weight": 2 }
+                { "id": "trash_bag_roll", "weight": 2 },
+                { "id": "soap_bar", "weight": 1 }
               ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_corner_store_cashier",
+      "zone_id": "cashier_counter",
+      "type": "search",
+      "hint_text": "계산대 서랍은 비틀려 있지만, 라이터나 작은 문구류가 남아 있을 수 있다.",
+      "options": [
+        {
+          "id": "search_corner_cashier_fast",
+          "label": "계산대 서랍을 급히 젖힌다",
+          "requirements": { "forbidden_flag_ids": ["corner_cashier_cleared"] },
+          "costs": { "minutes": 25, "noise": 1 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "lighter", "weight": 3 },
+                { "id": "memo_pad", "weight": 2 },
+                { "id": "rubber_band", "weight": 2 },
+                { "id": "canned_coffee", "weight": 1 }
+              ]
+            },
+            "pressure": {
+              "id": "corner_cashier_acrylic_cut",
+              "message": "깨진 아크릴 조각이 손등을 긁었다. 작은 가게 안쪽으로 마른 소리가 튀었다.",
+              "health_loss": 1.0,
+              "fatigue_gain": 1.0,
+              "noise": 1,
+              "repeatable": false
+            },
+            "set_flags": ["corner_cashier_cleared"],
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "search_corner_cashier_with_gloves",
+          "label": "장갑을 끼고 계산대 서랍을 정리한다",
+          "requirements": {
+            "required_item_ids": ["work_gloves"],
+            "forbidden_flag_ids": ["corner_cashier_cleared"]
+          },
+          "blocked_feedback": "깨진 아크릴과 서랍 철판을 안전하게 밀어내려면 작업 장갑이 필요하다.",
+          "costs": { "minutes": 35, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "lighter", "weight": 3 },
+                { "id": "memo_pad", "weight": 2 },
+                { "id": "rubber_band", "weight": 2 },
+                { "id": "canned_coffee", "weight": 1 }
+              ]
+            },
+            "set_flags": ["corner_cashier_cleared"],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_corner_store_rear_fridge",
+      "zone_id": "rear_fridge",
+      "type": "search",
+      "hint_text": "뒤쪽 냉장고에는 음료와 즉석식 흔적이 남아 있지만, 꺼진 금속 선반은 차갑게 얼어붙어 있다.",
+      "options": [
+        {
+          "id": "search_corner_rear_fridge",
+          "label": "뒤쪽 냉장고를 훑는다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "bottled_water", "weight": 3 },
+                { "id": "canned_coffee", "weight": 3 },
+                { "id": "instant_coffee_mix", "weight": 2 },
+                { "id": "instant_noodles", "weight": 2 }
+              ]
+            },
+            "pressure": {
+              "id": "corner_rear_fridge_cold_metal",
+              "message": "차가운 냉장 선반을 오래 붙잡는 동안 손끝이 얼얼해졌다.",
+              "exposure_loss": 1.5,
+              "fatigue_gain": 0.75,
+              "repeatable": false
             },
             "consume_on_use": true
           }

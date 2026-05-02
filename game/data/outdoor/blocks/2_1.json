@@ -27,6 +27,16 @@
       "exposure_loss": 2.5,
       "fatigue_gain": 1.0,
       "cooldown_seconds": 7.0
+    },
+    {
+      "id": "storage_depot_loading_snow_drift",
+      "kind": "snow_drift",
+      "rect": { "x": 70, "y": 125, "width": 250, "height": 175 },
+      "message": "물류 보관소 적재문 앞 눈더미를 넘느라 빈 용기들이 서로 부딪쳤다.",
+      "exposure_loss": 1.25,
+      "fatigue_gain": 2.0,
+      "minutes": 2,
+      "cooldown_seconds": 8.0
     }
   ],
   "obstacles": [

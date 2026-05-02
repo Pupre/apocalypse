@@ -27,6 +27,16 @@
       "fatigue_gain": 1.75,
       "health_loss": 0.5,
       "cooldown_seconds": 7.0
+    },
+    {
+      "id": "repair_shop_service_drain_black_ice",
+      "kind": "black_ice",
+      "rect": { "x": 135, "y": 645, "width": 200, "height": 150 },
+      "message": "수리점 배수구 앞에 언 기름물 위에서 발이 옆으로 밀렸다.",
+      "exposure_loss": 1.25,
+      "fatigue_gain": 1.5,
+      "health_loss": 0.5,
+      "cooldown_seconds": 7.0
     }
   ],
   "obstacles": [

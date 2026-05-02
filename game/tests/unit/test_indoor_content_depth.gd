@@ -15,6 +15,10 @@ const ANCHOR_MIN_ZONE_COUNTS := {
 	"bookstore_01": 4,
 	"butcher_01": 4,
 	"school_gate_01": 4,
+	"corner_store_01": 4,
+	"deli_01": 4,
+	"repair_shop_01": 4,
+	"storage_depot_01": 4,
 }
 
 const UPLIFTED_BUILDING_IDS := [
@@ -73,6 +77,38 @@ const REQUIRED_NEW_ITEM_IDS := [
 	"sealed_warm_cocoa",
 ]
 
+const REQUIRED_ACTION_IDS_BY_BUILDING := {
+	"corner_store_01": [
+		"search_corner_cashier_fast",
+		"search_corner_cashier_with_gloves",
+		"search_corner_rear_fridge",
+	],
+	"deli_01": [
+		"search_deli_display_fast",
+		"search_deli_display_with_gloves",
+		"search_deli_cold_room",
+	],
+	"repair_shop_01": [
+		"force_repair_tool_locker",
+		"open_repair_tool_locker_with_screwdriver",
+		"search_repair_service_bay_fast",
+		"search_repair_service_bay_with_gloves",
+	],
+	"storage_depot_01": [
+		"search_storage_office_cage",
+		"search_storage_pallet_fast",
+		"search_storage_pallet_with_gloves",
+	],
+}
+
+const REQUIRED_ITEM_GATES_BY_ACTION := {
+	"search_corner_cashier_with_gloves": ["work_gloves"],
+	"search_deli_display_with_gloves": ["work_gloves"],
+	"open_repair_tool_locker_with_screwdriver": ["screwdriver"],
+	"search_repair_service_bay_with_gloves": ["work_gloves"],
+	"search_storage_pallet_with_gloves": ["work_gloves"],
+}
+
 
 func _init() -> void:
 	call_deferred("_run_test")
@@ -111,4 +147,35 @@ func _run_test() -> void:
 		var row: Dictionary = content_library.get_item(item_id)
 		assert_true(not row.is_empty(), "Expected new item '%s' to exist." % item_id)
 
+	for building_id in REQUIRED_ACTION_IDS_BY_BUILDING.keys():
+		var event_data := _load_json(_event_path_for(building_id))
+		assert_true(not event_data.is_empty(), "Expected event data for required action checks in '%s'." % building_id)
+		for action_id in REQUIRED_ACTION_IDS_BY_BUILDING[building_id]:
+			var option := _option_by_id(event_data, action_id)
+			assert_true(not option.is_empty(), "Expected '%s' to expose action '%s'." % [building_id, action_id])
+			var required_item_ids := _string_values((option.get("requirements", {}) as Dictionary).get("required_item_ids", []))
+			for required_item_id in REQUIRED_ITEM_GATES_BY_ACTION.get(action_id, []):
+				assert_true(required_item_ids.has(required_item_id), "Action '%s' should require '%s'." % [action_id, required_item_id])
+
 	pass_test("INDOOR_CONTENT_DEPTH_OK")
+
+
+func _option_by_id(event_data: Dictionary, option_id: String) -> Dictionary:
+	for event_variant in event_data.get("events", []):
+		if typeof(event_variant) != TYPE_DICTIONARY:
+			continue
+		var event := event_variant as Dictionary
+		for option_variant in event.get("options", []):
+			if typeof(option_variant) != TYPE_DICTIONARY:
+				continue
+			var option := option_variant as Dictionary
+			if String(option.get("id", "")) == option_id:
+				return option
+	return {}
+
+
+func _string_values(values) -> Array[String]:
+	var result: Array[String] = []
+	for value in values:
+		result.append(String(value))
+	return result
