@@ -78,7 +78,9 @@ func _run_test() -> void:
 		return
 	assert_true(ground.get_child_count() > 0, "Outdoor ground should render at least one visual layer.")
 	assert_true(player_sprite.texture != null, "Outdoor player visual should mount a sprite texture.")
-	assert_true(player_sprite.scale.x >= 1.4, "Outdoor player visual should be scaled up enough for the winter survivor sprite to read clearly.")
+	assert_true(player_sprite.texture.get_width() >= 64, "Outdoor player visual should use the smoother high-resolution survivor sprite.")
+	assert_true(player_sprite.texture.get_height() * player_sprite.scale.y >= 46.0, "Outdoor player visual should stay readable after downscaling the smoother sprite.")
+	assert_eq(player_sprite.texture_filter, CanvasItem.TEXTURE_FILTER_LINEAR, "Outdoor player visual should use linear filtering so the survivor does not read as blocky.")
 	var idle_player_texture := player_sprite.texture
 	var idle_player_offset := player_sprite.offset
 	outdoor_mode.bind_run_state(run_state, "mart_01", Vector2(0.0, 0.0))

@@ -16,9 +16,10 @@ const ENTER_RADIUS := 72.0
 const TERRAIN_TILE_SIZE := 32.0
 const HAZARD_FLASH_DURATION := 1.15
 const HAZARD_WARNING_MARGIN := 120.0
-const PLAYER_VISUAL_SCALE := 1.42
-const PLAYER_WALK_FRAME_RATE := 6.0
-const PLAYER_WALK_BOB_PIXELS := 1.6
+const PLAYER_VISUAL_SCALE := 0.78
+const PLAYER_WALK_FRAME_RATE := 10.0
+const PLAYER_WALK_FRAME_COUNT := 8
+const PLAYER_WALK_BOB_PIXELS := 1.1
 const MOVE_LEFT_ACTION := "move_left"
 const MOVE_RIGHT_ACTION := "move_right"
 const MOVE_UP_ACTION := "move_up"
@@ -623,7 +624,7 @@ func _sync_view() -> void:
 		_player_visual.scale = Vector2.ONE * PLAYER_VISUAL_SCALE
 		if is_walking:
 			_player_visual.offset.y += _player_walk_bob_offset(walk_frame_index)
-		_player_visual.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		_player_visual.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	if _camera != null:
 		_camera.position = _player_position
 		_camera.offset = PORTRAIT_CAMERA_OFFSET + _hazard_screen_jolt()
@@ -1089,8 +1090,8 @@ func _configure_bottom_center_sprite(sprite: Sprite2D) -> void:
 
 
 func _player_walk_bob_offset(frame_index: int) -> float:
-	var phase := ((frame_index % 4) + 4) % 4
-	return -PLAYER_WALK_BOB_PIXELS if phase == 1 or phase == 3 else 0.0
+	var phase := float(((frame_index % PLAYER_WALK_FRAME_COUNT) + PLAYER_WALK_FRAME_COUNT) % PLAYER_WALK_FRAME_COUNT) / float(PLAYER_WALK_FRAME_COUNT)
+	return -absf(sin(phase * TAU)) * PLAYER_WALK_BOB_PIXELS
 
 
 func _road_texture_id(road_row: Dictionary, road_rect: Rect2, is_horizontal: bool) -> String:

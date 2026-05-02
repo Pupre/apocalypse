@@ -7,6 +7,7 @@ const BUILDING_DIR := "%s/buildings_cutout" % PACK_ROOT
 const PROP_DIR := "%s/props_cutout" % PACK_ROOT
 const DECAL_DIR := "%s/decals" % PACK_ROOT
 const PLAYER_DIR := "%s/player" % PACK_ROOT
+const PLAYER_WALK_FRAME_COUNT := 8
 
 var _texture_cache: Dictionary = {}
 
@@ -73,7 +74,7 @@ func get_player_texture(facing_id: String, walking: bool, frame_index: int = 0) 
 	var resolved_facing := facing_id if facing_id in ["up", "down", "left", "right"] else "down"
 	var frame_suffix := "idle"
 	if walking:
-		frame_suffix = "walk%d" % (((frame_index % 4) + 4) % 4 + 1)
+		frame_suffix = "walk%d" % (((frame_index % PLAYER_WALK_FRAME_COUNT) + PLAYER_WALK_FRAME_COUNT) % PLAYER_WALK_FRAME_COUNT + 1)
 	return _load_texture("%s/%s_%s.png" % [PLAYER_DIR, resolved_facing, frame_suffix])
 
 
