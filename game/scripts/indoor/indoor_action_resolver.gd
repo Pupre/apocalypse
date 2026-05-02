@@ -367,6 +367,7 @@ func _apply_move_action(run_state, event_data: Dictionary, event_state: Dictiona
 	if not visited_zone_ids.has(target_zone_id):
 		visited_zone_ids.append(target_zone_id)
 	event_state["visited_zone_ids"] = visited_zone_ids
+	event_state.erase("last_illustration_asset")
 	if run_state != null and run_state.has_method("update_current_indoor_zone"):
 		run_state.update_current_indoor_zone(target_zone_id)
 	event_state["last_feedback_message"] = "%s로 이동했다." % String(target_zone.get("label", target_zone_id))
@@ -465,6 +466,8 @@ func _normalize_zone_option(event: Dictionary, option: Dictionary) -> Dictionary
 			action["consume_item_ids"] = _string_id_array(outcomes.get("consume_item_ids", []))
 		if outcomes.has("pressure"):
 			action["pressure"] = outcomes.get("pressure", {})
+		if outcomes.has("result_illustration_asset"):
+			action["result_illustration_asset"] = String(outcomes.get("result_illustration_asset", ""))
 		if outcomes.has("consume_on_use"):
 			action["consume_on_use"] = bool(outcomes.get("consume_on_use", false))
 
@@ -612,6 +615,10 @@ func _run_inventory(run_state):
 
 
 func _apply_action_outcomes(event_state: Dictionary, action: Dictionary) -> void:
+	var result_illustration_asset := String(action.get("result_illustration_asset", ""))
+	if not result_illustration_asset.is_empty():
+		event_state["last_illustration_asset"] = result_illustration_asset
+
 	var noise_cost := int(action.get("noise_cost", 0))
 	if noise_cost != 0:
 		event_state["noise"] = int(event_state.get("noise", 0)) + noise_cost

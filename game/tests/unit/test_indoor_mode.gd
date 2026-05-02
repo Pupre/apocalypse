@@ -590,6 +590,10 @@ func _run_test() -> void:
 	move_food_aisle_button.emit_signal("pressed")
 	await process_frame
 	assert_true(director.apply_action("search_food_aisle"), "Indoor mode should allow searching the food aisle for supply picker coverage.")
+	await process_frame
+	assert_true(event_illustration.texture != null, "Food-aisle search should keep a loaded result illustration in the reading card.")
+	assert_eq(event_illustration.texture.get_width(), 960, "Food-aisle result illustration should use the standard indoor banner width.")
+	assert_eq(event_illustration.texture.get_height(), 480, "Food-aisle result illustration should use the standard indoor banner height.")
 	indoor_mode._on_action_pressed("take_supply_food_aisle_water_shelf_detail")
 	await process_frame
 	assert_true(supply_picker_overlay.visible, "Indoor mode should open the supply picker when the detail supply action is pressed.")

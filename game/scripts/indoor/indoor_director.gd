@@ -30,6 +30,7 @@ func configure(run_state, building_id: String) -> void:
 		_event_state["current_zone_id"] = entry_zone_id
 	else:
 		_event_state = _create_initial_event_state(entry_zone_id)
+	_event_state.erase("last_illustration_asset")
 	state_changed.emit()
 
 
@@ -45,6 +46,10 @@ func get_event_summary() -> String:
 
 
 func get_event_illustration_asset() -> String:
+	var result_asset := String(_event_state.get("last_illustration_asset", ""))
+	if not result_asset.is_empty():
+		return result_asset
+
 	var event_asset := String(_event_data.get("illustration_asset", ""))
 	if not event_asset.is_empty():
 		return event_asset
@@ -565,6 +570,7 @@ func _create_initial_event_state(current_zone_id: String = "") -> Dictionary:
 		"zone_flags": {},
 		"last_pressure_message": "",
 		"last_noise_message": "",
+		"last_illustration_asset": "",
 		"noise": 0,
 	}
 

@@ -83,15 +83,33 @@ func _run_test() -> void:
 		["food_aisle|freezer_row", "food_aisle|household_goods", "food_aisle|mart_entrance"],
 		"After moving through the food aisle, the minimap should preserve the traveled path and expose the newly adjacent aisles."
 	)
+	assert_eq(
+		director.get_event_illustration_asset(),
+		"indoor/indoor_event_convenience_frozen.png",
+		"Movement should keep the building-level indoor illustration until a story-worthy action resolves."
+	)
+	assert_true(director.apply_action("search_food_aisle"), "Director should allow searching the food aisle.")
+	assert_eq(
+		director.get_event_illustration_asset(),
+		"indoor/indoor_story_mart_shelf_choice.png",
+		"Food-aisle search should swap the reading card to the mart shelf-choice story illustration."
+	)
 
 	assert_true(director.apply_action("move_household_goods"), "Director should allow moving into the household goods zone.")
+	assert_eq(
+		director.get_event_illustration_asset(),
+		"indoor/indoor_event_convenience_frozen.png",
+		"Moving to a new room should clear the immediate result illustration and return to the site illustration."
+	)
 	assert_eq(
 		_edge_ids(director.get_map_snapshot()),
 		["back_hall|household_goods", "food_aisle|household_goods", "food_aisle|mart_entrance", "household_goods|snack_aisle"],
 		"The household goods zone should expose both the back area and the side snack aisle."
 	)
 	assert_true(director.apply_action("search_household_goods"), "Director should allow searching the household goods zone.")
-	assert_true(director.apply_action("take_household_goods_small_backpack_0"), "Director should allow taking the backpack as discovered loot.")
+	var take_backpack_action_id := _action_id_by_label_prefix(director.get_actions(), "작은 배낭 챙긴다")
+	assert_true(not take_backpack_action_id.is_empty(), "Household goods search should surface the backpack loot action.")
+	assert_true(director.apply_action(take_backpack_action_id), "Director should allow taking the backpack as discovered loot.")
 	assert_true(director.apply_action("inspect_inventory_small_backpack"), "Director should allow selecting an inventory item for inspection.")
 	var selected_item_sheet: Dictionary = director.get_selected_inventory_sheet()
 	assert_eq(String(selected_item_sheet.get("title", "")), "작은 배낭", "Director should expose the selected item title for the bottom sheet.")

@@ -166,6 +166,12 @@
       "alpha_policy": "fully opaque illustration banner"
     },
     {
+      "filename": "indoor_story_mart_shelf_choice.png",
+      "purpose": "마트 식품 진열대 탐색 결과에 표시하는 첫날 생존 선택 장면 일러스트",
+      "size": "960x480",
+      "alpha_policy": "fully opaque illustration banner"
+    },
+    {
       "filename": "indoor_event_medical_clinic.png",
       "purpose": "의원과 약국 계열 실내 탐색 카드에 표시하는 얼어붙은 진료실/약품 보관 공간 일러스트",
       "size": "960x480",

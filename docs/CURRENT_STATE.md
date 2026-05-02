@@ -73,6 +73,7 @@ Systems already integrated in `main`:
 - 조합 모드의 가방 목록은 `기준 재료`, `조합 가능`, `다른 물건` 순서로 바뀌어 두 번째 재료를 더 빨리 고르게 했다.
 - 수량 보급 팝업은 선택 수량의 무게 증가를 미리 보여주고, `최대` 버튼으로 여러 번 누르지 않고 최대 유효 수량을 바로 고를 수 있다.
 - 실내 행동 카드는 기본 문구도 `물건/단서 확인`, `단서 확인`, `조용한 확인`, `짧은 회복`처럼 선택 의미를 직접 보여주며, 같은 섹션 안에서는 안전한 선택, 위험한 선택, 잠긴 대안을 더 자연스러운 판단 순서로 정렬한다.
+- 실내 행동 결과는 필요한 경우 전용 스토리 일러스트로 읽기 카드 이미지를 교체할 수 있으며, 마트 식품 진열대 수색은 `무엇부터 챙길지`를 보여주는 AI 생성 장면 배너를 표시한다.
 
 ## 2026-05-02 Checkpoint
 
@@ -144,7 +145,8 @@ For the full active plan inventory, use `docs/INDEX.md`. The list below is the n
 - Keep the city globally open while revealing map knowledge per run from visited blocks only.
 - Replace the mismatched outdoor minimap/full-map split with a coherent spatial map stack: local minimap, draggable full outdoor map, fog-of-war, and separate indoor building-detail layer.
 - Keep the codex, note unlocks, lighter charges, and tool requirements aligned with the active crafting UI.
-- Continue the UI/UX uplift from the new frozen-phone kit: title/survivor creation, map overlay, supply picker, codex, and future story illustration panels should use the same decision-first visual language.
+- 새 결빙 휴대폰 UI 키트 기준으로 타이틀, 생존자 생성, 지도 오버레이, 수량 선택, 도감, 스토리 일러스트 패널까지 같은 `결정 우선` 시각 언어로 계속 끌어올린다.
+- 전용 스토리/결과 일러스트는 단순 장식이 아니라 의미 있는 선택, 위험, 서사 순간을 강화할 때 우선 추가한다.
 - Continuously remove dead code, obsolete UI paths, temporary scaffolding, and other local junk that would otherwise pollute future implementation patterns.
 
 ## Temporary Development Conditions

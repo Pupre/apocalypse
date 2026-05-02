@@ -272,6 +272,7 @@
               { "id": "water_shelf", "item_id": "bottled_water", "quantity": 12 },
               { "id": "soup_case", "item_id": "instant_soup_powder", "quantity": 8 }
             ],
+            "result_illustration_asset": "indoor/indoor_story_mart_shelf_choice.png",
             "loot_table": {
               "rolls": 3,
               "allow_duplicates": false,
