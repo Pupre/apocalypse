@@ -105,6 +105,15 @@ func _run_test() -> void:
 	assert_true(_children_named_with(tile_host, "alley_dark").size() > 0, "Outdoor terrain should render authored alley tiles that break up the straight crossing pattern.")
 	assert_eq(outdoor_mode._road_texture_id({"id": "test_alley", "texture_id": "alley_dark"}, Rect2(), true), "alley_dark", "Outdoor road rows should be able to select an explicit art texture.")
 	assert_true(_children_named_with(decal_host, "Hazard").size() >= 8, "The starting active block window should render multiple authored hazard decals across nearby blocks.")
+	var hazard_warning_nodes := _children_named_with(decal_host, "HazardWarning")
+	assert_true(not hazard_warning_nodes.is_empty(), "Outdoor hazards should keep a subtle pre-contact warning shape.")
+	var hazard_warning := hazard_warning_nodes[0] as Polygon2D
+	assert_true(hazard_warning != null and hazard_warning.polygon.size() >= 8, "Outdoor hazard warnings should use softened shapes instead of hard debug rectangles.")
+	assert_true(hazard_warning.color.a <= 0.1, "Outdoor hazard warning fills should stay subtle over generated terrain.")
+	var wind_nodes := _children_named_with(decal_host, "Wind_")
+	assert_true(not wind_nodes.is_empty(), "Outdoor terrain should keep a light ambient wind texture.")
+	var ambient_wind := wind_nodes[0] as Sprite2D
+	assert_true(ambient_wind != null and ambient_wind.scale.x <= 1.4 and ambient_wind.modulate.a <= 0.25, "Ambient wind decals should not read as oversized opaque bands over the outdoor art.")
 	assert_true(_max_visual_scale(obstacles) > 1.0, "Outdoor obstacle props should be scaled up to fit the authored city block better.")
 	assert_true(outdoor_mode.has_method("_effective_obstacle_rect"), "Outdoor controller should expose an internal obstacle hitbox helper for collision debugging.")
 	var sample_obstacle := {"kind": "rubble", "rect": {"x": 710.0, "y": 180.0, "width": 120.0, "height": 80.0}}

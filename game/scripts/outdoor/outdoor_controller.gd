@@ -581,8 +581,9 @@ func _refresh_ground() -> void:
 			"Wind_%d_%d" % [block_coord.x, block_coord.y],
 			block_rect.position + Vector2(block_rect.size.x * 0.5, block_rect.size.y * 0.3),
 			art_resolver.get_decal_texture("wind_streak"),
-			Vector2.ONE * 2.0
+			Vector2.ONE * 1.35
 		)
+		wind_streak.modulate = Color(1.0, 1.0, 1.0, 0.24)
 		_ground_decals_host.add_child(wind_streak)
 
 
@@ -921,12 +922,19 @@ func _add_hazard_warning_zone(hazard_id: String, hazard_rect: Rect2, hazard_kind
 		return
 	var warning_zone := Polygon2D.new()
 	warning_zone.name = "%sHazardWarning" % hazard_id
+	var inset_x := minf(18.0, hazard_rect.size.x * 0.12)
+	var inset_y := minf(18.0, hazard_rect.size.y * 0.12)
+	var local_size := hazard_rect.size
 	warning_zone.position = hazard_rect.position
 	warning_zone.polygon = PackedVector2Array([
-		Vector2.ZERO,
-		Vector2(hazard_rect.size.x, 0.0),
-		hazard_rect.size,
-		Vector2(0.0, hazard_rect.size.y),
+		Vector2(inset_x, 0.0),
+		Vector2(local_size.x - inset_x, 0.0),
+		Vector2(local_size.x, inset_y),
+		Vector2(local_size.x, local_size.y - inset_y),
+		Vector2(local_size.x - inset_x, local_size.y),
+		Vector2(inset_x, local_size.y),
+		Vector2(0.0, local_size.y - inset_y),
+		Vector2(0.0, inset_y),
 	])
 	warning_zone.color = _hazard_warning_color(hazard_kind)
 	warning_zone.z_index = 3
@@ -936,37 +944,37 @@ func _add_hazard_warning_zone(hazard_id: String, hazard_rect: Rect2, hazard_kind
 func _hazard_warning_color(hazard_kind: String) -> Color:
 	match hazard_kind:
 		"wind_gap":
-			return Color(0.58, 0.88, 1.0, 0.18)
+			return Color(0.58, 0.88, 1.0, 0.07)
 		"snow_drift":
-			return Color(0.9, 0.96, 1.0, 0.16)
+			return Color(0.9, 0.96, 1.0, 0.055)
 		"whiteout":
-			return Color(0.82, 0.94, 1.0, 0.2)
+			return Color(0.82, 0.94, 1.0, 0.075)
 		_:
-			return Color(0.24, 0.62, 1.0, 0.23)
+			return Color(0.24, 0.62, 1.0, 0.085)
 
 
 func _hazard_glow_color(hazard_kind: String) -> Color:
 	match hazard_kind:
 		"wind_gap":
-			return Color(0.74, 0.96, 1.0, 0.48)
+			return Color(0.74, 0.96, 1.0, 0.30)
 		"snow_drift":
-			return Color(0.96, 1.0, 1.0, 0.44)
+			return Color(0.96, 1.0, 1.0, 0.26)
 		"whiteout":
-			return Color(0.86, 0.98, 1.0, 0.52)
+			return Color(0.86, 0.98, 1.0, 0.32)
 		_:
-			return Color(0.72, 0.92, 1.0, 0.54)
+			return Color(0.72, 0.92, 1.0, 0.34)
 
 
 func _hazard_decal_color(hazard_kind: String) -> Color:
 	match hazard_kind:
 		"wind_gap":
-			return Color(0.94, 0.99, 1.0, 0.82)
+			return Color(0.94, 0.99, 1.0, 0.62)
 		"snow_drift":
-			return Color(1.0, 1.0, 1.0, 0.76)
+			return Color(1.0, 1.0, 1.0, 0.58)
 		"whiteout":
-			return Color(0.9, 0.98, 1.0, 0.84)
+			return Color(0.9, 0.98, 1.0, 0.66)
 		_:
-			return Color(0.86, 0.97, 1.0, 0.9)
+			return Color(0.86, 0.97, 1.0, 0.68)
 
 
 func _hazard_decal_texture_id(hazard_kind: String) -> String:
