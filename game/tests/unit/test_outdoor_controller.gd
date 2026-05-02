@@ -104,6 +104,10 @@ func _run_test() -> void:
 	assert_true(_children_named_with(tile_host, "road_cracked").size() > 0 or _children_named_with(tile_host, "slush_road").size() > 0, "Outdoor terrain should mix cracked or slushy road variants instead of a single repeated lane texture.")
 	assert_true(_children_named_with(tile_host, "alley_dark").size() > 0, "Outdoor terrain should render authored alley tiles that break up the straight crossing pattern.")
 	assert_eq(outdoor_mode._road_texture_id({"id": "test_alley", "texture_id": "alley_dark"}, Rect2(), true), "alley_dark", "Outdoor road rows should be able to select an explicit art texture.")
+	assert_true(_children_named_with(tile_host, "office_curb_snowSnow").is_empty(), "Small curb snow fields should not render as hard rectangular floor tiles under props.")
+	assert_true(not _children_named_with(decal_host, "office_curb_snowDecal").is_empty(), "Small curb snow fields should still leave an irregular snowy decal for environmental detail.")
+	assert_true(not outdoor_mode._should_render_snow_field_band({"id": "office_curb_snow"}, Rect2(50.0, 250.0, 230.0, 105.0)), "Curb snow fields should stay as decals instead of new terrain tiles.")
+	assert_true(outdoor_mode._should_render_snow_field_band({"id": "northwest_snow"}, Rect2(0.0, 0.0, 320.0, 300.0)), "Large snow fields should still render terrain bands for area readability.")
 	assert_true(_children_named_with(decal_host, "Hazard").size() >= 8, "The starting active block window should render multiple authored hazard decals across nearby blocks.")
 	var hazard_warning_nodes := _children_named_with(decal_host, "HazardWarning")
 	assert_true(not hazard_warning_nodes.is_empty(), "Outdoor hazards should keep a subtle pre-contact warning shape.")
@@ -507,6 +511,9 @@ func _assert_outdoor_resource_mapping(content_library) -> void:
 	assert_true(resolver.get_prop_texture("light", Rect2(), "street_lamp") != null, "Outdoor props should allow explicit lamp art ids from block data.")
 	assert_true(resolver.get_prop_texture("cart", Rect2(), "shopping_cart") != null, "Outdoor props should allow explicit cart art ids from block data.")
 	assert_true(resolver.get_prop_texture("snow", Rect2(), "snow_drift") != null, "Outdoor props should allow explicit snow-drift art ids from block data.")
+	var barricade_texture := resolver.get_prop_texture("barrier", Rect2(), "barricade_wood") as Texture2D
+	assert_true(barricade_texture != null, "Outdoor props should resolve the generated wooden barricade art.")
+	_assert_prop_cutout_has_sparse_ground(barricade_texture.get_image(), "barricade_wood")
 
 
 func _lower_opaque_bounds(image: Image) -> Rect2:
@@ -525,6 +532,29 @@ func _lower_opaque_bounds(image: Image) -> Rect2:
 	if max_x < 0:
 		return Rect2()
 	return Rect2(Vector2(min_x, min_y), Vector2(max_x - min_x + 1, max_y - min_y + 1))
+
+
+func _assert_prop_cutout_has_sparse_ground(image: Image, asset_id: String) -> void:
+	assert_true(image != null and not image.is_empty(), "Outdoor prop '%s' should expose a readable cutout image." % asset_id)
+	var bottom_row_count := _opaque_row_count(image, image.get_height() - 1)
+	var bottom_band_count := 0
+	var bottom_band_height := mini(24, image.get_height())
+	for y in range(image.get_height() - bottom_band_height, image.get_height()):
+		var row_count := _opaque_row_count(image, y)
+		bottom_band_count += row_count
+	var average_bottom_width := float(bottom_band_count) / float(bottom_band_height)
+	assert_true(bottom_row_count <= 20, "Outdoor prop '%s' should not end in a wide opaque floor tile." % asset_id)
+	assert_true(average_bottom_width <= 76.0, "Outdoor prop '%s' should keep its snowy footprint sparse enough to read as an object." % asset_id)
+
+
+func _opaque_row_count(image: Image, y: int) -> int:
+	var count := 0
+	if image == null or image.is_empty() or y < 0 or y >= image.get_height():
+		return count
+	for x in range(image.get_width()):
+		if image.get_pixel(x, y).a > 0.12:
+			count += 1
+	return count
 
 
 func _polygon_min_y(points: PackedVector2Array) -> float:

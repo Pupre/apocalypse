@@ -531,17 +531,18 @@ func _refresh_ground() -> void:
 			float(rect_row.get("width", 0.0)),
 			float(rect_row.get("height", 0.0))
 		)
-		var snow_band := _make_textured_rect(
-			"%sSnow" % String(snow_field_row.get("id", "Snow")),
-			snow_rect,
-			art_resolver.get_terrain_texture("sidewalk_snow")
-		)
-		_ground_tiles_host.add_child(snow_band)
+		if _should_render_snow_field_band(snow_field_row, snow_rect):
+			var snow_band := _make_textured_rect(
+				"%sSnow" % String(snow_field_row.get("id", "Snow")),
+				snow_rect,
+				art_resolver.get_terrain_texture("sidewalk_snow")
+			)
+			_ground_tiles_host.add_child(snow_band)
 		var snow_patch := _make_decal_sprite(
 			"%sDecal" % String(snow_field_row.get("id", "Snow")),
 			snow_rect.position + (snow_rect.size * 0.5),
 			art_resolver.get_decal_texture("snow_patch"),
-			Vector2.ONE * 2.0
+			_snow_decal_scale(snow_rect)
 		)
 		_ground_decals_host.add_child(snow_patch)
 
@@ -999,6 +1000,18 @@ func _hazard_decal_scale(hazard_kind: String, hazard_rect: Rect2 = Rect2()) -> V
 			scale_multiplier = 0.82
 	var scalar := clampf(rect_scale * scale_multiplier, 0.78, 1.72)
 	return Vector2.ONE * scalar
+
+
+func _should_render_snow_field_band(snow_field_row: Dictionary, snow_rect: Rect2) -> bool:
+	var field_id := String(snow_field_row.get("id", ""))
+	if field_id.find("open") >= 0 or field_id.find("plaza") >= 0 or field_id.find("lot") >= 0:
+		return true
+	return snow_rect.size.x >= 260.0 and snow_rect.size.y >= 220.0
+
+
+func _snow_decal_scale(snow_rect: Rect2) -> Vector2:
+	var rect_scale := _fit_scale_for_rect(snow_rect, OUTDOOR_PROP_TEXTURE_SIZE)
+	return Vector2.ONE * clampf(rect_scale * 0.95, 0.72, 1.75)
 
 
 func _trigger_hazard_feedback(hazard_row: Dictionary) -> void:
