@@ -151,6 +151,10 @@ func _run_test() -> void:
 	assert_eq(String(full_map_view.get_script().resource_path), "res://scripts/outdoor/outdoor_map_view.gd", "Outdoor overlay should use the full-screen spatial map renderer.")
 	assert_true(outdoor_mode.has_method("show_map_overlay"), "Outdoor mode should expose show_map_overlay().")
 	assert_true(outdoor_mode.has_method("hide_map_overlay"), "Outdoor mode should expose hide_map_overlay().")
+	outdoor_mode.bind_run_state(run_state, "mart_01", Vector2(300.0, 360.0))
+	assert_true(hint_label.text.find("위험: 검은 빙판") >= 0, "Outdoor HUD should warn about nearby hazards before contact.")
+	assert_true(hint_label.text.find("체온 -") >= 0 and hint_label.text.find("피로 +") >= 0, "Outdoor hazard preview should summarize likely pressure before the player steps in.")
+	outdoor_mode.bind_run_state(run_state)
 	outdoor_mode.show_map_overlay()
 	assert_true(map_overlay.visible, "show_map_overlay() should reveal the full-screen map.")
 	var minute_before_pause: int = run_state.clock.minute_of_day

@@ -8,6 +8,18 @@
     { "id": "west_snow", "rect": { "x": 0, "y": 640, "width": 280, "height": 300 } },
     { "id": "north_snow", "rect": { "x": 660, "y": 0, "width": 260, "height": 200 } }
   ],
+  "hazards": [
+    {
+      "id": "school_gate_whiteout",
+      "kind": "whiteout",
+      "rect": { "x": 430, "y": 285, "width": 230, "height": 230 },
+      "message": "폐교 담장 너머로 날린 눈발이 시야를 가려 길을 잘못 짚었다.",
+      "exposure_loss": 2.0,
+      "fatigue_gain": 1.25,
+      "minutes": 3,
+      "cooldown_seconds": 8.0
+    }
+  ],
   "obstacles": [
     { "kind": "vehicle", "rect": { "x": 760, "y": 450, "width": 56, "height": 56 } },
     { "kind": "rubble", "rect": { "x": 180, "y": 180, "width": 110, "height": 70 } }

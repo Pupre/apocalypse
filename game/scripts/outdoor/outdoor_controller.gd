@@ -15,6 +15,7 @@ const PORTRAIT_CAMERA_OFFSET := Vector2(0.0, -220.0)
 const ENTER_RADIUS := 72.0
 const TERRAIN_TILE_SIZE := 32.0
 const HAZARD_FLASH_DURATION := 1.15
+const HAZARD_WARNING_MARGIN := 120.0
 const MOVE_LEFT_ACTION := "move_left"
 const MOVE_RIGHT_ACTION := "move_right"
 const MOVE_UP_ACTION := "move_up"
@@ -544,8 +545,8 @@ func _refresh_ground() -> void:
 		var hazard_kind := String(hazard_row.get("kind", "black_ice"))
 		var hazard_id := String(hazard_row.get("id", "Hazard"))
 		_add_hazard_warning_zone(hazard_id, hazard_rect, hazard_kind)
-		var decal_id := "wind_streak" if hazard_kind == "wind_gap" else "ice_patch"
-		var decal_scale := Vector2.ONE * (2.8 if hazard_kind == "wind_gap" else 2.35)
+		var decal_id := _hazard_decal_texture_id(hazard_kind)
+		var decal_scale := _hazard_decal_scale(hazard_kind)
 		var hazard_glow := _make_decal_sprite(
 			"%sHazardGlow" % hazard_id,
 			hazard_rect.position + (hazard_rect.size * 0.5),
@@ -641,7 +642,13 @@ func _sync_view() -> void:
 			var entry_briefing := String(nearby_building_data.get("entry_briefing", "")).strip_edges()
 			_hint_label.text = "[E] %s 진입" % building_name if entry_briefing.is_empty() else "[E] %s 진입 · %s" % [building_name, entry_briefing]
 		else:
-			_hint_label.text = _last_hazard_message if _hazard_message_seconds > 0.0 and not _last_hazard_message.is_empty() else "WASD 이동"
+			var hazard_hint := _nearby_hazard_hint()
+			if _hazard_message_seconds > 0.0 and not _last_hazard_message.is_empty():
+				_hint_label.text = _last_hazard_message
+			elif not hazard_hint.is_empty():
+				_hint_label.text = hazard_hint
+			else:
+				_hint_label.text = "WASD 이동"
 	var visited_block_ids := {}
 	if run_state != null and run_state.has_method("get_visited_outdoor_block_keys"):
 		for block_key in run_state.get_visited_outdoor_block_keys():
@@ -916,15 +923,61 @@ func _add_hazard_warning_zone(hazard_id: String, hazard_rect: Rect2, hazard_kind
 
 
 func _hazard_warning_color(hazard_kind: String) -> Color:
-	return Color(0.58, 0.88, 1.0, 0.18) if hazard_kind == "wind_gap" else Color(0.24, 0.62, 1.0, 0.23)
+	match hazard_kind:
+		"wind_gap":
+			return Color(0.58, 0.88, 1.0, 0.18)
+		"snow_drift":
+			return Color(0.9, 0.96, 1.0, 0.16)
+		"whiteout":
+			return Color(0.82, 0.94, 1.0, 0.2)
+		_:
+			return Color(0.24, 0.62, 1.0, 0.23)
 
 
 func _hazard_glow_color(hazard_kind: String) -> Color:
-	return Color(0.74, 0.96, 1.0, 0.48) if hazard_kind == "wind_gap" else Color(0.72, 0.92, 1.0, 0.54)
+	match hazard_kind:
+		"wind_gap":
+			return Color(0.74, 0.96, 1.0, 0.48)
+		"snow_drift":
+			return Color(0.96, 1.0, 1.0, 0.44)
+		"whiteout":
+			return Color(0.86, 0.98, 1.0, 0.52)
+		_:
+			return Color(0.72, 0.92, 1.0, 0.54)
 
 
 func _hazard_decal_color(hazard_kind: String) -> Color:
-	return Color(0.94, 0.99, 1.0, 0.82) if hazard_kind == "wind_gap" else Color(0.86, 0.97, 1.0, 0.9)
+	match hazard_kind:
+		"wind_gap":
+			return Color(0.94, 0.99, 1.0, 0.82)
+		"snow_drift":
+			return Color(1.0, 1.0, 1.0, 0.76)
+		"whiteout":
+			return Color(0.9, 0.98, 1.0, 0.84)
+		_:
+			return Color(0.86, 0.97, 1.0, 0.9)
+
+
+func _hazard_decal_texture_id(hazard_kind: String) -> String:
+	match hazard_kind:
+		"wind_gap", "whiteout":
+			return "wind_streak"
+		"snow_drift":
+			return "snow_patch"
+		_:
+			return "ice_patch"
+
+
+func _hazard_decal_scale(hazard_kind: String) -> Vector2:
+	match hazard_kind:
+		"wind_gap":
+			return Vector2.ONE * 2.8
+		"whiteout":
+			return Vector2.ONE * 3.05
+		"snow_drift":
+			return Vector2.ONE * 2.45
+		_:
+			return Vector2.ONE * 2.35
 
 
 func _trigger_hazard_feedback(hazard_row: Dictionary) -> void:
@@ -942,11 +995,80 @@ func _hazard_screen_jolt() -> Vector2:
 	var flash_ratio := _hazard_flash_ratio()
 	if flash_ratio <= 0.0:
 		return Vector2.ZERO
-	var strength := 9.0 if _hazard_flash_kind == "wind_gap" else 12.0
+	var strength := 12.0
+	if _hazard_flash_kind == "wind_gap":
+		strength = 9.0
+	elif _hazard_flash_kind == "whiteout":
+		strength = 7.0
+	elif _hazard_flash_kind == "snow_drift":
+		strength = 10.0
 	return Vector2(
 		sin(_hazard_flash_seconds * 54.0),
 		cos(_hazard_flash_seconds * 37.0)
 	) * strength * flash_ratio
+
+
+func _nearby_hazard_hint() -> String:
+	var best_hazard: Dictionary = {}
+	var best_distance := INF
+	for hazard_row in _hazard_rows:
+		var hazard_rect := _rect_from_row(hazard_row.get("rect", {}))
+		if hazard_rect.size == Vector2.ZERO:
+			continue
+		if hazard_rect.has_point(_player_position):
+			continue
+		if not hazard_rect.grow(HAZARD_WARNING_MARGIN).has_point(_player_position):
+			continue
+		var distance := _distance_to_rect(_player_position, hazard_rect)
+		if distance < best_distance:
+			best_distance = distance
+			best_hazard = hazard_row
+	if best_hazard.is_empty():
+		return ""
+	return _hazard_preview_text(best_hazard)
+
+
+func _distance_to_rect(point: Vector2, rect: Rect2) -> float:
+	var clamped := Vector2(
+		clampf(point.x, rect.position.x, rect.end.x),
+		clampf(point.y, rect.position.y, rect.end.y)
+	)
+	return point.distance_to(clamped)
+
+
+func _hazard_preview_text(hazard_row: Dictionary) -> String:
+	var parts: Array[String] = [_hazard_kind_label(String(hazard_row.get("kind", "black_ice")))]
+	var exposure_loss := float(hazard_row.get("exposure_loss", 0.0))
+	if exposure_loss > 0.0:
+		parts.append("체온 -%s" % _compact_effect_number(exposure_loss))
+	var fatigue_gain := float(hazard_row.get("fatigue_gain", 0.0))
+	if fatigue_gain > 0.0:
+		parts.append("피로 +%s" % _compact_effect_number(fatigue_gain))
+	var health_loss := float(hazard_row.get("health_loss", 0.0))
+	if health_loss > 0.0:
+		parts.append("부상 -%s" % _compact_effect_number(health_loss))
+	var minutes := int(hazard_row.get("minutes", 0))
+	if minutes > 0:
+		parts.append("지연 %d분" % minutes)
+	return "위험: %s" % " · ".join(parts)
+
+
+func _hazard_kind_label(hazard_kind: String) -> String:
+	match hazard_kind:
+		"wind_gap":
+			return "틈바람"
+		"snow_drift":
+			return "눈더미"
+		"whiteout":
+			return "시야 불량"
+		_:
+			return "검은 빙판"
+
+
+func _compact_effect_number(value: float) -> String:
+	if is_equal_approx(value, roundf(value)):
+		return str(int(roundf(value)))
+	return "%.1f" % value
 
 
 func _configure_bottom_center_sprite(sprite: Sprite2D) -> void:

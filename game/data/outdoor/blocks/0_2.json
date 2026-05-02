@@ -8,6 +8,18 @@
     { "id": "west_open_snow", "rect": { "x": 0, "y": 0, "width": 300, "height": 260 } },
     { "id": "south_open_snow", "rect": { "x": 620, "y": 660, "width": 320, "height": 300 } }
   ],
+  "hazards": [
+    {
+      "id": "open_lot_snow_drift",
+      "kind": "snow_drift",
+      "rect": { "x": 330, "y": 345, "width": 300, "height": 150 },
+      "message": "눈이 깊게 쌓인 공터를 가로지르며 발이 자꾸 푹푹 빠졌다.",
+      "exposure_loss": 1.5,
+      "fatigue_gain": 2.0,
+      "minutes": 2,
+      "cooldown_seconds": 8.0
+    }
+  ],
   "obstacles": [
     { "kind": "vehicle", "rect": { "x": 150, "y": 450, "width": 56, "height": 56 } },
     { "kind": "rubble", "rect": { "x": 760, "y": 180, "width": 120, "height": 80 } }

@@ -8,6 +8,18 @@
     { "id": "north_open_snow", "rect": { "x": 0, "y": 0, "width": 280, "height": 240 } },
     { "id": "east_open_snow", "rect": { "x": 680, "y": 640, "width": 280, "height": 320 } }
   ],
+  "hazards": [
+    {
+      "id": "snow_square_whiteout",
+      "kind": "whiteout",
+      "rect": { "x": 390, "y": 300, "width": 260, "height": 240 },
+      "message": "눈 쌓인 공터 한가운데서 바람이 방향을 잃게 만들었다.",
+      "exposure_loss": 2.25,
+      "fatigue_gain": 1.5,
+      "minutes": 3,
+      "cooldown_seconds": 8.0
+    }
+  ],
   "obstacles": [
     { "kind": "vehicle", "rect": { "x": 120, "y": 450, "width": 56, "height": 56 } },
     { "kind": "rubble", "rect": { "x": 760, "y": 720, "width": 120, "height": 90 } }

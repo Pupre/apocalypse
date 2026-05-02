@@ -80,3 +80,20 @@
 - `res://tests/unit/test_indoor_actions.gd`
 - `res://tests/unit/test_indoor_loot_tables.gd`
 - `res://tests/smoke/test_first_playable_loop.gd`
+
+## 추가 패스: 야외 위험 예고와 외곽 위험 밀도
+
+야외 위험은 접촉 후 피드백만 강한 상태였기 때문에, 플레이어가 위험을 밟기 전에 판단할 수 있는 예고를 HUD에 추가했다. 이제 건물 진입 힌트가 없는 상황에서 위험 구역 근처에 접근하면 `위험: 검은 빙판 · 체온 -1.5 · 피로 +1.5 · 부상 -0.5`처럼 예상 압력이 먼저 표시된다.
+
+### 구현 내용
+
+- 야외 HUD가 근처 위험 구역을 감지해 체온 손실, 피로 증가, 부상, 지연 시간을 미리 요약한다.
+- 기존 빙판/틈바람 외에 `snow_drift`, `whiteout` 위험 타입을 시각 색상과 데칼 선택에 연결했다.
+- `0_2`, `1_2`, `2_0`, `2_2` 외곽 블록에 눈더미와 시야 불량 위험을 추가했다.
+- 위험 접촉 카메라 흔들림도 위험 종류에 따라 강도를 다르게 잡았다.
+
+### 검증
+
+- `res://tests/unit/test_outdoor_controller.gd`
+- `res://tests/unit/test_outdoor_world_runtime.gd`
+- `res://tests/unit/test_outdoor_map_view.gd`

@@ -8,6 +8,18 @@
     { "id": "north_lot_snow", "rect": { "x": 0, "y": 0, "width": 260, "height": 220 } },
     { "id": "southeast_open_snow", "rect": { "x": 660, "y": 660, "width": 300, "height": 300 } }
   ],
+  "hazards": [
+    {
+      "id": "book_lane_snow_drift",
+      "kind": "snow_drift",
+      "rect": { "x": 300, "y": 370, "width": 260, "height": 160 },
+      "message": "상가 골목의 다져지지 않은 눈더미를 헤치느라 숨이 가빠졌다.",
+      "exposure_loss": 1.25,
+      "fatigue_gain": 2.0,
+      "minutes": 2,
+      "cooldown_seconds": 8.0
+    }
+  ],
   "obstacles": [
     { "kind": "vehicle", "rect": { "x": 140, "y": 450, "width": 56, "height": 56 } },
     { "kind": "rubble", "rect": { "x": 760, "y": 180, "width": 120, "height": 80 } }
