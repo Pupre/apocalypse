@@ -1,0 +1,205 @@
+{
+  "id": "mapx_north_market_bookstore_01",
+  "name": "재난 안내 서점",
+  "summary": "상권 한복판의 중고 서점이다. 계산대에는 대피소 안내 전단이 쌓여 있고, 안쪽 통로는 무너진 책장으로 막혀 있다.",
+  "illustration_asset": "indoor/indoor_event_bookstore_frozen.png",
+  "entry_zone_id": "front_stacks",
+  "zones": [
+    {
+      "id": "front_stacks",
+      "floor_id": "floor_1",
+      "label": "입구 책장",
+      "summary": "재난 대비 책과 젖은 전단이 입구 쪽 책장에 뒤섞여 있다.",
+      "connected_zone_ids": ["notice_counter", "fallen_stacks"],
+      "event_ids": ["search_front_stacks_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "notice_counter",
+      "floor_id": "floor_1",
+      "label": "안내 전단 계산대",
+      "summary": "계산대 아래에는 대피소 위치를 적은 종이와 작은 문구류가 남아 있다.",
+      "connected_zone_ids": ["front_stacks"],
+      "event_ids": ["search_notice_counter_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "fallen_stacks",
+      "floor_id": "floor_1",
+      "label": "무너진 책장 통로",
+      "summary": "안쪽으로 가려면 책 더미를 밀어내야 한다. 아래에는 방수 상자가 반쯤 보인다.",
+      "connected_zone_ids": ["front_stacks", "back_archive"],
+      "event_ids": ["clear_fallen_stacks_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "back_archive",
+      "floor_id": "floor_1",
+      "label": "안쪽 자료실",
+      "move_label": "안쪽 자료실로 들어간다",
+      "blocked_feedback": "무너진 책장이 길을 막고 있어 안쪽 자료실로 들어갈 수 없다.",
+      "summary": "지도, 방수 봉투, 오래된 라디오 잡지가 상자째 남아 있다.",
+      "connected_zone_ids": ["fallen_stacks"],
+      "event_ids": ["search_back_archive_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 35,
+      "revisit_cost": 10,
+      "access_requirements": { "required_flag_ids": ["bookstore_stacks_cleared"] }
+    }
+  ],
+  "clues": [
+    {
+      "id": "shelter_route_note",
+      "text": "전단 뒷면에 '중앙 환승로는 막혔고, 남쪽 주택가 쪽 대피선이 덜 붐볐다'는 메모가 있다.",
+      "visible": false
+    }
+  ],
+  "events": [
+    {
+      "id": "search_front_stacks_event",
+      "zone_id": "front_stacks",
+      "type": "search",
+      "hint_text": "입구 책장에는 재난 대비 책과 젖은 전단이 섞여 있다.",
+      "options": [
+        {
+          "id": "search_front_stacks",
+          "label": "입구 책장을 훑는다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "newspaper", "weight": 4 },
+                { "id": "memo_pad", "weight": 3 },
+                { "id": "ballpoint_pen", "weight": 3 },
+                { "id": "evd_freezer_bag_box", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_notice_counter_event",
+      "zone_id": "notice_counter",
+      "type": "search",
+      "hint_text": "계산대에는 사람들이 급히 가져가다 놓친 안내 전단이 쌓여 있다.",
+      "options": [
+        {
+          "id": "copy_shelter_route",
+          "label": "대피소 안내 전단을 추려 둔다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [
+              { "id": "memo_pad", "bulk": 1 },
+              { "id": "ballpoint_pen", "bulk": 1 }
+            ],
+            "reveal_clue_ids": ["shelter_route_note"],
+            "pressure": {
+              "id": "bookstore_counter_paper_cut",
+              "message": "젖었다 마른 전단을 급히 넘기다 손끝이 종이에 베였다.",
+              "fatigue_gain": 0.5,
+              "health_loss": 0.25,
+              "noise": 0,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "clear_fallen_stacks_event",
+      "zone_id": "fallen_stacks",
+      "type": "search",
+      "hint_text": "책장을 치우면 안쪽 자료실로 갈 수 있지만 꽤 큰 소리가 날 것 같다.",
+      "options": [
+        {
+          "id": "force_clear_stacks",
+          "label": "책 더미를 힘으로 밀어 길을 낸다",
+          "requirements": { "forbidden_flag_ids": ["bookstore_stacks_cleared"] },
+          "costs": { "minutes": 25, "noise": 3 },
+          "outcomes": {
+            "set_flags": ["bookstore_stacks_cleared"],
+            "pressure": {
+              "id": "bookstore_stack_collapse",
+              "message": "책장이 크게 넘어지며 먼지와 소리가 한꺼번에 번졌다. 그래도 안쪽 길은 열렸다.",
+              "fatigue_gain": 2.5,
+              "noise": 3,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "tape_stacks_and_clear",
+          "label": "테이프로 책 묶음을 고정해 조용히 치운다",
+          "requirements": {
+            "required_item_ids": ["duct_tape"],
+            "forbidden_flag_ids": ["bookstore_stacks_cleared"]
+          },
+          "blocked_feedback": "책 더미를 조용히 치우려면 흩어지는 묶음을 잡아 줄 테이프가 필요하다.",
+          "costs": { "minutes": 40, "noise": 1 },
+          "outcomes": {
+            "set_flags": ["bookstore_stacks_cleared"],
+            "pressure": {
+              "id": "bookstore_taped_clear",
+              "message": "테이프로 책 묶음을 잡아 가며 천천히 길을 냈다. 오래 걸렸지만 큰 소리는 피했다.",
+              "fatigue_gain": 1.5,
+              "noise": 1,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_event_bookstore_frozen.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_event_bookstore_frozen.png",
+              "title": "책장 뒤의 길",
+              "text": "무너진 책장을 밀어붙이지 않고 묶어 치운 덕분에, 서점 안쪽은 잠깐 조용한 자료실이 되었다. 지도와 방수 봉투가 오늘의 동선을 바꿀 수 있다.",
+              "button": "자료실로 들어간다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_back_archive_event",
+      "zone_id": "back_archive",
+      "type": "search",
+      "hint_text": "안쪽 자료실에는 방수 포장과 이동 정보를 챙길 만한 상자가 남아 있다.",
+      "options": [
+        {
+          "id": "search_back_archive",
+          "label": "자료실 상자를 정리한다",
+          "requirements": {},
+          "costs": { "minutes": 35, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 4,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "evd_freezer_bag_box", "weight": 4 },
+                { "id": "clear_plastic_sheet", "weight": 3 },
+                { "id": "newspaper", "weight": 3 },
+                { "id": "paper_bag", "weight": 2 },
+                { "id": "plastic_bag", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

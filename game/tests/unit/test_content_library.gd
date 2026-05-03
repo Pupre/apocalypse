@@ -224,7 +224,7 @@ func _run_test() -> void:
 		crafting_combinations = crafting_combinations_variant
 	assert_eq(jobs.size(), 2, "Prototype jobs should load.")
 	assert_eq(traits.size(), 4, "Prototype traits should load.")
-	assert_true(buildings.size() >= 28, "The authored outdoor slice should expose at least twenty-eight buildings after the 3x3 expansion.")
+	assert_true(buildings.size() >= 190, "The expanded outdoor city should expose the original slice plus the first large outer district building set.")
 	assert_true(buildings.has("mart_01"), "Prototype building should be indexed.")
 	assert_true(buildings.has("apartment_01"), "Apartment building should be indexed.")
 	assert_true(buildings.has("clinic_01"), "Clinic building should be indexed.")
@@ -240,8 +240,8 @@ func _run_test() -> void:
 	var city_blocks: Dictionary = outdoor_world_layout.get("city_blocks", {})
 	assert_eq(int(block_size.get("width", 0)), 960, "Outdoor world layout should expose a fixed block width.")
 	assert_eq(int(block_size.get("height", 0)), 960, "Outdoor world layout should expose a fixed block height.")
-	assert_eq(int(city_blocks.get("width", 0)), 8, "Outdoor world layout should expose authored city width in blocks.")
-	assert_eq(int(city_blocks.get("height", 0)), 8, "Outdoor world layout should expose authored city height in blocks.")
+	assert_eq(int(city_blocks.get("width", 0)), 12, "Outdoor world layout should expose expanded city width in blocks.")
+	assert_eq(int(city_blocks.get("height", 0)), 12, "Outdoor world layout should expose expanded city height in blocks.")
 	var authored_block_coords := [
 		Vector2i(0, 0),
 		Vector2i(1, 0),
@@ -256,6 +256,10 @@ func _run_test() -> void:
 	for block_coord in authored_block_coords:
 		var authored_block: Dictionary = content_library.get_outdoor_block(block_coord)
 		assert_true(not authored_block.is_empty(), "Outdoor authored block %s should exist." % [block_coord])
+	for expanded_block_coord in [Vector2i(3, 0), Vector2i(7, 7), Vector2i(11, 11)]:
+		var expanded_block: Dictionary = content_library.get_outdoor_block(expanded_block_coord)
+		assert_true(not expanded_block.is_empty(), "Expanded outdoor block %s should exist." % [expanded_block_coord])
+		assert_true(typeof(expanded_block.get("building_anchors", {})) == TYPE_DICTIONARY and (expanded_block.get("building_anchors", {}) as Dictionary).size() >= 1, "Expanded outdoor block %s should expose at least one building anchor." % [expanded_block_coord])
 	var block_0_0: Dictionary = content_library.get_outdoor_block(Vector2i(0, 0))
 	var block_1_1: Dictionary = content_library.get_outdoor_block(Vector2i(1, 1))
 	var block_0_0_anchors_variant: Variant = block_0_0.get("building_anchors", {})

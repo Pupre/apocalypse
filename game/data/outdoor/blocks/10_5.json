@@ -1,0 +1,261 @@
+{
+  "block_coord": {
+    "x": 10,
+    "y": 5
+  },
+  "district_id": "east_medical",
+  "district_label": "동쪽 의료/업무 지구",
+  "roads": [
+    {
+      "id": "north_south",
+      "texture_id": "road_cracked",
+      "rect": {
+        "x": 525,
+        "y": 0,
+        "width": 190,
+        "height": 960
+      }
+    },
+    {
+      "id": "east_west",
+      "texture_id": "road_cracked",
+      "rect": {
+        "x": 0,
+        "y": 360,
+        "width": 960,
+        "height": 190
+      }
+    },
+    {
+      "id": "shop_front_walk",
+      "texture_id": "sidewalk_snow",
+      "rect": {
+        "x": 90,
+        "y": 185,
+        "width": 290,
+        "height": 100
+      }
+    },
+    {
+      "id": "parking_pullout",
+      "texture_id": "road_plain",
+      "rect": {
+        "x": 615,
+        "y": 580,
+        "width": 270,
+        "height": 145
+      }
+    }
+  ],
+  "snow_fields": [
+    {
+      "id": "northwest_snow",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 300,
+        "height": 260
+      }
+    },
+    {
+      "id": "southeast_snow",
+      "rect": {
+        "x": 620,
+        "y": 673,
+        "width": 340,
+        "height": 280
+      }
+    },
+    {
+      "id": "curb_snow",
+      "rect": {
+        "x": 260,
+        "y": 610,
+        "width": 230,
+        "height": 105
+      }
+    },
+    {
+      "id": "wind_packed_snow",
+      "rect": {
+        "x": 700,
+        "y": 55,
+        "width": 190,
+        "height": 125
+      }
+    }
+  ],
+  "hazards": [
+    {
+      "id": "intersection_black_ice",
+      "kind": "black_ice",
+      "rect": {
+        "x": 390,
+        "y": 400,
+        "width": 150,
+        "height": 145
+      },
+      "message": "교차로 그늘에 숨어 있던 빙판이 발을 미끄러뜨렸다.",
+      "exposure_loss": 1.5,
+      "fatigue_gain": 1.4,
+      "cooldown_seconds": 7.0
+    },
+    {
+      "id": "building_wind_gap",
+      "kind": "wind_gap",
+      "rect": {
+        "x": 610,
+        "y": 375,
+        "width": 190,
+        "height": 230
+      },
+      "message": "건물 사이로 눌린 바람이 체온을 빠르게 빼앗았다.",
+      "exposure_loss": 2.6,
+      "fatigue_gain": 1.1,
+      "cooldown_seconds": 7.0
+    },
+    {
+      "id": "packed_snow_drift",
+      "kind": "snow_drift",
+      "rect": {
+        "x": 215,
+        "y": 650,
+        "width": 240,
+        "height": 150
+      },
+      "message": "허벅지까지 쌓인 눈을 헤치느라 숨이 거칠어졌다.",
+      "exposure_loss": 1.1,
+      "fatigue_gain": 2.2,
+      "cooldown_seconds": 7.0
+    },
+    {
+      "id": "open_lot_whiteout",
+      "kind": "whiteout",
+      "rect": {
+        "x": 500,
+        "y": 85,
+        "width": 260,
+        "height": 250
+      },
+      "message": "눈발이 시야를 지워 길과 출입구가 잠깐 구분되지 않았다.",
+      "exposure_loss": 2.0,
+      "fatigue_gain": 1.6,
+      "cooldown_seconds": 7.0
+    }
+  ],
+  "obstacles": [
+    {
+      "kind": "snow",
+      "asset_id": "snow_drift",
+      "rect": {
+        "x": 129,
+        "y": 402,
+        "width": 132,
+        "height": 78
+      }
+    },
+    {
+      "kind": "utility",
+      "asset_id": "utility_box",
+      "rect": {
+        "x": 683,
+        "y": 161,
+        "width": 76,
+        "height": 68
+      }
+    },
+    {
+      "kind": "crate",
+      "asset_id": "crate_stack",
+      "rect": {
+        "x": 640,
+        "y": 423,
+        "width": 88,
+        "height": 76
+      }
+    },
+    {
+      "kind": "barrier",
+      "asset_id": "traffic_cone",
+      "rect": {
+        "x": 324,
+        "y": 295,
+        "width": 42,
+        "height": 50
+      }
+    },
+    {
+      "kind": "rubble",
+      "asset_id": "tire_pile",
+      "rect": {
+        "x": 88,
+        "y": 287,
+        "width": 94,
+        "height": 62
+      }
+    },
+    {
+      "kind": "tree",
+      "asset_id": "dead_tree",
+      "rect": {
+        "x": 797,
+        "y": 626,
+        "width": 90,
+        "height": 110
+      }
+    },
+    {
+      "kind": "fuel",
+      "asset_id": "barrel_empty",
+      "rect": {
+        "x": 254,
+        "y": 733,
+        "width": 54,
+        "height": 70
+      }
+    },
+    {
+      "kind": "vehicle",
+      "asset_id": "frozen_car",
+      "rect": {
+        "x": 738,
+        "y": 735,
+        "width": 58,
+        "height": 58
+      }
+    }
+  ],
+  "building_anchors": {
+    "mapx_10_05_a_anchor": {
+      "x": 190,
+      "y": 240
+    },
+    "mapx_10_05_b_anchor": {
+      "x": 710,
+      "y": 695
+    }
+  },
+  "threat_spawns": [
+    {
+      "id": "pack_10_05_a",
+      "position": {
+        "x": 610,
+        "y": 405
+      },
+      "forward": {
+        "x": -1,
+        "y": 1
+      }
+    }
+  ],
+  "landmarks": [
+    {
+      "id": "east_medical_10_05",
+      "label": "정전된 업무지구",
+      "position": {
+        "x": 480,
+        "y": 470
+      }
+    }
+  ]
+}

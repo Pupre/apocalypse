@@ -1,0 +1,209 @@
+{
+  "id": "mapx_industrial_fuel_yard_01",
+  "name": "멈춘 연료 야드",
+  "summary": "남동쪽 정비 지대 끝의 주유소 겸 연료 보관 야드다. 기름 냄새, 빈 통, 얼어붙은 펌프가 한데 섞여 있다.",
+  "illustration_asset": "indoor/indoor_event_industrial_garage.png",
+  "entry_zone_id": "forecourt",
+  "zones": [
+    {
+      "id": "forecourt",
+      "floor_id": "floor_1",
+      "label": "눈 덮인 앞마당",
+      "summary": "폐차와 빈 통이 앞마당에 널려 있다.",
+      "connected_zone_ids": ["kiosk", "pump_island"],
+      "event_ids": ["search_forecourt_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "kiosk",
+      "floor_id": "floor_1",
+      "label": "정산 부스",
+      "summary": "작은 정산 부스 안에 장부와 열쇠함이 남아 있다.",
+      "connected_zone_ids": ["forecourt"],
+      "event_ids": ["search_kiosk_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "pump_island",
+      "floor_id": "floor_1",
+      "label": "펌프 섬",
+      "summary": "펌프 호스는 얼어붙었지만, 잔량을 뽑아낼 여지가 있어 보인다.",
+      "connected_zone_ids": ["forecourt", "fuel_cage"],
+      "event_ids": ["inspect_pump_island_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "fuel_cage",
+      "floor_id": "floor_1",
+      "label": "연료 보관 철망",
+      "move_label": "연료 보관 철망 안으로 들어간다",
+      "blocked_feedback": "철망 문이 잠겨 있어 안쪽 연료 보관함에 접근할 수 없다.",
+      "summary": "안쪽에는 빈 통과 작은 연료 잔량, 오염된 장갑이 보인다.",
+      "connected_zone_ids": ["pump_island"],
+      "event_ids": ["search_fuel_cage_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 35,
+      "revisit_cost": 10,
+      "access_requirements": {
+        "any_of": [
+          { "required_flag_ids": ["fuel_cage_key_found"] },
+          { "required_flag_ids": ["fuel_cage_forced"] }
+        ]
+      }
+    }
+  ],
+  "clues": [
+    {
+      "id": "fuel_cage_key_hint",
+      "text": "정산 장부 마지막 줄에는 '철망 열쇠는 부스 전기함 뒤'라고 적혀 있다.",
+      "visible": false
+    }
+  ],
+  "events": [
+    {
+      "id": "search_forecourt_event",
+      "zone_id": "forecourt",
+      "type": "search",
+      "hint_text": "앞마당에 굴러다니는 빈 통과 고무 부품은 운반과 연료 회수에 쓸 수 있다.",
+      "options": [
+        {
+          "id": "search_forecourt",
+          "label": "앞마당의 빈 통을 모은다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 1 },
+          "outcomes": {
+            "discover_loot": [
+              { "id": "empty_jerrycan", "bulk": 1 }
+            ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "empty_jerrycan", "weight": 4 },
+                { "id": "siphon_hose", "weight": 3 },
+                { "id": "trash_bag_roll", "weight": 2 },
+                { "id": "work_gloves", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_kiosk_event",
+      "zone_id": "kiosk",
+      "type": "search",
+      "hint_text": "정산 부스 안에는 열쇠함과 잔량 기록이 남아 있다.",
+      "options": [
+        {
+          "id": "search_kiosk",
+          "label": "정산 부스 장부와 열쇠함을 확인한다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [
+              { "id": "memo_pad", "bulk": 1 }
+            ],
+            "set_flags": ["fuel_cage_key_found"],
+            "reveal_clue_ids": ["fuel_cage_key_hint"],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "inspect_pump_island_event",
+      "zone_id": "pump_island",
+      "type": "search",
+      "hint_text": "펌프 잔량을 회수하면 큰 도움이 되지만, 냄새와 소리가 위험하다.",
+      "options": [
+        {
+          "id": "shake_pump_for_residue",
+          "label": "펌프를 흔들어 잔량을 빼낸다",
+          "requirements": { "forbidden_flag_ids": ["pump_residue_taken"] },
+          "costs": { "minutes": 20, "noise": 3 },
+          "outcomes": {
+            "set_flags": ["pump_residue_taken"],
+            "discover_loot": [
+              { "id": "empty_jerrycan", "bulk": 1 }
+            ],
+            "pressure": {
+              "id": "pump_island_metal_noise",
+              "message": "얼어붙은 펌프가 금속음을 내며 흔들렸다. 냄새와 소리가 야드 밖으로 새어 나갔다.",
+              "fatigue_gain": 1.5,
+              "noise": 3,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "siphon_pump_residue",
+          "label": "호스와 빈 통으로 조용히 잔량을 받는다",
+          "requirements": {
+            "required_item_ids": ["siphon_hose", "empty_jerrycan"],
+            "forbidden_flag_ids": ["pump_residue_taken"]
+          },
+          "blocked_feedback": "펌프 잔량을 안전하게 받으려면 호스와 빈 제리캔이 필요하다.",
+          "costs": { "minutes": 40, "noise": 1 },
+          "outcomes": {
+            "set_flags": ["pump_residue_taken"],
+            "discover_loot": [
+              { "id": "salvaged_fuel_jerrycan", "bulk": 3 }
+            ],
+            "consume_item_ids": ["empty_jerrycan"],
+            "pressure": {
+              "id": "pump_siphon_success",
+              "message": "호스 끝에서 느리게 떨어지는 잔량을 빈 통에 받았다. 냄새는 났지만 큰 소리는 피했다.",
+              "fatigue_gain": 1.0,
+              "noise": 1,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_event_industrial_garage.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_event_industrial_garage.png",
+              "title": "몇 시간의 열",
+              "text": "기름 한 통은 무겁고 위험하다. 그래도 오늘 밤 작은 열원을 살릴 수 있다면, 이 무게는 충분히 의미가 있다.",
+              "button": "연료 통을 묶는다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_fuel_cage_event",
+      "zone_id": "fuel_cage",
+      "type": "search",
+      "hint_text": "철망 안쪽에는 빈 통, 장갑, 오염된 천이 남아 있다.",
+      "options": [
+        {
+          "id": "search_fuel_cage",
+          "label": "연료 보관 철망 안을 정리한다",
+          "requirements": {},
+          "costs": { "minutes": 35, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 4,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "empty_jerrycan", "weight": 4 },
+                { "id": "work_gloves", "weight": 3 },
+                { "id": "shop_towel_bundle", "weight": 3 },
+                { "id": "siphon_hose", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -4,13 +4,24 @@
     "name": "동네 마트",
     "category": "retail",
     "depth_tier": "tier_3",
-    "site_tags": ["living_goods", "staff_only", "stockroom"],
+    "site_tags": [
+      "living_goods",
+      "staff_only",
+      "stockroom"
+    ],
     "entry_briefing": "앞쪽은 금방 훑을 수 있지만 뒤쪽 직원 구역과 재고실은 더 깊다.",
     "fixed_heat_sources": [
-      { "zone_id": "break_room", "heat_score": 2, "label": "직원 휴게실 전기난로" }
+      {
+        "zone_id": "break_room",
+        "heat_score": 2,
+        "label": "직원 휴게실 전기난로"
+      }
     ],
     "base_candidate": true,
-    "outdoor_block_coord": { "x": 0, "y": 0 },
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 0
+    },
     "outdoor_anchor_id": "mart_anchor",
     "indoor_event_path": "res://data/events/indoor/mart_01.json"
   },
@@ -19,13 +30,24 @@
     "name": "낡은 아파트",
     "category": "residential",
     "depth_tier": "tier_3",
-    "site_tags": ["vertical_site", "keys", "living_trace"],
+    "site_tags": [
+      "vertical_site",
+      "keys",
+      "living_trace"
+    ],
     "entry_briefing": "공동 현관만 보고 끝나는 곳이 아니다. 위층과 잠긴 생활 공간이 더 있다.",
     "fixed_heat_sources": [
-      { "zone_id": "boiler_room", "heat_score": 3, "label": "보일러실 잔열" }
+      {
+        "zone_id": "boiler_room",
+        "heat_score": 3,
+        "label": "보일러실 잔열"
+      }
     ],
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 0, "y": 1 },
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 1
+    },
     "outdoor_anchor_id": "apartment_anchor",
     "indoor_event_path": "res://data/events/indoor/apartment_01.json"
   },
@@ -34,7 +56,10 @@
     "name": "동네 의원",
     "category": "medical",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 1, "y": 0 },
+    "outdoor_block_coord": {
+      "x": 1,
+      "y": 0
+    },
     "outdoor_anchor_id": "clinic_anchor",
     "indoor_event_path": "res://data/events/indoor/clinic_01.json"
   },
@@ -43,7 +68,10 @@
     "name": "소형 사무실",
     "category": "office",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 0, "y": 0 },
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 0
+    },
     "outdoor_anchor_id": "office_anchor",
     "indoor_event_path": "res://data/events/indoor/office_01.json"
   },
@@ -52,7 +80,10 @@
     "name": "편의점",
     "category": "retail",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 1, "y": 0 },
+    "outdoor_block_coord": {
+      "x": 1,
+      "y": 0
+    },
     "outdoor_anchor_id": "convenience_anchor",
     "indoor_event_path": "res://data/events/indoor/convenience_01.json"
   },
@@ -61,10 +92,17 @@
     "name": "철물점",
     "category": "retail",
     "depth_tier": "tier_3",
-    "site_tags": ["repair", "materials", "gated_backroom"],
+    "site_tags": [
+      "repair",
+      "materials",
+      "gated_backroom"
+    ],
     "entry_briefing": "앞 매장보다 안쪽 자재실이 중요하다. 좋은 물건은 잠긴 뒷방에 있다.",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 1, "y": 1 },
+    "outdoor_block_coord": {
+      "x": 1,
+      "y": 1
+    },
     "outdoor_anchor_id": "hardware_anchor",
     "indoor_event_path": "res://data/events/indoor/hardware_01.json"
   },
@@ -73,7 +111,10 @@
     "name": "주유소",
     "category": "retail",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 0, "y": 1 },
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 1
+    },
     "outdoor_anchor_id": "gas_station_anchor",
     "indoor_event_path": "res://data/events/indoor/gas_station_01.json"
   },
@@ -82,7 +123,10 @@
     "name": "코인 세탁소",
     "category": "retail",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 1, "y": 1 },
+    "outdoor_block_coord": {
+      "x": 1,
+      "y": 1
+    },
     "outdoor_anchor_id": "laundry_anchor",
     "indoor_event_path": "res://data/events/indoor/laundry_01.json"
   },
@@ -91,7 +135,10 @@
     "name": "약국",
     "category": "medical",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 0, "y": 0 },
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 0
+    },
     "outdoor_anchor_id": "pharmacy_anchor",
     "indoor_event_path": "res://data/events/indoor/pharmacy_01.json"
   },
@@ -100,7 +147,10 @@
     "name": "작은 식당",
     "category": "food_service",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 0, "y": 1 },
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 1
+    },
     "outdoor_anchor_id": "restaurant_anchor",
     "indoor_event_path": "res://data/events/indoor/restaurant_01.json"
   },
@@ -109,7 +159,10 @@
     "name": "빵집",
     "category": "retail",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 1, "y": 0 },
+    "outdoor_block_coord": {
+      "x": 1,
+      "y": 0
+    },
     "outdoor_anchor_id": "bakery_anchor",
     "indoor_event_path": "res://data/events/indoor/bakery_01.json"
   },
@@ -118,10 +171,17 @@
     "name": "창고",
     "category": "industrial",
     "depth_tier": "tier_3",
-    "site_tags": ["logistics", "shutter_gate", "bulk_storage"],
+    "site_tags": [
+      "logistics",
+      "shutter_gate",
+      "bulk_storage"
+    ],
     "entry_briefing": "상하차 구역은 시작일 뿐이다. 안쪽 셔터 너머가 진짜 보관 공간이다.",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 1, "y": 1 },
+    "outdoor_block_coord": {
+      "x": 1,
+      "y": 1
+    },
     "outdoor_anchor_id": "warehouse_anchor",
     "indoor_event_path": "res://data/events/indoor/warehouse_01.json"
   },
@@ -130,7 +190,10 @@
     "name": "카페",
     "category": "food_service",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 0, "y": 0 },
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 0
+    },
     "outdoor_anchor_id": "cafe_anchor",
     "indoor_event_path": "res://data/events/indoor/cafe_01.json"
   },
@@ -139,7 +202,10 @@
     "name": "파출소",
     "category": "security",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 1, "y": 0 },
+    "outdoor_block_coord": {
+      "x": 1,
+      "y": 0
+    },
     "outdoor_anchor_id": "police_box_anchor",
     "indoor_event_path": "res://data/events/indoor/police_box_01.json"
   },
@@ -148,7 +214,10 @@
     "name": "수리점",
     "category": "industrial",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 1, "y": 1 },
+    "outdoor_block_coord": {
+      "x": 1,
+      "y": 1
+    },
     "outdoor_anchor_id": "repair_shop_anchor",
     "indoor_event_path": "res://data/events/indoor/repair_shop_01.json"
   },
@@ -157,7 +226,10 @@
     "name": "다가구 주택",
     "category": "residential",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 0, "y": 1 },
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 1
+    },
     "outdoor_anchor_id": "residence_anchor",
     "indoor_event_path": "res://data/events/indoor/residence_01.json"
   },
@@ -166,7 +238,10 @@
     "name": "중고 서점",
     "category": "retail",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 2, "y": 0 },
+    "outdoor_block_coord": {
+      "x": 2,
+      "y": 0
+    },
     "outdoor_anchor_id": "bookstore_anchor",
     "indoor_event_path": "res://data/events/indoor/bookstore_01.json"
   },
@@ -175,7 +250,10 @@
     "name": "반찬 가게",
     "category": "food_service",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 2, "y": 0 },
+    "outdoor_block_coord": {
+      "x": 2,
+      "y": 0
+    },
     "outdoor_anchor_id": "deli_anchor",
     "indoor_event_path": "res://data/events/indoor/deli_01.json"
   },
@@ -184,7 +262,10 @@
     "name": "소형 여관",
     "category": "residential",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 2, "y": 0 },
+    "outdoor_block_coord": {
+      "x": 2,
+      "y": 0
+    },
     "outdoor_anchor_id": "hostel_anchor",
     "indoor_event_path": "res://data/events/indoor/hostel_01.json"
   },
@@ -193,7 +274,10 @@
     "name": "물류 보관소",
     "category": "industrial",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 2, "y": 1 },
+    "outdoor_block_coord": {
+      "x": 2,
+      "y": 1
+    },
     "outdoor_anchor_id": "storage_depot_anchor",
     "indoor_event_path": "res://data/events/indoor/storage_depot_01.json"
   },
@@ -202,10 +286,17 @@
     "name": "차고지",
     "category": "industrial",
     "depth_tier": "tier_3",
-    "site_tags": ["maintenance", "tools", "logistics_side_site"],
+    "site_tags": [
+      "maintenance",
+      "tools",
+      "logistics_side_site"
+    ],
     "entry_briefing": "반쯤 열린 셔터 안쪽엔 공구와 안쪽 공간으로 이어지는 단서가 남아 있다.",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 2, "y": 1 },
+    "outdoor_block_coord": {
+      "x": 2,
+      "y": 1
+    },
     "outdoor_anchor_id": "garage_anchor",
     "indoor_event_path": "res://data/events/indoor/garage_01.json"
   },
@@ -214,7 +305,10 @@
     "name": "구내 식당",
     "category": "food_service",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 2, "y": 1 },
+    "outdoor_block_coord": {
+      "x": 2,
+      "y": 1
+    },
     "outdoor_anchor_id": "canteen_anchor",
     "indoor_event_path": "res://data/events/indoor/canteen_01.json"
   },
@@ -223,7 +317,10 @@
     "name": "작은 교회",
     "category": "office",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 2, "y": 2 },
+    "outdoor_block_coord": {
+      "x": 2,
+      "y": 2
+    },
     "outdoor_anchor_id": "church_anchor",
     "indoor_event_path": "res://data/events/indoor/church_01.json"
   },
@@ -232,7 +329,10 @@
     "name": "구멍가게",
     "category": "retail",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 2, "y": 2 },
+    "outdoor_block_coord": {
+      "x": 2,
+      "y": 2
+    },
     "outdoor_anchor_id": "corner_store_anchor",
     "indoor_event_path": "res://data/events/indoor/corner_store_01.json"
   },
@@ -241,7 +341,10 @@
     "name": "폐교 정문",
     "category": "office",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 1, "y": 2 },
+    "outdoor_block_coord": {
+      "x": 1,
+      "y": 2
+    },
     "outdoor_anchor_id": "school_gate_anchor",
     "indoor_event_path": "res://data/events/indoor/school_gate_01.json"
   },
@@ -250,7 +353,10 @@
     "name": "정육점",
     "category": "food_service",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 1, "y": 2 },
+    "outdoor_block_coord": {
+      "x": 1,
+      "y": 2
+    },
     "outdoor_anchor_id": "butcher_anchor",
     "indoor_event_path": "res://data/events/indoor/butcher_01.json"
   },
@@ -259,7 +365,10 @@
     "name": "연립 주택",
     "category": "residential",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 1, "y": 2 },
+    "outdoor_block_coord": {
+      "x": 1,
+      "y": 2
+    },
     "outdoor_anchor_id": "row_house_anchor",
     "indoor_event_path": "res://data/events/indoor/row_house_01.json"
   },
@@ -268,7 +377,10 @@
     "name": "작은 예배당",
     "category": "office",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 0, "y": 2 },
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 2
+    },
     "outdoor_anchor_id": "chapel_anchor",
     "indoor_event_path": "res://data/events/indoor/chapel_01.json"
   },
@@ -277,8 +389,3725 @@
     "name": "찻집",
     "category": "food_service",
     "base_candidate": false,
-    "outdoor_block_coord": { "x": 0, "y": 2 },
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 2
+    },
     "outdoor_anchor_id": "tea_shop_anchor",
     "indoor_event_path": "res://data/events/indoor/tea_shop_01.json"
+  },
+  {
+    "id": "mapx_03_00_a",
+    "name": "재난 안내 서점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "big_decision",
+      "bookstore",
+      "map_expansion",
+      "north_market",
+      "paper",
+      "quiet",
+      "records",
+      "route_info"
+    ],
+    "entry_briefing": "대피소 안내 전단과 무너진 책장 뒤 자료실이 있어 이동 정보를 얻을 수 있다.",
+    "scenario_hook": "무너진 책장을 소리 내어 밀지, 도구를 써서 조용히 치울지 결정하는 상권 정보 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 3,
+      "y": 0
+    },
+    "outdoor_anchor_id": "mapx_03_00_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/mapx_north_market_bookstore_01.json"
+  },
+  {
+    "id": "mapx_04_00_a",
+    "name": "동네 빵집",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "back_kitchen",
+      "food_service",
+      "map_expansion",
+      "north_market",
+      "warm_drink"
+    ],
+    "entry_briefing": "진열대보다 오븐 뒤와 재료 선반 쪽이 더 깊은 수색지가 된다.",
+    "scenario_hook": "처음 사재기가 지나간 뒤에도 사람들이 놓친 생활 도구를 찾는 상권 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 4,
+      "y": 0
+    },
+    "outdoor_anchor_id": "mapx_04_00_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/bakery_01.json"
+  },
+  {
+    "id": "mapx_05_00_a",
+    "name": "폐교 정문",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "north_market",
+      "public_building",
+      "records",
+      "shelter"
+    ],
+    "entry_briefing": "정문 주변 안내문과 경비실 흔적이 다음 이동 판단을 흔든다.",
+    "scenario_hook": "깨진 유리와 냉장고 뒤쪽을 감수할지 판단하는 빠른 파밍 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 0
+    },
+    "outdoor_anchor_id": "mapx_05_00_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/school_gate_01.json"
+  },
+  {
+    "id": "mapx_05_00_b",
+    "name": "골목 편의점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "counter",
+      "fridge_stock",
+      "glass_risk",
+      "map_expansion",
+      "north_market"
+    ],
+    "entry_briefing": "계산대 안쪽과 냉장고 뒤편에 손대기 어려운 물건이 남아 있다.",
+    "scenario_hook": "처음 사재기가 지나간 뒤에도 사람들이 놓친 생활 도구를 찾는 상권 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 0
+    },
+    "outdoor_anchor_id": "mapx_05_00_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/convenience_01.json"
+  },
+  {
+    "id": "mapx_06_00_a",
+    "name": "골목 편의점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "counter",
+      "fridge_stock",
+      "glass_risk",
+      "map_expansion",
+      "north_market"
+    ],
+    "entry_briefing": "계산대 안쪽과 냉장고 뒤편에 손대기 어려운 물건이 남아 있다.",
+    "scenario_hook": "처음 사재기가 지나간 뒤에도 사람들이 놓친 생활 도구를 찾는 상권 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 6,
+      "y": 0
+    },
+    "outdoor_anchor_id": "mapx_06_00_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/convenience_01.json"
+  },
+  {
+    "id": "mapx_07_00_a",
+    "name": "정육점",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "cold_storage",
+      "food_service",
+      "map_expansion",
+      "north_market",
+      "sharp_tools"
+    ],
+    "entry_briefing": "냉장실 문이 얼어붙어 있고, 안쪽 수색은 손과 시간을 많이 쓴다.",
+    "scenario_hook": "깨진 유리와 냉장고 뒤쪽을 감수할지 판단하는 빠른 파밍 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 7,
+      "y": 0
+    },
+    "outdoor_anchor_id": "mapx_07_00_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/butcher_01.json"
+  },
+  {
+    "id": "mapx_08_00_a",
+    "name": "폐교 정문",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "north_market",
+      "public_building",
+      "records",
+      "shelter"
+    ],
+    "entry_briefing": "정문 주변 안내문과 경비실 흔적이 다음 이동 판단을 흔든다.",
+    "scenario_hook": "처음 사재기가 지나간 뒤에도 사람들이 놓친 생활 도구를 찾는 상권 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 8,
+      "y": 0
+    },
+    "outdoor_anchor_id": "mapx_08_00_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/school_gate_01.json"
+  },
+  {
+    "id": "mapx_09_00_a",
+    "name": "골목 구멍가게",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "living_goods",
+      "map_expansion",
+      "neighborhood",
+      "north_market",
+      "small_stock"
+    ],
+    "entry_briefing": "작은 공간이라 빨리 훑을 수 있지만 사장만 아는 숨은 선반이 있다.",
+    "scenario_hook": "깨진 유리와 냉장고 뒤쪽을 감수할지 판단하는 빠른 파밍 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 9,
+      "y": 0
+    },
+    "outdoor_anchor_id": "mapx_09_00_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/corner_store_01.json"
+  },
+  {
+    "id": "mapx_10_00_a",
+    "name": "동네 빵집",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "back_kitchen",
+      "food_service",
+      "map_expansion",
+      "north_market",
+      "warm_drink"
+    ],
+    "entry_briefing": "진열대보다 오븐 뒤와 재료 선반 쪽이 더 깊은 수색지가 된다.",
+    "scenario_hook": "처음 사재기가 지나간 뒤에도 사람들이 놓친 생활 도구를 찾는 상권 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 0
+    },
+    "outdoor_anchor_id": "mapx_10_00_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/bakery_01.json"
+  },
+  {
+    "id": "mapx_10_00_b",
+    "name": "관리 사무실",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "electronics",
+      "map_expansion",
+      "north_market",
+      "office",
+      "records"
+    ],
+    "entry_briefing": "책상 서랍과 캐비닛은 흔하지만, 쓸모 있는 정보는 안쪽에 있다.",
+    "scenario_hook": "깨진 유리와 냉장고 뒤쪽을 감수할지 판단하는 빠른 파밍 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 0
+    },
+    "outdoor_anchor_id": "mapx_10_00_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/office_01.json"
+  },
+  {
+    "id": "mapx_11_00_a",
+    "name": "폐교 정문",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "north_market",
+      "public_building",
+      "records",
+      "shelter"
+    ],
+    "entry_briefing": "정문 주변 안내문과 경비실 흔적이 다음 이동 판단을 흔든다.",
+    "scenario_hook": "깨진 유리와 냉장고 뒤쪽을 감수할지 판단하는 빠른 파밍 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 11,
+      "y": 0
+    },
+    "outdoor_anchor_id": "mapx_11_00_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/school_gate_01.json"
+  },
+  {
+    "id": "mapx_03_01_a",
+    "name": "관리 사무실",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "electronics",
+      "map_expansion",
+      "north_market",
+      "office",
+      "records"
+    ],
+    "entry_briefing": "책상 서랍과 캐비닛은 흔하지만, 쓸모 있는 정보는 안쪽에 있다.",
+    "scenario_hook": "처음 사재기가 지나간 뒤에도 사람들이 놓친 생활 도구를 찾는 상권 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 3,
+      "y": 1
+    },
+    "outdoor_anchor_id": "mapx_03_01_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/office_01.json"
+  },
+  {
+    "id": "mapx_04_01_a",
+    "name": "작은 철물 코너",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "gated_backroom",
+      "map_expansion",
+      "materials",
+      "north_market",
+      "repair"
+    ],
+    "entry_briefing": "진열대보다 안쪽 자재함과 공구함이 더 중요해 보인다.",
+    "scenario_hook": "깨진 유리와 냉장고 뒤쪽을 감수할지 판단하는 빠른 파밍 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 4,
+      "y": 1
+    },
+    "outdoor_anchor_id": "mapx_04_01_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/hardware_01.json"
+  },
+  {
+    "id": "mapx_05_01_a",
+    "name": "작은 찻집",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "north_market",
+      "personal",
+      "quiet",
+      "warm_drink"
+    ],
+    "entry_briefing": "조용한 실내지만 찬 바람과 깨진 찻장이 시간을 잡아먹는다.",
+    "scenario_hook": "처음 사재기가 지나간 뒤에도 사람들이 놓친 생활 도구를 찾는 상권 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 1
+    },
+    "outdoor_anchor_id": "mapx_05_01_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/tea_shop_01.json"
+  },
+  {
+    "id": "mapx_05_01_b",
+    "name": "파출소",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "locked_storage",
+      "map_expansion",
+      "north_market",
+      "records",
+      "security"
+    ],
+    "entry_briefing": "잠긴 보관함과 상황판이 남아 있지만 오래 머물수록 들키기 쉽다.",
+    "scenario_hook": "깨진 유리와 냉장고 뒤쪽을 감수할지 판단하는 빠른 파밍 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 1
+    },
+    "outdoor_anchor_id": "mapx_05_01_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/police_box_01.json"
+  },
+  {
+    "id": "mapx_06_01_a",
+    "name": "관리 사무실",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "electronics",
+      "map_expansion",
+      "north_market",
+      "office",
+      "records"
+    ],
+    "entry_briefing": "책상 서랍과 캐비닛은 흔하지만, 쓸모 있는 정보는 안쪽에 있다.",
+    "scenario_hook": "깨진 유리와 냉장고 뒤쪽을 감수할지 판단하는 빠른 파밍 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 6,
+      "y": 1
+    },
+    "outdoor_anchor_id": "mapx_06_01_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/office_01.json"
+  },
+  {
+    "id": "mapx_07_01_a",
+    "name": "얼어붙은 할인점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "bulk_stock",
+      "living_goods",
+      "map_expansion",
+      "north_market",
+      "public_floor"
+    ],
+    "entry_briefing": "넓은 매대와 직원 구역이 남아 있지만 인기 물품은 이미 많이 털렸다.",
+    "scenario_hook": "처음 사재기가 지나간 뒤에도 사람들이 놓친 생활 도구를 찾는 상권 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 7,
+      "y": 1
+    },
+    "outdoor_anchor_id": "mapx_07_01_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/mart_01.json"
+  },
+  {
+    "id": "mapx_08_01_a",
+    "name": "작은 식당",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "food_service",
+      "kitchen",
+      "map_expansion",
+      "north_market",
+      "pantry"
+    ],
+    "entry_briefing": "홀은 비었고, 위험한 주방과 잠긴 안쪽 창고가 판단을 요구한다.",
+    "scenario_hook": "깨진 유리와 냉장고 뒤쪽을 감수할지 판단하는 빠른 파밍 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 8,
+      "y": 1
+    },
+    "outdoor_anchor_id": "mapx_08_01_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/restaurant_01.json"
+  },
+  {
+    "id": "mapx_09_01_a",
+    "name": "관리 사무실",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "electronics",
+      "map_expansion",
+      "north_market",
+      "office",
+      "records"
+    ],
+    "entry_briefing": "책상 서랍과 캐비닛은 흔하지만, 쓸모 있는 정보는 안쪽에 있다.",
+    "scenario_hook": "처음 사재기가 지나간 뒤에도 사람들이 놓친 생활 도구를 찾는 상권 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 9,
+      "y": 1
+    },
+    "outdoor_anchor_id": "mapx_09_01_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/office_01.json"
+  },
+  {
+    "id": "mapx_10_01_a",
+    "name": "중고 서점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "north_market",
+      "paper",
+      "quiet",
+      "records"
+    ],
+    "entry_briefing": "책장 사이가 어둡고, 카운터 밑 기록 상자가 유난히 눈에 띈다.",
+    "scenario_hook": "깨진 유리와 냉장고 뒤쪽을 감수할지 판단하는 빠른 파밍 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 1
+    },
+    "outdoor_anchor_id": "mapx_10_01_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/bookstore_01.json"
+  },
+  {
+    "id": "mapx_10_01_b",
+    "name": "문 닫은 카페",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "north_market",
+      "seating",
+      "warm_drink",
+      "window_gap"
+    ],
+    "entry_briefing": "창가 틈바람이 세지만 머신 주변과 좌석 아래에 쓸 만한 것이 있다.",
+    "scenario_hook": "처음 사재기가 지나간 뒤에도 사람들이 놓친 생활 도구를 찾는 상권 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 1
+    },
+    "outdoor_anchor_id": "mapx_10_01_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/cafe_01.json"
+  },
+  {
+    "id": "mapx_11_01_a",
+    "name": "작은 찻집",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "north_market",
+      "personal",
+      "quiet",
+      "warm_drink"
+    ],
+    "entry_briefing": "조용한 실내지만 찬 바람과 깨진 찻장이 시간을 잡아먹는다.",
+    "scenario_hook": "처음 사재기가 지나간 뒤에도 사람들이 놓친 생활 도구를 찾는 상권 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 11,
+      "y": 1
+    },
+    "outdoor_anchor_id": "mapx_11_01_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/tea_shop_01.json"
+  },
+  {
+    "id": "mapx_03_02_a",
+    "name": "기사식당",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "bulk_food",
+      "kitchen",
+      "map_expansion",
+      "north_market",
+      "truckers"
+    ],
+    "entry_briefing": "급히 떠난 흔적이 남아 있어 조리대와 휴게실 선택지가 갈린다.",
+    "scenario_hook": "깨진 유리와 냉장고 뒤쪽을 감수할지 판단하는 빠른 파밍 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 3,
+      "y": 2
+    },
+    "outdoor_anchor_id": "mapx_03_02_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/canteen_01.json"
+  },
+  {
+    "id": "mapx_04_02_a",
+    "name": "파출소",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "locked_storage",
+      "map_expansion",
+      "north_market",
+      "records",
+      "security"
+    ],
+    "entry_briefing": "잠긴 보관함과 상황판이 남아 있지만 오래 머물수록 들키기 쉽다.",
+    "scenario_hook": "처음 사재기가 지나간 뒤에도 사람들이 놓친 생활 도구를 찾는 상권 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 4,
+      "y": 2
+    },
+    "outdoor_anchor_id": "mapx_04_02_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/police_box_01.json"
+  },
+  {
+    "id": "mapx_05_02_a",
+    "name": "골목 편의점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "counter",
+      "fridge_stock",
+      "glass_risk",
+      "map_expansion",
+      "north_market"
+    ],
+    "entry_briefing": "계산대 안쪽과 냉장고 뒤편에 손대기 어려운 물건이 남아 있다.",
+    "scenario_hook": "깨진 유리와 냉장고 뒤쪽을 감수할지 판단하는 빠른 파밍 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 2
+    },
+    "outdoor_anchor_id": "mapx_05_02_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/convenience_01.json"
+  },
+  {
+    "id": "mapx_05_02_b",
+    "name": "동네 빵집",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "back_kitchen",
+      "food_service",
+      "map_expansion",
+      "north_market",
+      "warm_drink"
+    ],
+    "entry_briefing": "진열대보다 오븐 뒤와 재료 선반 쪽이 더 깊은 수색지가 된다.",
+    "scenario_hook": "처음 사재기가 지나간 뒤에도 사람들이 놓친 생활 도구를 찾는 상권 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 2
+    },
+    "outdoor_anchor_id": "mapx_05_02_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/bakery_01.json"
+  },
+  {
+    "id": "mapx_06_02_a",
+    "name": "문 닫은 카페",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "north_market",
+      "seating",
+      "warm_drink",
+      "window_gap"
+    ],
+    "entry_briefing": "창가 틈바람이 세지만 머신 주변과 좌석 아래에 쓸 만한 것이 있다.",
+    "scenario_hook": "처음 사재기가 지나간 뒤에도 사람들이 놓친 생활 도구를 찾는 상권 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 6,
+      "y": 2
+    },
+    "outdoor_anchor_id": "mapx_06_02_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/cafe_01.json"
+  },
+  {
+    "id": "mapx_07_02_a",
+    "name": "파출소",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "locked_storage",
+      "map_expansion",
+      "north_market",
+      "records",
+      "security"
+    ],
+    "entry_briefing": "잠긴 보관함과 상황판이 남아 있지만 오래 머물수록 들키기 쉽다.",
+    "scenario_hook": "깨진 유리와 냉장고 뒤쪽을 감수할지 판단하는 빠른 파밍 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 7,
+      "y": 2
+    },
+    "outdoor_anchor_id": "mapx_07_02_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/police_box_01.json"
+  },
+  {
+    "id": "mapx_08_02_a",
+    "name": "골목 구멍가게",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "living_goods",
+      "map_expansion",
+      "neighborhood",
+      "north_market",
+      "small_stock"
+    ],
+    "entry_briefing": "작은 공간이라 빨리 훑을 수 있지만 사장만 아는 숨은 선반이 있다.",
+    "scenario_hook": "처음 사재기가 지나간 뒤에도 사람들이 놓친 생활 도구를 찾는 상권 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 8,
+      "y": 2
+    },
+    "outdoor_anchor_id": "mapx_08_02_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/corner_store_01.json"
+  },
+  {
+    "id": "mapx_09_02_a",
+    "name": "기사식당",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "bulk_food",
+      "kitchen",
+      "map_expansion",
+      "north_market",
+      "truckers"
+    ],
+    "entry_briefing": "급히 떠난 흔적이 남아 있어 조리대와 휴게실 선택지가 갈린다.",
+    "scenario_hook": "깨진 유리와 냉장고 뒤쪽을 감수할지 판단하는 빠른 파밍 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 9,
+      "y": 2
+    },
+    "outdoor_anchor_id": "mapx_09_02_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/canteen_01.json"
+  },
+  {
+    "id": "mapx_10_02_a",
+    "name": "파출소",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "locked_storage",
+      "map_expansion",
+      "north_market",
+      "records",
+      "security"
+    ],
+    "entry_briefing": "잠긴 보관함과 상황판이 남아 있지만 오래 머물수록 들키기 쉽다.",
+    "scenario_hook": "처음 사재기가 지나간 뒤에도 사람들이 놓친 생활 도구를 찾는 상권 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 2
+    },
+    "outdoor_anchor_id": "mapx_10_02_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/police_box_01.json"
+  },
+  {
+    "id": "mapx_10_02_b",
+    "name": "작은 철물 코너",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "gated_backroom",
+      "map_expansion",
+      "materials",
+      "north_market",
+      "repair"
+    ],
+    "entry_briefing": "진열대보다 안쪽 자재함과 공구함이 더 중요해 보인다.",
+    "scenario_hook": "깨진 유리와 냉장고 뒤쪽을 감수할지 판단하는 빠른 파밍 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 2
+    },
+    "outdoor_anchor_id": "mapx_10_02_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/hardware_01.json"
+  },
+  {
+    "id": "mapx_11_02_a",
+    "name": "작은 철물 코너",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "gated_backroom",
+      "map_expansion",
+      "materials",
+      "north_market",
+      "repair"
+    ],
+    "entry_briefing": "진열대보다 안쪽 자재함과 공구함이 더 중요해 보인다.",
+    "scenario_hook": "깨진 유리와 냉장고 뒤쪽을 감수할지 판단하는 빠른 파밍 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 11,
+      "y": 2
+    },
+    "outdoor_anchor_id": "mapx_11_02_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/hardware_01.json"
+  },
+  {
+    "id": "mapx_00_03_a",
+    "name": "싸구려 여관",
+    "category": "residential",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "bedding",
+      "lost_items",
+      "map_expansion",
+      "temporary_home",
+      "west_shelter"
+    ],
+    "entry_briefing": "객실마다 남은 물건의 성격이 달라 오래 뒤질수록 위험도 커진다.",
+    "scenario_hook": "조용한 공간의 소란 리스크와 체온 회복 가능성을 맞바꾸는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 3
+    },
+    "outdoor_anchor_id": "mapx_00_03_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/hostel_01.json"
+  },
+  {
+    "id": "mapx_00_03_b",
+    "name": "순찰 초소",
+    "category": "security",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "records",
+      "roadblock",
+      "security",
+      "west_shelter"
+    ],
+    "entry_briefing": "도로 통제 흔적과 기록지가 남아 다음 구역 위험을 암시한다.",
+    "scenario_hook": "구호품이 거의 사라진 대피선에서 남은 기록과 작은 도구를 모으는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 3
+    },
+    "outdoor_anchor_id": "mapx_00_03_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/police_box_01.json"
+  },
+  {
+    "id": "mapx_01_03_a",
+    "name": "순찰 초소",
+    "category": "security",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "records",
+      "roadblock",
+      "security",
+      "west_shelter"
+    ],
+    "entry_briefing": "도로 통제 흔적과 기록지가 남아 다음 구역 위험을 암시한다.",
+    "scenario_hook": "구호품이 거의 사라진 대피선에서 남은 기록과 작은 도구를 모으는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 1,
+      "y": 3
+    },
+    "outdoor_anchor_id": "mapx_01_03_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/police_box_01.json"
+  },
+  {
+    "id": "mapx_02_03_a",
+    "name": "작은 식당",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "food_service",
+      "kitchen",
+      "map_expansion",
+      "pantry",
+      "west_shelter"
+    ],
+    "entry_briefing": "홀은 비었고, 위험한 주방과 잠긴 안쪽 창고가 판단을 요구한다.",
+    "scenario_hook": "조용한 공간의 소란 리스크와 체온 회복 가능성을 맞바꾸는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 2,
+      "y": 3
+    },
+    "outdoor_anchor_id": "mapx_02_03_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/restaurant_01.json"
+  },
+  {
+    "id": "mapx_03_03_a",
+    "name": "작은 철물 코너",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "gated_backroom",
+      "map_expansion",
+      "materials",
+      "repair"
+    ],
+    "entry_briefing": "진열대보다 안쪽 자재함과 공구함이 더 중요해 보인다.",
+    "scenario_hook": "큰 길은 빠르지만 노출이 크고, 골목은 느리지만 파밍지가 촘촘한 이동 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 3,
+      "y": 3
+    },
+    "outdoor_anchor_id": "mapx_03_03_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/hardware_01.json"
+  },
+  {
+    "id": "mapx_04_03_a",
+    "name": "파출소",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "locked_storage",
+      "map_expansion",
+      "records",
+      "security"
+    ],
+    "entry_briefing": "잠긴 보관함과 상황판이 남아 있지만 오래 머물수록 들키기 쉽다.",
+    "scenario_hook": "추적과 결빙 위험 속에서 다음 실내 진입 지점을 고르는 환승 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 4,
+      "y": 3
+    },
+    "outdoor_anchor_id": "mapx_04_03_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/police_box_01.json"
+  },
+  {
+    "id": "mapx_05_03_a",
+    "name": "주유소",
+    "category": "industrial",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "counter",
+      "fuel",
+      "map_expansion",
+      "roadside"
+    ],
+    "entry_briefing": "연료 흔적은 위험하지만, 빈 통과 열원 재료가 남아 있을 수 있다.",
+    "scenario_hook": "큰 길은 빠르지만 노출이 크고, 골목은 느리지만 파밍지가 촘촘한 이동 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 3
+    },
+    "outdoor_anchor_id": "mapx_05_03_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/gas_station_01.json"
+  },
+  {
+    "id": "mapx_05_03_b",
+    "name": "파출소",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "locked_storage",
+      "map_expansion",
+      "records",
+      "security"
+    ],
+    "entry_briefing": "잠긴 보관함과 상황판이 남아 있지만 오래 머물수록 들키기 쉽다.",
+    "scenario_hook": "추적과 결빙 위험 속에서 다음 실내 진입 지점을 고르는 환승 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 3
+    },
+    "outdoor_anchor_id": "mapx_05_03_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/police_box_01.json"
+  },
+  {
+    "id": "mapx_06_03_a",
+    "name": "기사식당",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "bulk_food",
+      "central_transfer",
+      "kitchen",
+      "map_expansion",
+      "truckers"
+    ],
+    "entry_briefing": "급히 떠난 흔적이 남아 있어 조리대와 휴게실 선택지가 갈린다.",
+    "scenario_hook": "추적과 결빙 위험 속에서 다음 실내 진입 지점을 고르는 환승 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 6,
+      "y": 3
+    },
+    "outdoor_anchor_id": "mapx_06_03_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/canteen_01.json"
+  },
+  {
+    "id": "mapx_07_03_a",
+    "name": "골목 편의점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "counter",
+      "fridge_stock",
+      "glass_risk",
+      "map_expansion"
+    ],
+    "entry_briefing": "계산대 안쪽과 냉장고 뒤편에 손대기 어려운 물건이 남아 있다.",
+    "scenario_hook": "큰 길은 빠르지만 노출이 크고, 골목은 느리지만 파밍지가 촘촘한 이동 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 7,
+      "y": 3
+    },
+    "outdoor_anchor_id": "mapx_07_03_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/convenience_01.json"
+  },
+  {
+    "id": "mapx_08_03_a",
+    "name": "작은 철물 코너",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "east_medical",
+      "gated_backroom",
+      "map_expansion",
+      "materials",
+      "repair"
+    ],
+    "entry_briefing": "진열대보다 안쪽 자재함과 공구함이 더 중요해 보인다.",
+    "scenario_hook": "정전된 업무지구에서 지도와 열쇠 단서를 찾아 다음 동선을 여는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 8,
+      "y": 3
+    },
+    "outdoor_anchor_id": "mapx_08_03_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/hardware_01.json"
+  },
+  {
+    "id": "mapx_09_03_a",
+    "name": "작은 약국",
+    "category": "medical",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "counter",
+      "east_medical",
+      "locked_storage",
+      "map_expansion",
+      "medical"
+    ],
+    "entry_briefing": "진열대는 비었지만 카운터 안쪽과 약품 보관함이 아직 닫혀 있다.",
+    "scenario_hook": "약과 기록을 얻기 위해 잠긴 보관함을 열지, 시간을 아낄지 고르는 의료 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 9,
+      "y": 3
+    },
+    "outdoor_anchor_id": "mapx_09_03_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/pharmacy_01.json"
+  },
+  {
+    "id": "mapx_10_03_a",
+    "name": "파출소",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "east_medical",
+      "locked_storage",
+      "map_expansion",
+      "records",
+      "security"
+    ],
+    "entry_briefing": "잠긴 보관함과 상황판이 남아 있지만 오래 머물수록 들키기 쉽다.",
+    "scenario_hook": "정전된 업무지구에서 지도와 열쇠 단서를 찾아 다음 동선을 여는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 3
+    },
+    "outdoor_anchor_id": "mapx_10_03_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/police_box_01.json"
+  },
+  {
+    "id": "mapx_10_03_b",
+    "name": "얼어붙은 할인점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "bulk_stock",
+      "east_medical",
+      "living_goods",
+      "map_expansion",
+      "public_floor"
+    ],
+    "entry_briefing": "넓은 매대와 직원 구역이 남아 있지만 인기 물품은 이미 많이 털렸다.",
+    "scenario_hook": "약과 기록을 얻기 위해 잠긴 보관함을 열지, 시간을 아낄지 고르는 의료 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 3
+    },
+    "outdoor_anchor_id": "mapx_10_03_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/mart_01.json"
+  },
+  {
+    "id": "mapx_11_03_a",
+    "name": "얼어붙은 할인점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "bulk_stock",
+      "east_medical",
+      "living_goods",
+      "map_expansion",
+      "public_floor"
+    ],
+    "entry_briefing": "넓은 매대와 직원 구역이 남아 있지만 인기 물품은 이미 많이 털렸다.",
+    "scenario_hook": "약과 기록을 얻기 위해 잠긴 보관함을 열지, 시간을 아낄지 고르는 의료 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 11,
+      "y": 3
+    },
+    "outdoor_anchor_id": "mapx_11_03_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/mart_01.json"
+  },
+  {
+    "id": "mapx_00_04_a",
+    "name": "문 닫은 카페",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "seating",
+      "warm_drink",
+      "west_shelter",
+      "window_gap"
+    ],
+    "entry_briefing": "창가 틈바람이 세지만 머신 주변과 좌석 아래에 쓸 만한 것이 있다.",
+    "scenario_hook": "구호품이 거의 사라진 대피선에서 남은 기록과 작은 도구를 모으는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 4
+    },
+    "outdoor_anchor_id": "mapx_00_04_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/cafe_01.json"
+  },
+  {
+    "id": "mapx_00_04_b",
+    "name": "얼어붙은 빌라",
+    "category": "residential",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "keys",
+      "living_trace",
+      "map_expansion",
+      "vertical_site",
+      "west_shelter"
+    ],
+    "entry_briefing": "공동 현관 뒤로 계단과 잠긴 문들이 이어져 한 번에 끝나지 않는다.",
+    "scenario_hook": "조용한 공간의 소란 리스크와 체온 회복 가능성을 맞바꾸는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 4
+    },
+    "outdoor_anchor_id": "mapx_00_04_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/apartment_01.json"
+  },
+  {
+    "id": "mapx_01_04_a",
+    "name": "동네 교회",
+    "category": "residential",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "community_stock",
+      "map_expansion",
+      "records",
+      "shelter",
+      "west_shelter"
+    ],
+    "entry_briefing": "구호품과 사람들의 흔적이 섞여 있어 수색의 감정적 무게가 크다.",
+    "scenario_hook": "조용한 공간의 소란 리스크와 체온 회복 가능성을 맞바꾸는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 1,
+      "y": 4
+    },
+    "outdoor_anchor_id": "mapx_01_04_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/church_01.json"
+  },
+  {
+    "id": "mapx_02_04_a",
+    "name": "순찰 초소",
+    "category": "security",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "records",
+      "roadblock",
+      "security",
+      "west_shelter"
+    ],
+    "entry_briefing": "도로 통제 흔적과 기록지가 남아 다음 구역 위험을 암시한다.",
+    "scenario_hook": "구호품이 거의 사라진 대피선에서 남은 기록과 작은 도구를 모으는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 2,
+      "y": 4
+    },
+    "outdoor_anchor_id": "mapx_02_04_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/police_box_01.json"
+  },
+  {
+    "id": "mapx_03_04_a",
+    "name": "기사식당",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "bulk_food",
+      "central_transfer",
+      "kitchen",
+      "map_expansion",
+      "truckers"
+    ],
+    "entry_briefing": "급히 떠난 흔적이 남아 있어 조리대와 휴게실 선택지가 갈린다.",
+    "scenario_hook": "추적과 결빙 위험 속에서 다음 실내 진입 지점을 고르는 환승 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 3,
+      "y": 4
+    },
+    "outdoor_anchor_id": "mapx_03_04_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/canteen_01.json"
+  },
+  {
+    "id": "mapx_04_04_a",
+    "name": "골목 편의점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "counter",
+      "fridge_stock",
+      "glass_risk",
+      "map_expansion"
+    ],
+    "entry_briefing": "계산대 안쪽과 냉장고 뒤편에 손대기 어려운 물건이 남아 있다.",
+    "scenario_hook": "큰 길은 빠르지만 노출이 크고, 골목은 느리지만 파밍지가 촘촘한 이동 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 4,
+      "y": 4
+    },
+    "outdoor_anchor_id": "mapx_04_04_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/convenience_01.json"
+  },
+  {
+    "id": "mapx_05_04_a",
+    "name": "폐교 정문",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "map_expansion",
+      "public_building",
+      "records",
+      "shelter"
+    ],
+    "entry_briefing": "정문 주변 안내문과 경비실 흔적이 다음 이동 판단을 흔든다.",
+    "scenario_hook": "추적과 결빙 위험 속에서 다음 실내 진입 지점을 고르는 환승 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 4
+    },
+    "outdoor_anchor_id": "mapx_05_04_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/school_gate_01.json"
+  },
+  {
+    "id": "mapx_05_04_b",
+    "name": "중고 서점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "map_expansion",
+      "paper",
+      "quiet",
+      "records"
+    ],
+    "entry_briefing": "책장 사이가 어둡고, 카운터 밑 기록 상자가 유난히 눈에 띈다.",
+    "scenario_hook": "큰 길은 빠르지만 노출이 크고, 골목은 느리지만 파밍지가 촘촘한 이동 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 4
+    },
+    "outdoor_anchor_id": "mapx_05_04_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/bookstore_01.json"
+  },
+  {
+    "id": "mapx_06_04_a",
+    "name": "물류 보관소",
+    "category": "industrial",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "bulk_stock",
+      "central_transfer",
+      "industrial",
+      "locked_storage",
+      "map_expansion"
+    ],
+    "entry_briefing": "상자는 많지만 모두 열 수는 없다. 소리와 시간의 값을 따져야 한다.",
+    "scenario_hook": "큰 길은 빠르지만 노출이 크고, 골목은 느리지만 파밍지가 촘촘한 이동 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 6,
+      "y": 4
+    },
+    "outdoor_anchor_id": "mapx_06_04_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/storage_depot_01.json"
+  },
+  {
+    "id": "mapx_07_04_a",
+    "name": "정육점",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "cold_storage",
+      "food_service",
+      "map_expansion",
+      "sharp_tools"
+    ],
+    "entry_briefing": "냉장실 문이 얼어붙어 있고, 안쪽 수색은 손과 시간을 많이 쓴다.",
+    "scenario_hook": "추적과 결빙 위험 속에서 다음 실내 진입 지점을 고르는 환승 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 7,
+      "y": 4
+    },
+    "outdoor_anchor_id": "mapx_07_04_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/butcher_01.json"
+  },
+  {
+    "id": "mapx_08_04_a",
+    "name": "폐교 정문",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "east_medical",
+      "map_expansion",
+      "public_building",
+      "records",
+      "shelter"
+    ],
+    "entry_briefing": "정문 주변 안내문과 경비실 흔적이 다음 이동 판단을 흔든다.",
+    "scenario_hook": "약과 기록을 얻기 위해 잠긴 보관함을 열지, 시간을 아낄지 고르는 의료 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 8,
+      "y": 4
+    },
+    "outdoor_anchor_id": "mapx_08_04_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/school_gate_01.json"
+  },
+  {
+    "id": "mapx_09_04_a",
+    "name": "의료지구 편의점",
+    "category": "medical",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "big_decision",
+      "counter",
+      "delivery_crates",
+      "east_medical",
+      "fridge_stock",
+      "glass_risk",
+      "hygiene",
+      "map_expansion",
+      "medical"
+    ],
+    "entry_briefing": "일반 매대보다 임시 처치대와 약국 배달 상자가 중요한 의료 지구 파밍지다.",
+    "scenario_hook": "오염된 처치대를 빨리 뒤질지, 장갑으로 안전하게 분류할지 결정하는 의료 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 9,
+      "y": 4
+    },
+    "outdoor_anchor_id": "mapx_09_04_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/mapx_east_medical_convenience_01.json"
+  },
+  {
+    "id": "mapx_10_04_a",
+    "name": "동네 세탁소",
+    "category": "medical",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "east_medical",
+      "household",
+      "hygiene",
+      "map_expansion",
+      "wet_floor"
+    ],
+    "entry_briefing": "젖은 바닥이 발을 식히지만 세탁망과 건조대 주변이 유용해 보인다.",
+    "scenario_hook": "약과 기록을 얻기 위해 잠긴 보관함을 열지, 시간을 아낄지 고르는 의료 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 4
+    },
+    "outdoor_anchor_id": "mapx_10_04_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/laundry_01.json"
+  },
+  {
+    "id": "mapx_10_04_b",
+    "name": "관리 사무실",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "east_medical",
+      "electronics",
+      "map_expansion",
+      "office",
+      "records"
+    ],
+    "entry_briefing": "책상 서랍과 캐비닛은 흔하지만, 쓸모 있는 정보는 안쪽에 있다.",
+    "scenario_hook": "정전된 업무지구에서 지도와 열쇠 단서를 찾아 다음 동선을 여는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 4
+    },
+    "outdoor_anchor_id": "mapx_10_04_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/office_01.json"
+  },
+  {
+    "id": "mapx_11_04_a",
+    "name": "폐교 정문",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "east_medical",
+      "map_expansion",
+      "public_building",
+      "records",
+      "shelter"
+    ],
+    "entry_briefing": "정문 주변 안내문과 경비실 흔적이 다음 이동 판단을 흔든다.",
+    "scenario_hook": "정전된 업무지구에서 지도와 열쇠 단서를 찾아 다음 동선을 여는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 11,
+      "y": 4
+    },
+    "outdoor_anchor_id": "mapx_11_04_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/school_gate_01.json"
+  },
+  {
+    "id": "mapx_00_05_a",
+    "name": "대피 안내소",
+    "category": "security",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "community",
+      "map_expansion",
+      "records",
+      "shelter",
+      "west_shelter"
+    ],
+    "entry_briefing": "구호품은 적지만 사람들이 남긴 선택의 흔적이 있다.",
+    "scenario_hook": "조용한 공간의 소란 리스크와 체온 회복 가능성을 맞바꾸는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 5
+    },
+    "outdoor_anchor_id": "mapx_00_05_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/chapel_01.json"
+  },
+  {
+    "id": "mapx_00_05_b",
+    "name": "작은 찻집",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "personal",
+      "quiet",
+      "warm_drink",
+      "west_shelter"
+    ],
+    "entry_briefing": "조용한 실내지만 찬 바람과 깨진 찻장이 시간을 잡아먹는다.",
+    "scenario_hook": "구호품이 거의 사라진 대피선에서 남은 기록과 작은 도구를 모으는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 5
+    },
+    "outdoor_anchor_id": "mapx_00_05_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/tea_shop_01.json"
+  },
+  {
+    "id": "mapx_01_05_a",
+    "name": "동네 빵집",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "back_kitchen",
+      "food_service",
+      "map_expansion",
+      "warm_drink",
+      "west_shelter"
+    ],
+    "entry_briefing": "진열대보다 오븐 뒤와 재료 선반 쪽이 더 깊은 수색지가 된다.",
+    "scenario_hook": "구호품이 거의 사라진 대피선에서 남은 기록과 작은 도구를 모으는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 1,
+      "y": 5
+    },
+    "outdoor_anchor_id": "mapx_01_05_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/bakery_01.json"
+  },
+  {
+    "id": "mapx_02_05_a",
+    "name": "얼어붙은 빌라",
+    "category": "residential",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "keys",
+      "living_trace",
+      "map_expansion",
+      "vertical_site",
+      "west_shelter"
+    ],
+    "entry_briefing": "공동 현관 뒤로 계단과 잠긴 문들이 이어져 한 번에 끝나지 않는다.",
+    "scenario_hook": "조용한 공간의 소란 리스크와 체온 회복 가능성을 맞바꾸는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 2,
+      "y": 5
+    },
+    "outdoor_anchor_id": "mapx_02_05_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/apartment_01.json"
+  },
+  {
+    "id": "mapx_03_05_a",
+    "name": "물류 보관소",
+    "category": "industrial",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "bulk_stock",
+      "central_transfer",
+      "industrial",
+      "locked_storage",
+      "map_expansion"
+    ],
+    "entry_briefing": "상자는 많지만 모두 열 수는 없다. 소리와 시간의 값을 따져야 한다.",
+    "scenario_hook": "큰 길은 빠르지만 노출이 크고, 골목은 느리지만 파밍지가 촘촘한 이동 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 3,
+      "y": 5
+    },
+    "outdoor_anchor_id": "mapx_03_05_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/storage_depot_01.json"
+  },
+  {
+    "id": "mapx_04_05_a",
+    "name": "정육점",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "cold_storage",
+      "food_service",
+      "map_expansion",
+      "sharp_tools"
+    ],
+    "entry_briefing": "냉장실 문이 얼어붙어 있고, 안쪽 수색은 손과 시간을 많이 쓴다.",
+    "scenario_hook": "추적과 결빙 위험 속에서 다음 실내 진입 지점을 고르는 환승 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 4,
+      "y": 5
+    },
+    "outdoor_anchor_id": "mapx_04_05_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/butcher_01.json"
+  },
+  {
+    "id": "mapx_05_05_a",
+    "name": "얼어붙은 할인점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "bulk_stock",
+      "central_transfer",
+      "living_goods",
+      "map_expansion",
+      "public_floor"
+    ],
+    "entry_briefing": "넓은 매대와 직원 구역이 남아 있지만 인기 물품은 이미 많이 털렸다.",
+    "scenario_hook": "큰 길은 빠르지만 노출이 크고, 골목은 느리지만 파밍지가 촘촘한 이동 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 5
+    },
+    "outdoor_anchor_id": "mapx_05_05_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/mart_01.json"
+  },
+  {
+    "id": "mapx_05_05_b",
+    "name": "정육점",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "cold_storage",
+      "food_service",
+      "map_expansion",
+      "sharp_tools"
+    ],
+    "entry_briefing": "냉장실 문이 얼어붙어 있고, 안쪽 수색은 손과 시간을 많이 쓴다.",
+    "scenario_hook": "추적과 결빙 위험 속에서 다음 실내 진입 지점을 고르는 환승 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 5
+    },
+    "outdoor_anchor_id": "mapx_05_05_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/butcher_01.json"
+  },
+  {
+    "id": "mapx_06_05_a",
+    "name": "관리 사무실",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "electronics",
+      "map_expansion",
+      "office",
+      "records"
+    ],
+    "entry_briefing": "책상 서랍과 캐비닛은 흔하지만, 쓸모 있는 정보는 안쪽에 있다.",
+    "scenario_hook": "추적과 결빙 위험 속에서 다음 실내 진입 지점을 고르는 환승 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 6,
+      "y": 5
+    },
+    "outdoor_anchor_id": "mapx_06_05_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/office_01.json"
+  },
+  {
+    "id": "mapx_07_05_a",
+    "name": "소형 수리점",
+    "category": "industrial",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "electronics",
+      "gated_backroom",
+      "map_expansion",
+      "repair"
+    ],
+    "entry_briefing": "고장 난 전자기기와 공구가 뒤섞여 조합 재료를 건질 만하다.",
+    "scenario_hook": "큰 길은 빠르지만 노출이 크고, 골목은 느리지만 파밍지가 촘촘한 이동 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 7,
+      "y": 5
+    },
+    "outdoor_anchor_id": "mapx_07_05_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/repair_shop_01.json"
+  },
+  {
+    "id": "mapx_08_05_a",
+    "name": "임시 진료소",
+    "category": "medical",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "east_medical",
+      "map_expansion",
+      "medical",
+      "quiet",
+      "records"
+    ],
+    "entry_briefing": "진료실과 약품함을 뒤질수록 얻는 것과 다치는 위험이 함께 커진다.",
+    "scenario_hook": "정전된 업무지구에서 지도와 열쇠 단서를 찾아 다음 동선을 여는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 8,
+      "y": 5
+    },
+    "outdoor_anchor_id": "mapx_08_05_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/clinic_01.json"
+  },
+  {
+    "id": "mapx_09_05_a",
+    "name": "관리 사무실",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "east_medical",
+      "electronics",
+      "map_expansion",
+      "office",
+      "records"
+    ],
+    "entry_briefing": "책상 서랍과 캐비닛은 흔하지만, 쓸모 있는 정보는 안쪽에 있다.",
+    "scenario_hook": "약과 기록을 얻기 위해 잠긴 보관함을 열지, 시간을 아낄지 고르는 의료 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 9,
+      "y": 5
+    },
+    "outdoor_anchor_id": "mapx_09_05_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/office_01.json"
+  },
+  {
+    "id": "mapx_10_05_a",
+    "name": "얼어붙은 할인점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "bulk_stock",
+      "east_medical",
+      "living_goods",
+      "map_expansion",
+      "public_floor"
+    ],
+    "entry_briefing": "넓은 매대와 직원 구역이 남아 있지만 인기 물품은 이미 많이 털렸다.",
+    "scenario_hook": "정전된 업무지구에서 지도와 열쇠 단서를 찾아 다음 동선을 여는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 5
+    },
+    "outdoor_anchor_id": "mapx_10_05_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/mart_01.json"
+  },
+  {
+    "id": "mapx_10_05_b",
+    "name": "작은 약국",
+    "category": "medical",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "counter",
+      "east_medical",
+      "locked_storage",
+      "map_expansion",
+      "medical"
+    ],
+    "entry_briefing": "진열대는 비었지만 카운터 안쪽과 약품 보관함이 아직 닫혀 있다.",
+    "scenario_hook": "약과 기록을 얻기 위해 잠긴 보관함을 열지, 시간을 아낄지 고르는 의료 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 5
+    },
+    "outdoor_anchor_id": "mapx_10_05_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/pharmacy_01.json"
+  },
+  {
+    "id": "mapx_11_05_a",
+    "name": "임시 진료소",
+    "category": "medical",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "east_medical",
+      "map_expansion",
+      "medical",
+      "quiet",
+      "records"
+    ],
+    "entry_briefing": "진료실과 약품함을 뒤질수록 얻는 것과 다치는 위험이 함께 커진다.",
+    "scenario_hook": "약과 기록을 얻기 위해 잠긴 보관함을 열지, 시간을 아낄지 고르는 의료 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 11,
+      "y": 5
+    },
+    "outdoor_anchor_id": "mapx_11_05_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/clinic_01.json"
+  },
+  {
+    "id": "mapx_00_06_a",
+    "name": "낡은 다세대 주택",
+    "category": "residential",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "household",
+      "living_trace",
+      "map_expansion",
+      "personal",
+      "west_shelter"
+    ],
+    "entry_briefing": "생활 흔적이 많아 사소한 물건까지 쓸모를 판단해야 한다.",
+    "scenario_hook": "구호품이 거의 사라진 대피선에서 남은 기록과 작은 도구를 모으는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 6
+    },
+    "outdoor_anchor_id": "mapx_00_06_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/residence_01.json"
+  },
+  {
+    "id": "mapx_00_06_b",
+    "name": "대피 안내소",
+    "category": "security",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "community",
+      "map_expansion",
+      "records",
+      "shelter",
+      "west_shelter"
+    ],
+    "entry_briefing": "구호품은 적지만 사람들이 남긴 선택의 흔적이 있다.",
+    "scenario_hook": "조용한 공간의 소란 리스크와 체온 회복 가능성을 맞바꾸는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 6
+    },
+    "outdoor_anchor_id": "mapx_00_06_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/chapel_01.json"
+  },
+  {
+    "id": "mapx_01_06_a",
+    "name": "대피 안내소",
+    "category": "security",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "community",
+      "map_expansion",
+      "records",
+      "shelter",
+      "west_shelter"
+    ],
+    "entry_briefing": "구호품은 적지만 사람들이 남긴 선택의 흔적이 있다.",
+    "scenario_hook": "조용한 공간의 소란 리스크와 체온 회복 가능성을 맞바꾸는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 1,
+      "y": 6
+    },
+    "outdoor_anchor_id": "mapx_01_06_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/chapel_01.json"
+  },
+  {
+    "id": "mapx_02_06_a",
+    "name": "작은 찻집",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "personal",
+      "quiet",
+      "warm_drink",
+      "west_shelter"
+    ],
+    "entry_briefing": "조용한 실내지만 찬 바람과 깨진 찻장이 시간을 잡아먹는다.",
+    "scenario_hook": "구호품이 거의 사라진 대피선에서 남은 기록과 작은 도구를 모으는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 2,
+      "y": 6
+    },
+    "outdoor_anchor_id": "mapx_02_06_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/tea_shop_01.json"
+  },
+  {
+    "id": "mapx_03_06_a",
+    "name": "관리 사무실",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "electronics",
+      "map_expansion",
+      "office",
+      "records"
+    ],
+    "entry_briefing": "책상 서랍과 캐비닛은 흔하지만, 쓸모 있는 정보는 안쪽에 있다.",
+    "scenario_hook": "추적과 결빙 위험 속에서 다음 실내 진입 지점을 고르는 환승 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 3,
+      "y": 6
+    },
+    "outdoor_anchor_id": "mapx_03_06_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/office_01.json"
+  },
+  {
+    "id": "mapx_04_06_a",
+    "name": "소형 수리점",
+    "category": "industrial",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "electronics",
+      "gated_backroom",
+      "map_expansion",
+      "repair"
+    ],
+    "entry_briefing": "고장 난 전자기기와 공구가 뒤섞여 조합 재료를 건질 만하다.",
+    "scenario_hook": "큰 길은 빠르지만 노출이 크고, 골목은 느리지만 파밍지가 촘촘한 이동 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 4,
+      "y": 6
+    },
+    "outdoor_anchor_id": "mapx_04_06_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/repair_shop_01.json"
+  },
+  {
+    "id": "mapx_05_06_a",
+    "name": "작은 식당",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "food_service",
+      "kitchen",
+      "map_expansion",
+      "pantry"
+    ],
+    "entry_briefing": "홀은 비었고, 위험한 주방과 잠긴 안쪽 창고가 판단을 요구한다.",
+    "scenario_hook": "추적과 결빙 위험 속에서 다음 실내 진입 지점을 고르는 환승 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 6
+    },
+    "outdoor_anchor_id": "mapx_05_06_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/restaurant_01.json"
+  },
+  {
+    "id": "mapx_05_06_b",
+    "name": "주유소",
+    "category": "industrial",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "counter",
+      "fuel",
+      "map_expansion",
+      "roadside"
+    ],
+    "entry_briefing": "연료 흔적은 위험하지만, 빈 통과 열원 재료가 남아 있을 수 있다.",
+    "scenario_hook": "큰 길은 빠르지만 노출이 크고, 골목은 느리지만 파밍지가 촘촘한 이동 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 6
+    },
+    "outdoor_anchor_id": "mapx_05_06_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/gas_station_01.json"
+  },
+  {
+    "id": "mapx_06_06_a",
+    "name": "환승로 구멍가게",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "big_decision",
+      "central_transfer",
+      "corner_store",
+      "detour",
+      "living_goods",
+      "map_expansion",
+      "neighborhood",
+      "route_info",
+      "small_stock"
+    ],
+    "entry_briefing": "창밖 정류장 안내판과 뒤쪽 문이 큰길을 피하는 우회 판단을 만든다.",
+    "scenario_hook": "빠른 큰길과 느린 골목 우회 중 어느 위험을 감수할지 고르는 환승로 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 6,
+      "y": 6
+    },
+    "outdoor_anchor_id": "mapx_06_06_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/mapx_central_transfer_corner_store_01.json"
+  },
+  {
+    "id": "mapx_07_06_a",
+    "name": "파출소",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "locked_storage",
+      "map_expansion",
+      "records",
+      "security"
+    ],
+    "entry_briefing": "잠긴 보관함과 상황판이 남아 있지만 오래 머물수록 들키기 쉽다.",
+    "scenario_hook": "추적과 결빙 위험 속에서 다음 실내 진입 지점을 고르는 환승 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 7,
+      "y": 6
+    },
+    "outdoor_anchor_id": "mapx_07_06_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/police_box_01.json"
+  },
+  {
+    "id": "mapx_08_06_a",
+    "name": "골목 편의점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "counter",
+      "east_medical",
+      "fridge_stock",
+      "glass_risk",
+      "map_expansion"
+    ],
+    "entry_briefing": "계산대 안쪽과 냉장고 뒤편에 손대기 어려운 물건이 남아 있다.",
+    "scenario_hook": "약과 기록을 얻기 위해 잠긴 보관함을 열지, 시간을 아낄지 고르는 의료 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 8,
+      "y": 6
+    },
+    "outdoor_anchor_id": "mapx_08_06_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/convenience_01.json"
+  },
+  {
+    "id": "mapx_09_06_a",
+    "name": "작은 약국",
+    "category": "medical",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "counter",
+      "east_medical",
+      "locked_storage",
+      "map_expansion",
+      "medical"
+    ],
+    "entry_briefing": "진열대는 비었지만 카운터 안쪽과 약품 보관함이 아직 닫혀 있다.",
+    "scenario_hook": "정전된 업무지구에서 지도와 열쇠 단서를 찾아 다음 동선을 여는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 9,
+      "y": 6
+    },
+    "outdoor_anchor_id": "mapx_09_06_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/pharmacy_01.json"
+  },
+  {
+    "id": "mapx_10_06_a",
+    "name": "파출소",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "east_medical",
+      "locked_storage",
+      "map_expansion",
+      "records",
+      "security"
+    ],
+    "entry_briefing": "잠긴 보관함과 상황판이 남아 있지만 오래 머물수록 들키기 쉽다.",
+    "scenario_hook": "약과 기록을 얻기 위해 잠긴 보관함을 열지, 시간을 아낄지 고르는 의료 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 6
+    },
+    "outdoor_anchor_id": "mapx_10_06_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/police_box_01.json"
+  },
+  {
+    "id": "mapx_10_06_b",
+    "name": "골목 구멍가게",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "east_medical",
+      "living_goods",
+      "map_expansion",
+      "neighborhood",
+      "small_stock"
+    ],
+    "entry_briefing": "작은 공간이라 빨리 훑을 수 있지만 사장만 아는 숨은 선반이 있다.",
+    "scenario_hook": "정전된 업무지구에서 지도와 열쇠 단서를 찾아 다음 동선을 여는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 6
+    },
+    "outdoor_anchor_id": "mapx_10_06_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/corner_store_01.json"
+  },
+  {
+    "id": "mapx_11_06_a",
+    "name": "골목 구멍가게",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "east_medical",
+      "living_goods",
+      "map_expansion",
+      "neighborhood",
+      "small_stock"
+    ],
+    "entry_briefing": "작은 공간이라 빨리 훑을 수 있지만 사장만 아는 숨은 선반이 있다.",
+    "scenario_hook": "정전된 업무지구에서 지도와 열쇠 단서를 찾아 다음 동선을 여는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 11,
+      "y": 6
+    },
+    "outdoor_anchor_id": "mapx_11_06_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/corner_store_01.json"
+  },
+  {
+    "id": "mapx_00_07_a",
+    "name": "기사식당",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "bulk_food",
+      "kitchen",
+      "map_expansion",
+      "truckers",
+      "west_shelter"
+    ],
+    "entry_briefing": "급히 떠난 흔적이 남아 있어 조리대와 휴게실 선택지가 갈린다.",
+    "scenario_hook": "조용한 공간의 소란 리스크와 체온 회복 가능성을 맞바꾸는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 7
+    },
+    "outdoor_anchor_id": "mapx_00_07_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/canteen_01.json"
+  },
+  {
+    "id": "mapx_00_07_b",
+    "name": "작은 예배당",
+    "category": "residential",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "community",
+      "map_expansion",
+      "quiet",
+      "shelter",
+      "west_shelter"
+    ],
+    "entry_briefing": "임시 대피 흔적이 있으나 조용한 공간일수록 소란이 크게 울린다.",
+    "scenario_hook": "구호품이 거의 사라진 대피선에서 남은 기록과 작은 도구를 모으는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 7
+    },
+    "outdoor_anchor_id": "mapx_00_07_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/chapel_01.json"
+  },
+  {
+    "id": "mapx_01_07_a",
+    "name": "연립 주택",
+    "category": "residential",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "basement",
+      "living_trace",
+      "map_expansion",
+      "neighbors",
+      "west_shelter"
+    ],
+    "entry_briefing": "옆집까지 이어진 흔적 때문에 어느 문부터 열지 결정해야 한다.",
+    "scenario_hook": "구호품이 거의 사라진 대피선에서 남은 기록과 작은 도구를 모으는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 1,
+      "y": 7
+    },
+    "outdoor_anchor_id": "mapx_01_07_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/row_house_01.json"
+  },
+  {
+    "id": "mapx_02_07_a",
+    "name": "대피 안내소",
+    "category": "security",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "community",
+      "map_expansion",
+      "records",
+      "shelter",
+      "west_shelter"
+    ],
+    "entry_briefing": "구호품은 적지만 사람들이 남긴 선택의 흔적이 있다.",
+    "scenario_hook": "조용한 공간의 소란 리스크와 체온 회복 가능성을 맞바꾸는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 2,
+      "y": 7
+    },
+    "outdoor_anchor_id": "mapx_02_07_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/chapel_01.json"
+  },
+  {
+    "id": "mapx_03_07_a",
+    "name": "골목 구멍가게",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "living_goods",
+      "map_expansion",
+      "neighborhood",
+      "small_stock"
+    ],
+    "entry_briefing": "작은 공간이라 빨리 훑을 수 있지만 사장만 아는 숨은 선반이 있다.",
+    "scenario_hook": "큰 길은 빠르지만 노출이 크고, 골목은 느리지만 파밍지가 촘촘한 이동 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 3,
+      "y": 7
+    },
+    "outdoor_anchor_id": "mapx_03_07_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/corner_store_01.json"
+  },
+  {
+    "id": "mapx_04_07_a",
+    "name": "파출소",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "locked_storage",
+      "map_expansion",
+      "records",
+      "security"
+    ],
+    "entry_briefing": "잠긴 보관함과 상황판이 남아 있지만 오래 머물수록 들키기 쉽다.",
+    "scenario_hook": "추적과 결빙 위험 속에서 다음 실내 진입 지점을 고르는 환승 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 4,
+      "y": 7
+    },
+    "outdoor_anchor_id": "mapx_04_07_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/police_box_01.json"
+  },
+  {
+    "id": "mapx_05_07_a",
+    "name": "정비 차고",
+    "category": "industrial",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "map_expansion",
+      "repair",
+      "tools",
+      "vehicle"
+    ],
+    "entry_briefing": "기름 냄새와 얼어붙은 셔터 때문에 안전한 접근이 필요하다.",
+    "scenario_hook": "큰 길은 빠르지만 노출이 크고, 골목은 느리지만 파밍지가 촘촘한 이동 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 7
+    },
+    "outdoor_anchor_id": "mapx_05_07_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/garage_01.json"
+  },
+  {
+    "id": "mapx_05_07_b",
+    "name": "파출소",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "central_transfer",
+      "locked_storage",
+      "map_expansion",
+      "records",
+      "security"
+    ],
+    "entry_briefing": "잠긴 보관함과 상황판이 남아 있지만 오래 머물수록 들키기 쉽다.",
+    "scenario_hook": "추적과 결빙 위험 속에서 다음 실내 진입 지점을 고르는 환승 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 7
+    },
+    "outdoor_anchor_id": "mapx_05_07_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/police_box_01.json"
+  },
+  {
+    "id": "mapx_06_07_a",
+    "name": "관리 사무실",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "electronics",
+      "map_expansion",
+      "office",
+      "records",
+      "south_industrial"
+    ],
+    "entry_briefing": "책상 서랍과 캐비닛은 흔하지만, 쓸모 있는 정보는 안쪽에 있다.",
+    "scenario_hook": "소리를 감수하고 셔터/상자를 열지 포기할지 고르는 창고 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 6,
+      "y": 7
+    },
+    "outdoor_anchor_id": "mapx_06_07_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/office_01.json"
+  },
+  {
+    "id": "mapx_07_07_a",
+    "name": "물류 보관소",
+    "category": "industrial",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "bulk_stock",
+      "industrial",
+      "locked_storage",
+      "map_expansion",
+      "south_industrial"
+    ],
+    "entry_briefing": "상자는 많지만 모두 열 수는 없다. 소리와 시간의 값을 따져야 한다.",
+    "scenario_hook": "무겁지만 결정적인 공구와 연료 재료를 운반 한계 안에 담는 정비 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 7,
+      "y": 7
+    },
+    "outdoor_anchor_id": "mapx_07_07_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/storage_depot_01.json"
+  },
+  {
+    "id": "mapx_08_07_a",
+    "name": "골목 구멍가게",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "living_goods",
+      "map_expansion",
+      "neighborhood",
+      "small_stock",
+      "south_industrial"
+    ],
+    "entry_briefing": "작은 공간이라 빨리 훑을 수 있지만 사장만 아는 숨은 선반이 있다.",
+    "scenario_hook": "소리를 감수하고 셔터/상자를 열지 포기할지 고르는 창고 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 8,
+      "y": 7
+    },
+    "outdoor_anchor_id": "mapx_08_07_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/corner_store_01.json"
+  },
+  {
+    "id": "mapx_09_07_a",
+    "name": "관리 사무실",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "electronics",
+      "map_expansion",
+      "office",
+      "records",
+      "south_industrial"
+    ],
+    "entry_briefing": "책상 서랍과 캐비닛은 흔하지만, 쓸모 있는 정보는 안쪽에 있다.",
+    "scenario_hook": "무겁지만 결정적인 공구와 연료 재료를 운반 한계 안에 담는 정비 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 9,
+      "y": 7
+    },
+    "outdoor_anchor_id": "mapx_09_07_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/office_01.json"
+  },
+  {
+    "id": "mapx_10_07_a",
+    "name": "정비 차고",
+    "category": "industrial",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "repair",
+      "south_industrial",
+      "tools",
+      "vehicle"
+    ],
+    "entry_briefing": "기름 냄새와 얼어붙은 셔터 때문에 안전한 접근이 필요하다.",
+    "scenario_hook": "소리를 감수하고 셔터/상자를 열지 포기할지 고르는 창고 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 7
+    },
+    "outdoor_anchor_id": "mapx_10_07_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/garage_01.json"
+  },
+  {
+    "id": "mapx_10_07_b",
+    "name": "작은 철물 코너",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "gated_backroom",
+      "map_expansion",
+      "materials",
+      "repair",
+      "south_industrial"
+    ],
+    "entry_briefing": "진열대보다 안쪽 자재함과 공구함이 더 중요해 보인다.",
+    "scenario_hook": "무겁지만 결정적인 공구와 연료 재료를 운반 한계 안에 담는 정비 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 7
+    },
+    "outdoor_anchor_id": "mapx_10_07_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/hardware_01.json"
+  },
+  {
+    "id": "mapx_11_07_a",
+    "name": "작은 철물 코너",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "gated_backroom",
+      "map_expansion",
+      "materials",
+      "repair",
+      "south_industrial"
+    ],
+    "entry_briefing": "진열대보다 안쪽 자재함과 공구함이 더 중요해 보인다.",
+    "scenario_hook": "무겁지만 결정적인 공구와 연료 재료를 운반 한계 안에 담는 정비 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 11,
+      "y": 7
+    },
+    "outdoor_anchor_id": "mapx_11_07_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/hardware_01.json"
+  },
+  {
+    "id": "mapx_00_08_a",
+    "name": "임시 대피 잡화점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "big_decision",
+      "community",
+      "living_goods",
+      "map_expansion",
+      "neighborhood",
+      "personal",
+      "shelter",
+      "small_stock",
+      "south_residential"
+    ],
+    "entry_briefing": "남겨진 보급 상자를 전부 가져갈지 일부만 챙길지 마음까지 시험하는 장소다.",
+    "scenario_hook": "내 생존과 다음 생존자의 몫 사이를 고르는 서쪽 대피선 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 8
+    },
+    "outdoor_anchor_id": "mapx_00_08_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/mapx_west_shelter_general_store_01.json"
+  },
+  {
+    "id": "mapx_00_08_b",
+    "name": "작은 식당",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "food_service",
+      "kitchen",
+      "map_expansion",
+      "pantry",
+      "south_residential"
+    ],
+    "entry_briefing": "홀은 비었고, 위험한 주방과 잠긴 안쪽 창고가 판단을 요구한다.",
+    "scenario_hook": "가족 흔적과 임시 대피 흔적이 섞인 방을 어디까지 뒤질지 결정하는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 8
+    },
+    "outdoor_anchor_id": "mapx_00_08_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/restaurant_01.json"
+  },
+  {
+    "id": "mapx_01_08_a",
+    "name": "정육점",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "cold_storage",
+      "food_service",
+      "map_expansion",
+      "sharp_tools",
+      "south_residential"
+    ],
+    "entry_briefing": "냉장실 문이 얼어붙어 있고, 안쪽 수색은 손과 시간을 많이 쓴다.",
+    "scenario_hook": "가족 흔적과 임시 대피 흔적이 섞인 방을 어디까지 뒤질지 결정하는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 1,
+      "y": 8
+    },
+    "outdoor_anchor_id": "mapx_01_08_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/butcher_01.json"
+  },
+  {
+    "id": "mapx_02_08_a",
+    "name": "작은 예배당",
+    "category": "residential",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "community",
+      "map_expansion",
+      "quiet",
+      "shelter",
+      "south_residential"
+    ],
+    "entry_briefing": "임시 대피 흔적이 있으나 조용한 공간일수록 소란이 크게 울린다.",
+    "scenario_hook": "남겨진 생활 공간에서 사적인 물건과 실용 물건 사이의 무게를 고르는 주거 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 2,
+      "y": 8
+    },
+    "outdoor_anchor_id": "mapx_02_08_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/chapel_01.json"
+  },
+  {
+    "id": "mapx_03_08_a",
+    "name": "작은 철물 코너",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "gated_backroom",
+      "map_expansion",
+      "materials",
+      "repair",
+      "south_residential"
+    ],
+    "entry_briefing": "진열대보다 안쪽 자재함과 공구함이 더 중요해 보인다.",
+    "scenario_hook": "가족 흔적과 임시 대피 흔적이 섞인 방을 어디까지 뒤질지 결정하는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 3,
+      "y": 8
+    },
+    "outdoor_anchor_id": "mapx_03_08_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/hardware_01.json"
+  },
+  {
+    "id": "mapx_04_08_a",
+    "name": "동네 빵집",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "back_kitchen",
+      "food_service",
+      "map_expansion",
+      "south_residential",
+      "warm_drink"
+    ],
+    "entry_briefing": "진열대보다 오븐 뒤와 재료 선반 쪽이 더 깊은 수색지가 된다.",
+    "scenario_hook": "남겨진 생활 공간에서 사적인 물건과 실용 물건 사이의 무게를 고르는 주거 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 4,
+      "y": 8
+    },
+    "outdoor_anchor_id": "mapx_04_08_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/bakery_01.json"
+  },
+  {
+    "id": "mapx_05_08_a",
+    "name": "얼어붙은 빌라",
+    "category": "residential",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "keys",
+      "living_trace",
+      "map_expansion",
+      "south_residential",
+      "vertical_site"
+    ],
+    "entry_briefing": "공동 현관 뒤로 계단과 잠긴 문들이 이어져 한 번에 끝나지 않는다.",
+    "scenario_hook": "가족 흔적과 임시 대피 흔적이 섞인 방을 어디까지 뒤질지 결정하는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 8
+    },
+    "outdoor_anchor_id": "mapx_05_08_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/apartment_01.json"
+  },
+  {
+    "id": "mapx_05_08_b",
+    "name": "얼어붙은 할인점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "bulk_stock",
+      "living_goods",
+      "map_expansion",
+      "public_floor",
+      "south_residential"
+    ],
+    "entry_briefing": "넓은 매대와 직원 구역이 남아 있지만 인기 물품은 이미 많이 털렸다.",
+    "scenario_hook": "남겨진 생활 공간에서 사적인 물건과 실용 물건 사이의 무게를 고르는 주거 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 8
+    },
+    "outdoor_anchor_id": "mapx_05_08_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/mart_01.json"
+  },
+  {
+    "id": "mapx_06_08_a",
+    "name": "얼어붙은 할인점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "bulk_stock",
+      "living_goods",
+      "map_expansion",
+      "public_floor",
+      "south_industrial"
+    ],
+    "entry_briefing": "넓은 매대와 직원 구역이 남아 있지만 인기 물품은 이미 많이 털렸다.",
+    "scenario_hook": "무겁지만 결정적인 공구와 연료 재료를 운반 한계 안에 담는 정비 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 6,
+      "y": 8
+    },
+    "outdoor_anchor_id": "mapx_06_08_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/mart_01.json"
+  },
+  {
+    "id": "mapx_07_08_a",
+    "name": "파출소",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "locked_storage",
+      "map_expansion",
+      "records",
+      "security",
+      "south_industrial"
+    ],
+    "entry_briefing": "잠긴 보관함과 상황판이 남아 있지만 오래 머물수록 들키기 쉽다.",
+    "scenario_hook": "소리를 감수하고 셔터/상자를 열지 포기할지 고르는 창고 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 7,
+      "y": 8
+    },
+    "outdoor_anchor_id": "mapx_07_08_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/police_box_01.json"
+  },
+  {
+    "id": "mapx_08_08_a",
+    "name": "소형 수리점",
+    "category": "industrial",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "electronics",
+      "gated_backroom",
+      "map_expansion",
+      "repair",
+      "south_industrial"
+    ],
+    "entry_briefing": "고장 난 전자기기와 공구가 뒤섞여 조합 재료를 건질 만하다.",
+    "scenario_hook": "무겁지만 결정적인 공구와 연료 재료를 운반 한계 안에 담는 정비 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 8,
+      "y": 8
+    },
+    "outdoor_anchor_id": "mapx_08_08_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/repair_shop_01.json"
+  },
+  {
+    "id": "mapx_09_08_a",
+    "name": "중고 서점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "paper",
+      "quiet",
+      "records",
+      "south_industrial"
+    ],
+    "entry_briefing": "책장 사이가 어둡고, 카운터 밑 기록 상자가 유난히 눈에 띈다.",
+    "scenario_hook": "소리를 감수하고 셔터/상자를 열지 포기할지 고르는 창고 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 9,
+      "y": 8
+    },
+    "outdoor_anchor_id": "mapx_09_08_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/bookstore_01.json"
+  },
+  {
+    "id": "mapx_10_08_a",
+    "name": "파출소",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "locked_storage",
+      "map_expansion",
+      "records",
+      "security",
+      "south_industrial"
+    ],
+    "entry_briefing": "잠긴 보관함과 상황판이 남아 있지만 오래 머물수록 들키기 쉽다.",
+    "scenario_hook": "무겁지만 결정적인 공구와 연료 재료를 운반 한계 안에 담는 정비 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 8
+    },
+    "outdoor_anchor_id": "mapx_10_08_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/police_box_01.json"
+  },
+  {
+    "id": "mapx_10_08_b",
+    "name": "폐창고",
+    "category": "industrial",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "industrial",
+      "map_expansion",
+      "materials",
+      "south_industrial",
+      "stockroom"
+    ],
+    "entry_briefing": "큰 물건은 많지만 들고 나갈 수 있는 것과 없는 것을 가려야 한다.",
+    "scenario_hook": "소리를 감수하고 셔터/상자를 열지 포기할지 고르는 창고 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 8
+    },
+    "outdoor_anchor_id": "mapx_10_08_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/warehouse_01.json"
+  },
+  {
+    "id": "mapx_11_08_a",
+    "name": "폐창고",
+    "category": "industrial",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "industrial",
+      "map_expansion",
+      "materials",
+      "south_industrial",
+      "stockroom"
+    ],
+    "entry_briefing": "큰 물건은 많지만 들고 나갈 수 있는 것과 없는 것을 가려야 한다.",
+    "scenario_hook": "소리를 감수하고 셔터/상자를 열지 포기할지 고르는 창고 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 11,
+      "y": 8
+    },
+    "outdoor_anchor_id": "mapx_11_08_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/warehouse_01.json"
+  },
+  {
+    "id": "mapx_00_09_a",
+    "name": "싸구려 여관",
+    "category": "residential",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "bedding",
+      "lost_items",
+      "map_expansion",
+      "south_residential",
+      "temporary_home"
+    ],
+    "entry_briefing": "객실마다 남은 물건의 성격이 달라 오래 뒤질수록 위험도 커진다.",
+    "scenario_hook": "가족 흔적과 임시 대피 흔적이 섞인 방을 어디까지 뒤질지 결정하는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 9
+    },
+    "outdoor_anchor_id": "mapx_00_09_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/hostel_01.json"
+  },
+  {
+    "id": "mapx_00_09_b",
+    "name": "중고 서점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "paper",
+      "quiet",
+      "records",
+      "south_residential"
+    ],
+    "entry_briefing": "책장 사이가 어둡고, 카운터 밑 기록 상자가 유난히 눈에 띈다.",
+    "scenario_hook": "남겨진 생활 공간에서 사적인 물건과 실용 물건 사이의 무게를 고르는 주거 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 9
+    },
+    "outdoor_anchor_id": "mapx_00_09_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/bookstore_01.json"
+  },
+  {
+    "id": "mapx_01_09_a",
+    "name": "중고 서점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "paper",
+      "quiet",
+      "records",
+      "south_residential"
+    ],
+    "entry_briefing": "책장 사이가 어둡고, 카운터 밑 기록 상자가 유난히 눈에 띈다.",
+    "scenario_hook": "남겨진 생활 공간에서 사적인 물건과 실용 물건 사이의 무게를 고르는 주거 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 1,
+      "y": 9
+    },
+    "outdoor_anchor_id": "mapx_01_09_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/bookstore_01.json"
+  },
+  {
+    "id": "mapx_02_09_a",
+    "name": "작은 식당",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "food_service",
+      "kitchen",
+      "map_expansion",
+      "pantry",
+      "south_residential"
+    ],
+    "entry_briefing": "홀은 비었고, 위험한 주방과 잠긴 안쪽 창고가 판단을 요구한다.",
+    "scenario_hook": "가족 흔적과 임시 대피 흔적이 섞인 방을 어디까지 뒤질지 결정하는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 2,
+      "y": 9
+    },
+    "outdoor_anchor_id": "mapx_02_09_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/restaurant_01.json"
+  },
+  {
+    "id": "mapx_03_09_a",
+    "name": "낡은 다세대 주택",
+    "category": "residential",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "household",
+      "living_trace",
+      "map_expansion",
+      "personal",
+      "south_residential"
+    ],
+    "entry_briefing": "생활 흔적이 많아 사소한 물건까지 쓸모를 판단해야 한다.",
+    "scenario_hook": "남겨진 생활 공간에서 사적인 물건과 실용 물건 사이의 무게를 고르는 주거 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 3,
+      "y": 9
+    },
+    "outdoor_anchor_id": "mapx_03_09_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/residence_01.json"
+  },
+  {
+    "id": "mapx_04_09_a",
+    "name": "골목 편의점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "counter",
+      "fridge_stock",
+      "glass_risk",
+      "map_expansion",
+      "south_residential"
+    ],
+    "entry_briefing": "계산대 안쪽과 냉장고 뒤편에 손대기 어려운 물건이 남아 있다.",
+    "scenario_hook": "가족 흔적과 임시 대피 흔적이 섞인 방을 어디까지 뒤질지 결정하는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 4,
+      "y": 9
+    },
+    "outdoor_anchor_id": "mapx_04_09_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/convenience_01.json"
+  },
+  {
+    "id": "mapx_05_09_a",
+    "name": "작은 찻집",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "personal",
+      "quiet",
+      "south_residential",
+      "warm_drink"
+    ],
+    "entry_briefing": "조용한 실내지만 찬 바람과 깨진 찻장이 시간을 잡아먹는다.",
+    "scenario_hook": "남겨진 생활 공간에서 사적인 물건과 실용 물건 사이의 무게를 고르는 주거 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 9
+    },
+    "outdoor_anchor_id": "mapx_05_09_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/tea_shop_01.json"
+  },
+  {
+    "id": "mapx_05_09_b",
+    "name": "동네 교회",
+    "category": "residential",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "community_stock",
+      "map_expansion",
+      "records",
+      "shelter",
+      "south_residential"
+    ],
+    "entry_briefing": "구호품과 사람들의 흔적이 섞여 있어 수색의 감정적 무게가 크다.",
+    "scenario_hook": "가족 흔적과 임시 대피 흔적이 섞인 방을 어디까지 뒤질지 결정하는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 9
+    },
+    "outdoor_anchor_id": "mapx_05_09_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/church_01.json"
+  },
+  {
+    "id": "mapx_06_09_a",
+    "name": "물류 보관소",
+    "category": "industrial",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "bulk_stock",
+      "industrial",
+      "locked_storage",
+      "map_expansion",
+      "south_industrial"
+    ],
+    "entry_briefing": "상자는 많지만 모두 열 수는 없다. 소리와 시간의 값을 따져야 한다.",
+    "scenario_hook": "소리를 감수하고 셔터/상자를 열지 포기할지 고르는 창고 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 6,
+      "y": 9
+    },
+    "outdoor_anchor_id": "mapx_06_09_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/storage_depot_01.json"
+  },
+  {
+    "id": "mapx_07_09_a",
+    "name": "골목 구멍가게",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "living_goods",
+      "map_expansion",
+      "neighborhood",
+      "small_stock",
+      "south_industrial"
+    ],
+    "entry_briefing": "작은 공간이라 빨리 훑을 수 있지만 사장만 아는 숨은 선반이 있다.",
+    "scenario_hook": "무겁지만 결정적인 공구와 연료 재료를 운반 한계 안에 담는 정비 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 7,
+      "y": 9
+    },
+    "outdoor_anchor_id": "mapx_07_09_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/corner_store_01.json"
+  },
+  {
+    "id": "mapx_08_09_a",
+    "name": "폐교 정문",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "public_building",
+      "records",
+      "shelter",
+      "south_industrial"
+    ],
+    "entry_briefing": "정문 주변 안내문과 경비실 흔적이 다음 이동 판단을 흔든다.",
+    "scenario_hook": "소리를 감수하고 셔터/상자를 열지 포기할지 고르는 창고 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 8,
+      "y": 9
+    },
+    "outdoor_anchor_id": "mapx_08_09_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/school_gate_01.json"
+  },
+  {
+    "id": "mapx_09_09_a",
+    "name": "정비 차고",
+    "category": "industrial",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "repair",
+      "south_industrial",
+      "tools",
+      "vehicle"
+    ],
+    "entry_briefing": "기름 냄새와 얼어붙은 셔터 때문에 안전한 접근이 필요하다.",
+    "scenario_hook": "무겁지만 결정적인 공구와 연료 재료를 운반 한계 안에 담는 정비 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 9,
+      "y": 9
+    },
+    "outdoor_anchor_id": "mapx_09_09_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/garage_01.json"
+  },
+  {
+    "id": "mapx_10_09_a",
+    "name": "작은 철물 코너",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "gated_backroom",
+      "map_expansion",
+      "materials",
+      "repair",
+      "south_industrial"
+    ],
+    "entry_briefing": "진열대보다 안쪽 자재함과 공구함이 더 중요해 보인다.",
+    "scenario_hook": "소리를 감수하고 셔터/상자를 열지 포기할지 고르는 창고 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 9
+    },
+    "outdoor_anchor_id": "mapx_10_09_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/hardware_01.json"
+  },
+  {
+    "id": "mapx_10_09_b",
+    "name": "관리 사무실",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "electronics",
+      "map_expansion",
+      "office",
+      "records",
+      "south_industrial"
+    ],
+    "entry_briefing": "책상 서랍과 캐비닛은 흔하지만, 쓸모 있는 정보는 안쪽에 있다.",
+    "scenario_hook": "무겁지만 결정적인 공구와 연료 재료를 운반 한계 안에 담는 정비 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 9
+    },
+    "outdoor_anchor_id": "mapx_10_09_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/office_01.json"
+  },
+  {
+    "id": "mapx_11_09_a",
+    "name": "폐교 정문",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "public_building",
+      "records",
+      "shelter",
+      "south_industrial"
+    ],
+    "entry_briefing": "정문 주변 안내문과 경비실 흔적이 다음 이동 판단을 흔든다.",
+    "scenario_hook": "무겁지만 결정적인 공구와 연료 재료를 운반 한계 안에 담는 정비 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 11,
+      "y": 9
+    },
+    "outdoor_anchor_id": "mapx_11_09_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/school_gate_01.json"
+  },
+  {
+    "id": "mapx_00_10_a",
+    "name": "문 닫은 카페",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "seating",
+      "south_residential",
+      "warm_drink",
+      "window_gap"
+    ],
+    "entry_briefing": "창가 틈바람이 세지만 머신 주변과 좌석 아래에 쓸 만한 것이 있다.",
+    "scenario_hook": "남겨진 생활 공간에서 사적인 물건과 실용 물건 사이의 무게를 고르는 주거 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 10
+    },
+    "outdoor_anchor_id": "mapx_00_10_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/cafe_01.json"
+  },
+  {
+    "id": "mapx_00_10_b",
+    "name": "얼어붙은 빌라",
+    "category": "residential",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "keys",
+      "living_trace",
+      "map_expansion",
+      "south_residential",
+      "vertical_site"
+    ],
+    "entry_briefing": "공동 현관 뒤로 계단과 잠긴 문들이 이어져 한 번에 끝나지 않는다.",
+    "scenario_hook": "가족 흔적과 임시 대피 흔적이 섞인 방을 어디까지 뒤질지 결정하는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 10
+    },
+    "outdoor_anchor_id": "mapx_00_10_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/apartment_01.json"
+  },
+  {
+    "id": "mapx_01_10_a",
+    "name": "동네 교회",
+    "category": "residential",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "community_stock",
+      "map_expansion",
+      "records",
+      "shelter",
+      "south_residential"
+    ],
+    "entry_briefing": "구호품과 사람들의 흔적이 섞여 있어 수색의 감정적 무게가 크다.",
+    "scenario_hook": "가족 흔적과 임시 대피 흔적이 섞인 방을 어디까지 뒤질지 결정하는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 1,
+      "y": 10
+    },
+    "outdoor_anchor_id": "mapx_01_10_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/church_01.json"
+  },
+  {
+    "id": "mapx_02_10_a",
+    "name": "작은 철물 코너",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "gated_backroom",
+      "map_expansion",
+      "materials",
+      "repair",
+      "south_residential"
+    ],
+    "entry_briefing": "진열대보다 안쪽 자재함과 공구함이 더 중요해 보인다.",
+    "scenario_hook": "남겨진 생활 공간에서 사적인 물건과 실용 물건 사이의 무게를 고르는 주거 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 2,
+      "y": 10
+    },
+    "outdoor_anchor_id": "mapx_02_10_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/hardware_01.json"
+  },
+  {
+    "id": "mapx_03_10_a",
+    "name": "기사식당",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "bulk_food",
+      "kitchen",
+      "map_expansion",
+      "south_residential",
+      "truckers"
+    ],
+    "entry_briefing": "급히 떠난 흔적이 남아 있어 조리대와 휴게실 선택지가 갈린다.",
+    "scenario_hook": "가족 흔적과 임시 대피 흔적이 섞인 방을 어디까지 뒤질지 결정하는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 3,
+      "y": 10
+    },
+    "outdoor_anchor_id": "mapx_03_10_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/canteen_01.json"
+  },
+  {
+    "id": "mapx_04_10_a",
+    "name": "연립 주택",
+    "category": "residential",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "basement",
+      "living_trace",
+      "map_expansion",
+      "neighbors",
+      "south_residential"
+    ],
+    "entry_briefing": "옆집까지 이어진 흔적 때문에 어느 문부터 열지 결정해야 한다.",
+    "scenario_hook": "남겨진 생활 공간에서 사적인 물건과 실용 물건 사이의 무게를 고르는 주거 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 4,
+      "y": 10
+    },
+    "outdoor_anchor_id": "mapx_04_10_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/row_house_01.json"
+  },
+  {
+    "id": "mapx_05_10_a",
+    "name": "얼어붙은 할인점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "bulk_stock",
+      "living_goods",
+      "map_expansion",
+      "public_floor",
+      "south_residential"
+    ],
+    "entry_briefing": "넓은 매대와 직원 구역이 남아 있지만 인기 물품은 이미 많이 털렸다.",
+    "scenario_hook": "가족 흔적과 임시 대피 흔적이 섞인 방을 어디까지 뒤질지 결정하는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 10
+    },
+    "outdoor_anchor_id": "mapx_05_10_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/mart_01.json"
+  },
+  {
+    "id": "mapx_05_10_b",
+    "name": "동네 빵집",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "back_kitchen",
+      "food_service",
+      "map_expansion",
+      "south_residential",
+      "warm_drink"
+    ],
+    "entry_briefing": "진열대보다 오븐 뒤와 재료 선반 쪽이 더 깊은 수색지가 된다.",
+    "scenario_hook": "남겨진 생활 공간에서 사적인 물건과 실용 물건 사이의 무게를 고르는 주거 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 10
+    },
+    "outdoor_anchor_id": "mapx_05_10_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/bakery_01.json"
+  },
+  {
+    "id": "mapx_06_10_a",
+    "name": "관리 사무실",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "electronics",
+      "map_expansion",
+      "office",
+      "records",
+      "south_industrial"
+    ],
+    "entry_briefing": "책상 서랍과 캐비닛은 흔하지만, 쓸모 있는 정보는 안쪽에 있다.",
+    "scenario_hook": "무겁지만 결정적인 공구와 연료 재료를 운반 한계 안에 담는 정비 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 6,
+      "y": 10
+    },
+    "outdoor_anchor_id": "mapx_06_10_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/office_01.json"
+  },
+  {
+    "id": "mapx_07_10_a",
+    "name": "소형 수리점",
+    "category": "industrial",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "electronics",
+      "gated_backroom",
+      "map_expansion",
+      "repair",
+      "south_industrial"
+    ],
+    "entry_briefing": "고장 난 전자기기와 공구가 뒤섞여 조합 재료를 건질 만하다.",
+    "scenario_hook": "소리를 감수하고 셔터/상자를 열지 포기할지 고르는 창고 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 7,
+      "y": 10
+    },
+    "outdoor_anchor_id": "mapx_07_10_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/repair_shop_01.json"
+  },
+  {
+    "id": "mapx_08_10_a",
+    "name": "중고 서점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "paper",
+      "quiet",
+      "records",
+      "south_industrial"
+    ],
+    "entry_briefing": "책장 사이가 어둡고, 카운터 밑 기록 상자가 유난히 눈에 띈다.",
+    "scenario_hook": "무겁지만 결정적인 공구와 연료 재료를 운반 한계 안에 담는 정비 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 8,
+      "y": 10
+    },
+    "outdoor_anchor_id": "mapx_08_10_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/bookstore_01.json"
+  },
+  {
+    "id": "mapx_09_10_a",
+    "name": "관리 사무실",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "electronics",
+      "map_expansion",
+      "office",
+      "records",
+      "south_industrial"
+    ],
+    "entry_briefing": "책상 서랍과 캐비닛은 흔하지만, 쓸모 있는 정보는 안쪽에 있다.",
+    "scenario_hook": "소리를 감수하고 셔터/상자를 열지 포기할지 고르는 창고 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 9,
+      "y": 10
+    },
+    "outdoor_anchor_id": "mapx_09_10_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/office_01.json"
+  },
+  {
+    "id": "mapx_10_10_a",
+    "name": "폐창고",
+    "category": "industrial",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "industrial",
+      "map_expansion",
+      "materials",
+      "south_industrial",
+      "stockroom"
+    ],
+    "entry_briefing": "큰 물건은 많지만 들고 나갈 수 있는 것과 없는 것을 가려야 한다.",
+    "scenario_hook": "무겁지만 결정적인 공구와 연료 재료를 운반 한계 안에 담는 정비 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 10
+    },
+    "outdoor_anchor_id": "mapx_10_10_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/warehouse_01.json"
+  },
+  {
+    "id": "mapx_10_10_b",
+    "name": "골목 편의점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "counter",
+      "fridge_stock",
+      "glass_risk",
+      "map_expansion",
+      "south_industrial"
+    ],
+    "entry_briefing": "계산대 안쪽과 냉장고 뒤편에 손대기 어려운 물건이 남아 있다.",
+    "scenario_hook": "소리를 감수하고 셔터/상자를 열지 포기할지 고르는 창고 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 10
+    },
+    "outdoor_anchor_id": "mapx_10_10_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/convenience_01.json"
+  },
+  {
+    "id": "mapx_11_10_a",
+    "name": "골목 편의점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "counter",
+      "fridge_stock",
+      "glass_risk",
+      "map_expansion",
+      "south_industrial"
+    ],
+    "entry_briefing": "계산대 안쪽과 냉장고 뒤편에 손대기 어려운 물건이 남아 있다.",
+    "scenario_hook": "소리를 감수하고 셔터/상자를 열지 포기할지 고르는 창고 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 11,
+      "y": 10
+    },
+    "outdoor_anchor_id": "mapx_11_10_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/convenience_01.json"
+  },
+  {
+    "id": "mapx_00_11_a",
+    "name": "중고 서점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "paper",
+      "quiet",
+      "records",
+      "south_residential"
+    ],
+    "entry_briefing": "책장 사이가 어둡고, 카운터 밑 기록 상자가 유난히 눈에 띈다.",
+    "scenario_hook": "가족 흔적과 임시 대피 흔적이 섞인 방을 어디까지 뒤질지 결정하는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 11
+    },
+    "outdoor_anchor_id": "mapx_00_11_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/bookstore_01.json"
+  },
+  {
+    "id": "mapx_00_11_b",
+    "name": "작은 찻집",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "personal",
+      "quiet",
+      "south_residential",
+      "warm_drink"
+    ],
+    "entry_briefing": "조용한 실내지만 찬 바람과 깨진 찻장이 시간을 잡아먹는다.",
+    "scenario_hook": "남겨진 생활 공간에서 사적인 물건과 실용 물건 사이의 무게를 고르는 주거 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 0,
+      "y": 11
+    },
+    "outdoor_anchor_id": "mapx_00_11_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/tea_shop_01.json"
+  },
+  {
+    "id": "mapx_01_11_a",
+    "name": "동네 빵집",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "back_kitchen",
+      "food_service",
+      "map_expansion",
+      "south_residential",
+      "warm_drink"
+    ],
+    "entry_briefing": "진열대보다 오븐 뒤와 재료 선반 쪽이 더 깊은 수색지가 된다.",
+    "scenario_hook": "남겨진 생활 공간에서 사적인 물건과 실용 물건 사이의 무게를 고르는 주거 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 1,
+      "y": 11
+    },
+    "outdoor_anchor_id": "mapx_01_11_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/bakery_01.json"
+  },
+  {
+    "id": "mapx_02_11_a",
+    "name": "얼어붙은 빌라",
+    "category": "residential",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "keys",
+      "living_trace",
+      "map_expansion",
+      "south_residential",
+      "vertical_site"
+    ],
+    "entry_briefing": "공동 현관 뒤로 계단과 잠긴 문들이 이어져 한 번에 끝나지 않는다.",
+    "scenario_hook": "가족 흔적과 임시 대피 흔적이 섞인 방을 어디까지 뒤질지 결정하는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 2,
+      "y": 11
+    },
+    "outdoor_anchor_id": "mapx_02_11_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/apartment_01.json"
+  },
+  {
+    "id": "mapx_03_11_a",
+    "name": "골목 편의점",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "counter",
+      "fridge_stock",
+      "glass_risk",
+      "map_expansion",
+      "south_residential"
+    ],
+    "entry_briefing": "계산대 안쪽과 냉장고 뒤편에 손대기 어려운 물건이 남아 있다.",
+    "scenario_hook": "남겨진 생활 공간에서 사적인 물건과 실용 물건 사이의 무게를 고르는 주거 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 3,
+      "y": 11
+    },
+    "outdoor_anchor_id": "mapx_03_11_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/convenience_01.json"
+  },
+  {
+    "id": "mapx_04_11_a",
+    "name": "정육점",
+    "category": "food_service",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "cold_storage",
+      "food_service",
+      "map_expansion",
+      "sharp_tools",
+      "south_residential"
+    ],
+    "entry_briefing": "냉장실 문이 얼어붙어 있고, 안쪽 수색은 손과 시간을 많이 쓴다.",
+    "scenario_hook": "가족 흔적과 임시 대피 흔적이 섞인 방을 어디까지 뒤질지 결정하는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 4,
+      "y": 11
+    },
+    "outdoor_anchor_id": "mapx_04_11_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/butcher_01.json"
+  },
+  {
+    "id": "mapx_05_11_a",
+    "name": "작은 예배당",
+    "category": "residential",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "community",
+      "map_expansion",
+      "quiet",
+      "shelter",
+      "south_residential"
+    ],
+    "entry_briefing": "임시 대피 흔적이 있으나 조용한 공간일수록 소란이 크게 울린다.",
+    "scenario_hook": "남겨진 생활 공간에서 사적인 물건과 실용 물건 사이의 무게를 고르는 주거 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 11
+    },
+    "outdoor_anchor_id": "mapx_05_11_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/chapel_01.json"
+  },
+  {
+    "id": "mapx_05_11_b",
+    "name": "골목 구멍가게",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "living_goods",
+      "map_expansion",
+      "neighborhood",
+      "small_stock",
+      "south_residential"
+    ],
+    "entry_briefing": "작은 공간이라 빨리 훑을 수 있지만 사장만 아는 숨은 선반이 있다.",
+    "scenario_hook": "가족 흔적과 임시 대피 흔적이 섞인 방을 어디까지 뒤질지 결정하는 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 5,
+      "y": 11
+    },
+    "outdoor_anchor_id": "mapx_05_11_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/corner_store_01.json"
+  },
+  {
+    "id": "mapx_06_11_a",
+    "name": "골목 구멍가게",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "living_goods",
+      "map_expansion",
+      "neighborhood",
+      "small_stock",
+      "south_industrial"
+    ],
+    "entry_briefing": "작은 공간이라 빨리 훑을 수 있지만 사장만 아는 숨은 선반이 있다.",
+    "scenario_hook": "소리를 감수하고 셔터/상자를 열지 포기할지 고르는 창고 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 6,
+      "y": 11
+    },
+    "outdoor_anchor_id": "mapx_06_11_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/corner_store_01.json"
+  },
+  {
+    "id": "mapx_07_11_a",
+    "name": "파출소",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "locked_storage",
+      "map_expansion",
+      "records",
+      "security",
+      "south_industrial"
+    ],
+    "entry_briefing": "잠긴 보관함과 상황판이 남아 있지만 오래 머물수록 들키기 쉽다.",
+    "scenario_hook": "무겁지만 결정적인 공구와 연료 재료를 운반 한계 안에 담는 정비 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 7,
+      "y": 11
+    },
+    "outdoor_anchor_id": "mapx_07_11_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/police_box_01.json"
+  },
+  {
+    "id": "mapx_08_11_a",
+    "name": "정비 차고",
+    "category": "industrial",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "map_expansion",
+      "repair",
+      "south_industrial",
+      "tools",
+      "vehicle"
+    ],
+    "entry_briefing": "기름 냄새와 얼어붙은 셔터 때문에 안전한 접근이 필요하다.",
+    "scenario_hook": "소리를 감수하고 셔터/상자를 열지 포기할지 고르는 창고 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 8,
+      "y": 11
+    },
+    "outdoor_anchor_id": "mapx_08_11_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/garage_01.json"
+  },
+  {
+    "id": "mapx_09_11_a",
+    "name": "작은 철물 코너",
+    "category": "retail",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "gated_backroom",
+      "map_expansion",
+      "materials",
+      "repair",
+      "south_industrial"
+    ],
+    "entry_briefing": "진열대보다 안쪽 자재함과 공구함이 더 중요해 보인다.",
+    "scenario_hook": "무겁지만 결정적인 공구와 연료 재료를 운반 한계 안에 담는 정비 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 9,
+      "y": 11
+    },
+    "outdoor_anchor_id": "mapx_09_11_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/hardware_01.json"
+  },
+  {
+    "id": "mapx_10_11_a",
+    "name": "파출소",
+    "category": "office",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "locked_storage",
+      "map_expansion",
+      "records",
+      "security",
+      "south_industrial"
+    ],
+    "entry_briefing": "잠긴 보관함과 상황판이 남아 있지만 오래 머물수록 들키기 쉽다.",
+    "scenario_hook": "소리를 감수하고 셔터/상자를 열지 포기할지 고르는 창고 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 11
+    },
+    "outdoor_anchor_id": "mapx_10_11_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/police_box_01.json"
+  },
+  {
+    "id": "mapx_10_11_b",
+    "name": "주유소",
+    "category": "industrial",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "counter",
+      "fuel",
+      "map_expansion",
+      "roadside",
+      "south_industrial"
+    ],
+    "entry_briefing": "연료 흔적은 위험하지만, 빈 통과 열원 재료가 남아 있을 수 있다.",
+    "scenario_hook": "무겁지만 결정적인 공구와 연료 재료를 운반 한계 안에 담는 정비 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 10,
+      "y": 11
+    },
+    "outdoor_anchor_id": "mapx_10_11_b_anchor",
+    "indoor_event_path": "res://data/events/indoor/gas_station_01.json"
+  },
+  {
+    "id": "mapx_11_11_a",
+    "name": "멈춘 연료 야드",
+    "category": "industrial",
+    "depth_tier": "tier_3",
+    "site_tags": [
+      "big_decision",
+      "counter",
+      "fuel",
+      "industrial",
+      "map_expansion",
+      "roadside",
+      "south_industrial",
+      "vehicle"
+    ],
+    "entry_briefing": "잔량 연료를 얻을 수 있지만 냄새와 소음, 운반 무게를 함께 감수해야 한다.",
+    "scenario_hook": "무거운 연료를 챙겨 밤을 버틸지, 짐을 가볍게 유지할지 고르는 정비 지대 루프",
+    "base_candidate": false,
+    "outdoor_block_coord": {
+      "x": 11,
+      "y": 11
+    },
+    "outdoor_anchor_id": "mapx_11_11_a_anchor",
+    "indoor_event_path": "res://data/events/indoor/mapx_industrial_fuel_yard_01.json"
   }
 ]

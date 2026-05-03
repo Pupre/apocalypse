@@ -1,0 +1,223 @@
+{
+  "id": "mapx_central_transfer_corner_store_01",
+  "name": "환승로 구멍가게",
+  "summary": "막힌 큰길 옆 작은 가게다. 버스정류장 안내판과 가게 뒤 통로가 같은 방향을 가리키고 있다.",
+  "illustration_asset": "indoor/indoor_event_convenience_frozen.png",
+  "entry_zone_id": "front_counter",
+  "zones": [
+    {
+      "id": "front_counter",
+      "floor_id": "floor_1",
+      "label": "앞 계산대",
+      "summary": "작은 계산대와 비닐봉투 더미가 입구를 막고 있다.",
+      "connected_zone_ids": ["bus_notice", "narrow_aisle"],
+      "event_ids": ["search_front_counter_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "bus_notice",
+      "floor_id": "floor_1",
+      "label": "정류장 안내판",
+      "summary": "창문 너머로 보이는 안내판에 우회 노선이 손글씨로 덧칠되어 있다.",
+      "connected_zone_ids": ["front_counter"],
+      "event_ids": ["read_bus_notice_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "narrow_aisle",
+      "floor_id": "floor_1",
+      "label": "좁은 진열 통로",
+      "summary": "몸을 비집고 지나가야 하는 통로에 간식, 봉투, 생활용품이 조금 남아 있다.",
+      "connected_zone_ids": ["front_counter", "rear_door"],
+      "event_ids": ["search_narrow_aisle_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "rear_door",
+      "floor_id": "floor_1",
+      "label": "뒤쪽 출입문",
+      "summary": "뒤쪽 출입문은 얼어붙었지만, 열면 큰길을 피하는 골목으로 나갈 수 있을 것 같다.",
+      "connected_zone_ids": ["narrow_aisle"],
+      "event_ids": ["open_rear_door_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [
+    {
+      "id": "central_detour_note",
+      "text": "안내판에는 '큰길은 눈더미와 추적 흔적이 심함. 뒤 골목으로 남동쪽 창고지대 우회 가능'이라고 적혀 있다.",
+      "visible": false
+    }
+  ],
+  "events": [
+    {
+      "id": "search_front_counter_event",
+      "zone_id": "front_counter",
+      "type": "search",
+      "hint_text": "계산대 주변의 작은 봉투와 문구류는 이동 중 정리에 쓸 수 있다.",
+      "options": [
+        {
+          "id": "search_front_counter",
+          "label": "계산대 주변을 챙긴다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [
+              { "id": "plastic_bag", "bulk": 1 }
+            ],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "paper_bag", "weight": 3 },
+                { "id": "memo_pad", "weight": 2 },
+                { "id": "ballpoint_pen", "weight": 2 },
+                { "id": "shopping_bag", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "read_bus_notice_event",
+      "zone_id": "bus_notice",
+      "type": "search",
+      "hint_text": "유리창의 성에를 닦으면 안내판에 덧쓴 우회 노선을 읽을 수 있다.",
+      "options": [
+        {
+          "id": "wipe_window_fast",
+          "label": "소매로 성에를 문질러 노선을 읽는다",
+          "requirements": { "forbidden_flag_ids": ["central_route_read"] },
+          "costs": { "minutes": 15, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["central_route_read"],
+            "reveal_clue_ids": ["central_detour_note"],
+            "pressure": {
+              "id": "central_window_cold_touch",
+              "message": "차가운 유리를 오래 문지르는 동안 손목 안쪽까지 시렸다.",
+              "exposure_loss": 1.5,
+              "fatigue_gain": 0.5,
+              "noise": 0,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "wipe_window_with_plastic",
+          "label": "비닐봉투로 손을 감싸고 성에를 닦는다",
+          "requirements": {
+            "required_item_ids": ["plastic_bag"],
+            "forbidden_flag_ids": ["central_route_read"]
+          },
+          "blocked_feedback": "맨손으로 유리를 문지르면 금방 식는다. 손을 감쌀 봉투가 있으면 낫다.",
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["central_route_read"],
+            "reveal_clue_ids": ["central_detour_note"],
+            "pressure": {
+              "id": "central_window_bag_wrap",
+              "message": "비닐봉투가 완벽하진 않아도, 맨손으로 얼음 유리를 만지는 것보다는 훨씬 낫다.",
+              "exposure_loss": 0.5,
+              "fatigue_gain": 0.25,
+              "noise": 0,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_mart_shelf_choice.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_mart_shelf_choice.png",
+              "title": "우회로를 읽었다",
+              "text": "큰길은 빨라 보였지만 안내판의 손글씨는 다른 이야기를 했다. 뒤쪽 골목으로 돌면 더 오래 걷지만, 눈더미와 추적 흔적을 피할 가능성이 있다.",
+              "button": "우회로를 기억한다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_narrow_aisle_event",
+      "zone_id": "narrow_aisle",
+      "type": "search",
+      "hint_text": "좁은 통로엔 아직 작은 간식과 생활용품이 남아 있다.",
+      "options": [
+        {
+          "id": "search_narrow_aisle",
+          "label": "좁은 진열 통로를 뒤진다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "energy_bar", "weight": 4 },
+                { "id": "bottled_water", "weight": 3 },
+                { "id": "evd_freezer_bag_box", "weight": 2 },
+                { "id": "lighter", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "open_rear_door_event",
+      "zone_id": "rear_door",
+      "type": "search",
+      "hint_text": "뒤쪽 문을 열면 골목 동선을 확인할 수 있지만 얼어붙은 문틀이 버틴다.",
+      "options": [
+        {
+          "id": "kick_rear_door",
+          "label": "문을 발로 차서 열어 본다",
+          "requirements": { "forbidden_flag_ids": ["rear_door_opened"] },
+          "costs": { "minutes": 15, "noise": 4 },
+          "outcomes": {
+            "set_flags": ["rear_door_opened"],
+            "pressure": {
+              "id": "central_rear_door_kick",
+              "message": "문은 열렸지만 골목으로 금속 소리가 길게 튀었다.",
+              "fatigue_gain": 1.5,
+              "noise": 4,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "warm_rear_door_latch",
+          "label": "라이터로 걸쇠 주변 얼음을 녹인다",
+          "requirements": {
+            "required_item_ids": ["lighter"],
+            "forbidden_flag_ids": ["rear_door_opened"]
+          },
+          "blocked_feedback": "문틀 얼음을 조용히 풀려면 작은 열원이 필요하다.",
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["rear_door_opened"],
+            "pressure": {
+              "id": "central_rear_door_lighter",
+              "message": "불꽃을 아껴 가며 걸쇠 주변 얼음을 녹였다. 문은 큰 소리 없이 열렸다.",
+              "fatigue_gain": 0.75,
+              "noise": 0,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

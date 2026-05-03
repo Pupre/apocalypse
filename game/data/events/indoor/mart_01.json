@@ -430,7 +430,12 @@
             "noise": 0
           },
           "outcomes": {
-            "discover_loot": [],
+            "discover_loot": [
+              {
+                "id": "tea_bag",
+                "bulk": 1
+              }
+            ],
             "supply_sources": [
               {
                 "id": "water_shelf",

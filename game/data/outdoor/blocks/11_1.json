@@ -1,0 +1,258 @@
+{
+  "block_coord": {
+    "x": 11,
+    "y": 1
+  },
+  "district_id": "north_market",
+  "district_label": "북쪽 상권",
+  "roads": [
+    {
+      "id": "north_south",
+      "texture_id": "road_lane_v",
+      "rect": {
+        "x": 300,
+        "y": 0,
+        "width": 190,
+        "height": 960
+      }
+    },
+    {
+      "id": "east_west",
+      "texture_id": "road_plain",
+      "rect": {
+        "x": 0,
+        "y": 280,
+        "width": 960,
+        "height": 190
+      }
+    },
+    {
+      "id": "shop_front_walk",
+      "texture_id": "sidewalk_snow",
+      "rect": {
+        "x": 90,
+        "y": 185,
+        "width": 290,
+        "height": 100
+      }
+    },
+    {
+      "id": "parking_pullout",
+      "texture_id": "road_plain",
+      "rect": {
+        "x": 615,
+        "y": 580,
+        "width": 270,
+        "height": 145
+      }
+    }
+  ],
+  "snow_fields": [
+    {
+      "id": "northwest_snow",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 299,
+        "height": 260
+      }
+    },
+    {
+      "id": "southeast_snow",
+      "rect": {
+        "x": 620,
+        "y": 673,
+        "width": 340,
+        "height": 280
+      }
+    },
+    {
+      "id": "curb_snow",
+      "rect": {
+        "x": 260,
+        "y": 610,
+        "width": 230,
+        "height": 105
+      }
+    },
+    {
+      "id": "wind_packed_snow",
+      "rect": {
+        "x": 700,
+        "y": 55,
+        "width": 190,
+        "height": 124
+      }
+    }
+  ],
+  "hazards": [
+    {
+      "id": "intersection_black_ice",
+      "kind": "black_ice",
+      "rect": {
+        "x": 455,
+        "y": 395,
+        "width": 150,
+        "height": 145
+      },
+      "message": "교차로 그늘에 숨어 있던 빙판이 발을 미끄러뜨렸다.",
+      "exposure_loss": 1.5,
+      "fatigue_gain": 1.4,
+      "cooldown_seconds": 7.0,
+      "health_loss": 0.5
+    },
+    {
+      "id": "building_wind_gap",
+      "kind": "wind_gap",
+      "rect": {
+        "x": 610,
+        "y": 360,
+        "width": 190,
+        "height": 230
+      },
+      "message": "건물 사이로 눌린 바람이 체온을 빠르게 빼앗았다.",
+      "exposure_loss": 2.6,
+      "fatigue_gain": 1.1,
+      "cooldown_seconds": 7.0
+    },
+    {
+      "id": "packed_snow_drift",
+      "kind": "snow_drift",
+      "rect": {
+        "x": 200,
+        "y": 650,
+        "width": 240,
+        "height": 150
+      },
+      "message": "허벅지까지 쌓인 눈을 헤치느라 숨이 거칠어졌다.",
+      "exposure_loss": 1.1,
+      "fatigue_gain": 2.2,
+      "cooldown_seconds": 7.0
+    },
+    {
+      "id": "open_lot_whiteout",
+      "kind": "whiteout",
+      "rect": {
+        "x": 500,
+        "y": 70,
+        "width": 260,
+        "height": 250
+      },
+      "message": "눈발이 시야를 지워 길과 출입구가 잠깐 구분되지 않았다.",
+      "exposure_loss": 2.0,
+      "fatigue_gain": 1.6,
+      "cooldown_seconds": 7.0
+    }
+  ],
+  "obstacles": [
+    {
+      "kind": "tree",
+      "asset_id": "dead_tree",
+      "rect": {
+        "x": 130,
+        "y": 398,
+        "width": 90,
+        "height": 110
+      }
+    },
+    {
+      "kind": "fuel",
+      "asset_id": "barrel_empty",
+      "rect": {
+        "x": 684,
+        "y": 157,
+        "width": 54,
+        "height": 70
+      }
+    },
+    {
+      "kind": "vehicle",
+      "asset_id": "frozen_car",
+      "rect": {
+        "x": 641,
+        "y": 419,
+        "width": 58,
+        "height": 58
+      }
+    },
+    {
+      "kind": "rubble",
+      "asset_id": "dumpster_snow",
+      "rect": {
+        "x": 325,
+        "y": 291,
+        "width": 118,
+        "height": 78
+      }
+    },
+    {
+      "kind": "cart",
+      "asset_id": "shopping_cart",
+      "rect": {
+        "x": 89,
+        "y": 310,
+        "width": 70,
+        "height": 58
+      }
+    },
+    {
+      "kind": "light",
+      "asset_id": "street_lamp",
+      "rect": {
+        "x": 798,
+        "y": 622,
+        "width": 42,
+        "height": 82
+      }
+    },
+    {
+      "kind": "barrier",
+      "asset_id": "barricade_wood",
+      "rect": {
+        "x": 255,
+        "y": 729,
+        "width": 105,
+        "height": 48
+      }
+    },
+    {
+      "kind": "snow",
+      "asset_id": "snow_drift",
+      "rect": {
+        "x": 739,
+        "y": 758,
+        "width": 132,
+        "height": 78
+      }
+    }
+  ],
+  "building_anchors": {
+    "mapx_11_01_a_anchor": {
+      "x": 730,
+      "y": 250
+    }
+  },
+  "threat_spawns": [
+    {
+      "id": "pack_11_01_a",
+      "position": {
+        "x": 657,
+        "y": 193
+      },
+      "forward": {
+        "x": 1,
+        "y": 1
+      }
+    }
+  ],
+  "landmarks": [
+    {
+      "id": "north_market_11_01",
+      "label": "눈 덮인 상가 거리",
+      "position": {
+        "x": 480,
+        "y": 470
+      }
+    }
+  ]
+}

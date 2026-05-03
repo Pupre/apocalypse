@@ -1,0 +1,208 @@
+{
+  "id": "mapx_west_shelter_general_store_01",
+  "name": "임시 대피 잡화점",
+  "summary": "서쪽 대피선 근처의 작은 잡화점이다. 물건보다 사람들이 남긴 메모와 임시 침상이 더 눈에 띈다.",
+  "illustration_asset": "indoor/indoor_event_civic_shelter.png",
+  "entry_zone_id": "shop_floor",
+  "zones": [
+    {
+      "id": "shop_floor",
+      "floor_id": "floor_1",
+      "label": "잡화 매대",
+      "summary": "생활용품 매대는 어수선하지만 봉투와 작은 도구가 아직 남아 있다.",
+      "connected_zone_ids": ["message_wall", "blanket_corner"],
+      "event_ids": ["search_shop_floor_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "message_wall",
+      "floor_id": "floor_1",
+      "label": "쪽지 벽",
+      "summary": "사람들이 서로를 찾으며 남긴 쪽지가 계산대 옆 벽을 채우고 있다.",
+      "connected_zone_ids": ["shop_floor"],
+      "event_ids": ["read_message_wall_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "blanket_corner",
+      "floor_id": "floor_1",
+      "label": "임시 침상 구석",
+      "summary": "담요와 박스가 깔린 구석이다. 누군가는 여기서 하룻밤을 버틴 듯하다.",
+      "connected_zone_ids": ["shop_floor", "back_supply"],
+      "event_ids": ["search_blanket_corner_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "back_supply",
+      "floor_id": "floor_1",
+      "label": "뒤쪽 보급 상자",
+      "summary": "뒤쪽 커튼 너머에 작은 보급 상자가 남아 있다. 손대면 이곳을 지나갈 누군가의 몫을 가져가는 셈이다.",
+      "connected_zone_ids": ["blanket_corner"],
+      "event_ids": ["choose_back_supply_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 35,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [
+    {
+      "id": "family_direction_note",
+      "text": "쪽지 중 하나에는 '아이와 남쪽 주택가로 이동. 물은 없지만 계단실이 바람을 막아 줌'이라고 적혀 있다.",
+      "visible": false
+    }
+  ],
+  "events": [
+    {
+      "id": "search_shop_floor_event",
+      "zone_id": "shop_floor",
+      "type": "search",
+      "hint_text": "매대 사이에는 누가 보기엔 사소하지만 이동을 편하게 하는 물건들이 있다.",
+      "options": [
+        {
+          "id": "search_shop_floor",
+          "label": "잡화 매대를 정리한다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "plastic_bag", "weight": 4 },
+                { "id": "paper_bag", "weight": 3 },
+                { "id": "duct_tape", "weight": 2 },
+                { "id": "wet_wipes", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "read_message_wall_event",
+      "zone_id": "message_wall",
+      "type": "search",
+      "hint_text": "쪽지는 정보일 수도 있고, 그냥 마음을 무겁게 하는 흔적일 수도 있다.",
+      "options": [
+        {
+          "id": "read_message_wall",
+          "label": "쪽지 벽에서 이동 흔적을 찾는다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "reveal_clue_ids": ["family_direction_note"],
+            "discover_loot": [
+              { "id": "memo_pad", "bulk": 1 }
+            ],
+            "pressure": {
+              "id": "shelter_message_weight",
+              "message": "누군가의 이름과 이동 경로를 읽는 동안, 여기가 단순한 파밍지가 아니라는 사실이 오래 남았다.",
+              "fatigue_gain": 0.5,
+              "noise": 0,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_blanket_corner_event",
+      "zone_id": "blanket_corner",
+      "type": "search",
+      "hint_text": "임시 침상에는 보온재와 개인 물건이 섞여 있다.",
+      "options": [
+        {
+          "id": "search_blanket_corner",
+          "label": "침상 구석의 보온재를 챙긴다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "old_blanket", "weight": 4 },
+                { "id": "bubble_wrap_roll", "weight": 3 },
+                { "id": "tarp_sheet", "weight": 2 },
+                { "id": "hand_warmer_pack", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "choose_back_supply_event",
+      "zone_id": "back_supply",
+      "type": "search",
+      "hint_text": "작은 보급 상자를 열면 지금 당장은 도움이 되지만, 이 장소를 지나갈 다음 사람에게는 아무것도 남지 않는다.",
+      "options": [
+        {
+          "id": "take_all_back_supply",
+          "label": "보급 상자를 열어 전부 챙긴다",
+          "requirements": { "forbidden_flag_ids": ["back_supply_resolved"] },
+          "costs": { "minutes": 20, "noise": 1 },
+          "outcomes": {
+            "set_flags": ["back_supply_resolved"],
+            "discover_loot": [
+              { "id": "bottled_water", "bulk": 1 },
+              { "id": "energy_bar", "bulk": 1 }
+            ],
+            "pressure": {
+              "id": "shelter_supply_taken",
+              "message": "상자는 가벼워졌다. 대신 쪽지 벽의 이름들이 한동안 눈에서 지워지지 않았다.",
+              "fatigue_gain": 1.0,
+              "noise": 1,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_event_civic_shelter.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_event_civic_shelter.png",
+              "title": "내일의 누군가",
+              "text": "상자를 비우는 건 쉽다. 하지만 이 가게는 아직 누군가의 마지막 표식일 수도 있다. 오늘의 생존과 내일의 죄책감이 같은 손잡이에 걸렸다.",
+              "button": "상자를 닫는다"
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "take_only_needed_supply",
+          "label": "물 하나만 챙기고 나머지는 남긴다",
+          "requirements": { "forbidden_flag_ids": ["back_supply_resolved"] },
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["back_supply_resolved"],
+            "discover_loot": [
+              { "id": "bottled_water", "bulk": 1 }
+            ],
+            "pressure": {
+              "id": "shelter_supply_left",
+              "message": "상자에는 아직 무언가가 남았다. 배낭은 덜 무겁고, 마음도 아주 조금 덜 무겁다.",
+              "fatigue_gain": 0.25,
+              "noise": 0,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_event_civic_shelter.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_event_civic_shelter.png",
+              "title": "조금 남겨 두었다",
+              "text": "재난은 사람을 계산하게 만든다. 그래도 물 하나만 챙기고 상자를 닫는 순간, 이곳은 약탈지가 아니라 누군가와 스쳐 지나간 장소가 되었다.",
+              "button": "가방을 고쳐 멘다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}
