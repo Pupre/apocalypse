@@ -217,6 +217,40 @@
             },
             "consume_on_use": true
           }
+        },
+        {
+          "id": "search_counter_with_glass_search_gloves",
+          "label": "유리 수색 장갑으로 계산대 안쪽을 끝까지 뒤진다",
+          "requirements": {
+            "required_item_ids": ["evd_glass_search_gloves"],
+            "forbidden_flag_ids": ["counter_cleared"]
+          },
+          "blocked_feedback": "깨진 진열장 안쪽까지 손을 넣으려면 유리 조각을 버틸 임시 장갑이 필요하다.",
+          "costs": { "minutes": 35, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "lighter", "weight": 4 },
+                { "id": "memo_pad", "weight": 3 },
+                { "id": "ballpoint_pen", "weight": 3 },
+                { "id": "evd_lip_balm_tube", "weight": 2 },
+                { "id": "evd_transit_card_empty", "weight": 2 },
+                { "id": "evd_lottery_ticket", "weight": 1 }
+              ]
+            },
+            "set_flags": ["counter_cleared"],
+            "pressure": {
+              "id": "convenience_counter_glass_gloves",
+              "message": "테이프를 덧댄 장갑 덕분에 유리 조각을 천천히 밀어내며 계산대 안쪽까지 확인했다.",
+              "fatigue_gain": 0.35,
+              "noise": 0,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
         }
       ]
     }

@@ -300,6 +300,41 @@
             },
             "consume_on_use": true
           }
+        },
+        {
+          "id": "seal_unit_101_draft_and_search",
+          "label": "문 밑을 막고 101호 생활 흔적을 깊게 뒤진다",
+          "requirements": {
+            "required_item_ids": ["evd_door_draft_snake"],
+            "forbidden_flag_ids": ["unit_101_draft_shelter_cleared"]
+          },
+          "blocked_feedback": "현관문 밑으로 들어오는 찬바람을 막을 긴 틈막이가 있으면 방 안쪽을 더 오래 뒤질 수 있다.",
+          "costs": { "minutes": 45, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 4,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "sewing_kit", "weight": 4 },
+                { "id": "evd_pillowcase", "weight": 3 },
+                { "id": "evd_old_tshirt", "weight": 3 },
+                { "id": "evd_sewing_button_card", "weight": 2 },
+                { "id": "old_blanket", "weight": 2 },
+                { "id": "evd_family_photo_strip", "weight": 1 }
+              ]
+            },
+            "consume_item_ids": ["evd_door_draft_snake"],
+            "set_flags": ["unit_101_draft_shelter_cleared"],
+            "pressure": {
+              "id": "apartment_101_draft_blocked",
+              "message": "문 밑을 막자 방 안의 공기가 조금 가라앉았다. 덕분에 식탁 아래와 옷장 바닥까지 차분히 훑을 수 있었다.",
+              "fatigue_gain": 0.5,
+              "noise": 0,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
         }
       ]
     },
@@ -332,6 +367,42 @@
               ]
             },
             "reveal_clue_ids": ["boiler_key_hint"],
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "stabilize_laundry_room_feet_and_search",
+          "label": "발을 말릴 준비를 하고 빨랫감 더미를 뒤진다",
+          "requirements": {
+            "required_item_ids": ["evd_foot_dry_kit"],
+            "forbidden_flag_ids": ["apartment_laundry_deep_cleared"]
+          },
+          "blocked_feedback": "젖은 빨랫감 사이를 오래 뒤지려면 발이 젖지 않게 막을 준비가 필요하다.",
+          "costs": { "minutes": 40, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [
+              { "id": "apartment_201_key", "bulk": 1 }
+            ],
+            "loot_table": {
+              "rolls": 4,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "towel", "weight": 3 },
+                { "id": "evd_laundry_mesh_bag", "weight": 3 },
+                { "id": "evd_silica_gel_packets", "weight": 2 },
+                { "id": "evd_clothespin_set", "weight": 2 },
+                { "id": "soap_bar", "weight": 2 }
+              ]
+            },
+            "reveal_clue_ids": ["boiler_key_hint"],
+            "set_flags": ["apartment_laundry_deep_cleared"],
+            "pressure": {
+              "id": "apartment_laundry_dry_feet",
+              "message": "발 주변을 비닐로 감싸고 젖은 빨랫감 더미를 넘겼다. 차갑긴 했지만 물기가 신발 안까지 스며들지는 않았다.",
+              "fatigue_gain": 0.35,
+              "noise": 0,
+              "repeatable": false
+            },
             "consume_on_use": true
           }
         }
