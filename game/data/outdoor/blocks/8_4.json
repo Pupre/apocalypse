@@ -5,83 +5,84 @@
   },
   "district_id": "east_medical",
   "district_label": "동쪽 의료/업무 지구",
+  "layout_id": "clinic_drive",
   "roads": [
     {
-      "id": "north_south",
-      "texture_id": "road_lane_v",
+      "id": "clinic_drive",
+      "texture_id": "road_plain",
       "rect": {
-        "x": 300,
+        "x": 165,
+        "y": 105,
+        "width": 630,
+        "height": 150
+      }
+    },
+    {
+      "id": "ambulance_lane",
+      "texture_id": "slush_road",
+      "rect": {
+        "x": 660,
         "y": 0,
-        "width": 190,
+        "width": 145,
         "height": 960
       }
     },
     {
-      "id": "east_west",
-      "texture_id": "road_lane_h",
-      "rect": {
-        "x": 0,
-        "y": 280,
-        "width": 960,
-        "height": 190
-      }
-    },
-    {
-      "id": "shop_front_walk",
+      "id": "pharmacy_court",
       "texture_id": "sidewalk_snow",
       "rect": {
-        "x": 90,
-        "y": 185,
-        "width": 290,
-        "height": 100
+        "x": 225,
+        "y": 395,
+        "width": 470,
+        "height": 280
       }
     },
     {
-      "id": "parking_pullout",
-      "texture_id": "road_plain",
+      "id": "service_dropoff",
+      "texture_id": "slush_road",
       "rect": {
-        "x": 615,
-        "y": 580,
-        "width": 270,
-        "height": 145
+        "x": 85,
+        "y": 665,
+        "width": 650,
+        "height": 120
       }
     }
   ],
   "snow_fields": [
     {
-      "id": "northwest_snow",
+      "id": "clinic_plaza_snow",
       "rect": {
-        "x": 0,
-        "y": 0,
-        "width": 353,
-        "height": 260
+        "x": 240,
+        "y": 390,
+        "width": 440,
+        "height": 275
       }
     },
     {
-      "id": "southeast_snow",
+      "id": "ambulance_bay_snow",
       "rect": {
-        "x": 620,
-        "y": 646,
-        "width": 340,
-        "height": 280
+        "x": 650,
+        "y": 235,
+        "width": 220,
+        "height": 145
       }
     },
     {
-      "id": "curb_snow",
+      "id": "pharmacy_curb_snow",
       "rect": {
-        "x": 260,
-        "y": 610,
-        "width": 230,
-        "height": 105
+        "x": 80,
+        "y": 690,
+        "width": 310,
+        "height": 95
       }
     },
     {
-      "id": "wind_packed_snow",
+      "id": "records_walk_snow",
       "rect": {
-        "x": 700,
-        "y": 55,
-        "width": 190,
-        "height": 142
+        "x": 175,
+        "y": 60,
+        "width": 265,
+        "height": 95
       }
     }
   ],
@@ -90,10 +91,10 @@
       "id": "intersection_black_ice",
       "kind": "black_ice",
       "rect": {
-        "x": 437,
-        "y": 389,
-        "width": 150,
-        "height": 145
+        "x": 252,
+        "y": 145,
+        "width": 170,
+        "height": 120
       },
       "message": "교차로 그늘에 숨어 있던 빙판이 발을 미끄러뜨렸다.",
       "exposure_loss": 1.5,
@@ -105,10 +106,10 @@
       "id": "building_wind_gap",
       "kind": "wind_gap",
       "rect": {
-        "x": 610,
-        "y": 342,
-        "width": 190,
-        "height": 230
+        "x": 665,
+        "y": 282,
+        "width": 160,
+        "height": 240
       },
       "message": "건물 사이로 눌린 바람이 체온을 빠르게 빼앗았다.",
       "exposure_loss": 2.6,
@@ -119,10 +120,10 @@
       "id": "packed_snow_drift",
       "kind": "snow_drift",
       "rect": {
-        "x": 182,
-        "y": 650,
-        "width": 240,
-        "height": 150
+        "x": 255,
+        "y": 640,
+        "width": 270,
+        "height": 135
       },
       "message": "허벅지까지 쌓인 눈을 헤치느라 숨이 거칠어졌다.",
       "exposure_loss": 1.1,
@@ -133,10 +134,10 @@
       "id": "open_lot_whiteout",
       "kind": "whiteout",
       "rect": {
-        "x": 500,
-        "y": 52,
+        "x": 105,
+        "y": 327,
         "width": 260,
-        "height": 250
+        "height": 230
       },
       "message": "눈발이 시야를 지워 길과 출입구가 잠깐 구분되지 않았다.",
       "exposure_loss": 2.0,
@@ -146,90 +147,94 @@
   ],
   "obstacles": [
     {
-      "kind": "barrier",
-      "asset_id": "barricade_wood",
+      "kind": "utility",
+      "asset_id": "utility_box",
       "rect": {
-        "x": 127,
-        "y": 401,
-        "width": 105,
+        "x": 202,
+        "y": 291,
+        "width": 76,
+        "height": 68
+      }
+    },
+    {
+      "kind": "barrier",
+      "asset_id": "sandbags",
+      "rect": {
+        "x": 681,
+        "y": 330,
+        "width": 108,
         "height": 48
       }
     },
     {
-      "kind": "snow",
-      "asset_id": "snow_drift",
+      "kind": "light",
+      "asset_id": "street_lamp",
       "rect": {
-        "x": 681,
-        "y": 160,
-        "width": 132,
-        "height": 78
+        "x": 803,
+        "y": 522,
+        "width": 42,
+        "height": 82
+      }
+    },
+    {
+      "kind": "vehicle",
+      "asset_id": "frozen_car",
+      "rect": {
+        "x": 132,
+        "y": 684,
+        "width": 62,
+        "height": 58
+      }
+    },
+    {
+      "kind": "sign",
+      "asset_id": "bus_stop_sign",
+      "rect": {
+        "x": 471,
+        "y": 718,
+        "width": 48,
+        "height": 86
       }
     },
     {
       "kind": "utility",
       "asset_id": "utility_box",
       "rect": {
-        "x": 638,
-        "y": 422,
+        "x": 710,
+        "y": 120,
         "width": 76,
         "height": 68
       }
     },
     {
-      "kind": "crate",
-      "asset_id": "crate_stack",
-      "rect": {
-        "x": 322,
-        "y": 294,
-        "width": 88,
-        "height": 76
-      }
-    },
-    {
       "kind": "barrier",
-      "asset_id": "traffic_cone",
+      "asset_id": "sandbags",
       "rect": {
-        "x": 86,
-        "y": 313,
+        "x": 312,
+        "y": 117,
+        "width": 108,
+        "height": 48
+      }
+    },
+    {
+      "kind": "light",
+      "asset_id": "street_lamp",
+      "rect": {
+        "x": 556,
+        "y": 439,
         "width": 42,
-        "height": 50
-      }
-    },
-    {
-      "kind": "rubble",
-      "asset_id": "tire_pile",
-      "rect": {
-        "x": 795,
-        "y": 625,
-        "width": 94,
-        "height": 62
-      }
-    },
-    {
-      "kind": "tree",
-      "asset_id": "dead_tree",
-      "rect": {
-        "x": 252,
-        "y": 732,
-        "width": 90,
-        "height": 110
-      }
-    },
-    {
-      "kind": "fuel",
-      "asset_id": "barrel_empty",
-      "rect": {
-        "x": 736,
-        "y": 734,
-        "width": 54,
-        "height": 70
+        "height": 82
       }
     }
   ],
   "building_anchors": {
     "mapx_08_04_a_anchor": {
-      "x": 190,
-      "y": 240
+      "x": 265,
+      "y": 250
+    },
+    "mapx_08_04_b_anchor": {
+      "x": 690,
+      "y": 575
     }
   },
   "threat_spawns": [

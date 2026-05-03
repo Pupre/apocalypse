@@ -21,6 +21,7 @@ const PLAYER_VISUAL_SCALE := 0.78
 const PLAYER_WALK_FRAME_RATE := 10.0
 const PLAYER_WALK_FRAME_COUNT := 8
 const PLAYER_WALK_BOB_PIXELS := 1.1
+const PLAYTEST_MOVE_SPEED_MULTIPLIER := 2.0
 const MOVE_LEFT_ACTION := "move_left"
 const MOVE_RIGHT_ACTION := "move_right"
 const MOVE_UP_ACTION := "move_up"
@@ -57,6 +58,7 @@ var _player_spawn := DEFAULT_PLAYER_POSITION
 var _world_bounds := Rect2(0.0, 0.0, 1200.0, 1092.0)
 var _current_block_coord := Vector2i.ZERO
 var _active_block_coords: Array[Vector2i] = []
+var _active_block_signature := ""
 var _building_rows: Array[Dictionary] = []
 var _road_rows: Array[Dictionary] = []
 var _snow_field_rows: Array[Dictionary] = []
@@ -93,6 +95,7 @@ var _threat_label: Label = null
 var _frost_overlay: ColorRect = null
 var _frost_crystals: TextureRect = null
 var _map_overlay = null
+var _map_overlay_dirty := true
 var _debug_contact_requested := false
 var _player_facing_id := "down"
 var _player_walk_seconds := 0.0
@@ -102,11 +105,8 @@ func _ready() -> void:
 	_cache_nodes()
 	_bind_ui_buttons()
 	_load_outdoor_layout()
-	_sync_active_blocks()
-	_refresh_ground()
-	_refresh_buildings()
-	_refresh_obstacles()
-	_configure_threats()
+	_sync_active_blocks(true)
+	_refresh_streamed_world()
 	_sync_view()
 
 
@@ -125,11 +125,8 @@ func bind_run_state(value, building_id: String = DEFAULT_BUILDING_ID, player_pos
 	_bind_ui_buttons()
 	_load_outdoor_layout()
 	_player_position = player_position if typeof(player_position) == TYPE_VECTOR2 else _player_spawn
-	_sync_active_blocks()
-	_refresh_ground()
-	_refresh_buildings()
-	_refresh_obstacles()
-	_configure_threats()
+	_sync_active_blocks(true)
+	_refresh_streamed_world()
 	hide_map_overlay()
 	_sync_view()
 	state_changed.emit()
@@ -174,15 +171,14 @@ func move_player(direction: Vector2, seconds_elapsed: float) -> void:
 	var effective_move_speed: float = float(run_state.move_speed)
 	if run_state.has_method("get_outdoor_move_speed"):
 		effective_move_speed = float(run_state.get_outdoor_move_speed())
+	effective_move_speed *= _playtest_move_speed_multiplier()
 
+	var previous_position := _player_position
 	var target_position := _player_position + direction.normalized() * effective_move_speed * seconds_elapsed
 	_player_position = _constrain_player_position(target_position)
-	_sync_active_blocks()
-	_refresh_ground()
-	_refresh_buildings()
-	_refresh_obstacles()
-	_configure_threats()
-	_tick_current_outdoor_hazard(seconds_elapsed)
+	if _sync_active_blocks():
+		_refresh_streamed_world()
+	_tick_current_outdoor_hazard(seconds_elapsed, previous_position, _player_position)
 	_sync_view()
 	state_changed.emit()
 
@@ -213,6 +209,7 @@ func refresh_view() -> void:
 
 func show_map_overlay() -> void:
 	if _map_overlay != null:
+		_configure_map_overlay(true)
 		if _map_overlay.has_method("focus_on_player"):
 			_map_overlay.focus_on_player(_player_position)
 		_map_overlay.open()
@@ -262,7 +259,7 @@ func _process(delta: float) -> void:
 		move_player(direction, delta)
 	else:
 		_player_walk_seconds = 0.0
-		_tick_current_outdoor_hazard(delta)
+		_tick_current_outdoor_hazard(delta, _player_position, _player_position)
 
 	var threat_snapshot: Dictionary = threat_director.tick(_player_position, delta)
 	if _debug_contact_requested:
@@ -402,15 +399,39 @@ func _load_outdoor_world_runtime() -> void:
 	var spawn_block := spawn_block_variant as Dictionary if typeof(spawn_block_variant) == TYPE_DICTIONARY else {}
 	var spawn_local := _vector2_from_row(layout.get("spawn_local_position", {}), DEFAULT_PLAYER_POSITION)
 	_player_spawn = world_runtime.get_block_origin(Vector2i(int(spawn_block.get("x", 0)), int(spawn_block.get("y", 0)))) + spawn_local
-	_sync_active_blocks()
+	_active_block_signature = ""
+	_map_overlay_dirty = true
 
 
-func _sync_active_blocks() -> void:
+func _sync_active_blocks(force_refresh: bool = false) -> bool:
 	_current_block_coord = world_runtime.world_to_block_coord(_player_position)
-	_active_block_coords = world_runtime.get_active_block_coords(_current_block_coord)
+	var next_active_block_coords := world_runtime.get_active_block_coords(_current_block_coord)
+	var next_signature := _active_block_coords_signature(next_active_block_coords)
 	if run_state != null and run_state.has_method("mark_outdoor_block_visited"):
 		run_state.mark_outdoor_block_visited(_current_block_coord)
+		_map_overlay_dirty = true
+	_active_block_coords = next_active_block_coords
+	if not force_refresh and next_signature == _active_block_signature:
+		return false
+	_active_block_signature = next_signature
 	_rebuild_active_rows()
+	_map_overlay_dirty = true
+	return true
+
+
+func _active_block_coords_signature(block_coords: Array[Vector2i]) -> String:
+	var keys: Array[String] = []
+	for block_coord in block_coords:
+		keys.append("%d_%d" % [block_coord.x, block_coord.y])
+	keys.sort()
+	return "|".join(keys)
+
+
+func _refresh_streamed_world() -> void:
+	_refresh_ground()
+	_refresh_buildings()
+	_refresh_obstacles()
+	_configure_threats()
 
 
 func _rebuild_active_rows() -> void:
@@ -489,10 +510,7 @@ func _refresh_ground() -> void:
 		child.free()
 
 	var viewport_height: float = float(ProjectSettings.get_setting("display/window/size/viewport_height"))
-	var backdrop_rect := Rect2(
-		Vector2(_world_bounds.position.x, _world_bounds.position.y - viewport_height - 160.0),
-		Vector2(_world_bounds.size.x, _world_bounds.size.y + viewport_height + 160.0)
-	)
+	var backdrop_rect := _active_block_world_rect(maxf(360.0, viewport_height * 0.5))
 	var backdrop := _make_textured_rect(
 		"Backdrop",
 		backdrop_rect,
@@ -623,7 +641,7 @@ func _sync_view() -> void:
 	if _player_visual != null:
 		_player_visual.position = _player_position
 		var is_walking := _player_walk_seconds > 0.0
-		var walk_frame_index := int(floor(_player_walk_seconds * PLAYER_WALK_FRAME_RATE))
+		var walk_frame_index := int(floor(_player_walk_seconds * PLAYER_WALK_FRAME_RATE * _playtest_move_speed_multiplier()))
 		_player_visual.texture = art_resolver.get_player_texture(_player_facing_id, is_walking, walk_frame_index)
 		_configure_bottom_center_sprite(_player_visual)
 		_player_visual.scale = Vector2.ONE * PLAYER_VISUAL_SCALE
@@ -662,13 +680,53 @@ func _sync_view() -> void:
 				_hint_label.text = hazard_hint
 			else:
 				_hint_label.text = "WASD 이동"
+	if _map_overlay != null and _map_overlay.visible:
+		_configure_map_overlay()
+	_sync_threat_view(_last_threat_snapshot)
+
+
+func _configure_map_overlay(force_refresh: bool = false) -> void:
+	if _map_overlay == null:
+		return
+	if not force_refresh and not _map_overlay_dirty:
+		return
+	_map_overlay.configure(
+		world_runtime.world_layout,
+		world_runtime.outdoor_blocks,
+		_get_building_rows(),
+		_visited_block_ids_for_map(),
+		_player_position,
+		run_state
+	)
+	_map_overlay_dirty = false
+
+
+func _visited_block_ids_for_map() -> Dictionary:
 	var visited_block_ids := {}
 	if run_state != null and run_state.has_method("get_visited_outdoor_block_keys"):
 		for block_key in run_state.get_visited_outdoor_block_keys():
 			visited_block_ids[String(block_key)] = true
-	if _map_overlay != null:
-		_map_overlay.configure(world_runtime.world_layout, world_runtime.outdoor_blocks, _get_building_rows(), visited_block_ids, _player_position, run_state)
-	_sync_threat_view(_last_threat_snapshot)
+	return visited_block_ids
+
+
+func _active_block_world_rect(margin: float = 0.0) -> Rect2:
+	if _active_block_coords.is_empty():
+		return _world_bounds.grow(margin)
+	var block_size := world_runtime.get_block_size()
+	var min_x := _active_block_coords[0].x
+	var max_x := _active_block_coords[0].x
+	var min_y := _active_block_coords[0].y
+	var max_y := _active_block_coords[0].y
+	for block_coord in _active_block_coords:
+		min_x = mini(min_x, block_coord.x)
+		max_x = maxi(max_x, block_coord.x)
+		min_y = mini(min_y, block_coord.y)
+		max_y = maxi(max_y, block_coord.y)
+	var rect := Rect2(
+		Vector2(float(min_x * block_size.x), float(min_y * block_size.y)),
+		Vector2(float((max_x - min_x + 1) * block_size.x), float((max_y - min_y + 1) * block_size.y))
+	)
+	return rect.grow(margin)
 
 
 func _cache_nodes() -> void:
@@ -851,13 +909,18 @@ func _effective_obstacle_rect(obstacle_row: Dictionary) -> Rect2:
 	return Rect2(collision_position, collision_size)
 
 
-func _tick_current_outdoor_hazard(delta: float) -> void:
+func _tick_current_outdoor_hazard(delta: float, previous_position: Vector2, current_position: Vector2) -> void:
 	if run_state == null or _hazard_cooldown_seconds > 0.0:
 		return
 
 	for hazard_row in _hazard_rows:
 		var hazard_rect := _rect_from_row(hazard_row.get("rect", {}))
-		if hazard_rect.size == Vector2.ZERO or not hazard_rect.has_point(_player_position):
+		if hazard_rect.size == Vector2.ZERO:
+			continue
+		var touches_hazard := hazard_rect.has_point(current_position)
+		if _playtest_move_speed_multiplier() > 1.0:
+			touches_hazard = _segment_intersects_rect(previous_position, current_position, hazard_rect)
+		if not touches_hazard:
 			continue
 		if run_state.has_method("apply_outdoor_hazard_contact"):
 			run_state.apply_outdoor_hazard_contact(hazard_row)
@@ -866,6 +929,51 @@ func _tick_current_outdoor_hazard(delta: float) -> void:
 		_hazard_cooldown_seconds = maxf(1.0, float(hazard_row.get("cooldown_seconds", 6.0)) - delta)
 		_trigger_hazard_feedback(hazard_row)
 		return
+
+
+func _segment_intersects_rect(start_position: Vector2, end_position: Vector2, rect: Rect2) -> bool:
+	if rect.has_point(start_position) or rect.has_point(end_position):
+		return true
+
+	var delta := end_position - start_position
+	var t_min := 0.0
+	var t_max := 1.0
+
+	if absf(delta.x) < 0.001:
+		if start_position.x < rect.position.x or start_position.x > rect.end.x:
+			return false
+	else:
+		var inv_x := 1.0 / delta.x
+		var tx1 := (rect.position.x - start_position.x) * inv_x
+		var tx2 := (rect.end.x - start_position.x) * inv_x
+		t_min = maxf(t_min, minf(tx1, tx2))
+		t_max = minf(t_max, maxf(tx1, tx2))
+		if t_min > t_max:
+			return false
+
+	if absf(delta.y) < 0.001:
+		if start_position.y < rect.position.y or start_position.y > rect.end.y:
+			return false
+	else:
+		var inv_y := 1.0 / delta.y
+		var ty1 := (rect.position.y - start_position.y) * inv_y
+		var ty2 := (rect.end.y - start_position.y) * inv_y
+		t_min = maxf(t_min, minf(ty1, ty2))
+		t_max = minf(t_max, maxf(ty1, ty2))
+		if t_min > t_max:
+			return false
+
+	return true
+
+
+func _playtest_move_speed_multiplier() -> float:
+	for argument in OS.get_cmdline_user_args():
+		if String(argument) == "--playtest-speed":
+			return PLAYTEST_MOVE_SPEED_MULTIPLIER
+	for argument in OS.get_cmdline_args():
+		if String(argument) == "--playtest-speed":
+			return PLAYTEST_MOVE_SPEED_MULTIPLIER
+	return 1.0
 
 
 func _rect_from_row(rect_variant: Variant) -> Rect2:

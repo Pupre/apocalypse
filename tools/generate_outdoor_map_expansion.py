@@ -373,27 +373,76 @@ def choose_building_template(theme: str, x: int, y: int, slot: int) -> dict[str,
     return templates[(x * 11 + y * 3 + slot) % len(templates)]
 
 
-def anchor_positions_for(x: int, y: int) -> list[dict[str, int]]:
-    variants = [
-        [point(190, 240), point(710, 695)],
-        [point(730, 250), point(210, 705)],
-        [point(210, 690), point(735, 250)],
-        [point(700, 690), point(225, 245)],
-    ]
+def layout_id_for(x: int, y: int, district_key: str) -> str:
+    variants_by_district = {
+        "north_market": ["market_arcade", "market_back_alley", "market_plaza"],
+        "east_medical": ["medical_campus", "clinic_drive", "pharmacy_court"],
+        "south_residential": ["residential_courtyard", "row_house_lane", "frozen_backstreet"],
+        "south_industrial": ["loading_yard", "fuel_service_lot", "warehouse_spur"],
+        "west_shelter": ["shelter_checkpoint", "relief_lane", "barricaded_square"],
+        "central_transfer": ["bus_loop", "station_crossing", "underpass_detour"],
+        "mixed_edge": ["edge_service_road", "snowed_vacant_lot", "broken_grid"],
+    }
+    variants = variants_by_district.get(district_key, variants_by_district["mixed_edge"])
+    return variants[(x * 5 + y * 3) % len(variants)]
+
+
+def anchor_positions_for(x: int, y: int, district_key: str) -> list[dict[str, int]]:
+    variants_by_district = {
+        "north_market": [
+            [point(170, 235), point(705, 300), point(520, 730)],
+            [point(730, 220), point(215, 520), point(680, 735)],
+        ],
+        "east_medical": [
+            [point(265, 250), point(690, 575)],
+            [point(700, 255), point(245, 690)],
+        ],
+        "south_residential": [
+            [point(215, 265), point(620, 705), point(795, 420)],
+            [point(690, 255), point(230, 655), point(455, 760)],
+        ],
+        "south_industrial": [
+            [point(735, 300), point(260, 690)],
+            [point(245, 315), point(720, 695)],
+        ],
+        "west_shelter": [
+            [point(205, 250), point(710, 655), point(430, 450)],
+            [point(700, 260), point(215, 700), point(520, 580)],
+        ],
+        "central_transfer": [
+            [point(250, 245), point(725, 265), point(500, 710)],
+            [point(720, 700), point(230, 690), point(500, 235)],
+        ],
+        "mixed_edge": [
+            [point(190, 240), point(710, 695)],
+            [point(730, 250), point(210, 705)],
+            [point(210, 690), point(735, 250)],
+            [point(700, 690), point(225, 245)],
+        ],
+    }
+    variants = variants_by_district.get(district_key, variants_by_district["mixed_edge"])
     return variants[(x + y * 2) % len(variants)]
 
 
-def generated_building_count_for(x: int, y: int) -> int:
+def generated_building_count_for(x: int, y: int, district_key: str | None = None) -> int:
+    if district_key is None:
+        district_key = district_for(x, y)["key"]
+    if district_key in ["north_market", "central_transfer", "west_shelter"]:
+        return 3 if (x + y) % 3 == 0 else 2
+    if district_key == "south_residential":
+        return 3 if (x * 2 + y) % 4 == 0 else 2
+    if district_key in ["east_medical", "south_industrial"]:
+        return 2 if (x * 3 + y * 5) % 3 != 1 else 1
     return 2 if (x * 3 + y * 5) % 5 == 0 else 1
 
 
 def building_anchor_id(x: int, y: int, slot: int) -> str:
-    suffix = "a" if slot == 0 else "b"
+    suffix = ["a", "b", "c"][slot] if slot < 3 else chr(ord("a") + slot)
     return f"{GENERATED_PREFIX}{x:02d}_{y:02d}_{suffix}_anchor"
 
 
 def building_id(x: int, y: int, slot: int) -> str:
-    suffix = "a" if slot == 0 else "b"
+    suffix = ["a", "b", "c"][slot] if slot < 3 else chr(ord("a") + slot)
     return f"{GENERATED_PREFIX}{x:02d}_{y:02d}_{suffix}"
 
 
@@ -407,56 +456,101 @@ def road_texture(seed: int, vertical: bool = False) -> str:
 def generate_roads(x: int, y: int, district_key: str) -> list[dict[str, Any]]:
     vertical_x = 300 + ((x * 37 + y * 17) % 4) * 75
     horizontal_y = 280 + ((x * 19 + y * 31) % 4) * 80
-    roads = [
-        {
-            "id": "north_south",
-            "texture_id": road_texture(x + y, True),
-            "rect": rect(vertical_x, 0, 190, BLOCK_SIZE),
-        },
-        {
-            "id": "east_west",
-            "texture_id": road_texture(x * 2 + y, False),
-            "rect": rect(0, horizontal_y, BLOCK_SIZE, 190),
-        },
+    if district_key == "north_market":
+        return [
+            {"id": "market_main_street", "texture_id": road_texture(x + y, False), "rect": rect(0, 285 + (y % 2) * 35, BLOCK_SIZE, 165)},
+            {"id": "market_back_alley", "texture_id": "alley_dark", "rect": rect(120 + (x % 2) * 60, 0, 105, BLOCK_SIZE)},
+            {"id": "arcade_walk", "texture_id": "sidewalk_snow", "rect": rect(0, 170, BLOCK_SIZE, 78)},
+            {"id": "delivery_cut", "texture_id": "road_plain", "rect": rect(620, 455, 150, 360)},
+        ]
+    if district_key == "east_medical":
+        return [
+            {"id": "clinic_drive", "texture_id": "road_plain", "rect": rect(165, 105, 630, 150)},
+            {"id": "ambulance_lane", "texture_id": road_texture(x + y + 1, True), "rect": rect(660, 0, 145, BLOCK_SIZE)},
+            {"id": "pharmacy_court", "texture_id": "sidewalk_snow", "rect": rect(225, 395, 470, 280)},
+            {"id": "service_dropoff", "texture_id": "slush_road", "rect": rect(85, 665, 650, 120)},
+        ]
+    if district_key == "south_residential":
+        return [
+            {"id": "residential_lane_a", "texture_id": "alley_dark", "rect": rect(155, 0, 118, 575)},
+            {"id": "residential_lane_b", "texture_id": "alley_dark", "rect": rect(155, 485, 610, 118)},
+            {"id": "courtyard_walk", "texture_id": "sidewalk_snow", "rect": rect(520, 170, 250, 250)},
+            {"id": "dead_end_snow_road", "texture_id": "road_cracked", "rect": rect(610, 585, 128, 300)},
+        ]
+    if district_key == "south_industrial":
+        return [
+            {"id": "loading_yard", "texture_id": "road_plain", "rect": rect(145, 175, 650, 475)},
+            {"id": "warehouse_spur", "texture_id": "slush_road", "rect": rect(0, 660, BLOCK_SIZE, 150)},
+            {"id": "service_lane", "texture_id": "alley_dark", "rect": rect(70, 75, 130, 765)},
+            {"id": "fuel_apron", "texture_id": "road_cracked", "rect": rect(615, 55, 235, 170)},
+        ]
+    if district_key == "west_shelter":
+        return [
+            {"id": "relief_route", "texture_id": road_texture(x + y, False), "rect": rect(0, 360, BLOCK_SIZE, 150)},
+            {"id": "checkpoint_chicane_a", "texture_id": "road_plain", "rect": rect(165, 205, 430, 115)},
+            {"id": "checkpoint_chicane_b", "texture_id": "road_plain", "rect": rect(360, 505, 430, 115)},
+            {"id": "chapel_walk", "texture_id": "sidewalk_snow", "rect": rect(100, 630, 300, 155)},
+        ]
+    if district_key == "central_transfer":
+        return [
+            {"id": "bus_loop_top", "texture_id": "road_plain", "rect": rect(155, 170, 650, 135)},
+            {"id": "bus_loop_bottom", "texture_id": "road_plain", "rect": rect(155, 650, 650, 135)},
+            {"id": "bus_loop_left", "texture_id": "slush_road", "rect": rect(155, 170, 135, 615)},
+            {"id": "bus_loop_right", "texture_id": "slush_road", "rect": rect(670, 170, 135, 615)},
+            {"id": "underpass_cut", "texture_id": "alley_dark", "rect": rect(390, 0, 175, BLOCK_SIZE)},
+        ]
+    return [
+        {"id": "north_south", "texture_id": road_texture(x + y, True), "rect": rect(vertical_x, 0, 175, BLOCK_SIZE)},
+        {"id": "east_west", "texture_id": road_texture(x * 2 + y, False), "rect": rect(0, horizontal_y, BLOCK_SIZE, 175)},
+        {"id": "edge_service_walk", "texture_id": "sidewalk_snow", "rect": rect(90, 185, 290, 100)},
+        {"id": "vacant_pullout", "texture_id": "road_plain", "rect": rect(615, 580, 270, 145)},
     ]
-    if district_key in ["south_industrial", "central_transfer"]:
-        roads.append({
-            "id": "service_lane",
-            "texture_id": "alley_dark",
-            "rect": rect(80, 675, 520, 110),
-        })
-        roads.append({
-            "id": "loading_apron",
-            "texture_id": "road_plain",
-            "rect": rect(610, 150, 255, 160),
-        })
-    elif district_key in ["south_residential", "west_shelter"]:
-        roads.append({
-            "id": "narrow_alley",
-            "texture_id": "alley_dark",
-            "rect": rect(90, 150, 135, 650),
-        })
-        roads.append({
-            "id": "snow_sidewalk",
-            "texture_id": "sidewalk_snow",
-            "rect": rect(610, 585, 265, 95),
-        })
-    else:
-        roads.append({
-            "id": "shop_front_walk",
-            "texture_id": "sidewalk_snow",
-            "rect": rect(90, 185, 290, 100),
-        })
-        roads.append({
-            "id": "parking_pullout",
-            "texture_id": "road_plain",
-            "rect": rect(615, 580, 270, 145),
-        })
-    return roads
 
 
-def generate_snow_fields(x: int, y: int) -> list[dict[str, Any]]:
+def generate_snow_fields(x: int, y: int, district_key: str) -> list[dict[str, Any]]:
     inset = (x * 23 + y * 41) % 70
+    if district_key == "central_transfer":
+        return [
+            {"id": "terminal_plaza_snow", "rect": rect(315, 335, 330, 260)},
+            {"id": "bus_stop_snowbank", "rect": rect(95, 95, 215 + inset, 110)},
+            {"id": "underpass_drift", "rect": rect(395, 780, 170, 130)},
+            {"id": "ticket_curb_snow", "rect": rect(685, 320, 195, 105)},
+        ]
+    if district_key == "south_industrial":
+        return [
+            {"id": "open_yard_snow", "rect": rect(190, 210, 560, 350)},
+            {"id": "dock_drift", "rect": rect(735, 590, 180, 160)},
+            {"id": "fence_snow", "rect": rect(35, 760, 450, 125)},
+            {"id": "fuel_curb_snow", "rect": rect(610, 35, 260, 90)},
+        ]
+    if district_key == "south_residential":
+        return [
+            {"id": "courtyard_snow", "rect": rect(505, 155, 280, 280)},
+            {"id": "garden_snow", "rect": rect(25, 620, 310, 240)},
+            {"id": "stoop_snow", "rect": rect(300, 95, 170, 95)},
+            {"id": "back_fence_snow", "rect": rect(690, 690, 215, 165)},
+        ]
+    if district_key == "east_medical":
+        return [
+            {"id": "clinic_plaza_snow", "rect": rect(240, 390, 440, 275)},
+            {"id": "ambulance_bay_snow", "rect": rect(650, 235, 220, 145)},
+            {"id": "pharmacy_curb_snow", "rect": rect(80, 690, 310, 95)},
+            {"id": "records_walk_snow", "rect": rect(175, 60, 265, 95)},
+        ]
+    if district_key == "west_shelter":
+        return [
+            {"id": "relief_square_snow", "rect": rect(95, 610, 330, 215)},
+            {"id": "checkpoint_snowbank", "rect": rect(520, 210, 300, 155)},
+            {"id": "queue_line_snow", "rect": rect(50, 330, 210, 95)},
+            {"id": "chapel_curb_snow", "rect": rect(560, 640, 260, 125)},
+        ]
+    if district_key == "north_market":
+        return [
+            {"id": "storefront_snow", "rect": rect(0, 150, 390 + inset, 120)},
+            {"id": "market_plaza_snow", "rect": rect(500, 535, 340, 230)},
+            {"id": "crate_curb_snow", "rect": rect(250, 640, 230, 105)},
+            {"id": "awning_shadow_snow", "rect": rect(690, 60, 205, 125)},
+        ]
     return [
         {"id": "northwest_snow", "rect": rect(0, 0, 285 + inset, 260)},
         {"id": "southeast_snow", "rect": rect(620, 680 - inset // 2, 340, 280)},
@@ -482,11 +576,51 @@ def hazard(kind: str, hazard_id: str, area: dict[str, int], message: str, exposu
 
 def generate_hazards(x: int, y: int, district_key: str) -> list[dict[str, Any]]:
     seed = x * 13 + y * 7
+    district_hazard_areas = {
+        "north_market": (
+            rect(285 + seed % 90, 295, 135, 120),
+            rect(585, 410 + seed % 90, 180, 210),
+            rect(170, 610, 220, 125),
+        ),
+        "east_medical": (
+            rect(230 + seed % 110, 145, 170, 120),
+            rect(665, 270 + seed % 120, 160, 240),
+            rect(255, 640, 270, 135),
+        ),
+        "south_residential": (
+            rect(155, 460 + seed % 85, 150, 130),
+            rect(500, 185 + seed % 115, 190, 210),
+            rect(615, 680, 220, 135),
+        ),
+        "south_industrial": (
+            rect(245 + seed % 150, 520, 190, 140),
+            rect(695, 110 + seed % 160, 160, 260),
+            rect(160, 690, 300, 135),
+        ),
+        "west_shelter": (
+            rect(390 + seed % 100, 340, 170, 130),
+            rect(125, 515 + seed % 110, 180, 220),
+            rect(560, 205, 260, 135),
+        ),
+        "central_transfer": (
+            rect(365 + seed % 90, 380, 200, 165),
+            rect(665, 255 + seed % 130, 160, 245),
+            rect(165, 655, 270, 135),
+        ),
+    }
+    black_ice_area, wind_gap_area, snow_drift_area = district_hazard_areas.get(
+        district_key,
+        (
+            rect(385 + seed % 80, 345 + (seed // 3) % 70, 150, 145),
+            rect(610, 210 + seed % 180, 190, 230),
+            rect(170 + seed % 120, 650, 240, 150),
+        ),
+    )
     hazards = [
         hazard(
             "black_ice",
             "intersection_black_ice",
-            rect(385 + seed % 80, 345 + (seed // 3) % 70, 150, 145),
+            black_ice_area,
             "교차로 그늘에 숨어 있던 빙판이 발을 미끄러뜨렸다.",
             1.5,
             1.4,
@@ -495,7 +629,7 @@ def generate_hazards(x: int, y: int, district_key: str) -> list[dict[str, Any]]:
         hazard(
             "wind_gap",
             "building_wind_gap",
-            rect(610, 210 + seed % 180, 190, 230),
+            wind_gap_area,
             "건물 사이로 눌린 바람이 체온을 빠르게 빼앗았다.",
             2.6,
             1.1,
@@ -503,17 +637,25 @@ def generate_hazards(x: int, y: int, district_key: str) -> list[dict[str, Any]]:
         hazard(
             "snow_drift",
             "packed_snow_drift",
-            rect(170 + seed % 120, 650, 240, 150),
+            snow_drift_area,
             "허벅지까지 쌓인 눈을 헤치느라 숨이 거칠어졌다.",
             1.1,
             2.2,
         ),
     ]
     if district_key in ["central_transfer", "south_industrial", "east_medical"] or (x + y) % 3 == 0:
+        whiteout_by_district = {
+            "central_transfer": rect(330, 120 + seed % 90, 300, 230),
+            "south_industrial": rect(510, 80 + seed % 120, 310, 250),
+            "east_medical": rect(105, 315 + seed % 120, 260, 230),
+            "west_shelter": rect(600, 455, 250, 210),
+            "north_market": rect(455, 520, 250, 210),
+            "south_residential": rect(290, 315, 220, 200),
+        }
         hazards.append(hazard(
             "whiteout",
             "open_lot_whiteout",
-            rect(500, 40 + seed % 120, 260, 250),
+            whiteout_by_district.get(district_key, rect(500, 40 + seed % 120, 260, 250)),
             "눈발이 시야를 지워 길과 출입구가 잠깐 구분되지 않았다.",
             2.0,
             1.6,
@@ -537,20 +679,74 @@ OBSTACLE_POOL: list[tuple[str, str, tuple[int, int]]] = [
 ]
 
 
-def generate_obstacles(x: int, y: int) -> list[dict[str, Any]]:
-    positions = [
-        (130, 410),
-        (690, 150),
-        (630, 420),
-        (320, 300),
-        (90, 300),
-        (805, 620),
-        (245, 735),
-        (735, 745),
-    ]
+DISTRICT_OBSTACLE_POOLS: dict[str, list[tuple[str, str, tuple[int, int]]]] = {
+    "north_market": [
+        ("cart", "shopping_cart", (66, 54)),
+        ("crate", "crate_stack", (90, 76)),
+        ("sign", "bus_stop_sign", (48, 86)),
+        ("barrier", "traffic_cone", (42, 50)),
+        ("rubble", "dumpster_snow", (112, 76)),
+    ],
+    "east_medical": [
+        ("vehicle", "frozen_car", (62, 58)),
+        ("sign", "bus_stop_sign", (48, 86)),
+        ("utility", "utility_box", (76, 68)),
+        ("barrier", "sandbags", (108, 48)),
+        ("light", "street_lamp", (42, 82)),
+    ],
+    "south_residential": [
+        ("tree", "dead_tree", (92, 112)),
+        ("snow", "snow_drift", (135, 78)),
+        ("rubble", "tire_pile", (94, 62)),
+        ("utility", "utility_box", (76, 68)),
+        ("barrier", "barricade_wood", (104, 48)),
+    ],
+    "south_industrial": [
+        ("fuel", "barrel_empty", (54, 70)),
+        ("crate", "crate_stack", (96, 82)),
+        ("rubble", "dumpster_snow", (124, 82)),
+        ("barrier", "barricade_wood", (112, 50)),
+        ("vehicle", "frozen_car", (64, 60)),
+    ],
+    "west_shelter": [
+        ("barrier", "sandbags", (118, 52)),
+        ("barrier", "barricade_wood", (112, 50)),
+        ("fire", "barrel_fire", (56, 72)),
+        ("sign", "bus_stop_sign", (48, 86)),
+        ("crate", "crate_stack", (90, 76)),
+    ],
+    "central_transfer": [
+        ("sign", "bus_stop_sign", (48, 86)),
+        ("barrier", "traffic_cone", (42, 50)),
+        ("cart", "shopping_cart", (66, 54)),
+        ("light", "street_lamp", (42, 82)),
+        ("rubble", "tire_pile", (94, 62)),
+    ],
+}
+
+
+def obstacle_positions_for(district_key: str) -> list[tuple[int, int]]:
+    if district_key == "central_transfer":
+        return [(210, 335), (725, 335), (215, 625), (725, 625), (465, 115), (465, 825), (95, 500), (835, 500)]
+    if district_key == "south_industrial":
+        return [(245, 230), (715, 250), (250, 610), (700, 615), (105, 720), (820, 120), (525, 690), (430, 155)]
+    if district_key == "south_residential":
+        return [(120, 210), (355, 145), (735, 175), (525, 470), (210, 710), (815, 650), (625, 780), (330, 560)]
+    if district_key == "west_shelter":
+        return [(155, 330), (390, 315), (610, 285), (735, 515), (215, 665), (540, 690), (800, 660), (95, 525)]
+    if district_key == "east_medical":
+        return [(205, 300), (690, 320), (795, 520), (130, 690), (475, 705), (720, 115), (305, 120), (555, 450)]
+    if district_key == "north_market":
+        return [(120, 300), (300, 250), (725, 260), (620, 470), (210, 620), (780, 690), (465, 740), (845, 445)]
+    return [(130, 410), (690, 150), (630, 420), (320, 300), (90, 300), (805, 620), (245, 735), (735, 745)]
+
+
+def generate_obstacles(x: int, y: int, district_key: str) -> list[dict[str, Any]]:
+    positions = obstacle_positions_for(district_key)
+    pool = DISTRICT_OBSTACLE_POOLS.get(district_key, OBSTACLE_POOL)
     obstacles: list[dict[str, Any]] = []
     for index, (px, py) in enumerate(positions):
-        kind, asset_id, size = OBSTACLE_POOL[(x * 5 + y * 3 + index) % len(OBSTACLE_POOL)]
+        kind, asset_id, size = pool[(x * 5 + y * 3 + index) % len(pool)]
         offset_x = ((x + index * 17) % 23) - 11
         offset_y = ((y + index * 19) % 27) - 13
         obstacles.append({
@@ -576,22 +772,24 @@ def generate_threat_spawns(x: int, y: int) -> list[dict[str, Any]]:
 def generate_block(x: int, y: int) -> dict[str, Any]:
     district = district_for(x, y)
     anchors: dict[str, dict[str, int]] = {}
-    anchor_positions = anchor_positions_for(x, y)
-    for slot in range(generated_building_count_for(x, y)):
+    district_key = district["key"]
+    anchor_positions = anchor_positions_for(x, y, district_key)
+    for slot in range(generated_building_count_for(x, y, district_key)):
         anchors[building_anchor_id(x, y, slot)] = anchor_positions[slot]
     return {
         "block_coord": {"x": x, "y": y},
-        "district_id": district["key"],
+        "district_id": district_key,
         "district_label": district["label"],
-        "roads": generate_roads(x, y, district["key"]),
-        "snow_fields": generate_snow_fields(x, y),
-        "hazards": generate_hazards(x, y, district["key"]),
-        "obstacles": generate_obstacles(x, y),
+        "layout_id": layout_id_for(x, y, district_key),
+        "roads": generate_roads(x, y, district_key),
+        "snow_fields": generate_snow_fields(x, y, district_key),
+        "hazards": generate_hazards(x, y, district_key),
+        "obstacles": generate_obstacles(x, y, district_key),
         "building_anchors": anchors,
         "threat_spawns": generate_threat_spawns(x, y),
         "landmarks": [
             {
-                "id": f"{district['key']}_{x:02d}_{y:02d}",
+                "id": f"{district_key}_{x:02d}_{y:02d}",
                 "label": district["landmark"],
                 "position": point(480, 470),
             }

@@ -25,6 +25,7 @@ func _run_test() -> void:
 		var block: Dictionary = content_library.get_outdoor_block(block_coord)
 		assert_true(not block.is_empty(), "Expanded outdoor block %s should load." % [block_coord])
 		assert_true(not String(block.get("district_id", "")).is_empty(), "Expanded outdoor block %s should expose a district id." % [block_coord])
+		assert_true(not String(block.get("layout_id", "")).is_empty(), "Expanded outdoor block %s should expose a layout id for district variety." % [block_coord])
 		var roads_variant: Variant = block.get("roads", [])
 		var hazards_variant: Variant = block.get("hazards", [])
 		var obstacles_variant: Variant = block.get("obstacles", [])
@@ -33,6 +34,18 @@ func _run_test() -> void:
 		assert_true(typeof(hazards_variant) == TYPE_ARRAY and (hazards_variant as Array).size() >= 3, "Expanded outdoor block %s should contain several travel hazards." % [block_coord])
 		assert_true(typeof(obstacles_variant) == TYPE_ARRAY and (obstacles_variant as Array).size() >= 6, "Expanded outdoor block %s should contain varied street props." % [block_coord])
 		assert_true(typeof(anchors_variant) == TYPE_DICTIONARY and (anchors_variant as Dictionary).size() >= 1, "Expanded outdoor block %s should expose building anchors." % [block_coord])
+
+	var market_block: Dictionary = content_library.get_outdoor_block(Vector2i(3, 0))
+	var center_block: Dictionary = content_library.get_outdoor_block(Vector2i(6, 6))
+	var industrial_block: Dictionary = content_library.get_outdoor_block(Vector2i(11, 11))
+	assert_eq(String(market_block.get("district_id", "")), "north_market", "The north market should keep a distinct district id.")
+	assert_eq(String(center_block.get("district_id", "")), "central_transfer", "The center should keep a distinct transfer district id.")
+	assert_eq(String(industrial_block.get("district_id", "")), "south_industrial", "The far southeast should read as an industrial district.")
+	assert_true(String(market_block.get("layout_id", "")).begins_with("market_"), "North market blocks should use market-specific layout variants.")
+	assert_true(_block_has_road_id(center_block, "bus_loop_top"), "Central transfer blocks should use a bus-loop road layout instead of the generic cross.")
+	assert_true(_block_has_road_id(industrial_block, "loading_yard"), "Industrial blocks should use a loading-yard layout instead of the generic cross.")
+	assert_true(_block_has_obstacle_asset(market_block, "shopping_cart"), "Market blocks should stage retail props.")
+	assert_true(_block_has_obstacle_asset(industrial_block, "barrel_empty"), "Industrial blocks should stage fuel-yard props.")
 
 	var building_rows: Array[Dictionary] = content_library.get_building_rows()
 	var generated_count := 0
@@ -149,4 +162,24 @@ func _has_story_action(event_data: Dictionary, action_id: String) -> bool:
 			if typeof(outcomes_variant) != TYPE_DICTIONARY:
 				return false
 			return typeof((outcomes_variant as Dictionary).get("story_cutscene", {})) == TYPE_DICTIONARY
+	return false
+
+
+func _block_has_road_id(block: Dictionary, road_id: String) -> bool:
+	var roads_variant: Variant = block.get("roads", [])
+	if typeof(roads_variant) != TYPE_ARRAY:
+		return false
+	for road_variant in roads_variant as Array:
+		if typeof(road_variant) == TYPE_DICTIONARY and String((road_variant as Dictionary).get("id", "")) == road_id:
+			return true
+	return false
+
+
+func _block_has_obstacle_asset(block: Dictionary, asset_id: String) -> bool:
+	var obstacles_variant: Variant = block.get("obstacles", [])
+	if typeof(obstacles_variant) != TYPE_ARRAY:
+		return false
+	for obstacle_variant in obstacles_variant as Array:
+		if typeof(obstacle_variant) == TYPE_DICTIONARY and String((obstacle_variant as Dictionary).get("asset_id", "")) == asset_id:
+			return true
 	return false

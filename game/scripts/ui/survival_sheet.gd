@@ -204,6 +204,8 @@ func close_sheet() -> void:
 func set_inventory_payload(payload: Dictionary) -> void:
 	_inventory_payload = payload.duplicate(true)
 	_ensure_selected_item_is_valid()
+	if not visible:
+		return
 	_refresh_highlights()
 	_render()
 
@@ -236,7 +238,10 @@ func select_inventory_item(item_id: String) -> void:
 	if _sheet_state == STATE_INVENTORY_CRAFT_SELECT and item_id != _selected_item_id:
 		_last_craft_feedback_text = ""
 	_selected_item_id = item_id
-	_render_inventory()
+	_refresh_item_button_states()
+	_render_item_detail()
+	_apply_inventory_scroll_height()
+	_render_craft_card()
 
 
 func begin_craft_mode(item_id: String) -> void:
@@ -359,11 +364,16 @@ func _bind_buttons() -> void:
 
 
 func _render() -> void:
+	if not visible and _sheet_state == STATE_HIDDEN:
+		return
 	_render_header()
 	_render_tabs()
 	_render_craft_card()
-	_render_inventory()
-	_render_codex()
+	if _active_tab == "inventory":
+		_render_inventory()
+	elif _active_tab == "codex":
+		_render_item_detail()
+		_render_codex()
 
 
 func _render_header() -> void:

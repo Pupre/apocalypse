@@ -5,83 +5,84 @@
   },
   "district_id": "north_market",
   "district_label": "북쪽 상권",
+  "layout_id": "market_back_alley",
   "roads": [
     {
-      "id": "north_south",
-      "texture_id": "road_lane_v",
+      "id": "market_main_street",
+      "texture_id": "road_lane_h",
       "rect": {
-        "x": 300,
+        "x": 0,
+        "y": 320,
+        "width": 960,
+        "height": 165
+      }
+    },
+    {
+      "id": "market_back_alley",
+      "texture_id": "alley_dark",
+      "rect": {
+        "x": 180,
         "y": 0,
-        "width": 190,
+        "width": 105,
         "height": 960
       }
     },
     {
-      "id": "east_west",
-      "texture_id": "road_plain",
-      "rect": {
-        "x": 0,
-        "y": 280,
-        "width": 960,
-        "height": 190
-      }
-    },
-    {
-      "id": "shop_front_walk",
+      "id": "arcade_walk",
       "texture_id": "sidewalk_snow",
       "rect": {
-        "x": 90,
-        "y": 185,
-        "width": 290,
-        "height": 100
+        "x": 0,
+        "y": 170,
+        "width": 960,
+        "height": 78
       }
     },
     {
-      "id": "parking_pullout",
+      "id": "delivery_cut",
       "texture_id": "road_plain",
       "rect": {
-        "x": 615,
-        "y": 580,
-        "width": 270,
-        "height": 145
+        "x": 620,
+        "y": 455,
+        "width": 150,
+        "height": 360
       }
     }
   ],
   "snow_fields": [
     {
-      "id": "northwest_snow",
+      "id": "storefront_snow",
       "rect": {
         "x": 0,
-        "y": 0,
-        "width": 299,
-        "height": 260
+        "y": 150,
+        "width": 404,
+        "height": 120
       }
     },
     {
-      "id": "southeast_snow",
+      "id": "market_plaza_snow",
       "rect": {
-        "x": 620,
-        "y": 673,
+        "x": 500,
+        "y": 535,
         "width": 340,
-        "height": 280
+        "height": 230
       }
     },
     {
-      "id": "curb_snow",
+      "id": "crate_curb_snow",
       "rect": {
-        "x": 260,
-        "y": 610,
+        "x": 250,
+        "y": 640,
         "width": 230,
         "height": 105
       }
     },
     {
-      "id": "wind_packed_snow",
+      "id": "awning_shadow_snow",
       "rect": {
-        "x": 700,
-        "y": 55,
-        "width": 190,
-        "height": 124
+        "x": 690,
+        "y": 60,
+        "width": 205,
+        "height": 125
       }
     }
   ],
@@ -90,10 +91,10 @@
       "id": "intersection_black_ice",
       "kind": "black_ice",
       "rect": {
-        "x": 455,
-        "y": 395,
-        "width": 150,
-        "height": 145
+        "x": 345,
+        "y": 295,
+        "width": 135,
+        "height": 120
       },
       "message": "교차로 그늘에 숨어 있던 빙판이 발을 미끄러뜨렸다.",
       "exposure_loss": 1.5,
@@ -105,10 +106,10 @@
       "id": "building_wind_gap",
       "kind": "wind_gap",
       "rect": {
-        "x": 610,
-        "y": 360,
-        "width": 190,
-        "height": 230
+        "x": 585,
+        "y": 470,
+        "width": 180,
+        "height": 210
       },
       "message": "건물 사이로 눌린 바람이 체온을 빠르게 빼앗았다.",
       "exposure_loss": 2.6,
@@ -119,10 +120,10 @@
       "id": "packed_snow_drift",
       "kind": "snow_drift",
       "rect": {
-        "x": 200,
-        "y": 650,
-        "width": 240,
-        "height": 150
+        "x": 170,
+        "y": 610,
+        "width": 220,
+        "height": 125
       },
       "message": "허벅지까지 쌓인 눈을 헤치느라 숨이 거칠어졌다.",
       "exposure_loss": 1.1,
@@ -133,10 +134,10 @@
       "id": "open_lot_whiteout",
       "kind": "whiteout",
       "rect": {
-        "x": 500,
-        "y": 70,
-        "width": 260,
-        "height": 250
+        "x": 455,
+        "y": 520,
+        "width": 250,
+        "height": 210
       },
       "message": "눈발이 시야를 지워 길과 출입구가 잠깐 구분되지 않았다.",
       "exposure_loss": 2.0,
@@ -146,90 +147,98 @@
   ],
   "obstacles": [
     {
-      "kind": "tree",
-      "asset_id": "dead_tree",
+      "kind": "barrier",
+      "asset_id": "traffic_cone",
       "rect": {
-        "x": 130,
-        "y": 398,
-        "width": 90,
-        "height": 110
-      }
-    },
-    {
-      "kind": "fuel",
-      "asset_id": "barrel_empty",
-      "rect": {
-        "x": 684,
-        "y": 157,
-        "width": 54,
-        "height": 70
-      }
-    },
-    {
-      "kind": "vehicle",
-      "asset_id": "frozen_car",
-      "rect": {
-        "x": 641,
-        "y": 419,
-        "width": 58,
-        "height": 58
+        "x": 120,
+        "y": 288,
+        "width": 42,
+        "height": 50
       }
     },
     {
       "kind": "rubble",
       "asset_id": "dumpster_snow",
       "rect": {
-        "x": 325,
-        "y": 291,
-        "width": 118,
-        "height": 78
+        "x": 294,
+        "y": 257,
+        "width": 112,
+        "height": 76
       }
     },
     {
       "kind": "cart",
       "asset_id": "shopping_cart",
       "rect": {
-        "x": 89,
-        "y": 310,
-        "width": 70,
-        "height": 58
+        "x": 736,
+        "y": 259,
+        "width": 66,
+        "height": 54
       }
     },
     {
-      "kind": "light",
-      "asset_id": "street_lamp",
+      "kind": "crate",
+      "asset_id": "crate_stack",
       "rect": {
-        "x": 798,
-        "y": 622,
-        "width": 42,
-        "height": 82
+        "x": 625,
+        "y": 461,
+        "width": 90,
+        "height": 76
+      }
+    },
+    {
+      "kind": "sign",
+      "asset_id": "bus_stop_sign",
+      "rect": {
+        "x": 209,
+        "y": 630,
+        "width": 48,
+        "height": 86
       }
     },
     {
       "kind": "barrier",
-      "asset_id": "barricade_wood",
+      "asset_id": "traffic_cone",
       "rect": {
-        "x": 255,
-        "y": 729,
-        "width": 105,
-        "height": 48
+        "x": 773,
+        "y": 692,
+        "width": 42,
+        "height": 50
       }
     },
     {
-      "kind": "snow",
-      "asset_id": "snow_drift",
+      "kind": "rubble",
+      "asset_id": "dumpster_snow",
       "rect": {
-        "x": 739,
-        "y": 758,
-        "width": 132,
-        "height": 78
+        "x": 475,
+        "y": 734,
+        "width": 112,
+        "height": 76
+      }
+    },
+    {
+      "kind": "cart",
+      "asset_id": "shopping_cart",
+      "rect": {
+        "x": 849,
+        "y": 458,
+        "width": 66,
+        "height": 54
       }
     }
   ],
   "building_anchors": {
     "mapx_11_01_a_anchor": {
       "x": 730,
-      "y": 250
+      "y": 220
+    },
+    "mapx_11_01_b_anchor": {
+      "x": 215,
+      "y": 520
+    },
+    "mapx_11_01_c_anchor": {
+      "x": 680,
+      "y": 735
     }
   },
   "threat_spawns": [
