@@ -781,7 +781,7 @@ func _contextual_loot_profile_entries(event_data: Dictionary, loot_table: Dictio
 		return rows
 	if ContentLibrary == null or not ContentLibrary.has_method("get_loot_profile_entries"):
 		return rows
-	var contextual_weight_scale := maxf(0.0, float(loot_table.get("contextual_profile_weight_scale", 0.06)))
+	var contextual_weight_scale := maxf(0.0, float(loot_table.get("contextual_profile_weight_scale", 0.025)))
 	if contextual_weight_scale <= 0.0:
 		return rows
 

@@ -1,970 +1,238 @@
 {
   "global": [
     {
-      "id": "surv_food_001",
-      "weight": 0.45
+      "id": "surv_electronics_011",
+      "weight": 0.33
     },
     {
-      "id": "surv_food_002",
-      "weight": 0.45
+      "id": "surv_food_037",
+      "weight": 0.5
     },
     {
-      "id": "surv_food_003",
-      "weight": 0.45
+      "id": "surv_equipment_024",
+      "weight": 0.42
     },
     {
-      "id": "surv_food_004",
-      "weight": 0.45
+      "id": "surv_equipment_049",
+      "weight": 0.42
     },
     {
-      "id": "surv_food_005",
-      "weight": 0.45
+      "id": "surv_utility_046",
+      "weight": 0.5
     },
     {
-      "id": "surv_food_006",
-      "weight": 0.45
+      "id": "surv_utility_054",
+      "weight": 0.5
     },
     {
-      "id": "surv_food_007",
-      "weight": 0.45
+      "id": "surv_equipment_031",
+      "weight": 0.42
     },
     {
-      "id": "surv_food_008",
-      "weight": 0.45
-    },
-    {
-      "id": "surv_food_009",
-      "weight": 0.45
-    },
-    {
-      "id": "surv_food_010",
-      "weight": 0.45
-    },
-    {
-      "id": "surv_food_011",
-      "weight": 0.45
-    },
-    {
-      "id": "surv_food_012",
-      "weight": 0.45
+      "id": "surv_personal_031",
+      "weight": 0.33
     },
     {
       "id": "surv_food_013",
-      "weight": 0.45
+      "weight": 0.5
     },
     {
-      "id": "surv_food_014",
-      "weight": 0.45
+      "id": "surv_electronics_001",
+      "weight": 0.33
     },
     {
-      "id": "surv_food_015",
-      "weight": 0.45
+      "id": "surv_utility_036",
+      "weight": 0.5
     },
     {
-      "id": "surv_food_016",
-      "weight": 0.45
+      "id": "surv_equipment_034",
+      "weight": 0.42
     },
     {
-      "id": "surv_food_017",
-      "weight": 0.45
+      "id": "surv_personal_007",
+      "weight": 0.33
     },
     {
-      "id": "surv_food_018",
-      "weight": 0.45
+      "id": "surv_personal_013",
+      "weight": 0.33
     },
     {
-      "id": "surv_food_019",
-      "weight": 0.45
-    },
-    {
-      "id": "surv_food_020",
-      "weight": 0.45
-    },
-    {
-      "id": "surv_food_021",
-      "weight": 0.45
-    },
-    {
-      "id": "surv_food_022",
-      "weight": 0.45
-    },
-    {
-      "id": "surv_food_023",
-      "weight": 0.45
+      "id": "surv_utility_066",
+      "weight": 0.5
     },
     {
       "id": "surv_food_024",
-      "weight": 0.45
+      "weight": 0.5
     },
     {
-      "id": "surv_food_025",
-      "weight": 0.45
+      "id": "surv_personal_043",
+      "weight": 0.33
     },
     {
-      "id": "surv_food_026",
-      "weight": 0.45
+      "id": "surv_food_011",
+      "weight": 0.5
     },
     {
-      "id": "surv_food_027",
-      "weight": 0.45
+      "id": "surv_household_033",
+      "weight": 0.5
     },
     {
-      "id": "surv_food_028",
-      "weight": 0.45
+      "id": "surv_container_018",
+      "weight": 0.5
     },
     {
-      "id": "surv_food_029",
-      "weight": 0.45
+      "id": "surv_personal_032",
+      "weight": 0.33
     },
     {
-      "id": "surv_food_030",
-      "weight": 0.45
+      "id": "surv_tool_024",
+      "weight": 0.5
     },
     {
-      "id": "surv_food_031",
-      "weight": 0.45
+      "id": "surv_equipment_036",
+      "weight": 0.42
     },
     {
-      "id": "surv_food_032",
-      "weight": 0.45
+      "id": "surv_tool_019",
+      "weight": 0.5
     },
     {
-      "id": "surv_food_033",
-      "weight": 0.45
+      "id": "surv_electronics_024",
+      "weight": 0.33
     },
     {
-      "id": "surv_food_034",
-      "weight": 0.45
+      "id": "surv_knowledge_002",
+      "weight": 0.33
     },
     {
-      "id": "surv_food_035",
-      "weight": 0.45
+      "id": "surv_tool_016",
+      "weight": 0.5
     },
     {
-      "id": "surv_food_036",
-      "weight": 0.45
+      "id": "surv_utility_021",
+      "weight": 0.5
+    },
+    {
+      "id": "surv_tool_021",
+      "weight": 0.5
+    },
+    {
+      "id": "surv_food_040",
+      "weight": 0.5
+    },
+    {
+      "id": "surv_personal_046",
+      "weight": 0.33
+    },
+    {
+      "id": "surv_container_016",
+      "weight": 0.5
+    },
+    {
+      "id": "surv_personal_009",
+      "weight": 0.33
+    },
+    {
+      "id": "surv_food_023",
+      "weight": 0.5
+    },
+    {
+      "id": "surv_household_037",
+      "weight": 0.5
+    },
+    {
+      "id": "surv_utility_031",
+      "weight": 0.5
+    },
+    {
+      "id": "surv_container_013",
+      "weight": 0.5
+    },
+    {
+      "id": "surv_electronics_005",
+      "weight": 0.33
+    },
+    {
+      "id": "surv_utility_062",
+      "weight": 0.5
+    },
+    {
+      "id": "surv_utility_020",
+      "weight": 0.5
+    },
+    {
+      "id": "surv_equipment_043",
+      "weight": 0.42
+    },
+    {
+      "id": "surv_knowledge_031",
+      "weight": 0.33
+    },
+    {
+      "id": "surv_utility_061",
+      "weight": 0.5
+    },
+    {
+      "id": "surv_electronics_003",
+      "weight": 0.33
+    },
+    {
+      "id": "surv_equipment_056",
+      "weight": 0.42
+    },
+    {
+      "id": "surv_utility_070",
+      "weight": 0.5
+    },
+    {
+      "id": "surv_personal_019",
+      "weight": 0.33
+    },
+    {
+      "id": "surv_utility_005",
+      "weight": 0.5
+    },
+    {
+      "id": "surv_medical_016",
+      "weight": 0.5
+    },
+    {
+      "id": "surv_container_009",
+      "weight": 0.5
     }
   ],
   "building_categories": {
     "retail": [
       {
-        "id": "surv_food_001",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_002",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_003",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_004",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_005",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_006",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_008",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_009",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_010",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_011",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_012",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_013",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_014",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_015",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_016",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_017",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_018",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_019",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_020",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_021",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_023",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_024",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_025",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_026",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_027",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_028",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_029",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_030",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_031",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_032",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_033",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_034",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_035",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_036",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_037",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_038",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_039",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_040",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_041",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_042",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_043",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_044",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_045",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_046",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_047",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_048",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_049",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_050",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_051",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_052",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_053",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_054",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_055",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_056",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_057",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_058",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_059",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_060",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_061",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_062",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_063",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_064",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_065",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_001",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_002",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_003",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_004",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_005",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_006",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_008",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_009",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_010",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_011",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_012",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_013",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_014",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_015",
-        "weight": 1.0
-      },
-      {
         "id": "surv_drink_016",
         "weight": 1.0
       },
       {
-        "id": "surv_drink_017",
+        "id": "surv_utility_041",
         "weight": 1.0
       },
       {
-        "id": "surv_drink_018",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_019",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_020",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_021",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_023",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_024",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_025",
-        "weight": 1.0
-      }
-    ],
-    "residential": [
-      {
-        "id": "surv_food_001",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_002",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_003",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_004",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_005",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_006",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_008",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_009",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_010",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_011",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_012",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_013",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_014",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_015",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_016",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_017",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_018",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_019",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_020",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_021",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_023",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_024",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_025",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_026",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_027",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_028",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_029",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_030",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_031",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_032",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_033",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_034",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_035",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_036",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_037",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_038",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_039",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_040",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_041",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_042",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_043",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_044",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_045",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_046",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_047",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_048",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_049",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_050",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_051",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_052",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_053",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_054",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_055",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_056",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_057",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_058",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_059",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_060",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_061",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_062",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_063",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_064",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_065",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_001",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_002",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_003",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_004",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_005",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_006",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_008",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_009",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_010",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_011",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_012",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_013",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_014",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_015",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_016",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_017",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_018",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_019",
-        "weight": 1.0
-      }
-    ],
-    "medical": [
-      {
-        "id": "surv_drink_001",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_002",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_003",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_004",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_005",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_006",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_008",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_009",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_010",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_011",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_012",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_013",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_014",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_015",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_016",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_017",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_018",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_019",
-        "weight": 1.0
+        "id": "surv_electronics_007",
+        "weight": 0.65
       },
       {
-        "id": "surv_drink_020",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_021",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_023",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_024",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_025",
-        "weight": 1.0
+        "id": "surv_personal_023",
+        "weight": 0.65
       },
       {
-        "id": "surv_medical_001",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_002",
-        "weight": 1.0
+        "id": "surv_electronics_020",
+        "weight": 0.65
       },
       {
-        "id": "surv_medical_003",
-        "weight": 1.0
+        "id": "surv_personal_036",
+        "weight": 0.65
       },
       {
-        "id": "surv_medical_004",
-        "weight": 1.0
+        "id": "surv_personal_019",
+        "weight": 0.65
       },
       {
-        "id": "surv_medical_005",
+        "id": "surv_household_004",
         "weight": 1.0
       },
       {
@@ -972,387 +240,219 @@
         "weight": 1.0
       },
       {
-        "id": "surv_medical_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_008",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_009",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_010",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_011",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_012",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_013",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_014",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_015",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_016",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_017",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_018",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_019",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_020",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_021",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_023",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_024",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_025",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_026",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_027",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_028",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_029",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_030",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_031",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_032",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_033",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_034",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_035",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_036",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_037",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_038",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_039",
-        "weight": 1.0
-      }
-    ],
-    "office": [
-      {
-        "id": "surv_tool_001",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_002",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_003",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_004",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_005",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_006",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_008",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_009",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_010",
-        "weight": 1.0
+        "id": "surv_equipment_030",
+        "weight": 0.85
       },
       {
-        "id": "surv_tool_011",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_012",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_013",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_014",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_015",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_016",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_017",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_018",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_019",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_020",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_021",
-        "weight": 1.0
+        "id": "surv_equipment_047",
+        "weight": 0.85
       },
       {
-        "id": "surv_tool_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_023",
-        "weight": 1.0
+        "id": "surv_electronics_006",
+        "weight": 0.65
       },
       {
-        "id": "surv_tool_024",
+        "id": "surv_drink_015",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_025",
-        "weight": 1.0
+        "id": "surv_personal_042",
+        "weight": 0.65
       },
       {
-        "id": "surv_tool_026",
+        "id": "surv_household_008",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_027",
+        "id": "surv_household_029",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_028",
-        "weight": 1.0
+        "id": "surv_knowledge_028",
+        "weight": 0.65
       },
       {
-        "id": "surv_tool_029",
+        "id": "surv_container_019",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_030",
+        "id": "surv_utility_070",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_031",
+        "id": "surv_utility_006",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_032",
-        "weight": 1.0
+        "id": "surv_personal_007",
+        "weight": 0.65
       },
       {
-        "id": "surv_tool_033",
-        "weight": 1.0
+        "id": "surv_personal_025",
+        "weight": 0.65
       },
       {
-        "id": "surv_tool_034",
+        "id": "surv_household_009",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_035",
+        "id": "surv_household_014",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_036",
+        "id": "surv_utility_035",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_037",
+        "id": "surv_container_009",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_038",
-        "weight": 1.0
+        "id": "surv_knowledge_032",
+        "weight": 0.65
       },
       {
-        "id": "surv_tool_039",
-        "weight": 1.0
+        "id": "surv_personal_030",
+        "weight": 0.65
       },
       {
-        "id": "surv_tool_040",
+        "id": "surv_household_022",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_041",
+        "id": "surv_drink_011",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_042",
+        "id": "surv_container_007",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_043",
+        "id": "surv_utility_045",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_044",
+        "id": "surv_food_024",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_045",
-        "weight": 1.0
+        "id": "surv_personal_010",
+        "weight": 0.65
       },
       {
         "id": "surv_knowledge_001",
-        "weight": 0.45
+        "weight": 0.65
       },
       {
-        "id": "surv_knowledge_002",
-        "weight": 0.45
+        "id": "surv_electronics_003",
+        "weight": 0.65
       },
       {
-        "id": "surv_knowledge_003",
-        "weight": 0.45
+        "id": "surv_equipment_058",
+        "weight": 0.85
       },
       {
-        "id": "surv_knowledge_004",
-        "weight": 0.45
-      },
-      {
-        "id": "surv_knowledge_005",
-        "weight": 0.45
-      },
-      {
-        "id": "surv_knowledge_006",
-        "weight": 0.45
-      },
-      {
-        "id": "surv_knowledge_007",
-        "weight": 0.45
-      }
-    ],
-    "food_service": [
-      {
-        "id": "surv_food_001",
+        "id": "surv_household_032",
         "weight": 1.0
       },
       {
-        "id": "surv_food_002",
+        "id": "surv_food_032",
         "weight": 1.0
       },
       {
-        "id": "surv_food_003",
+        "id": "surv_personal_004",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_008",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_025",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_015",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_016",
         "weight": 1.0
       },
       {
-        "id": "surv_food_004",
+        "id": "surv_food_038",
         "weight": 1.0
       },
       {
-        "id": "surv_food_005",
+        "id": "surv_equipment_057",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_020",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_023",
         "weight": 1.0
       },
       {
-        "id": "surv_food_006",
+        "id": "surv_utility_036",
         "weight": 1.0
       },
       {
-        "id": "surv_food_007",
+        "id": "surv_knowledge_014",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_037",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_drink_008",
         "weight": 1.0
       },
       {
-        "id": "surv_food_008",
+        "id": "surv_food_016",
         "weight": 1.0
       },
       {
-        "id": "surv_food_009",
+        "id": "surv_drink_002",
         "weight": 1.0
       },
       {
-        "id": "surv_food_010",
+        "id": "surv_food_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_037",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_001",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_001",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_021",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_container_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_035",
         "weight": 1.0
       },
       {
@@ -1360,11 +460,1179 @@
         "weight": 1.0
       },
       {
-        "id": "surv_food_012",
+        "id": "surv_personal_013",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_061",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_knowledge_009",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_015",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_033",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_personal_047",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_household_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_002",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_food_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_049",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_019",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_electronics_017",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_026",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_052",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_024",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_059",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_068",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_067",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_062",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_container_016",
         "weight": 1.0
       },
       {
         "id": "surv_food_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_002",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_016",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_017",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_026",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_drink_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_011",
+        "weight": 1.0
+      }
+    ],
+    "residential": [
+      {
+        "id": "surv_utility_062",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_035",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_electronics_029",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_068",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_001",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_food_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_019",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_container_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_053",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_food_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_011",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_food_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_container_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_063",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_tool_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_002",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_049",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_003",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_067",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_010",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_002",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_knowledge_008",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_012",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_069",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_household_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_031",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_022",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_056",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_household_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_031",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_container_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_054",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_069",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_059",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_knowledge_016",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_020",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_household_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_container_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_045",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_043",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_001",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_household_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_013",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_015",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_051",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_009",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_032",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_025",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_electronics_026",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_057",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_knowledge_017",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_027",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_tool_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_041",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_023",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_040",
+        "weight": 0.85
+      }
+    ],
+    "medical": [
+      {
+        "id": "surv_medical_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_026",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_drink_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_027",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_018",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_004",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_007",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_025",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_011",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_022",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_028",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_019",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_drink_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_015",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_drink_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_020",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_002",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_005",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_030",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_010",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_drink_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_008",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_024",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_006",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_drink_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_032",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_drink_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_003",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_014",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_021",
+        "weight": 1.0
+      }
+    ],
+    "office": [
+      {
+        "id": "surv_tool_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_036",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_013",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_034",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_027",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_029",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_009",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_017",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_043",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_019",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_010",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_003",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_006",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_container_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_012",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_005",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_container_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_030",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_container_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_container_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_016",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_container_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_025",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_container_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_038",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_019",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_012",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_028",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_015",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_002",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_031",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_010",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_container_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_011",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_027",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_027",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_032",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_024",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_047",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_001",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_017",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_container_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_container_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_007",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_021",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_030",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_011",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_container_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_container_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_017",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_container_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_032",
+        "weight": 0.65
+      }
+    ],
+    "food_service": [
+      {
+        "id": "surv_food_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_042",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_045",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_044",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_027",
         "weight": 1.0
       },
       {
@@ -1376,51 +1644,7 @@
         "weight": 1.0
       },
       {
-        "id": "surv_food_016",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_017",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_018",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_019",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_020",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_021",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_023",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_024",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_025",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_026",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_027",
+        "id": "surv_food_029",
         "weight": 1.0
       },
       {
@@ -1428,23 +1652,27 @@
         "weight": 1.0
       },
       {
-        "id": "surv_food_029",
+        "id": "surv_food_002",
         "weight": 1.0
       },
       {
-        "id": "surv_food_030",
+        "id": "surv_household_014",
         "weight": 1.0
       },
       {
-        "id": "surv_food_031",
+        "id": "surv_household_009",
         "weight": 1.0
       },
       {
-        "id": "surv_food_032",
+        "id": "surv_drink_008",
         "weight": 1.0
       },
       {
-        "id": "surv_food_033",
+        "id": "surv_household_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_038",
         "weight": 1.0
       },
       {
@@ -1452,35 +1680,27 @@
         "weight": 1.0
       },
       {
-        "id": "surv_food_035",
+        "id": "surv_food_016",
         "weight": 1.0
       },
       {
-        "id": "surv_food_036",
+        "id": "surv_food_006",
         "weight": 1.0
       },
       {
-        "id": "surv_food_037",
+        "id": "surv_household_037",
         "weight": 1.0
       },
       {
-        "id": "surv_food_038",
+        "id": "surv_drink_018",
         "weight": 1.0
       },
       {
-        "id": "surv_food_039",
+        "id": "surv_household_034",
         "weight": 1.0
       },
       {
-        "id": "surv_food_040",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_041",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_042",
+        "id": "surv_food_030",
         "weight": 1.0
       },
       {
@@ -1488,333 +1708,41 @@
         "weight": 1.0
       },
       {
-        "id": "surv_food_044",
+        "id": "surv_food_040",
         "weight": 1.0
       },
       {
-        "id": "surv_food_045",
+        "id": "surv_household_036",
         "weight": 1.0
       },
       {
-        "id": "surv_food_046",
+        "id": "surv_food_012",
         "weight": 1.0
       },
       {
-        "id": "surv_food_047",
+        "id": "surv_food_021",
         "weight": 1.0
       },
       {
-        "id": "surv_food_048",
+        "id": "surv_drink_014",
         "weight": 1.0
       },
       {
-        "id": "surv_food_049",
+        "id": "surv_food_026",
         "weight": 1.0
       },
       {
-        "id": "surv_food_050",
+        "id": "surv_household_025",
         "weight": 1.0
       },
       {
-        "id": "surv_food_051",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_052",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_053",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_054",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_055",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_056",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_057",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_058",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_059",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_060",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_061",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_062",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_063",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_064",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_065",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_001",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_002",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_003",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_004",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_005",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_006",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_007",
+        "id": "surv_household_016",
         "weight": 1.0
       }
     ],
     "industrial": [
       {
-        "id": "surv_tool_001",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_002",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_003",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_004",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_005",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_006",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_008",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_009",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_010",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_011",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_012",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_013",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_014",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_015",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_016",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_017",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_018",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_019",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_020",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_021",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_023",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_024",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_025",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_026",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_027",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_028",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_029",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_030",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_031",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_032",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_033",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_034",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_035",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_036",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_037",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_038",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_039",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_040",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_041",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_042",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_043",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_044",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_045",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_001",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_002",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_003",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_004",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_005",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_006",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_008",
+        "id": "surv_utility_045",
         "weight": 1.0
       },
       {
@@ -1822,35 +1750,35 @@
         "weight": 1.0
       },
       {
-        "id": "surv_utility_010",
+        "id": "surv_utility_042",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_011",
+        "id": "surv_utility_026",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_012",
+        "id": "surv_tool_009",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_013",
+        "id": "surv_utility_036",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_014",
+        "id": "surv_tool_030",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_015",
+        "id": "surv_utility_059",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_016",
+        "id": "surv_tool_026",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_017",
+        "id": "surv_utility_051",
         "weight": 1.0
       },
       {
@@ -1862,43 +1790,15 @@
         "weight": 1.0
       },
       {
-        "id": "surv_utility_020",
+        "id": "surv_tool_010",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_021",
+        "id": "surv_tool_029",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_023",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_024",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_025",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_026",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_027",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_028",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_029",
+        "id": "surv_tool_011",
         "weight": 1.0
       },
       {
@@ -1906,7 +1806,35 @@
         "weight": 1.0
       },
       {
+        "id": "surv_tool_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_054",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_057",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_046",
+        "weight": 1.0
+      },
+      {
         "id": "surv_utility_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_069",
         "weight": 1.0
       },
       {
@@ -1914,11 +1842,31 @@
         "weight": 1.0
       },
       {
-        "id": "surv_utility_033",
+        "id": "surv_utility_039",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_034",
+        "id": "surv_utility_050",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_066",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_005",
         "weight": 1.0
       },
       {
@@ -1926,19 +1874,11 @@
         "weight": 1.0
       },
       {
-        "id": "surv_utility_036",
+        "id": "surv_tool_004",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_037",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_038",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_039",
+        "id": "surv_tool_031",
         "weight": 1.0
       },
       {
@@ -1950,7 +1890,127 @@
         "weight": 1.0
       },
       {
-        "id": "surv_utility_042",
+        "id": "surv_utility_064",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_068",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_065",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_048",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_049",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_060",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_055",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_053",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_062",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_007",
         "weight": 1.0
       },
       {
@@ -1958,121 +2018,19 @@
         "weight": 1.0
       },
       {
-        "id": "surv_utility_044",
+        "id": "surv_utility_022",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_045",
-        "weight": 1.0
-      }
-    ],
-    "security": [
-      {
-        "id": "surv_tool_001",
+        "id": "surv_utility_013",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_002",
+        "id": "surv_utility_006",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_003",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_004",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_005",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_006",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_008",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_009",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_010",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_011",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_012",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_013",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_014",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_015",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_016",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_017",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_018",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_019",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_020",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_021",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_023",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_024",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_025",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_026",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_027",
+        "id": "surv_utility_034",
         "weight": 1.0
       },
       {
@@ -2080,27 +2038,19 @@
         "weight": 1.0
       },
       {
-        "id": "surv_tool_029",
+        "id": "surv_tool_017",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_030",
+        "id": "surv_utility_029",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_031",
+        "id": "surv_utility_015",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_032",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_033",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_034",
+        "id": "surv_utility_021",
         "weight": 1.0
       },
       {
@@ -2108,199 +2058,265 @@
         "weight": 1.0
       },
       {
-        "id": "surv_tool_036",
+        "id": "surv_utility_037",
         "weight": 1.0
-      },
+      }
+    ],
+    "security": [
       {
-        "id": "surv_tool_037",
+        "id": "surv_tool_033",
         "weight": 1.0
-      },
-      {
-        "id": "surv_tool_038",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_039",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_040",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_041",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_042",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_043",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_044",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_045",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_equipment_001",
-        "weight": 0.8
-      },
-      {
-        "id": "surv_equipment_002",
-        "weight": 0.8
-      },
-      {
-        "id": "surv_equipment_003",
-        "weight": 0.8
       },
       {
         "id": "surv_equipment_004",
-        "weight": 0.8
+        "weight": 0.85
       },
       {
-        "id": "surv_equipment_005",
-        "weight": 0.8
+        "id": "surv_electronics_025",
+        "weight": 0.65
       },
       {
-        "id": "surv_equipment_006",
-        "weight": 0.8
+        "id": "surv_electronics_001",
+        "weight": 0.65
       },
       {
-        "id": "surv_equipment_007",
-        "weight": 0.8
+        "id": "surv_equipment_058",
+        "weight": 0.85
       },
       {
-        "id": "surv_equipment_008",
-        "weight": 0.8
+        "id": "surv_tool_016",
+        "weight": 1.0
       },
       {
-        "id": "surv_equipment_009",
-        "weight": 0.8
+        "id": "surv_electronics_007",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_045",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_069",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_tool_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_030",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_028",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_tool_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_036",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_065",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_electronics_014",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_016",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_electronics_006",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_062",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_tool_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_042",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_electronics_009",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_014",
+        "weight": 1.0
       },
       {
         "id": "surv_equipment_010",
-        "weight": 0.8
+        "weight": 0.85
       },
       {
-        "id": "surv_equipment_011",
-        "weight": 0.8
+        "id": "surv_equipment_029",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_014",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_tool_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_005",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_068",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_electronics_019",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_031",
+        "weight": 1.0
       },
       {
         "id": "surv_equipment_012",
-        "weight": 0.8
+        "weight": 0.85
       },
       {
-        "id": "surv_equipment_013",
-        "weight": 0.8
+        "id": "surv_equipment_041",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_electronics_012",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_024",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_044",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_tool_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_023",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_017",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_tool_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_011",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_electronics_020",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_015",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_026",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_034",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_056",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_electronics_017",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_033",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_electronics_026",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_018",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_tool_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_047",
+        "weight": 0.85
       }
     ]
   },
   "site_tags": {
     "repair": [
       {
-        "id": "surv_tool_001",
+        "id": "surv_utility_066",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_002",
+        "id": "surv_utility_041",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_003",
+        "id": "surv_utility_061",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_004",
-        "weight": 1.0
+        "id": "surv_electronics_026",
+        "weight": 0.65
       },
       {
-        "id": "surv_tool_005",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_006",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_008",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_009",
-        "weight": 1.0
+        "id": "surv_electronics_006",
+        "weight": 0.65
       },
       {
         "id": "surv_tool_010",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_011",
+        "id": "surv_utility_017",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_012",
+        "id": "surv_utility_020",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_013",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_014",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_015",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_016",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_017",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_018",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_019",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_020",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_021",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_023",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_024",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_025",
+        "id": "surv_utility_043",
         "weight": 1.0
       },
       {
@@ -2308,27 +2324,55 @@
         "weight": 1.0
       },
       {
-        "id": "surv_tool_027",
+        "id": "surv_utility_040",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_028",
+        "id": "surv_utility_032",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_029",
+        "id": "surv_utility_035",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_030",
+        "id": "surv_utility_056",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_031",
+        "id": "surv_utility_030",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_032",
+        "id": "surv_tool_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_002",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_065",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_049",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_052",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_037",
         "weight": 1.0
       },
       {
@@ -2336,256 +2380,399 @@
         "weight": 1.0
       },
       {
-        "id": "surv_tool_034",
+        "id": "surv_utility_042",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_035",
+        "id": "surv_utility_051",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_036",
+        "id": "surv_tool_024",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_037",
+        "id": "surv_utility_026",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_038",
+        "id": "surv_electronics_017",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_028",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_015",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_003",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_029",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_021",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_039",
+        "id": "surv_utility_029",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_040",
+        "id": "surv_utility_068",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_041",
+        "id": "surv_tool_021",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_042",
+        "id": "surv_utility_063",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_043",
+        "id": "surv_utility_019",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_044",
+        "id": "surv_electronics_024",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_055",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_045",
+        "id": "surv_utility_018",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_001",
+        "id": "surv_electronics_025",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_069",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_002",
+        "id": "surv_utility_033",
         "weight": 1.0
+      },
+      {
+        "id": "surv_tool_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_009",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_007",
+        "weight": 0.65
       },
       {
         "id": "surv_utility_003",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_004",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_005",
         "weight": 1.0
       }
     ],
-    "living_goods": [],
-    "logistics": [],
-    "staff_only": [],
-    "materials": [
+    "living_goods": [
       {
-        "id": "surv_tool_001",
+        "id": "surv_equipment_032",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_household_019",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_002",
+        "id": "surv_utility_052",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_003",
+        "id": "surv_household_038",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_004",
+        "id": "surv_equipment_053",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_household_023",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_005",
+        "id": "surv_utility_027",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_006",
+        "id": "surv_utility_053",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_007",
+        "id": "surv_equipment_055",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_028",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_004",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_006",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_009",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_household_029",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_008",
+        "id": "surv_equipment_048",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_household_037",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_009",
+        "id": "surv_equipment_038",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_household_034",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_010",
+        "id": "surv_utility_008",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_011",
+        "id": "surv_household_021",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_012",
+        "id": "surv_utility_023",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_013",
+        "id": "surv_equipment_040",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_054",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_household_027",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_014",
+        "id": "surv_utility_050",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_015",
+        "id": "surv_household_006",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_016",
+        "id": "surv_equipment_018",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_042",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_household_007",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_017",
+        "id": "surv_equipment_003",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_029",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_038",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_018",
+        "id": "surv_utility_017",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_019",
+        "id": "surv_equipment_019",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_045",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_020",
+        "id": "surv_utility_032",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_021",
+        "id": "surv_equipment_016",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_034",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_025",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_household_040",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_022",
+        "id": "surv_utility_014",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_023",
+        "id": "surv_utility_061",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_024",
+        "id": "surv_equipment_056",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_058",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_011",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_025",
+        "id": "surv_utility_051",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_026",
+        "id": "surv_household_036",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_027",
+        "id": "surv_utility_037",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_028",
+        "id": "surv_equipment_052",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_061",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_067",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_029",
+        "id": "surv_household_033",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_030",
+        "id": "surv_household_009",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_031",
+        "id": "surv_equipment_017",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_014",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_household_011",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_032",
+        "id": "surv_equipment_012",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_039",
+        "weight": 1.0
+      }
+    ],
+    "logistics": [
+      {
+        "id": "surv_container_006",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_033",
+        "id": "surv_equipment_051",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_045",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_034",
+        "id": "surv_container_001",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_035",
+        "id": "surv_utility_035",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_036",
+        "id": "surv_utility_066",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_037",
+        "id": "surv_utility_054",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_038",
+        "id": "surv_equipment_015",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_020",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_039",
+        "id": "surv_utility_069",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_040",
+        "id": "surv_container_008",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_041",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_042",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_043",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_044",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_045",
+        "id": "surv_utility_062",
         "weight": 1.0
       },
       {
@@ -2593,113 +2780,693 @@
         "weight": 1.0
       },
       {
-        "id": "surv_utility_002",
+        "id": "surv_utility_025",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_003",
+        "id": "surv_utility_063",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_004",
+        "id": "surv_equipment_066",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_067",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_061",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_051",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_055",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_container_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_002",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_container_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_060",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_container_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_container_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_048",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_container_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_053",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_044",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_064",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_065",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_006",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_054",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_005",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_065",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_026",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_046",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_037",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_070",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_028",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_container_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_011",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_068",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_container_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_003",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_027",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_032",
+        "weight": 1.0
+      }
+    ],
+    "staff_only": [
+      {
+        "id": "surv_knowledge_021",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_029",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_002",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_045",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_018",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_019",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_012",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_001",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_013",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_024",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_022",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_035",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_047",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_030",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_046",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_033",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_025",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_009",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_018",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_014",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_014",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_020",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_011",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_021",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_010",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_034",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_030",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_003",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_016",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_032",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_024",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_027",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_026",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_028",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_031",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_002",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_038",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_012",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_029",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_004",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_006",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_013",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_001",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_043",
+        "weight": 0.65
+      }
+    ],
+    "materials": [
+      {
+        "id": "surv_utility_045",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_042",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_036",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_059",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_051",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_054",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_057",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_046",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_069",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_050",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_066",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_028",
         "weight": 1.0
       },
       {
         "id": "surv_utility_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_064",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_068",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_065",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_048",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_049",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_060",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_055",
         "weight": 1.0
       }
     ],
     "stockroom": [
       {
-        "id": "surv_food_001",
+        "id": "surv_drink_016",
         "weight": 1.0
       },
       {
-        "id": "surv_food_002",
+        "id": "surv_utility_041",
         "weight": 1.0
       },
       {
-        "id": "surv_food_003",
+        "id": "surv_electronics_007",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_023",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_020",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_036",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_019",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_household_004",
         "weight": 1.0
       },
       {
-        "id": "surv_food_004",
+        "id": "surv_medical_006",
         "weight": 1.0
       },
       {
-        "id": "surv_food_005",
+        "id": "surv_equipment_030",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_047",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_electronics_006",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_drink_015",
         "weight": 1.0
       },
       {
-        "id": "surv_food_006",
+        "id": "surv_personal_042",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_household_008",
         "weight": 1.0
       },
       {
-        "id": "surv_food_007",
+        "id": "surv_household_029",
         "weight": 1.0
       },
       {
-        "id": "surv_food_008",
+        "id": "surv_knowledge_028",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_container_019",
         "weight": 1.0
       },
       {
-        "id": "surv_food_009",
+        "id": "surv_utility_070",
         "weight": 1.0
       },
       {
-        "id": "surv_food_010",
+        "id": "surv_utility_006",
         "weight": 1.0
       },
       {
-        "id": "surv_food_011",
+        "id": "surv_personal_007",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_025",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_household_009",
         "weight": 1.0
       },
       {
-        "id": "surv_food_012",
+        "id": "surv_household_014",
         "weight": 1.0
       },
       {
-        "id": "surv_food_013",
+        "id": "surv_utility_035",
         "weight": 1.0
       },
       {
-        "id": "surv_food_014",
+        "id": "surv_container_009",
         "weight": 1.0
       },
       {
-        "id": "surv_food_015",
+        "id": "surv_knowledge_032",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_030",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_household_022",
         "weight": 1.0
       },
       {
-        "id": "surv_food_016",
+        "id": "surv_drink_011",
         "weight": 1.0
       },
       {
-        "id": "surv_food_017",
+        "id": "surv_container_007",
         "weight": 1.0
       },
       {
-        "id": "surv_food_018",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_019",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_020",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_021",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_023",
+        "id": "surv_utility_045",
         "weight": 1.0
       },
       {
@@ -2707,31 +3474,23 @@
         "weight": 1.0
       },
       {
-        "id": "surv_food_025",
-        "weight": 1.0
+        "id": "surv_personal_010",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_026",
-        "weight": 1.0
+        "id": "surv_knowledge_001",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_027",
-        "weight": 1.0
+        "id": "surv_electronics_003",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_028",
-        "weight": 1.0
+        "id": "surv_equipment_058",
+        "weight": 0.85
       },
       {
-        "id": "surv_food_029",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_030",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_031",
+        "id": "surv_household_032",
         "weight": 1.0
       },
       {
@@ -2739,23 +3498,23 @@
         "weight": 1.0
       },
       {
-        "id": "surv_food_033",
-        "weight": 1.0
+        "id": "surv_personal_004",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_034",
-        "weight": 1.0
+        "id": "surv_electronics_008",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_035",
-        "weight": 1.0
+        "id": "surv_knowledge_025",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_036",
-        "weight": 1.0
+        "id": "surv_personal_015",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_037",
+        "id": "surv_utility_016",
         "weight": 1.0
       },
       {
@@ -2763,43 +3522,43 @@
         "weight": 1.0
       },
       {
-        "id": "surv_food_039",
+        "id": "surv_equipment_057",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_020",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_023",
         "weight": 1.0
       },
       {
-        "id": "surv_food_040",
+        "id": "surv_utility_036",
         "weight": 1.0
       },
       {
-        "id": "surv_food_041",
+        "id": "surv_knowledge_014",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_037",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_drink_008",
         "weight": 1.0
       },
       {
-        "id": "surv_food_042",
+        "id": "surv_food_016",
         "weight": 1.0
       },
       {
-        "id": "surv_food_043",
+        "id": "surv_drink_002",
         "weight": 1.0
       },
       {
-        "id": "surv_food_044",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_045",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_046",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_047",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_048",
+        "id": "surv_food_026",
         "weight": 1.0
       }
     ]
@@ -2807,95 +3566,131 @@
   "building_ids": {
     "mart_01": [
       {
-        "id": "surv_food_001",
+        "id": "surv_drink_016",
         "weight": 1.0
       },
       {
-        "id": "surv_food_002",
+        "id": "surv_utility_041",
         "weight": 1.0
       },
       {
-        "id": "surv_food_003",
+        "id": "surv_electronics_007",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_023",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_020",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_036",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_019",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_household_004",
         "weight": 1.0
       },
       {
-        "id": "surv_food_004",
+        "id": "surv_medical_006",
         "weight": 1.0
       },
       {
-        "id": "surv_food_005",
+        "id": "surv_equipment_030",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_047",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_electronics_006",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_drink_015",
         "weight": 1.0
       },
       {
-        "id": "surv_food_006",
+        "id": "surv_personal_042",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_household_008",
         "weight": 1.0
       },
       {
-        "id": "surv_food_007",
+        "id": "surv_household_029",
         "weight": 1.0
       },
       {
-        "id": "surv_food_008",
+        "id": "surv_knowledge_028",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_container_019",
         "weight": 1.0
       },
       {
-        "id": "surv_food_009",
+        "id": "surv_utility_070",
         "weight": 1.0
       },
       {
-        "id": "surv_food_010",
+        "id": "surv_utility_006",
         "weight": 1.0
       },
       {
-        "id": "surv_food_011",
+        "id": "surv_personal_007",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_025",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_household_009",
         "weight": 1.0
       },
       {
-        "id": "surv_food_012",
+        "id": "surv_household_014",
         "weight": 1.0
       },
       {
-        "id": "surv_food_013",
+        "id": "surv_utility_035",
         "weight": 1.0
       },
       {
-        "id": "surv_food_014",
+        "id": "surv_container_009",
         "weight": 1.0
       },
       {
-        "id": "surv_food_015",
+        "id": "surv_knowledge_032",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_030",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_household_022",
         "weight": 1.0
       },
       {
-        "id": "surv_food_016",
+        "id": "surv_drink_011",
         "weight": 1.0
       },
       {
-        "id": "surv_food_017",
+        "id": "surv_container_007",
         "weight": 1.0
       },
       {
-        "id": "surv_food_018",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_019",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_020",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_021",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_023",
+        "id": "surv_utility_045",
         "weight": 1.0
       },
       {
@@ -2903,31 +3698,23 @@
         "weight": 1.0
       },
       {
-        "id": "surv_food_025",
-        "weight": 1.0
+        "id": "surv_personal_010",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_026",
-        "weight": 1.0
+        "id": "surv_knowledge_001",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_027",
-        "weight": 1.0
+        "id": "surv_electronics_003",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_028",
-        "weight": 1.0
+        "id": "surv_equipment_058",
+        "weight": 0.85
       },
       {
-        "id": "surv_food_029",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_030",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_031",
+        "id": "surv_household_032",
         "weight": 1.0
       },
       {
@@ -2935,23 +3722,23 @@
         "weight": 1.0
       },
       {
-        "id": "surv_food_033",
-        "weight": 1.0
+        "id": "surv_personal_004",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_034",
-        "weight": 1.0
+        "id": "surv_electronics_008",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_035",
-        "weight": 1.0
+        "id": "surv_knowledge_025",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_036",
-        "weight": 1.0
+        "id": "surv_personal_015",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_037",
+        "id": "surv_utility_016",
         "weight": 1.0
       },
       {
@@ -2959,201 +3746,241 @@
         "weight": 1.0
       },
       {
-        "id": "surv_food_039",
+        "id": "surv_equipment_057",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_020",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_023",
         "weight": 1.0
       },
       {
-        "id": "surv_food_040",
+        "id": "surv_utility_036",
         "weight": 1.0
       },
       {
-        "id": "surv_food_041",
+        "id": "surv_knowledge_014",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_037",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_drink_008",
         "weight": 1.0
       },
       {
-        "id": "surv_food_042",
+        "id": "surv_food_016",
         "weight": 1.0
       },
       {
-        "id": "surv_food_043",
+        "id": "surv_drink_002",
         "weight": 1.0
       },
       {
-        "id": "surv_food_044",
+        "id": "surv_food_026",
         "weight": 1.0
       },
       {
-        "id": "surv_food_045",
+        "id": "surv_utility_037",
         "weight": 1.0
       },
       {
-        "id": "surv_food_046",
+        "id": "surv_equipment_001",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_012",
         "weight": 1.0
       },
       {
-        "id": "surv_food_047",
+        "id": "surv_personal_001",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_021",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_020",
         "weight": 1.0
       },
       {
-        "id": "surv_food_048",
+        "id": "surv_container_024",
         "weight": 1.0
       },
       {
-        "id": "surv_food_049",
+        "id": "surv_household_035",
         "weight": 1.0
       },
       {
-        "id": "surv_food_050",
+        "id": "surv_food_011",
         "weight": 1.0
       },
       {
-        "id": "surv_food_051",
+        "id": "surv_personal_013",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_061",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_knowledge_009",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_015",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_033",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_personal_047",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_household_006",
         "weight": 1.0
       },
       {
-        "id": "surv_food_052",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_053",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_054",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_055",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_056",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_057",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_058",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_059",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_060",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_061",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_062",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_063",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_064",
-        "weight": 1.0
+        "id": "surv_knowledge_002",
+        "weight": 0.65
       }
     ],
     "convenience_01": [
       {
-        "id": "surv_food_001",
+        "id": "surv_drink_016",
         "weight": 1.0
       },
       {
-        "id": "surv_food_002",
+        "id": "surv_utility_041",
         "weight": 1.0
       },
       {
-        "id": "surv_food_003",
+        "id": "surv_electronics_007",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_023",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_020",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_036",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_019",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_household_004",
         "weight": 1.0
       },
       {
-        "id": "surv_food_004",
+        "id": "surv_medical_006",
         "weight": 1.0
       },
       {
-        "id": "surv_food_005",
+        "id": "surv_equipment_030",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_047",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_electronics_006",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_drink_015",
         "weight": 1.0
       },
       {
-        "id": "surv_food_006",
+        "id": "surv_personal_042",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_household_008",
         "weight": 1.0
       },
       {
-        "id": "surv_food_007",
+        "id": "surv_household_029",
         "weight": 1.0
       },
       {
-        "id": "surv_food_008",
+        "id": "surv_knowledge_028",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_container_019",
         "weight": 1.0
       },
       {
-        "id": "surv_food_009",
+        "id": "surv_utility_070",
         "weight": 1.0
       },
       {
-        "id": "surv_food_010",
+        "id": "surv_utility_006",
         "weight": 1.0
       },
       {
-        "id": "surv_food_011",
+        "id": "surv_personal_007",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_025",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_household_009",
         "weight": 1.0
       },
       {
-        "id": "surv_food_012",
+        "id": "surv_household_014",
         "weight": 1.0
       },
       {
-        "id": "surv_food_013",
+        "id": "surv_utility_035",
         "weight": 1.0
       },
       {
-        "id": "surv_food_014",
+        "id": "surv_container_009",
         "weight": 1.0
       },
       {
-        "id": "surv_food_015",
+        "id": "surv_knowledge_032",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_030",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_household_022",
         "weight": 1.0
       },
       {
-        "id": "surv_food_016",
+        "id": "surv_drink_011",
         "weight": 1.0
       },
       {
-        "id": "surv_food_017",
+        "id": "surv_container_007",
         "weight": 1.0
       },
       {
-        "id": "surv_food_018",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_019",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_020",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_021",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_023",
+        "id": "surv_utility_045",
         "weight": 1.0
       },
       {
@@ -3161,31 +3988,23 @@
         "weight": 1.0
       },
       {
-        "id": "surv_food_025",
-        "weight": 1.0
+        "id": "surv_personal_010",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_026",
-        "weight": 1.0
+        "id": "surv_knowledge_001",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_027",
-        "weight": 1.0
+        "id": "surv_electronics_003",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_028",
-        "weight": 1.0
+        "id": "surv_equipment_058",
+        "weight": 0.85
       },
       {
-        "id": "surv_food_029",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_030",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_031",
+        "id": "surv_household_032",
         "weight": 1.0
       },
       {
@@ -3193,23 +4012,23 @@
         "weight": 1.0
       },
       {
-        "id": "surv_food_033",
-        "weight": 1.0
+        "id": "surv_personal_004",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_034",
-        "weight": 1.0
+        "id": "surv_electronics_008",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_035",
-        "weight": 1.0
+        "id": "surv_knowledge_025",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_036",
-        "weight": 1.0
+        "id": "surv_personal_015",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_037",
+        "id": "surv_utility_016",
         "weight": 1.0
       },
       {
@@ -3217,185 +4036,61 @@
         "weight": 1.0
       },
       {
-        "id": "surv_food_039",
+        "id": "surv_equipment_057",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_equipment_020",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_023",
         "weight": 1.0
       },
       {
-        "id": "surv_food_040",
+        "id": "surv_utility_036",
         "weight": 1.0
       },
       {
-        "id": "surv_food_041",
+        "id": "surv_knowledge_014",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_037",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_drink_008",
         "weight": 1.0
       },
       {
-        "id": "surv_food_042",
+        "id": "surv_food_016",
         "weight": 1.0
       },
       {
-        "id": "surv_food_043",
+        "id": "surv_drink_002",
         "weight": 1.0
       },
       {
-        "id": "surv_food_044",
+        "id": "surv_food_026",
         "weight": 1.0
       },
       {
-        "id": "surv_food_045",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_046",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_047",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_048",
+        "id": "surv_utility_037",
         "weight": 1.0
       }
     ],
     "pharmacy_01": [
       {
-        "id": "surv_drink_001",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_002",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_003",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_004",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_005",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_006",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_008",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_009",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_010",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_011",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_012",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_013",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_014",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_015",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_016",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_017",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_018",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_019",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_020",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_021",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_023",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_024",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_025",
-        "weight": 1.0
-      },
-      {
         "id": "surv_medical_001",
         "weight": 1.0
       },
       {
-        "id": "surv_medical_002",
-        "weight": 1.0
+        "id": "surv_knowledge_026",
+        "weight": 0.65
       },
       {
-        "id": "surv_medical_003",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_004",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_005",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_006",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_008",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_009",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_010",
+        "id": "surv_drink_007",
         "weight": 1.0
       },
       {
@@ -3403,27 +4098,15 @@
         "weight": 1.0
       },
       {
-        "id": "surv_medical_012",
+        "id": "surv_drink_018",
         "weight": 1.0
       },
       {
-        "id": "surv_medical_013",
+        "id": "surv_drink_011",
         "weight": 1.0
       },
       {
-        "id": "surv_medical_014",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_015",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_016",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_017",
+        "id": "surv_drink_008",
         "weight": 1.0
       },
       {
@@ -3431,23 +4114,27 @@
         "weight": 1.0
       },
       {
-        "id": "surv_medical_019",
+        "id": "surv_drink_009",
         "weight": 1.0
       },
       {
-        "id": "surv_medical_020",
+        "id": "surv_drink_001",
         "weight": 1.0
       },
       {
-        "id": "surv_medical_021",
+        "id": "surv_knowledge_027",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_018",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_008",
         "weight": 1.0
       },
       {
-        "id": "surv_medical_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_023",
+        "id": "surv_drink_013",
         "weight": 1.0
       },
       {
@@ -3455,15 +4142,107 @@
         "weight": 1.0
       },
       {
+        "id": "surv_medical_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_004",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_007",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_025",
+        "weight": 0.65
+      },
+      {
         "id": "surv_medical_025",
         "weight": 1.0
       },
       {
-        "id": "surv_medical_026",
+        "id": "surv_knowledge_011",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_022",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_028",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_019",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_drink_014",
         "weight": 1.0
       },
       {
+        "id": "surv_medical_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_015",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_drink_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_020",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_002",
+        "weight": 0.65
+      },
+      {
         "id": "surv_medical_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_005",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_030",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_010",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_drink_015",
         "weight": 1.0
       },
       {
@@ -3471,149 +4250,65 @@
         "weight": 1.0
       },
       {
-        "id": "surv_medical_029",
+        "id": "surv_knowledge_008",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_010",
         "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_024",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_006",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_drink_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_032",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_drink_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_003",
+        "weight": 0.65
       }
     ],
     "clinic_01": [
       {
-        "id": "surv_drink_001",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_002",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_003",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_004",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_005",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_006",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_008",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_009",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_010",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_011",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_012",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_013",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_014",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_015",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_016",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_017",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_018",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_019",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_020",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_021",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_023",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_024",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_025",
-        "weight": 1.0
-      },
-      {
         "id": "surv_medical_001",
         "weight": 1.0
       },
       {
-        "id": "surv_medical_002",
-        "weight": 1.0
+        "id": "surv_knowledge_026",
+        "weight": 0.65
       },
       {
-        "id": "surv_medical_003",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_004",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_005",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_006",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_008",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_009",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_010",
+        "id": "surv_drink_007",
         "weight": 1.0
       },
       {
@@ -3621,27 +4316,15 @@
         "weight": 1.0
       },
       {
-        "id": "surv_medical_012",
+        "id": "surv_drink_018",
         "weight": 1.0
       },
       {
-        "id": "surv_medical_013",
+        "id": "surv_drink_011",
         "weight": 1.0
       },
       {
-        "id": "surv_medical_014",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_015",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_016",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_017",
+        "id": "surv_drink_008",
         "weight": 1.0
       },
       {
@@ -3649,23 +4332,27 @@
         "weight": 1.0
       },
       {
-        "id": "surv_medical_019",
+        "id": "surv_drink_009",
         "weight": 1.0
       },
       {
-        "id": "surv_medical_020",
+        "id": "surv_drink_001",
         "weight": 1.0
       },
       {
-        "id": "surv_medical_021",
+        "id": "surv_knowledge_027",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_018",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_008",
         "weight": 1.0
       },
       {
-        "id": "surv_medical_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_medical_023",
+        "id": "surv_drink_013",
         "weight": 1.0
       },
       {
@@ -3673,15 +4360,107 @@
         "weight": 1.0
       },
       {
+        "id": "surv_medical_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_004",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_007",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_025",
+        "weight": 0.65
+      },
+      {
         "id": "surv_medical_025",
         "weight": 1.0
       },
       {
-        "id": "surv_medical_026",
+        "id": "surv_knowledge_011",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_022",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_028",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_019",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_drink_014",
         "weight": 1.0
       },
       {
+        "id": "surv_medical_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_015",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_drink_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_020",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_002",
+        "weight": 0.65
+      },
+      {
         "id": "surv_medical_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_005",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_030",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_010",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_drink_015",
         "weight": 1.0
       },
       {
@@ -3689,221 +4468,57 @@
         "weight": 1.0
       },
       {
-        "id": "surv_medical_029",
+        "id": "surv_knowledge_008",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_010",
         "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_024",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_006",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_drink_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_032",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_drink_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_003",
+        "weight": 0.65
       }
     ],
     "hardware_01": [
       {
-        "id": "surv_tool_001",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_002",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_003",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_004",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_005",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_006",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_008",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_009",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_010",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_011",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_012",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_013",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_014",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_015",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_016",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_017",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_018",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_019",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_020",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_021",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_023",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_024",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_025",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_026",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_027",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_028",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_029",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_030",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_031",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_032",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_033",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_034",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_035",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_036",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_037",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_038",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_039",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_040",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_041",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_042",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_043",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_044",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_045",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_001",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_002",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_003",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_004",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_005",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_006",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_008",
+        "id": "surv_utility_045",
         "weight": 1.0
       },
       {
@@ -3911,35 +4526,35 @@
         "weight": 1.0
       },
       {
-        "id": "surv_utility_010",
+        "id": "surv_utility_042",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_011",
+        "id": "surv_utility_026",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_012",
+        "id": "surv_tool_009",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_013",
+        "id": "surv_utility_036",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_014",
+        "id": "surv_tool_030",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_015",
+        "id": "surv_utility_059",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_016",
+        "id": "surv_tool_026",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_017",
+        "id": "surv_utility_051",
         "weight": 1.0
       },
       {
@@ -3951,249 +4566,225 @@
         "weight": 1.0
       },
       {
-        "id": "surv_utility_020",
+        "id": "surv_tool_010",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_021",
+        "id": "surv_tool_029",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_022",
+        "id": "surv_tool_011",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_023",
+        "id": "surv_utility_030",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_024",
+        "id": "surv_tool_025",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_025",
+        "id": "surv_tool_034",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_026",
+        "id": "surv_utility_054",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_027",
+        "id": "surv_tool_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_057",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_046",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_069",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_050",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_066",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_064",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_068",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_065",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_048",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_049",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_060",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_055",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_053",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_062",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_007",
         "weight": 1.0
       }
     ],
     "warehouse_01": [
       {
-        "id": "surv_tool_001",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_002",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_003",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_004",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_005",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_006",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_008",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_009",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_010",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_011",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_012",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_013",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_014",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_015",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_016",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_017",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_018",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_019",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_020",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_021",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_023",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_024",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_025",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_026",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_027",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_028",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_029",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_030",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_031",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_032",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_033",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_034",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_035",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_036",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_037",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_038",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_039",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_040",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_041",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_042",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_043",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_044",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_045",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_001",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_002",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_003",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_004",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_005",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_006",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_008",
+        "id": "surv_utility_045",
         "weight": 1.0
       },
       {
@@ -4201,35 +4792,35 @@
         "weight": 1.0
       },
       {
-        "id": "surv_utility_010",
+        "id": "surv_utility_042",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_011",
+        "id": "surv_utility_026",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_012",
+        "id": "surv_tool_009",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_013",
+        "id": "surv_utility_036",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_014",
+        "id": "surv_tool_030",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_015",
+        "id": "surv_utility_059",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_016",
+        "id": "surv_tool_026",
         "weight": 1.0
       },
       {
-        "id": "surv_utility_017",
+        "id": "surv_utility_051",
         "weight": 1.0
       },
       {
@@ -4241,149 +4832,7 @@
         "weight": 1.0
       },
       {
-        "id": "surv_utility_020",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_021",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_023",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_024",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_025",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_026",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_utility_027",
-        "weight": 1.0
-      }
-    ],
-    "garage_01": [
-      {
-        "id": "surv_tool_001",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_002",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_003",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_004",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_005",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_006",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_008",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_009",
-        "weight": 1.0
-      },
-      {
         "id": "surv_tool_010",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_011",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_012",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_013",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_014",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_015",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_016",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_017",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_018",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_019",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_020",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_021",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_023",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_024",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_025",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_026",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_027",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_028",
         "weight": 1.0
       },
       {
@@ -4391,19 +4840,15 @@
         "weight": 1.0
       },
       {
-        "id": "surv_tool_030",
+        "id": "surv_tool_011",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_031",
+        "id": "surv_utility_030",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_032",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_033",
+        "id": "surv_tool_025",
         "weight": 1.0
       },
       {
@@ -4411,35 +4856,43 @@
         "weight": 1.0
       },
       {
-        "id": "surv_tool_035",
+        "id": "surv_utility_054",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_036",
+        "id": "surv_tool_024",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_037",
+        "id": "surv_utility_057",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_038",
+        "id": "surv_utility_046",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_039",
+        "id": "surv_utility_031",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_040",
+        "id": "surv_utility_069",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_041",
+        "id": "surv_utility_032",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_042",
+        "id": "surv_utility_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_050",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_066",
         "weight": 1.0
       },
       {
@@ -4447,11 +4900,19 @@
         "weight": 1.0
       },
       {
-        "id": "surv_tool_002",
+        "id": "surv_tool_015",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_003",
+        "id": "surv_utility_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_035",
         "weight": 1.0
       },
       {
@@ -4459,35 +4920,27 @@
         "weight": 1.0
       },
       {
-        "id": "surv_tool_005",
+        "id": "surv_tool_031",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_006",
+        "id": "surv_utility_040",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_007",
+        "id": "surv_utility_041",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_008",
+        "id": "surv_utility_064",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_009",
+        "id": "surv_tool_002",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_010",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_011",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_012",
+        "id": "surv_utility_012",
         "weight": 1.0
       },
       {
@@ -4495,39 +4948,15 @@
         "weight": 1.0
       },
       {
-        "id": "surv_tool_014",
+        "id": "surv_utility_001",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_015",
+        "id": "surv_utility_068",
         "weight": 1.0
       },
       {
-        "id": "surv_tool_016",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_017",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_018",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_019",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_020",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_021",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_tool_022",
+        "id": "surv_utility_065",
         "weight": 1.0
       },
       {
@@ -4535,65 +4964,431 @@
         "weight": 1.0
       },
       {
+        "id": "surv_utility_048",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_049",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_060",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_055",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_053",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_062",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_007",
+        "weight": 1.0
+      }
+    ],
+    "garage_01": [
+      {
+        "id": "surv_utility_066",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_061",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_026",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_006",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_043",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_056",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_002",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_065",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_049",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_052",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_037",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_042",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_051",
+        "weight": 1.0
+      },
+      {
         "id": "surv_tool_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_017",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_028",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_015",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_003",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_029",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_068",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_063",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_024",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_055",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_045",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_042",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_036",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_059",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_051",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_054",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_057",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_046",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_069",
         "weight": 1.0
       }
     ],
     "hostel_01": [
       {
-        "id": "surv_food_001",
+        "id": "surv_utility_062",
         "weight": 1.0
       },
       {
-        "id": "surv_food_002",
+        "id": "surv_tool_002",
         "weight": 1.0
       },
       {
-        "id": "surv_food_003",
+        "id": "surv_equipment_035",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_electronics_029",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_017",
         "weight": 1.0
       },
       {
-        "id": "surv_food_004",
+        "id": "surv_tool_026",
         "weight": 1.0
       },
       {
-        "id": "surv_food_005",
+        "id": "surv_household_030",
         "weight": 1.0
       },
       {
-        "id": "surv_food_006",
+        "id": "surv_utility_068",
         "weight": 1.0
       },
       {
-        "id": "surv_food_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_008",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_009",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_010",
-        "weight": 1.0
+        "id": "surv_electronics_001",
+        "weight": 0.65
       },
       {
         "id": "surv_food_011",
         "weight": 1.0
       },
       {
-        "id": "surv_food_012",
+        "id": "surv_electronics_019",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_015",
         "weight": 1.0
       },
       {
-        "id": "surv_food_013",
+        "id": "surv_household_025",
         "weight": 1.0
       },
       {
-        "id": "surv_food_014",
+        "id": "surv_container_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_053",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_food_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_011",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_food_034",
         "weight": 1.0
       },
       {
@@ -4601,103 +5396,143 @@
         "weight": 1.0
       },
       {
-        "id": "surv_food_016",
+        "id": "surv_container_023",
         "weight": 1.0
       },
       {
-        "id": "surv_food_017",
+        "id": "surv_tool_010",
         "weight": 1.0
       },
       {
-        "id": "surv_food_018",
+        "id": "surv_equipment_063",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_tool_004",
         "weight": 1.0
       },
       {
-        "id": "surv_food_019",
+        "id": "surv_knowledge_002",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_003",
         "weight": 1.0
       },
       {
-        "id": "surv_food_020",
+        "id": "surv_medical_018",
         "weight": 1.0
       },
       {
-        "id": "surv_food_021",
+        "id": "surv_tool_005",
         "weight": 1.0
       },
       {
-        "id": "surv_food_022",
+        "id": "surv_drink_006",
         "weight": 1.0
       },
       {
-        "id": "surv_food_023",
+        "id": "surv_utility_049",
         "weight": 1.0
       },
       {
-        "id": "surv_food_024",
+        "id": "surv_household_038",
         "weight": 1.0
       },
       {
-        "id": "surv_food_025",
+        "id": "surv_household_007",
         "weight": 1.0
       },
       {
-        "id": "surv_food_026",
+        "id": "surv_knowledge_003",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_067",
         "weight": 1.0
       },
       {
-        "id": "surv_food_027",
+        "id": "surv_knowledge_010",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_023",
         "weight": 1.0
       },
       {
-        "id": "surv_food_028",
+        "id": "surv_equipment_002",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_knowledge_008",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_012",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_069",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_household_009",
         "weight": 1.0
       },
       {
-        "id": "surv_food_029",
+        "id": "surv_drink_014",
         "weight": 1.0
       },
       {
-        "id": "surv_food_030",
+        "id": "surv_personal_031",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_022",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_056",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_household_039",
         "weight": 1.0
       },
       {
-        "id": "surv_food_031",
+        "id": "surv_utility_024",
         "weight": 1.0
       },
       {
-        "id": "surv_food_032",
+        "id": "surv_knowledge_031",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_container_016",
         "weight": 1.0
       },
       {
-        "id": "surv_food_033",
+        "id": "surv_utility_054",
         "weight": 1.0
       },
       {
-        "id": "surv_food_034",
+        "id": "surv_utility_069",
         "weight": 1.0
       },
       {
-        "id": "surv_food_035",
-        "weight": 1.0
+        "id": "surv_equipment_059",
+        "weight": 0.85
       },
       {
-        "id": "surv_food_036",
-        "weight": 1.0
+        "id": "surv_knowledge_016",
+        "weight": 0.65
       },
       {
-        "id": "surv_food_037",
-        "weight": 1.0
+        "id": "surv_equipment_020",
+        "weight": 0.85
       },
       {
-        "id": "surv_food_038",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_039",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_040",
+        "id": "surv_household_021",
         "weight": 1.0
       },
       {
@@ -4705,15 +5540,11 @@
         "weight": 1.0
       },
       {
-        "id": "surv_food_042",
+        "id": "surv_medical_014",
         "weight": 1.0
       },
       {
-        "id": "surv_food_043",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_044",
+        "id": "surv_container_004",
         "weight": 1.0
       },
       {
@@ -4721,329 +5552,23 @@
         "weight": 1.0
       },
       {
-        "id": "surv_food_046",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_047",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_048",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_049",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_050",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_051",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_052",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_053",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_054",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_055",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_056",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_057",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_058",
-        "weight": 1.0
-      }
-    ],
-    "apartment_01": [
-      {
-        "id": "surv_food_001",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_002",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_003",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_004",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_005",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_006",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_007",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_008",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_009",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_010",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_011",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_012",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_013",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_014",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_015",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_016",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_017",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_018",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_019",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_020",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_021",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_022",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_023",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_024",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_025",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_026",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_027",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_028",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_029",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_030",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_031",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_032",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_033",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_034",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_035",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_036",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_037",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_038",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_039",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_040",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_041",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_042",
-        "weight": 1.0
-      },
-      {
         "id": "surv_food_043",
         "weight": 1.0
       },
       {
-        "id": "surv_food_044",
+        "id": "surv_personal_001",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_household_032",
         "weight": 1.0
       },
       {
-        "id": "surv_food_045",
+        "id": "surv_household_029",
         "weight": 1.0
       },
       {
-        "id": "surv_food_046",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_047",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_048",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_049",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_050",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_051",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_052",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_053",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_054",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_055",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_056",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_057",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_058",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_059",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_060",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_061",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_062",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_063",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_064",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_food_065",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_001",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_002",
-        "weight": 1.0
-      },
-      {
-        "id": "surv_drink_003",
+        "id": "surv_utility_021",
         "weight": 1.0
       },
       {
@@ -5051,7 +5576,579 @@
         "weight": 1.0
       },
       {
-        "id": "surv_drink_005",
+        "id": "surv_electronics_013",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_015",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_051",
+        "weight": 1.0
+      }
+    ],
+    "apartment_01": [
+      {
+        "id": "surv_utility_062",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_035",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_electronics_029",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_068",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_001",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_food_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_019",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_medical_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_container_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_053",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_food_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_011",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_food_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_container_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_063",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_tool_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_002",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_049",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_003",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_067",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_010",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_002",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_knowledge_008",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_012",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_069",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_household_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_031",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_022",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_056",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_household_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_031",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_container_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_054",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_069",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_059",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_knowledge_016",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_equipment_020",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_household_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_container_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_045",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_043",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_001",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_household_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_household_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_013",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_015",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_051",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_009",
+        "weight": 0.85
+      },
+      {
+        "id": "surv_utility_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_032",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_utility_001",
+        "weight": 1.0
+      }
+    ],
+    "office_01": [
+      {
+        "id": "surv_tool_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_036",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_013",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_034",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_027",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_029",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_009",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_017",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_043",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_019",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_010",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_003",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_006",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_container_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_012",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_005",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_container_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_030",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_container_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_container_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_016",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_container_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_025",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_container_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_038",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_019",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_012",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_028",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_015",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_002",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_031",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_010",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_container_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_electronics_011",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_027",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_027",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_032",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_electronics_024",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_047",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_001",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_personal_017",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_container_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_container_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_007",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_021",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_knowledge_030",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_tool_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_personal_011",
+        "weight": 0.65
+      },
+      {
+        "id": "surv_container_005",
         "weight": 1.0
       }
     ]
