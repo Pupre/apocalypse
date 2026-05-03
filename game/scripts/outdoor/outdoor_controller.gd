@@ -46,6 +46,26 @@ const BUILDING_LABELS := {
 	"residence_01": "주택",
 }
 
+const DISTRICT_LABELS := {
+	"north_market": "북부 시장가",
+	"east_medical": "동부 의료지구",
+	"south_residential": "남부 주거지",
+	"south_industrial": "남동 공업지대",
+	"west_shelter": "서부 대피선",
+	"central_transfer": "중앙 환승로",
+	"mixed_edge": "외곽 혼합지대",
+}
+const DISTRICT_BRIEFS := {
+	"north_market": "상점 간판과 뒷골목이 이어진다.",
+	"east_medical": "진입로와 임시 진료 흔적이 보인다.",
+	"south_residential": "좁은 생활 골목이 얼어붙어 있다.",
+	"south_industrial": "적재장과 연료 흔적이 눈에 띈다.",
+	"west_shelter": "대피 표식과 통제선이 남아 있다.",
+	"central_transfer": "버스 루프와 우회 통로가 얽혀 있다.",
+	"mixed_edge": "끊긴 도로와 빈 부지가 이어진다.",
+}
+const DISTRICT_MESSAGE_DURATION := 4.0
+
 var run_state = null
 var exposure_model := EXPOSURE_MODEL_SCRIPT.new()
 var threat_director = OUTDOOR_THREAT_DIRECTOR_SCRIPT.new()
@@ -59,6 +79,9 @@ var _world_bounds := Rect2(0.0, 0.0, 1200.0, 1092.0)
 var _current_block_coord := Vector2i.ZERO
 var _active_block_coords: Array[Vector2i] = []
 var _active_block_signature := ""
+var _current_district_id := ""
+var _current_district_label := ""
+var _district_message_seconds := 0.0
 var _building_rows: Array[Dictionary] = []
 var _road_rows: Array[Dictionary] = []
 var _snow_field_rows: Array[Dictionary] = []
@@ -119,6 +142,9 @@ func bind_run_state(value, building_id: String = DEFAULT_BUILDING_ID, player_pos
 	_last_hazard_message = ""
 	_hazard_flash_seconds = 0.0
 	_hazard_flash_kind = ""
+	_current_district_id = ""
+	_current_district_label = ""
+	_district_message_seconds = 0.0
 	_player_walk_seconds = 0.0
 	_player_facing_id = "down"
 	_cache_nodes()
@@ -254,6 +280,7 @@ func _process(delta: float) -> void:
 	_hazard_cooldown_seconds = max(0.0, _hazard_cooldown_seconds - delta)
 	_hazard_message_seconds = max(0.0, _hazard_message_seconds - delta)
 	_hazard_flash_seconds = maxf(0.0, _hazard_flash_seconds - delta)
+	_district_message_seconds = maxf(0.0, _district_message_seconds - delta)
 	var direction := Input.get_vector(MOVE_LEFT_ACTION, MOVE_RIGHT_ACTION, MOVE_UP_ACTION, MOVE_DOWN_ACTION)
 	if direction != Vector2.ZERO:
 		move_player(direction, delta)
@@ -410,6 +437,7 @@ func _sync_active_blocks(force_refresh: bool = false) -> bool:
 	if run_state != null and run_state.has_method("mark_outdoor_block_visited"):
 		run_state.mark_outdoor_block_visited(_current_block_coord)
 		_map_overlay_dirty = true
+	_sync_current_district()
 	_active_block_coords = next_active_block_coords
 	if not force_refresh and next_signature == _active_block_signature:
 		return false
@@ -432,6 +460,31 @@ func _refresh_streamed_world() -> void:
 	_refresh_buildings()
 	_refresh_obstacles()
 	_configure_threats()
+
+
+func _sync_current_district() -> void:
+	var block_row := world_runtime.get_block_row(_current_block_coord)
+	var next_district_id := String(block_row.get("district_id", "mixed_edge"))
+	var next_district_label := _district_label_for(next_district_id, String(block_row.get("district_label", "")))
+	if next_district_id != _current_district_id:
+		_current_district_id = next_district_id
+		_current_district_label = next_district_label
+		_district_message_seconds = DISTRICT_MESSAGE_DURATION
+		_map_overlay_dirty = true
+	elif _current_district_label.is_empty():
+		_current_district_label = next_district_label
+
+
+func _district_label_for(district_id: String, fallback_label: String = "") -> String:
+	if DISTRICT_LABELS.has(district_id):
+		return String(DISTRICT_LABELS.get(district_id, district_id))
+	if not fallback_label.strip_edges().is_empty():
+		return fallback_label
+	return district_id
+
+
+func _district_brief_for(district_id: String) -> String:
+	return String(DISTRICT_BRIEFS.get(district_id, "낯선 거리의 윤곽을 다시 확인한다."))
 
 
 func _rebuild_active_rows() -> void:
@@ -678,8 +731,10 @@ func _sync_view() -> void:
 				_hint_label.text = _last_hazard_message
 			elif not hazard_hint.is_empty():
 				_hint_label.text = hazard_hint
+			elif _district_message_seconds > 0.0 and not _current_district_label.is_empty():
+				_hint_label.text = "진입: %s · %s" % [_current_district_label, _district_brief_for(_current_district_id)]
 			else:
-				_hint_label.text = "WASD 이동"
+				_hint_label.text = "%s · WASD 이동" % _current_district_label if not _current_district_label.is_empty() else "WASD 이동"
 	if _map_overlay != null and _map_overlay.visible:
 		_configure_map_overlay()
 	_sync_threat_view(_last_threat_snapshot)

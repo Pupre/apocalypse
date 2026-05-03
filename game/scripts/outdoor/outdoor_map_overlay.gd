@@ -9,6 +9,15 @@ const TEXT_PRIMARY_COLOR := Color(1.0, 1.0, 1.0, 1.0)
 const TEXT_SECONDARY_COLOR := Color(0.92, 0.96, 1.0, 0.98)
 const TEXT_MUTED_COLOR := Color(0.76, 0.84, 0.90, 0.96)
 const TEXT_OUTLINE_COLOR := Color(0.0, 0.02, 0.04, 1.0)
+const DISTRICT_LABELS := {
+	"north_market": "북부 시장가",
+	"east_medical": "동부 의료지구",
+	"south_residential": "남부 주거지",
+	"south_industrial": "남동 공업지대",
+	"west_shelter": "서부 대피선",
+	"central_transfer": "중앙 환승로",
+	"mixed_edge": "외곽 혼합지대",
+}
 
 var _map_view = null
 var _close_button: Button = null
@@ -24,6 +33,7 @@ var _resolver := INDOOR_ACTION_RESOLVER_SCRIPT.new()
 var _run_state = null
 var _ui_kit_resolver = UiKitResolver.new()
 var _world_layout: Dictionary = {}
+var _block_rows: Dictionary = {}
 var _building_rows: Array[Dictionary] = []
 var _visited_block_ids: Dictionary = {}
 var _last_player_position := Vector2.ZERO
@@ -109,6 +119,7 @@ func _apply_ui_skin() -> void:
 func configure(world_layout: Dictionary, block_rows: Dictionary, building_rows: Array[Dictionary], visited_block_ids: Dictionary, player_position: Vector2, run_state) -> void:
 	_run_state = run_state
 	_world_layout = world_layout.duplicate(true)
+	_block_rows = block_rows.duplicate(true)
 	_building_rows = building_rows.duplicate(true)
 	_visited_block_ids = visited_block_ids.duplicate(true)
 	_last_player_position = player_position
@@ -199,7 +210,7 @@ func _refresh_status_label() -> void:
 	var total_blocks := _total_block_count()
 	var visited_count := _visited_block_count()
 	var visible_building_count := _visible_building_count()
-	_status_label.text = "탐색 %d/%d · 표시 건물 %d" % [visited_count, total_blocks, visible_building_count]
+	_status_label.text = "탐색 %d/%d · 현재 %s · 표시 건물 %d" % [visited_count, total_blocks, _current_district_label(), visible_building_count]
 
 
 func _total_block_count() -> int:
@@ -226,6 +237,25 @@ func _visible_building_count() -> int:
 		if bool(_visited_block_ids.get(block_key, false)):
 			count += 1
 	return count
+
+
+func _current_district_label() -> String:
+	var block_size_variant: Variant = _world_layout.get("block_size", {})
+	if typeof(block_size_variant) != TYPE_DICTIONARY:
+		return "위치 확인 중"
+	var block_size := block_size_variant as Dictionary
+	var block_width: int = maxi(1, int(block_size.get("width", 1)))
+	var block_height: int = maxi(1, int(block_size.get("height", 1)))
+	var block_coord := Vector2i(
+		int(floor(_last_player_position.x / float(block_width))),
+		int(floor(_last_player_position.y / float(block_height)))
+	)
+	var block_key := "%d_%d" % [block_coord.x, block_coord.y]
+	var block_row_variant: Variant = _block_rows.get(block_key, {})
+	if typeof(block_row_variant) != TYPE_DICTIONARY:
+		return "위치 확인 중"
+	var district_id := String((block_row_variant as Dictionary).get("district_id", "mixed_edge"))
+	return String(DISTRICT_LABELS.get(district_id, district_id))
 
 
 func _apply_label_style(label: Label, font_size: int, font_color: Color, outline_size: int) -> void:
