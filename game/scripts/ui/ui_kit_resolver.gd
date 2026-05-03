@@ -96,6 +96,7 @@ const PATH_ALIASES := {
 	"indoor/indoor_story_clinic_medicine_sort_success.png": "@master/indoor/indoor_story_clinic_medicine_sort_success.png",
 	"indoor/indoor_story_apartment_boiler_warmth_success.png": "@master/indoor/indoor_story_apartment_boiler_warmth_success.png",
 	"indoor/indoor_story_residence_balcony_insulation_success.png": "@master/indoor/indoor_story_residence_balcony_insulation_success.png",
+	"indoor/indoor_story_row_house_floor_cache_success.png": "@master/indoor/indoor_story_row_house_floor_cache_success.png",
 	"structure/structure_panel_bg.png": "@master/structure/structure_panel_bg.png",
 	"structure/structure_room_node_known.png": "@master/structure/structure_room_node_known.png",
 	"structure/structure_room_node_current.png": "@master/structure/structure_room_node_current.png",

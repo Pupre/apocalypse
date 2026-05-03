@@ -1,17 +1,28 @@
 {
   "id": "row_house_01",
   "name": "연립 주택",
-  "summary": "현관 방과 위쪽 생활 공간이 나뉘어 있어 생활 흔적을 두 번 훑어야 한다.",
+  "summary": "현관 방과 위층 생활 공간, 계단 밑 수납장, 들뜬 마룻장 아래의 비상 저장칸이 이어져 있다.",
   "entry_zone_id": "entry_room",
   "zones": [
     {
       "id": "entry_room",
       "floor_id": "floor_1",
       "label": "현관 방",
-      "summary": "좁은 현관과 작은 의자 옆에 생활 소품이 남아 있다.",
-      "connected_zone_ids": ["upstairs_room"],
+      "summary": "좁은 현관과 작은 의자 옆에 생활 소품이 남아 있고, 계단 밑 수납장이 반쯤 열려 있다.",
+      "connected_zone_ids": ["stair_storage", "upstairs_room"],
       "event_ids": ["search_row_house_entry_room"],
       "map_position": [0, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "stair_storage",
+      "floor_id": "floor_1",
+      "label": "계단 밑 수납장",
+      "summary": "우산, 낡은 공구 상자, 접힌 비닐이 계단 아래 낮은 공간에 끼어 있다.",
+      "connected_zone_ids": ["entry_room"],
+      "event_ids": ["search_row_house_stair_storage"],
+      "map_position": [1, 1],
       "first_visit_cost": 20,
       "revisit_cost": 10
     },
@@ -20,15 +31,49 @@
       "floor_id": "floor_2",
       "label": "위층 방",
       "move_label": "위층 방으로 올라간다",
-      "summary": "위쪽 생활 공간엔 담요와 개인 물건이 더 남아 있다.",
-      "connected_zone_ids": ["entry_room"],
-      "event_ids": ["search_row_house_upstairs_room"],
+      "summary": "담요와 개인 물건이 남아 있고, 창가 쪽 마룻장 하나가 살짝 들떠 있다.",
+      "connected_zone_ids": ["entry_room", "floor_cache", "roof_landing"],
+      "event_ids": ["search_row_house_upstairs_room", "open_row_house_floor_cache"],
       "map_position": [1, 0],
       "first_visit_cost": 20,
       "revisit_cost": 10
+    },
+    {
+      "id": "floor_cache",
+      "floor_id": "floor_2",
+      "label": "바닥 저장칸",
+      "move_label": "들뜬 마룻장을 들어 올린다",
+      "blocked_feedback": "마룻장이 단단히 물려 있다. 먼저 위층 방에서 열 방법을 찾아야 한다.",
+      "summary": "낮은 바닥 아래에 누군가 숨겨 둔 작은 비상 물자 칸이 있다.",
+      "connected_zone_ids": ["upstairs_room"],
+      "event_ids": ["search_row_house_floor_cache"],
+      "map_position": [2, 0],
+      "first_visit_cost": 15,
+      "revisit_cost": 5,
+      "access_requirements": {
+        "required_unlocked_zone_ids": ["row_house_floor_cache_opened"]
+      }
+    },
+    {
+      "id": "roof_landing",
+      "floor_id": "floor_2",
+      "label": "옥탑 문 앞",
+      "move_label": "옥탑 문 쪽을 확인한다",
+      "summary": "위쪽 문틈으로 눈가루가 밀려 들어오고, 바닥에는 단열재로 쓸 만한 작은 조각이 흩어져 있다.",
+      "connected_zone_ids": ["upstairs_room"],
+      "event_ids": ["search_row_house_roof_landing"],
+      "map_position": [1, -1],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
     }
   ],
-  "clues": [],
+  "clues": [
+    {
+      "id": "row_house_floor_cache_hint",
+      "text": "위층 창가 아래 마룻장 하나만 먼지가 덜하다. 나사를 조심히 풀면 안쪽을 확인할 수 있을 것 같다.",
+      "visible": false
+    }
+  ],
   "events": [
     {
       "id": "search_row_house_entry_room",
@@ -44,12 +89,45 @@
           "outcomes": {
             "discover_loot": [],
             "loot_table": {
-              "rolls": 2,
+              "rolls": 3,
               "allow_duplicates": false,
               "entries": [
                 { "id": "shopping_bag", "weight": 3 },
                 { "id": "paper_bag", "weight": 2 },
-                { "id": "slippers", "weight": 2 }
+                { "id": "slippers", "weight": 2 },
+                { "id": "cotton_gloves", "weight": 2 },
+                { "id": "newspaper", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_row_house_stair_storage",
+      "zone_id": "stair_storage",
+      "type": "search",
+      "hint_text": "계단 밑 낮은 수납장에는 작은 공구와 비닐류가 뒤섞여 있다.",
+      "options": [
+        {
+          "id": "search_row_house_stair_storage_once",
+          "label": "계단 밑 수납장을 정리한다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [
+              { "id": "screwdriver", "bulk": 1 }
+            ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "clear_plastic_sheet", "weight": 3 },
+                { "id": "bubble_wrap_roll", "weight": 2 },
+                { "id": "trash_bag_roll", "weight": 2 },
+                { "id": "towel", "weight": 2 },
+                { "id": "candle", "weight": 1 }
               ]
             },
             "consume_on_use": true
@@ -61,11 +139,11 @@
       "id": "search_row_house_upstairs_room",
       "zone_id": "upstairs_room",
       "type": "search",
-      "hint_text": "위층 방엔 보온용 섬유와 생활 흔적이 더 남아 있을 수 있다.",
+      "hint_text": "위층 방엔 보온용 섬유와 생활 흔적이 더 남아 있고, 창가 아래 마룻장이 유난히 깨끗하다.",
       "options": [
         {
           "id": "search_row_house_upstairs_room_once",
-          "label": "위층 방을 탐색한다",
+          "label": "위층 방을 살핀다",
           "requirements": {},
           "costs": { "minutes": 20, "noise": 0 },
           "outcomes": {
@@ -76,8 +154,181 @@
               "entries": [
                 { "id": "old_blanket", "weight": 3 },
                 { "id": "knit_cap", "weight": 2 },
-                { "id": "bottled_water", "weight": 2 }
+                { "id": "bottled_water", "weight": 2 },
+                { "id": "memo_pad", "weight": 1 }
               ]
+            },
+            "reveal_clue_ids": ["row_house_floor_cache_hint"],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "open_row_house_floor_cache",
+      "zone_id": "upstairs_room",
+      "type": "search",
+      "hint_text": "들뜬 마룻장 아래가 비어 있는 것 같다. 힘으로 뜯을 수도, 공구로 조용히 풀 수도 있다.",
+      "options": [
+        {
+          "id": "force_row_house_floor_cache",
+          "label": "마룻장을 힘으로 뜯는다",
+          "requirements": {
+            "forbidden_flag_ids": ["row_house_floor_cache_opened"]
+          },
+          "costs": { "minutes": 20, "noise": 2 },
+          "outcomes": {
+            "unlock_zone_ids": ["row_house_floor_cache_opened"],
+            "set_flags": ["row_house_floor_cache_opened"],
+            "pressure": {
+              "id": "row_house_floor_cache_forced",
+              "message": "얼어붙은 마룻장이 크게 삐걱이며 들렸다. 저장칸은 열렸지만 소리가 집 안에 오래 남았다.",
+              "fatigue_gain": 1.5,
+              "noise": 2,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "unscrew_row_house_floor_cache",
+          "label": "작은 드라이버로 나사를 조용히 푼다",
+          "requirements": {
+            "required_item_ids": ["screwdriver"],
+            "forbidden_flag_ids": ["row_house_floor_cache_opened"]
+          },
+          "blocked_feedback": "마룻장 나사가 작고 깊다. 작은 드라이버가 있으면 소리를 거의 내지 않고 열 수 있다.",
+          "costs": { "minutes": 35, "noise": 0 },
+          "outcomes": {
+            "unlock_zone_ids": ["row_house_floor_cache_opened"],
+            "set_flags": ["row_house_floor_cache_opened"],
+            "pressure": {
+              "id": "row_house_floor_cache_unscrewed",
+              "message": "무릎을 꿇고 나사를 하나씩 풀었다. 시간이 걸렸지만, 바닥은 거의 소리 없이 열렸다.",
+              "fatigue_gain": 0.75,
+              "noise": 0,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_row_house_floor_cache",
+      "zone_id": "floor_cache",
+      "type": "search",
+      "hint_text": "바닥 아래 비상 저장칸에는 작고 가벼운 생존 물자가 질서 있게 들어 있다.",
+      "options": [
+        {
+          "id": "sort_row_house_floor_cache",
+          "label": "비상 저장칸을 차분히 분류한다",
+          "requirements": {
+            "forbidden_flag_ids": ["row_house_floor_cache_taken"]
+          },
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [
+              { "id": "hand_warmer_pack", "bulk": 1 },
+              { "id": "candle", "bulk": 2 },
+              { "id": "tea_bag", "bulk": 1 }
+            ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "clear_plastic_sheet", "weight": 3 },
+                { "id": "instant_cocoa_mix", "weight": 2 },
+                { "id": "memo_pad", "weight": 2 },
+                { "id": "newspaper", "weight": 2 }
+              ]
+            },
+            "pressure": {
+              "id": "row_house_floor_cache_sorted",
+              "message": "누군가 남긴 작은 비상 저장칸을 필요한 것부터 다시 묶었다. 가벼운 물자지만 밖에서 버틸 이유가 하나 늘었다.",
+              "fatigue_gain": 0.5,
+              "noise": 0,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_row_house_floor_cache_success.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_row_house_floor_cache_success.png",
+              "title": "바닥 아래 비상 저장칸",
+              "text": "마룻장 아래엔 누군가 오래전에 준비해 둔 작은 생존 물자가 있었다. 양은 많지 않지만, 양초와 핫팩, 따뜻한 음료가 될 것들을 보는 순간 이 집은 단순한 빈집이 아니게 됐다.",
+              "button": "비상 물자를 챙긴다"
+            },
+            "set_flags": ["row_house_floor_cache_taken"],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_row_house_roof_landing",
+      "zone_id": "roof_landing",
+      "type": "search",
+      "hint_text": "옥탑 문틈의 바람을 견디면 단열에 쓸 만한 조각을 챙길 수 있지만, 오래 머물수록 체온이 빠진다.",
+      "options": [
+        {
+          "id": "search_row_house_roof_landing_fast",
+          "label": "옥탑 문 앞을 빠르게 훑는다",
+          "requirements": {
+            "forbidden_flag_ids": ["row_house_roof_landing_cleared"]
+          },
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "towel", "weight": 2 },
+                { "id": "newspaper", "weight": 2 },
+                { "id": "trash_bag_roll", "weight": 1 }
+              ]
+            },
+            "set_flags": ["row_house_roof_landing_cleared"],
+            "pressure": {
+              "id": "row_house_roof_landing_cold",
+              "message": "옥탑 문틈에서 쏟아지는 찬바람이 얼굴을 때렸다. 몇 가지는 챙겼지만 몸이 빠르게 식었다.",
+              "exposure_loss": 3.0,
+              "fatigue_gain": 1.0,
+              "noise": 0,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "seal_row_house_roof_gap_with_plastic",
+          "label": "비닐 시트로 문틈을 막고 천천히 살핀다",
+          "requirements": {
+            "required_item_ids": ["clear_plastic_sheet"],
+            "forbidden_flag_ids": ["row_house_roof_landing_cleared"]
+          },
+          "blocked_feedback": "문틈 바람이 너무 세다. 투명 비닐 시트가 있으면 먼저 막고 살필 수 있다.",
+          "costs": { "minutes": 35, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "towel", "weight": 2 },
+                { "id": "bubble_wrap_roll", "weight": 2 },
+                { "id": "newspaper", "weight": 2 },
+                { "id": "trash_bag_roll", "weight": 1 }
+              ]
+            },
+            "set_flags": ["row_house_roof_landing_cleared"],
+            "consume_item_ids": ["clear_plastic_sheet"],
+            "pressure": {
+              "id": "row_house_roof_gap_sealed",
+              "message": "비닐을 문틈에 눌러 붙이자 바람이 잠깐 약해졌다. 손을 덜 떨며 쓸 만한 조각을 고를 수 있었다.",
+              "exposure_loss": 1.0,
+              "fatigue_gain": 0.5,
+              "noise": 0,
+              "repeatable": false
             },
             "consume_on_use": true
           }

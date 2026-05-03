@@ -11,6 +11,7 @@ const ANCHOR_MIN_ZONE_COUNTS := {
 	"cafe_01": 3,
 	"police_box_01": 3,
 	"residence_01": 4,
+	"row_house_01": 5,
 	"bakery_01": 4,
 	"bookstore_01": 4,
 	"butcher_01": 4,
@@ -88,6 +89,12 @@ const REQUIRED_ACTION_IDS_BY_BUILDING := {
 	"residence_01": [
 		"search_residence_balcony_with_poncho",
 	],
+	"row_house_01": [
+		"force_row_house_floor_cache",
+		"unscrew_row_house_floor_cache",
+		"sort_row_house_floor_cache",
+		"seal_row_house_roof_gap_with_plastic",
+	],
 	"corner_store_01": [
 		"search_corner_cashier_fast",
 		"search_corner_cashier_with_gloves",
@@ -117,6 +124,8 @@ const REQUIRED_ITEM_GATES_BY_ACTION := {
 	"open_repair_tool_locker_with_screwdriver": ["screwdriver"],
 	"search_repair_service_bay_with_gloves": ["work_gloves"],
 	"search_storage_pallet_with_gloves": ["work_gloves"],
+	"unscrew_row_house_floor_cache": ["screwdriver"],
+	"seal_row_house_roof_gap_with_plastic": ["clear_plastic_sheet"],
 }
 
 

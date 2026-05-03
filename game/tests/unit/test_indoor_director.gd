@@ -498,6 +498,81 @@ func _run_test() -> void:
 		String(residence_cutscene_payload.get("title", "")).find("베란다") != -1,
 		"Residence balcony cutscene should name the decision result."
 	)
+	var row_house_locked_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, self)
+	assert_true(row_house_locked_state != null, "Row-house locked-path test should build a clean run state.")
+	director.configure(row_house_locked_state, "row_house_01")
+	assert_eq(director.get_current_zone_id(), "entry_room", "Row house should initialize at the entry room.")
+	assert_true(
+		_action_ids(director.get_actions()).has("move_stair_storage"),
+		"Row house entry should expose the new stair-storage route."
+	)
+	assert_true(director.apply_action("move_upstairs_room"), "Row house should allow moving upstairs.")
+	var locked_floor_cache_move := _action_by_id(director.get_actions(), "move_floor_cache")
+	assert_true(not locked_floor_cache_move.is_empty(), "Row house upstairs room should expose the hidden floor-cache route.")
+	assert_true(bool(locked_floor_cache_move.get("locked", false)), "Row house floor cache should stay locked before opening the floorboards.")
+	assert_true(
+		_action_ids(director.get_actions()).has("force_row_house_floor_cache"),
+		"Row house should expose a noisy force-open option for the hidden cache."
+	)
+	assert_true(
+		String(_action_by_id(director.get_actions(), "unscrew_row_house_floor_cache").get("detail_label", "")).find("필요: 작은 드라이버") != -1,
+		"Row house quiet floor-cache branch should preview its screwdriver requirement."
+	)
+	var row_house_cutscene_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, self)
+	assert_true(row_house_cutscene_state != null, "Row-house cutscene test should build a clean run state.")
+	assert_true(
+		row_house_cutscene_state.inventory.add_item(content_library.get_item("screwdriver")),
+		"Row-house cutscene test should be able to add a screwdriver."
+	)
+	assert_true(
+		row_house_cutscene_state.inventory.add_item(content_library.get_item("clear_plastic_sheet")),
+		"Row-house roof-gap test should be able to add a clear plastic sheet."
+	)
+	director.configure(row_house_cutscene_state, "row_house_01")
+	assert_true(director.apply_action("move_upstairs_room"), "Row-house cutscene path should allow moving upstairs.")
+	assert_true(
+		director.apply_action("unscrew_row_house_floor_cache"),
+		"Director should resolve the quiet row-house floor-cache opening when the screwdriver is available."
+	)
+	var opened_floor_cache_move := _action_by_id(director.get_actions(), "move_floor_cache")
+	assert_true(not opened_floor_cache_move.is_empty(), "Opening the row-house floor cache should reveal the cache route.")
+	assert_true(not bool(opened_floor_cache_move.get("locked", true)), "Opening the row-house floor cache should unlock the cache route.")
+	assert_true(director.apply_action("move_floor_cache"), "Row house should allow entering the opened floor cache.")
+	assert_true(director.apply_action("sort_row_house_floor_cache"), "Director should resolve the row-house emergency-cache sort.")
+	assert_eq(
+		director.get_event_illustration_asset(),
+		"indoor/indoor_story_row_house_floor_cache_success.png",
+		"Row-house floor cache sort should swap the reading card to the generated cache illustration."
+	)
+	var row_house_cutscene_payload: Dictionary = director.consume_story_cutscene_payload()
+	assert_eq(
+		String(row_house_cutscene_payload.get("asset", "")),
+		"indoor/indoor_story_row_house_floor_cache_success.png",
+		"Row-house floor cache sort should queue a full-screen story cutscene asset."
+	)
+	assert_true(
+		String(row_house_cutscene_payload.get("title", "")).find("바닥") != -1,
+		"Row-house floor cache cutscene should name the hidden-cache result."
+	)
+	assert_true(director.apply_action("move_upstairs_room"), "Row house should allow returning upstairs from the floor cache.")
+	assert_true(director.apply_action("move_roof_landing"), "Row house should allow checking the cold roof landing.")
+	assert_true(
+		director.apply_action("seal_row_house_roof_gap_with_plastic"),
+		"Director should resolve the row-house roof-gap sealing branch when plastic sheet is available."
+	)
+	assert_eq(
+		row_house_cutscene_state.inventory.count_item_by_id("clear_plastic_sheet"),
+		0,
+		"Sealing the row-house roof gap should consume the clear plastic sheet."
+	)
 	director.configure(run_state, "bookstore_01")
 	assert_eq(
 		director.get_event_illustration_asset(),
