@@ -249,6 +249,13 @@
               "noise": 0,
               "repeatable": false
             },
+            "result_illustration_asset": "indoor/indoor_story_convenience_glass_counter_success.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_convenience_glass_counter_success.png",
+              "title": "유리 너머의 작은 물건들",
+              "text": "급하게 손을 넣었다면 피를 봤을 계산대였다. 테이프로 덧댄 장갑으로 유리를 하나씩 밀어내자, 누군가의 평범한 하루였던 물건들이 아직 쓸모 있는 선택지로 남아 있었다.",
+              "button": "작은 물건들을 챙긴다"
+            },
             "consume_on_use": true
           }
         }

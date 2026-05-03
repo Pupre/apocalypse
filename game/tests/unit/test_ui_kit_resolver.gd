@@ -42,4 +42,10 @@ func _run_test() -> void:
 	assert_eq(int(structure_panel_style.texture_margin_left), 22, "Resolver should read the structure panel left 9-slice from the master structure pack manifest.")
 	assert_eq(int(structure_panel_style.texture_margin_top), 22, "Resolver should read the structure panel top 9-slice from the master structure pack manifest.")
 
+	var convenience_story_texture: Texture2D = resolver.get_texture("indoor/indoor_story_convenience_glass_counter_success.png")
+	if not assert_true(convenience_story_texture != null, "Resolver should load the convenience counter story illustration."):
+		return
+	assert_eq(convenience_story_texture.get_width(), 960, "Convenience counter story illustration should match the indoor story width.")
+	assert_eq(convenience_story_texture.get_height(), 480, "Convenience counter story illustration should match the indoor story height.")
+
 	pass_test("UI_KIT_RESOLVER_OK")

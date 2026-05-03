@@ -47,6 +47,8 @@ func _assert_convenience_glass_glove_option(run_state_script: Script, content_li
 	assert_true(_zone_flags(event_state).has("counter_cleared"), "Glass-search action should clear the counter.")
 	assert_eq(run_state.inventory.count_item_by_id("evd_glass_search_gloves"), before_gloves, "Glass-search gloves should work like reusable equipment.")
 	assert_eq(snapped(float(run_state.health), 0.01), snapped(before_health, 0.01), "Careful glove search should avoid the broken-glass health loss.")
+	var cutscene: Dictionary = event_state.get("pending_story_cutscene", {})
+	assert_eq(String(cutscene.get("asset", "")), "indoor/indoor_story_convenience_glass_counter_success.png", "Careful glove search should trigger the convenience counter story illustration.")
 
 
 func _assert_cafe_filter_option(run_state_script: Script, content_library: Node, resolver) -> void:
