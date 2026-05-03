@@ -742,6 +742,7 @@ func _roll_loot_table(event_data: Dictionary, event_state: Dictionary, action: D
 		if String(entry.get("id", "")).is_empty():
 			continue
 		available_entries.append(entry.duplicate(true))
+	available_entries.append_array(_contextual_loot_profile_entries(event_data, loot_table))
 
 	if available_entries.is_empty():
 		return []
@@ -772,6 +773,38 @@ func _roll_loot_table(event_data: Dictionary, event_state: Dictionary, action: D
 			available_entries.remove_at(picked_index)
 
 	return rolled_loot
+
+
+func _contextual_loot_profile_entries(event_data: Dictionary, loot_table: Dictionary) -> Array[Dictionary]:
+	var rows: Array[Dictionary] = []
+	if not bool(loot_table.get("include_contextual_profile", true)):
+		return rows
+	if ContentLibrary == null or not ContentLibrary.has_method("get_loot_profile_entries"):
+		return rows
+	var contextual_weight_scale := maxf(0.0, float(loot_table.get("contextual_profile_weight_scale", 0.06)))
+	if contextual_weight_scale <= 0.0:
+		return rows
+
+	var existing_ids := {}
+	var entries_variant: Variant = loot_table.get("entries", [])
+	if typeof(entries_variant) == TYPE_ARRAY:
+		for entry_variant in entries_variant:
+			if typeof(entry_variant) != TYPE_DICTIONARY:
+				continue
+			var entry_id := String((entry_variant as Dictionary).get("id", ""))
+			if not entry_id.is_empty():
+				existing_ids[entry_id] = true
+
+	for profile_entry in ContentLibrary.get_loot_profile_entries(String(event_data.get("id", ""))):
+		var item_id := String(profile_entry.get("id", ""))
+		if item_id.is_empty() or existing_ids.has(item_id):
+			continue
+		existing_ids[item_id] = true
+		var row := profile_entry.duplicate(true)
+		row["weight"] = maxf(0.0, float(row.get("weight", 1.0))) * contextual_weight_scale
+		if float(row["weight"]) > 0.0:
+			rows.append(row)
+	return rows
 
 
 func _loot_roll_seed(event_data: Dictionary, event_state: Dictionary, action: Dictionary, run_state = null) -> int:

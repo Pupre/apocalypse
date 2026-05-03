@@ -72,6 +72,7 @@ var _inventory_scroll: ScrollContainer = null
 var _detail_inset: Control = null
 var _inventory_items: VBoxContainer = null
 var _browse_hint_label: Label = null
+var _equipment_rows: HBoxContainer = null
 var _item_detail_sheet: Control = null
 var _detail_close_button: Button = null
 var _item_name_label: Label = null
@@ -323,6 +324,7 @@ func _cache_nodes() -> void:
 	_inventory_scroll = get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll") as ScrollContainer
 	_detail_inset = get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll/InventoryContent/DetailInset") as Control
 	_browse_hint_label = get_node_or_null("Sheet/VBox/InventoryPane/BrowseHintLabel") as Label
+	_equipment_rows = get_node_or_null("Sheet/VBox/InventoryPane/EquipmentRows") as HBoxContainer
 	_inventory_items = get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll/InventoryContent/InventoryItems") as VBoxContainer
 	_item_detail_sheet = get_node_or_null("ItemDetailSheet") as Control
 	_detail_close_button = get_node_or_null("ItemDetailSheet/VBox/Header/DetailCloseButton") as Button
@@ -425,6 +427,7 @@ func _render_inventory() -> void:
 	var inventory_rows := _inventory_rows_for_render()
 	if _browse_hint_label != null:
 		_browse_hint_label.text = _inventory_hint_text()
+	_render_equipment_summary()
 	for row in inventory_rows:
 		if String(row.get("kind", "")) == "section":
 			_inventory_items.add_child(_create_inventory_section_header(row))
@@ -441,6 +444,83 @@ func _inventory_hint_text() -> String:
 	if _sheet_state == STATE_INVENTORY_CRAFT_SELECT:
 		return "조합 가능 섹션의 물건부터 눌러 두 번째 재료를 고른다."
 	return "먹고 마실 것, 불과 도구, 입을 것을 먼저 나눠 본다."
+
+
+func _render_equipment_summary() -> void:
+	if _equipment_rows == null:
+		return
+	_clear_children(_equipment_rows)
+	_equipment_rows.visible = _active_tab == "inventory" and _sheet_state != STATE_INVENTORY_CRAFT_SELECT
+	if not _equipment_rows.visible:
+		return
+
+	var equipped_by_slot := {}
+	var rows_variant: Variant = _inventory_payload.get("equipped_rows", [])
+	if typeof(rows_variant) == TYPE_ARRAY:
+		for row_variant in rows_variant:
+			if typeof(row_variant) == TYPE_DICTIONARY:
+				var row := (row_variant as Dictionary).duplicate(true)
+				var slot_id := String(row.get("slot_id", ""))
+				if String(row.get("kind", "")) == "equipped" and not slot_id.is_empty():
+					equipped_by_slot[slot_id] = row
+
+	var slot_order := ["back", "body", "outer", "head", "face", "feet", "hands", "waist"]
+	for slot_id in slot_order:
+		var row: Dictionary = equipped_by_slot.get(slot_id, {
+			"kind": "empty",
+			"slot_id": slot_id,
+			"slot_label": _slot_label(slot_id),
+			"item_name": "비어 있음",
+			"state_text": "",
+		})
+		_equipment_rows.add_child(_create_equipment_chip(row))
+
+
+func _create_equipment_chip(row: Dictionary) -> Control:
+	var equipped := String(row.get("kind", "")) == "equipped"
+	var chip := PanelContainer.new()
+	chip.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	chip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	chip.add_theme_stylebox_override("panel", _equipment_chip_style(equipped))
+
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", 1)
+	chip.add_child(box)
+
+	var slot_label := Label.new()
+	slot_label.text = String(row.get("slot_label", row.get("summary_text", "장비")))
+	slot_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	slot_label.clip_text = true
+	_apply_label_style(slot_label, 10, TEXT_SECONDARY_COLOR if equipped else TEXT_MUTED_COLOR, 1)
+	box.add_child(slot_label)
+
+	var item_label := Label.new()
+	item_label.text = String(row.get("item_name", "비어 있음"))
+	item_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	item_label.clip_text = true
+	_apply_label_style(item_label, 11, TEXT_PRIMARY_COLOR if equipped else Color(0.78, 0.84, 0.90, 0.88), 1)
+	box.add_child(item_label)
+
+	return chip
+
+
+func _equipment_chip_style(equipped: bool) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.11, 0.18, 0.21, 0.95) if equipped else Color(0.08, 0.10, 0.13, 0.82)
+	style.border_color = Color(0.50, 0.72, 0.80, 0.70) if equipped else Color(0.34, 0.42, 0.48, 0.50)
+	style.border_width_left = 1
+	style.border_width_top = 1
+	style.border_width_right = 1
+	style.border_width_bottom = 1
+	style.corner_radius_top_left = 5
+	style.corner_radius_top_right = 5
+	style.corner_radius_bottom_left = 5
+	style.corner_radius_bottom_right = 5
+	style.content_margin_left = 4
+	style.content_margin_right = 4
+	style.content_margin_top = 4
+	style.content_margin_bottom = 4
+	return style
 
 
 func _create_inventory_section_header(row: Dictionary) -> Control:
@@ -1294,10 +1374,18 @@ func _slot_label(slot_id: String) -> String:
 			return "발"
 		"feet_layer":
 			return "양말"
+		"outer":
+			return "외투"
+		"head":
+			return "머리"
 		"hands":
 			return "손"
 		"hands_layer":
 			return "장갑 안감"
+		"waist":
+			return "허리"
+		"pocket":
+			return "주머니"
 		"neck":
 			return "목"
 		"face":

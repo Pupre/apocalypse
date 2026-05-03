@@ -1,0 +1,7442 @@
+[
+  {
+    "id": "surv_utility_002__rubber_band",
+    "ingredients": [
+      "surv_utility_002",
+      "rubber_band"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5000,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_utility_002": "consume",
+      "rubber_band": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_001",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_001",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "두꺼운 보온 필름 / 고무줄 조합으로 조립한 방풍 목가리개 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_004__steel_wire",
+    "ingredients": [
+      "surv_utility_004",
+      "steel_wire"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5001,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_utility_004": "consume",
+      "steel_wire": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_002",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_002",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "생활용 보온 필름 / 철사 조합으로 보강한 방풍 목가리개 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_051__paper_bag",
+    "ingredients": [
+      "surv_utility_051",
+      "paper_bag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5002,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_utility_051": "consume",
+      "paper_bag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_003",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_003",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "접은 방풍 패널 / 종이봉투 조합으로 말아 묶은 방풍 목가리개 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_053__empty_pet_bottle",
+    "ingredients": [
+      "surv_utility_053",
+      "empty_pet_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5003,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_utility_053": "consume",
+      "empty_pet_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_004",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_004",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "정비용 방풍 패널 / 빈 페트병 조합으로 밀봉한 방풍 목가리개 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_055__duct_tape",
+    "ingredients": [
+      "surv_utility_055",
+      "duct_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5004,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_utility_055": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_005",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_005",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "비상 방풍 패널 / 덕트테이프 조합으로 응급 방풍 목가리개 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_012__duct_tape",
+    "ingredients": [
+      "surv_utility_012",
+      "duct_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5005,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_utility_012": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_006",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_006",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "두꺼운 철사 묶음 / 덕트테이프 조합으로 조립한 단열 창문 패치 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_014__steel_wire",
+    "ingredients": [
+      "surv_utility_014",
+      "steel_wire"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5006,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_utility_014": "consume",
+      "steel_wire": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_007",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_007",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "생활용 철사 묶음 / 철사 조합으로 보강한 단열 창문 패치 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_016__sealant_tube",
+    "ingredients": [
+      "surv_utility_016",
+      "sealant_tube"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5007,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_utility_016": "consume",
+      "sealant_tube": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_008",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_008",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "접은 압축 스펀지 / 실링제 튜브 조합으로 말아 묶은 단열 창문 패치 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_018__duct_tape",
+    "ingredients": [
+      "surv_utility_018",
+      "duct_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5008,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_utility_018": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_009",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_009",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "정비용 압축 스펀지 / 덕트테이프 조합으로 밀봉한 단열 창문 패치 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_020__rubber_band",
+    "ingredients": [
+      "surv_utility_020",
+      "rubber_band"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5009,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_utility_020": "consume",
+      "rubber_band": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_010",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_010",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "비상 압축 스펀지 / 고무줄 조합으로 응급 단열 창문 패치 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_007__rubber_band",
+    "ingredients": [
+      "surv_equipment_007",
+      "rubber_band"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5010,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_equipment_007": "consume",
+      "rubber_band": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_011",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_011",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "낡은 귀덮개 모자 / 고무줄 조합으로 조립한 응급 보온 꾸러미 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_009__steel_wire",
+    "ingredients": [
+      "surv_equipment_009",
+      "steel_wire"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5011,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_equipment_009": "consume",
+      "steel_wire": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_012",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_012",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "낡은 넓은 목도리 / 철사 조합으로 보강한 응급 보온 꾸러미 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_011__paper_bag",
+    "ingredients": [
+      "surv_equipment_011",
+      "paper_bag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5012,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_equipment_011": "consume",
+      "paper_bag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_013",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_013",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "낡은 방수 장갑 / 종이봉투 조합으로 말아 묶은 응급 보온 꾸러미 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_013__empty_pet_bottle",
+    "ingredients": [
+      "surv_equipment_013",
+      "empty_pet_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5013,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_equipment_013": "consume",
+      "empty_pet_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_014",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_014",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "낡은 방한 부츠 / 빈 페트병 조합으로 밀봉한 응급 보온 꾸러미 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_015__duct_tape",
+    "ingredients": [
+      "surv_equipment_015",
+      "duct_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5014,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_equipment_015": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_015",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_015",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "낡은 공구 벨트 / 덕트테이프 조합으로 응급 응급 보온 꾸러미 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_032__bottled_water",
+    "ingredients": [
+      "surv_container_032",
+      "bottled_water"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5015,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_container_032": "consume",
+      "bottled_water": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_016",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_016",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 접이식 바구니 / 생수 조합으로 조립한 휴대 식수 키트 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_034__paper_cup",
+    "ingredients": [
+      "surv_container_034",
+      "paper_cup"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5016,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_container_034": "consume",
+      "paper_cup": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_017",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_017",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 접이식 바구니 / 종이컵 조합으로 보강한 휴대 식수 키트 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_001__cling_wrap_roll",
+    "ingredients": [
+      "surv_container_001",
+      "cling_wrap_roll"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5017,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_container_001": "consume",
+      "cling_wrap_roll": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_018",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_018",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "얇은 접이식 물통 / 랩 조합으로 말아 묶은 휴대 식수 키트 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_003__zip_bag",
+    "ingredients": [
+      "surv_container_003",
+      "zip_bag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5018,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_container_003": "consume",
+      "zip_bag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_019",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_019",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "손잡이 달린 접이식 물통 / 지퍼백 조합으로 밀봉한 휴대 식수 키트 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_005__hot_water_bottle",
+    "ingredients": [
+      "surv_container_005",
+      "hot_water_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5019,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_container_005": "consume",
+      "hot_water_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_020",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_020",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "현장용 접이식 물통 / 온수병 조합으로 응급 휴대 식수 키트 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_042__rubber_band",
+    "ingredients": [
+      "surv_utility_042",
+      "rubber_band"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5020,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_utility_042": "consume",
+      "rubber_band": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_021",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_021",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "두꺼운 파라코드 / 고무줄 조합으로 조립한 소형 수리 키트 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_044__steel_wire",
+    "ingredients": [
+      "surv_utility_044",
+      "steel_wire"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5021,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_utility_044": "consume",
+      "steel_wire": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_022",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_022",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "생활용 파라코드 / 철사 조합으로 보강한 소형 수리 키트 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_046__screwdriver",
+    "ingredients": [
+      "surv_utility_046",
+      "screwdriver"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5022,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_utility_046": "consume",
+      "screwdriver": "keep"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_023",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_023",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "접은 작은 자물쇠 / 작은 드라이버 조합으로 말아 묶은 소형 수리 키트 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_048__epoxy_putty",
+    "ingredients": [
+      "surv_utility_048",
+      "epoxy_putty"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5023,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_utility_048": "consume",
+      "epoxy_putty": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_024",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_024",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "정비용 작은 자물쇠 / 에폭시 퍼티 조합으로 밀봉한 소형 수리 키트 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_050__hose_clamp",
+    "ingredients": [
+      "surv_utility_050",
+      "hose_clamp"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5024,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_utility_050": "consume",
+      "hose_clamp": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_025",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_025",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "비상 작은 자물쇠 / 호스 밴드 조합으로 응급 소형 수리 키트 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_007__alcohol_swab",
+    "ingredients": [
+      "surv_medical_007",
+      "alcohol_swab"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5025,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_medical_007": "consume",
+      "alcohol_swab": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_026",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_026",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 상처 세척액 / 알코올솜 조합으로 조립한 압박 드레싱 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_009__medical_tape",
+    "ingredients": [
+      "surv_medical_009",
+      "medical_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5026,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_medical_009": "consume",
+      "medical_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_027",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_027",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "약국용 상처 세척액 / 의료용 테이프 조합으로 보강한 압박 드레싱 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_011__sterile_gauze_roll",
+    "ingredients": [
+      "surv_medical_011",
+      "sterile_gauze_roll"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5027,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_medical_011": "consume",
+      "sterile_gauze_roll": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_028",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_028",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "소형 압박 붕대 / 멸균 거즈 롤 조합으로 말아 묶은 압박 드레싱 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_013__bandage",
+    "ingredients": [
+      "surv_medical_013",
+      "bandage"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5028,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_medical_013": "consume",
+      "bandage": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_029",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_029",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "응급 압박 붕대 / 붕대 조합으로 밀봉한 압박 드레싱 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_015__rubbing_alcohol",
+    "ingredients": [
+      "surv_medical_015",
+      "rubbing_alcohol"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5029,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_medical_015": "consume",
+      "rubbing_alcohol": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_030",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_030",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "여행용 압박 붕대 / 소독용 알코올 조합으로 응급 압박 드레싱 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_027__bottled_water",
+    "ingredients": [
+      "surv_container_027",
+      "bottled_water"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5030,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_container_027": "consume",
+      "bottled_water": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_031",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_031",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 보냉 가방 / 생수 조합으로 조립한 보온 물병 커버 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_029__paper_cup",
+    "ingredients": [
+      "surv_container_029",
+      "paper_cup"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5031,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_container_029": "consume",
+      "paper_cup": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_032",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_032",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 보냉 가방 / 종이컵 조합으로 보강한 보온 물병 커버 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_031__cling_wrap_roll",
+    "ingredients": [
+      "surv_container_031",
+      "cling_wrap_roll"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5032,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_container_031": "consume",
+      "cling_wrap_roll": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_033",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_033",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "얇은 접이식 바구니 / 랩 조합으로 말아 묶은 보온 물병 커버 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_033__zip_bag",
+    "ingredients": [
+      "surv_container_033",
+      "zip_bag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5033,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_container_033": "consume",
+      "zip_bag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_034",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_034",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "손잡이 달린 접이식 바구니 / 지퍼백 조합으로 밀봉한 보온 물병 커버 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_035__hot_water_bottle",
+    "ingredients": [
+      "surv_container_035",
+      "hot_water_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5034,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_container_035": "consume",
+      "hot_water_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_035",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_035",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "현장용 접이식 바구니 / 온수병 조합으로 응급 보온 물병 커버 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_057__rubber_band",
+    "ingredients": [
+      "surv_equipment_057",
+      "rubber_band"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5035,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_equipment_057": "consume",
+      "rubber_band": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_036",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_036",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "보강한 넓은 목도리 / 고무줄 조합으로 조립한 습기 차단 주머니 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_059__steel_wire",
+    "ingredients": [
+      "surv_equipment_059",
+      "steel_wire"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5036,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_equipment_059": "consume",
+      "steel_wire": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_037",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_037",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "보강한 방수 장갑 / 철사 조합으로 보강한 습기 차단 주머니 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_061__paper_bag",
+    "ingredients": [
+      "surv_equipment_061",
+      "paper_bag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5037,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_equipment_061": "consume",
+      "paper_bag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_038",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_038",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "보강한 방한 부츠 / 종이봉투 조합으로 말아 묶은 습기 차단 주머니 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_063__empty_pet_bottle",
+    "ingredients": [
+      "surv_equipment_063",
+      "empty_pet_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5038,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_equipment_063": "consume",
+      "empty_pet_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_039",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_039",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "보강한 공구 벨트 / 빈 페트병 조합으로 밀봉한 습기 차단 주머니 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_065__duct_tape",
+    "ingredients": [
+      "surv_equipment_065",
+      "duct_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5039,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_equipment_065": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_040",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_040",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "방한 등산 배낭 / 덕트테이프 조합으로 응급 습기 차단 주머니 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_062__paper_bag",
+    "ingredients": [
+      "surv_utility_062",
+      "paper_bag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5040,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_utility_062": "consume",
+      "paper_bag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_041",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_041",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "두꺼운 연료 젤 / 종이봉투 조합으로 조립한 조리용 포일 받침 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_064__empty_pet_bottle",
+    "ingredients": [
+      "surv_utility_064",
+      "empty_pet_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5041,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_utility_064": "consume",
+      "empty_pet_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_042",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_042",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "생활용 연료 젤 / 빈 페트병 조합으로 보강한 조리용 포일 받침 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_066__spare_batteries",
+    "ingredients": [
+      "surv_utility_066",
+      "spare_batteries"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5042,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_utility_066": "consume",
+      "spare_batteries": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_043",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_043",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "접은 단열 폼 / 건전지 조합으로 말아 묶은 조리용 포일 받침 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_068__flashlight",
+    "ingredients": [
+      "surv_utility_068",
+      "flashlight"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5043,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_utility_068": "consume",
+      "flashlight": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_044",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_044",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "정비용 단열 폼 / 손전등 조합으로 밀봉한 조리용 포일 받침 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_070__aluminum_foil",
+    "ingredients": [
+      "surv_utility_070",
+      "aluminum_foil"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5044,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_utility_070": "consume",
+      "aluminum_foil": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_045",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_045",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "비상 단열 폼 / 알루미늄 포일 조합으로 응급 조리용 포일 받침 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_072__paper_bag",
+    "ingredients": [
+      "surv_utility_072",
+      "paper_bag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5045,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_utility_072": "consume",
+      "paper_bag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_046",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_046",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "두꺼운 방수 지퍼백 / 종이봉투 조합으로 조립한 건조 점화 꾸러미 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_074__empty_pet_bottle",
+    "ingredients": [
+      "surv_utility_074",
+      "empty_pet_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5046,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_utility_074": "consume",
+      "empty_pet_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_047",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_047",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "생활용 방수 지퍼백 / 빈 페트병 조합으로 보강한 건조 점화 꾸러미 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_001__spare_batteries",
+    "ingredients": [
+      "surv_utility_001",
+      "spare_batteries"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5047,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_utility_001": "consume",
+      "spare_batteries": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_048",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_048",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "접은 보온 필름 / 건전지 조합으로 말아 묶은 건조 점화 꾸러미 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_003__flashlight",
+    "ingredients": [
+      "surv_utility_003",
+      "flashlight"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5048,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_utility_003": "consume",
+      "flashlight": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_049",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_049",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "정비용 보온 필름 / 손전등 조합으로 밀봉한 건조 점화 꾸러미 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_005__aluminum_foil",
+    "ingredients": [
+      "surv_utility_005",
+      "aluminum_foil"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5049,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_utility_005": "consume",
+      "aluminum_foil": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_050",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_050",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "비상 보온 필름 / 알루미늄 포일 조합으로 응급 건조 점화 꾸러미 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_027__steel_wire",
+    "ingredients": [
+      "surv_container_027",
+      "steel_wire"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5050,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_container_027": "consume",
+      "steel_wire": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_051",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_051",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 보냉 가방 / 철사 조합으로 조립한 정비용 소품 벨트 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_029__sealant_tube",
+    "ingredients": [
+      "surv_container_029",
+      "sealant_tube"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5051,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_container_029": "consume",
+      "sealant_tube": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_052",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_052",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 보냉 가방 / 실링제 튜브 조합으로 보강한 정비용 소품 벨트 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_031__duct_tape",
+    "ingredients": [
+      "surv_container_031",
+      "duct_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5052,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_container_031": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_053",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_053",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "얇은 접이식 바구니 / 덕트테이프 조합으로 말아 묶은 정비용 소품 벨트 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_033__rubber_band",
+    "ingredients": [
+      "surv_container_033",
+      "rubber_band"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5053,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_container_033": "consume",
+      "rubber_band": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_054",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_054",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "손잡이 달린 접이식 바구니 / 고무줄 조합으로 밀봉한 정비용 소품 벨트 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_035__steel_wire",
+    "ingredients": [
+      "surv_container_035",
+      "steel_wire"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5054,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_container_035": "consume",
+      "steel_wire": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_055",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_055",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "현장용 접이식 바구니 / 철사 조합으로 응급 정비용 소품 벨트 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_007__rubber_band",
+    "ingredients": [
+      "surv_utility_007",
+      "rubber_band"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5055,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_utility_007": "consume",
+      "rubber_band": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_056",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_056",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "두꺼운 방수 테이프 / 고무줄 조합으로 조립한 가벼운 침낭 외피 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_009__steel_wire",
+    "ingredients": [
+      "surv_utility_009",
+      "steel_wire"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5056,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_utility_009": "consume",
+      "steel_wire": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_057",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_057",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "생활용 방수 테이프 / 철사 조합으로 보강한 가벼운 침낭 외피 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_011__paper_bag",
+    "ingredients": [
+      "surv_utility_011",
+      "paper_bag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5057,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_utility_011": "consume",
+      "paper_bag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_058",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_058",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "접은 철사 묶음 / 종이봉투 조합으로 말아 묶은 가벼운 침낭 외피 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_013__empty_pet_bottle",
+    "ingredients": [
+      "surv_utility_013",
+      "empty_pet_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5058,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_utility_013": "consume",
+      "empty_pet_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_059",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_059",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "정비용 철사 묶음 / 빈 페트병 조합으로 밀봉한 가벼운 침낭 외피 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_015__duct_tape",
+    "ingredients": [
+      "surv_utility_015",
+      "duct_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5059,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_utility_015": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_060",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_060",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "비상 철사 묶음 / 덕트테이프 조합으로 응급 가벼운 침낭 외피 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_007__paper_bag",
+    "ingredients": [
+      "surv_utility_007",
+      "paper_bag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5060,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_utility_007": "consume",
+      "paper_bag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_061",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_061",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "두꺼운 방수 테이프 / 종이봉투 조합으로 조립한 손난로 파우치 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_009__empty_pet_bottle",
+    "ingredients": [
+      "surv_utility_009",
+      "empty_pet_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5061,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_utility_009": "consume",
+      "empty_pet_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_062",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_062",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "생활용 방수 테이프 / 빈 페트병 조합으로 보강한 손난로 파우치 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_011__spare_batteries",
+    "ingredients": [
+      "surv_utility_011",
+      "spare_batteries"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5062,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_utility_011": "consume",
+      "spare_batteries": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_063",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_063",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "접은 철사 묶음 / 건전지 조합으로 말아 묶은 손난로 파우치 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_013__flashlight",
+    "ingredients": [
+      "surv_utility_013",
+      "flashlight"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5063,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_utility_013": "consume",
+      "flashlight": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_064",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_064",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "정비용 철사 묶음 / 손전등 조합으로 밀봉한 손난로 파우치 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_015__aluminum_foil",
+    "ingredients": [
+      "surv_utility_015",
+      "aluminum_foil"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5064,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_utility_015": "consume",
+      "aluminum_foil": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_065",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_065",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "비상 철사 묶음 / 알루미늄 포일 조합으로 응급 손난로 파우치 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_017__paper_bag",
+    "ingredients": [
+      "surv_utility_017",
+      "paper_bag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5065,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_utility_017": "consume",
+      "paper_bag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_066",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_066",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "두꺼운 압축 스펀지 / 종이봉투 조합으로 조립한 연료 보관 병 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_019__empty_pet_bottle",
+    "ingredients": [
+      "surv_utility_019",
+      "empty_pet_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5066,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_utility_019": "consume",
+      "empty_pet_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_067",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_067",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "생활용 압축 스펀지 / 빈 페트병 조합으로 보강한 연료 보관 병 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_021__spare_batteries",
+    "ingredients": [
+      "surv_utility_021",
+      "spare_batteries"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5067,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_utility_021": "consume",
+      "spare_batteries": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_068",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_068",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "접은 고무 패킹 / 건전지 조합으로 말아 묶은 연료 보관 병 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_023__flashlight",
+    "ingredients": [
+      "surv_utility_023",
+      "flashlight"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5068,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_utility_023": "consume",
+      "flashlight": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_069",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_069",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "정비용 고무 패킹 / 손전등 조합으로 밀봉한 연료 보관 병 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_025__aluminum_foil",
+    "ingredients": [
+      "surv_utility_025",
+      "aluminum_foil"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5069,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_utility_025": "consume",
+      "aluminum_foil": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_070",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_070",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "비상 고무 패킹 / 알루미늄 포일 조합으로 응급 연료 보관 병 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_052__packing_tape",
+    "ingredients": [
+      "surv_utility_052",
+      "packing_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5070,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_utility_052": "consume",
+      "packing_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_081",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_081",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "두꺼운 방풍 패널 / 포장 테이프 조합으로 조립한 배낭 압축 끈 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_054__medical_tape",
+    "ingredients": [
+      "surv_utility_054",
+      "medical_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5071,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_utility_054": "consume",
+      "medical_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_082",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_082",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "생활용 방풍 패널 / 의료용 테이프 조합으로 보강한 배낭 압축 끈 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_056__duct_tape",
+    "ingredients": [
+      "surv_utility_056",
+      "duct_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5072,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_utility_056": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_083",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_083",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "접은 접착 패드 / 덕트테이프 조합으로 말아 묶은 배낭 압축 끈 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_058__steel_wire",
+    "ingredients": [
+      "surv_utility_058",
+      "steel_wire"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5073,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_utility_058": "consume",
+      "steel_wire": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_084",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_084",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "정비용 접착 패드 / 철사 조합으로 밀봉한 배낭 압축 끈 형태를 만들었다."
+  },
+  {
+    "id": "surv_utility_060__sealant_tube",
+    "ingredients": [
+      "surv_utility_060",
+      "sealant_tube"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5074,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_utility_060": "consume",
+      "sealant_tube": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_085",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_085",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "비상 접착 패드 / 실링제 튜브 조합으로 응급 배낭 압축 끈 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_042__empty_pet_bottle",
+    "ingredients": [
+      "surv_food_042",
+      "empty_pet_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5075,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_food_042": "consume",
+      "empty_pet_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_086",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_086",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "고열량 통조림 햄 / 빈 페트병 조합으로 조립한 방수 식량 묶음 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_044__zip_bag",
+    "ingredients": [
+      "surv_food_044",
+      "zip_bag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5076,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_food_044": "consume",
+      "zip_bag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_087",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_087",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "찌그러진 통조림 햄 / 지퍼백 조합으로 보강한 방수 식량 묶음 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_046__glass_jar",
+    "ingredients": [
+      "surv_food_046",
+      "glass_jar"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5077,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_food_046": "consume",
+      "glass_jar": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_088",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_088",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 참깨 라면스프 / 유리병 조합으로 말아 묶은 방수 식량 묶음 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_048__food_storage_container",
+    "ingredients": [
+      "surv_food_048",
+      "food_storage_container"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5078,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_food_048": "consume",
+      "food_storage_container": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_089",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_089",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "작은 참깨 라면스프 / 밀폐용기 조합으로 밀봉한 방수 식량 묶음 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_050__paper_bag",
+    "ingredients": [
+      "surv_food_050",
+      "paper_bag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5079,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_food_050": "consume",
+      "paper_bag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_090",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_090",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "오래된 참깨 라면스프 / 종이봉투 조합으로 응급 방수 식량 묶음 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_002__rubber_band",
+    "ingredients": [
+      "surv_container_002",
+      "rubber_band"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5080,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_container_002": "consume",
+      "rubber_band": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_091",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_091",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 접이식 물통 / 고무줄 조합으로 조립한 차가운 손 보호대 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_004__steel_wire",
+    "ingredients": [
+      "surv_container_004",
+      "steel_wire"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5081,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_container_004": "consume",
+      "steel_wire": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_092",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_092",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 접이식 물통 / 철사 조합으로 보강한 차가운 손 보호대 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_006__paper_bag",
+    "ingredients": [
+      "surv_container_006",
+      "paper_bag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5082,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_container_006": "consume",
+      "paper_bag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_093",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_093",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "얇은 방수 파우치 / 종이봉투 조합으로 말아 묶은 차가운 손 보호대 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_008__empty_pet_bottle",
+    "ingredients": [
+      "surv_container_008",
+      "empty_pet_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5083,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_container_008": "consume",
+      "empty_pet_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_094",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_094",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "손잡이 달린 방수 파우치 / 빈 페트병 조합으로 밀봉한 차가운 손 보호대 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_010__duct_tape",
+    "ingredients": [
+      "surv_container_010",
+      "duct_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5084,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_container_010": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_095",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_095",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "현장용 방수 파우치 / 덕트테이프 조합으로 응급 차가운 손 보호대 형태를 만들었다."
+  },
+  {
+    "id": "surv_tool_012__spare_batteries",
+    "ingredients": [
+      "surv_tool_012",
+      "spare_batteries"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5085,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_tool_012": "consume",
+      "spare_batteries": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_096",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_096",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "작은 비상 망치 / 건전지 조합으로 조립한 야간 수색 묶음 형태를 만들었다."
+  },
+  {
+    "id": "surv_tool_014__flashlight",
+    "ingredients": [
+      "surv_tool_014",
+      "flashlight"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5086,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_tool_014": "consume",
+      "flashlight": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_097",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_097",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "주머니용 비상 망치 / 손전등 조합으로 보강한 야간 수색 묶음 형태를 만들었다."
+  },
+  {
+    "id": "surv_tool_016__aluminum_foil",
+    "ingredients": [
+      "surv_tool_016",
+      "aluminum_foil"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5087,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_tool_016": "consume",
+      "aluminum_foil": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_098",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_098",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "낡은 렌치 / 알루미늄 포일 조합으로 말아 묶은 야간 수색 묶음 형태를 만들었다."
+  },
+  {
+    "id": "surv_tool_018__lighter",
+    "ingredients": [
+      "surv_tool_018",
+      "lighter"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5088,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_tool_018": "consume",
+      "lighter": "keep"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_099",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_099",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 렌치 / 라이터 조합으로 밀봉한 야간 수색 묶음 형태를 만들었다."
+  },
+  {
+    "id": "surv_tool_020__tea_light_candle",
+    "ingredients": [
+      "surv_tool_020",
+      "tea_light_candle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5089,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_tool_020": "consume",
+      "tea_light_candle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_100",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_100",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "정비용 렌치 / 티라이트 양초 조합으로 응급 야간 수색 묶음 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_018__medical_tape",
+    "ingredients": [
+      "surv_container_018",
+      "medical_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5090,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_container_018": "consume",
+      "medical_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_001",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_001",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "손잡이 달린 플라스틱 통 / 의료용 테이프 조합으로 낡은 등산 배낭 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_020__packing_tape",
+    "ingredients": [
+      "surv_container_020",
+      "packing_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5091,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_container_020": "consume",
+      "packing_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_002",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_002",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "현장용 플라스틱 통 / 포장 테이프 조합으로 낡은 허리 지지 배낭 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_067__old_blanket",
+    "ingredients": [
+      "surv_equipment_067",
+      "old_blanket"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5092,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_equipment_067": "consume",
+      "old_blanket": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_003",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_003",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "방한 두꺼운 후드집업 / 낡은 담요 조합으로 낡은 두꺼운 후드집업 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_083__medical_tape",
+    "ingredients": [
+      "surv_equipment_083",
+      "medical_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5093,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_equipment_083": "consume",
+      "medical_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_004",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_004",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "낡은 두꺼운 후드집업 / 의료용 테이프 조합으로 낡은 기모 작업복 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_006__packing_tape",
+    "ingredients": [
+      "surv_equipment_006",
+      "packing_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5094,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_equipment_006": "consume",
+      "packing_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_005",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_005",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "낡은 방수 외피 / 포장 테이프 조합으로 낡은 방한 파카 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_022__medical_tape",
+    "ingredients": [
+      "surv_equipment_022",
+      "medical_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5095,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_equipment_022": "consume",
+      "medical_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_006",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_006",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "마른 방수 외피 / 의료용 테이프 조합으로 낡은 방수 외피 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_040__old_cloth_rag",
+    "ingredients": [
+      "surv_equipment_040",
+      "old_cloth_rag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5096,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_equipment_040": "consume",
+      "old_cloth_rag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_007",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_007",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 방한 바라클라바 / 헌 헝겊 조합으로 낡은 귀덮개 모자 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_056__sewing_kit",
+    "ingredients": [
+      "surv_equipment_056",
+      "sewing_kit"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5097,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_equipment_056": "consume",
+      "sewing_kit": "keep"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_008",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_008",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "보강한 방한 바라클라바 / 반짇고리 조합으로 낡은 방한 바라클라바 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_057__fleece_blanket",
+    "ingredients": [
+      "surv_equipment_057",
+      "fleece_blanket"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5098,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_equipment_057": "consume",
+      "fleece_blanket": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_009",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_009",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "보강한 넓은 목도리 / 플리스 담요 조합으로 낡은 넓은 목도리 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_090__duct_tape",
+    "ingredients": [
+      "surv_equipment_090",
+      "duct_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5099,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_equipment_090": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_010",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_010",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "낡은 방진 마스크 / 덕트테이프 조합으로 낡은 방진 마스크 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_043__rubber_band",
+    "ingredients": [
+      "surv_equipment_043",
+      "rubber_band"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5100,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_equipment_043": "consume",
+      "rubber_band": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_011",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_011",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 방수 장갑 / 고무줄 조합으로 낡은 방수 장갑 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_076__steel_wire",
+    "ingredients": [
+      "surv_equipment_076",
+      "steel_wire"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5101,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_equipment_076": "consume",
+      "steel_wire": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_012",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_012",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "방한 얇은 장갑 안감 / 철사 조합으로 낡은 얇은 장갑 안감 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_045__towel",
+    "ingredients": [
+      "surv_equipment_045",
+      "towel"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5102,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_equipment_045": "consume",
+      "towel": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_013",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_013",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 방한 부츠 / 수건 조합으로 낡은 방한 부츠 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_078__old_blanket",
+    "ingredients": [
+      "surv_equipment_078",
+      "old_blanket"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5103,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_equipment_078": "consume",
+      "old_blanket": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_014",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_014",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "방한 두꺼운 양말 / 낡은 담요 조합으로 낡은 두꺼운 양말 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_035__old_cloth_rag",
+    "ingredients": [
+      "surv_container_035",
+      "old_cloth_rag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5104,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_container_035": "consume",
+      "old_cloth_rag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_015",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_015",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "현장용 접이식 바구니 / 헌 헝겊 조합으로 낡은 공구 벨트 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_048__sewing_kit",
+    "ingredients": [
+      "surv_equipment_048",
+      "sewing_kit"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5105,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_equipment_048": "consume",
+      "sewing_kit": "keep"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_016",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_016",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 가슴 파우치 / 반짇고리 조합으로 낡은 가슴 파우치 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_004__fleece_blanket",
+    "ingredients": [
+      "surv_container_004",
+      "fleece_blanket"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5106,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_container_004": "consume",
+      "fleece_blanket": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_017",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_017",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 접이식 물통 / 플리스 담요 조합으로 마른 등산 배낭 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_006__duct_tape",
+    "ingredients": [
+      "surv_container_006",
+      "duct_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5107,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_container_006": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_018",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_018",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "얇은 방수 파우치 / 덕트테이프 조합으로 마른 허리 지지 배낭 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_052__sewing_kit",
+    "ingredients": [
+      "surv_equipment_052",
+      "sewing_kit"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5108,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_equipment_052": "consume",
+      "sewing_kit": "keep"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_019",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_019",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "보강한 기모 작업복 / 반짇고리 조합으로 마른 두꺼운 후드집업 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_068__fleece_blanket",
+    "ingredients": [
+      "surv_equipment_068",
+      "fleece_blanket"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5109,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_equipment_068": "consume",
+      "fleece_blanket": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_020",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_020",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "방한 기모 작업복 / 플리스 담요 조합으로 마른 기모 작업복 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_086__duct_tape",
+    "ingredients": [
+      "surv_equipment_086",
+      "duct_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5110,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_equipment_086": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_021",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_021",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "낡은 방수 외피 / 덕트테이프 조합으로 마른 방한 파카 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_006__rubber_band",
+    "ingredients": [
+      "surv_equipment_006",
+      "rubber_band"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5111,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_equipment_006": "consume",
+      "rubber_band": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_022",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_022",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "낡은 방수 외피 / 고무줄 조합으로 마른 방수 외피 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_039__steel_wire",
+    "ingredients": [
+      "surv_equipment_039",
+      "steel_wire"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5112,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_equipment_039": "consume",
+      "steel_wire": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_023",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_023",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 귀덮개 모자 / 철사 조합으로 마른 귀덮개 모자 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_055__towel",
+    "ingredients": [
+      "surv_equipment_055",
+      "towel"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5113,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_equipment_055": "consume",
+      "towel": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_024",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_024",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "보강한 귀덮개 모자 / 수건 조합으로 마른 방한 바라클라바 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_089__old_blanket",
+    "ingredients": [
+      "surv_equipment_089",
+      "old_blanket"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5114,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_equipment_089": "consume",
+      "old_blanket": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_025",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_025",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "낡은 넓은 목도리 / 낡은 담요 조합으로 마른 넓은 목도리 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_042__medical_tape",
+    "ingredients": [
+      "surv_equipment_042",
+      "medical_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5115,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_equipment_042": "consume",
+      "medical_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_026",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_026",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 방진 마스크 / 의료용 테이프 조합으로 마른 방진 마스크 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_043__packing_tape",
+    "ingredients": [
+      "surv_equipment_043",
+      "packing_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5116,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_equipment_043": "consume",
+      "packing_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_027",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_027",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 방수 장갑 / 포장 테이프 조합으로 마른 방수 장갑 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_076__medical_tape",
+    "ingredients": [
+      "surv_equipment_076",
+      "medical_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5117,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_equipment_076": "consume",
+      "medical_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_028",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_028",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "방한 얇은 장갑 안감 / 의료용 테이프 조합으로 마른 얇은 장갑 안감 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_045__old_cloth_rag",
+    "ingredients": [
+      "surv_equipment_045",
+      "old_cloth_rag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5118,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_equipment_045": "consume",
+      "old_cloth_rag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_029",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_029",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 방한 부츠 / 헌 헝겊 조합으로 마른 방한 부츠 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_078__sewing_kit",
+    "ingredients": [
+      "surv_equipment_078",
+      "sewing_kit"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5119,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_equipment_078": "consume",
+      "sewing_kit": "keep"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_030",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_030",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "방한 두꺼운 양말 / 반짇고리 조합으로 마른 두꺼운 양말 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_028__steel_wire",
+    "ingredients": [
+      "surv_container_028",
+      "steel_wire"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5120,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_container_028": "consume",
+      "steel_wire": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_031",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_031",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "손잡이 달린 보냉 가방 / 철사 조합으로 마른 공구 벨트 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_030__towel",
+    "ingredients": [
+      "surv_container_030",
+      "towel"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5121,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_container_030": "consume",
+      "towel": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_032",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_032",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "현장용 보냉 가방 / 수건 조합으로 마른 가슴 파우치 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_001__old_blanket",
+    "ingredients": [
+      "surv_equipment_001",
+      "old_blanket"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5122,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_equipment_001": "consume",
+      "old_blanket": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_033",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_033",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "낡은 등산 배낭 / 낡은 담요 조합으로 튼튼한 등산 배낭 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_017__medical_tape",
+    "ingredients": [
+      "surv_equipment_017",
+      "medical_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5123,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_equipment_017": "consume",
+      "medical_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_034",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_034",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "마른 등산 배낭 / 의료용 테이프 조합으로 튼튼한 허리 지지 배낭 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_051__towel",
+    "ingredients": [
+      "surv_equipment_051",
+      "towel"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5124,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_equipment_051": "consume",
+      "towel": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_035",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_035",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "보강한 두꺼운 후드집업 / 수건 조합으로 튼튼한 두꺼운 후드집업 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_085__medical_tape",
+    "ingredients": [
+      "surv_equipment_085",
+      "medical_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5125,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_equipment_085": "consume",
+      "medical_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_037",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_037",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "낡은 방한 파카 / 의료용 테이프 조합으로 튼튼한 방한 파카 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_005__packing_tape",
+    "ingredients": [
+      "surv_equipment_005",
+      "packing_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5126,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_equipment_005": "consume",
+      "packing_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_038",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_038",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "낡은 방한 파카 / 포장 테이프 조합으로 튼튼한 방수 외피 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_023__medical_tape",
+    "ingredients": [
+      "surv_equipment_023",
+      "medical_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5127,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_equipment_023": "consume",
+      "medical_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_039",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_039",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "마른 귀덮개 모자 / 의료용 테이프 조합으로 튼튼한 귀덮개 모자 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_039__old_cloth_rag",
+    "ingredients": [
+      "surv_equipment_039",
+      "old_cloth_rag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5128,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_equipment_039": "consume",
+      "old_cloth_rag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_040",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_040",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 귀덮개 모자 / 헌 헝겊 조합으로 튼튼한 방한 바라클라바 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_025__sewing_kit",
+    "ingredients": [
+      "surv_equipment_025",
+      "sewing_kit"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5129,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_equipment_025": "consume",
+      "sewing_kit": "keep"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_041",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_041",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "마른 넓은 목도리 / 반짇고리 조합으로 튼튼한 넓은 목도리 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_074__fleece_blanket",
+    "ingredients": [
+      "surv_equipment_074",
+      "fleece_blanket"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5130,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_equipment_074": "consume",
+      "fleece_blanket": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_042",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_042",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "방한 방진 마스크 / 플리스 담요 조합으로 튼튼한 방진 마스크 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_027__duct_tape",
+    "ingredients": [
+      "surv_equipment_027",
+      "duct_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5131,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_equipment_027": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_043",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_043",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "마른 방수 장갑 / 덕트테이프 조합으로 튼튼한 방수 장갑 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_076__rubber_band",
+    "ingredients": [
+      "surv_equipment_076",
+      "rubber_band"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5132,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_equipment_076": "consume",
+      "rubber_band": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_044",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_044",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "방한 얇은 장갑 안감 / 고무줄 조합으로 튼튼한 얇은 장갑 안감 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_029__steel_wire",
+    "ingredients": [
+      "surv_equipment_029",
+      "steel_wire"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5133,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_equipment_029": "consume",
+      "steel_wire": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_045",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_045",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "마른 방한 부츠 / 철사 조합으로 튼튼한 방한 부츠 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_078__towel",
+    "ingredients": [
+      "surv_equipment_078",
+      "towel"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5134,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_equipment_078": "consume",
+      "towel": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_046",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_046",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "방한 두꺼운 양말 / 수건 조합으로 튼튼한 두꺼운 양말 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_021__medical_tape",
+    "ingredients": [
+      "surv_container_021",
+      "medical_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5135,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_container_021": "consume",
+      "medical_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_047",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_047",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "얇은 압축 주머니 / 의료용 테이프 조합으로 튼튼한 공구 벨트 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_023__old_cloth_rag",
+    "ingredients": [
+      "surv_container_023",
+      "old_cloth_rag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5136,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_container_023": "consume",
+      "old_cloth_rag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_048",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_048",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "손잡이 달린 압축 주머니 / 헌 헝겊 조합으로 튼튼한 가슴 파우치 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_022__sewing_kit",
+    "ingredients": [
+      "surv_container_022",
+      "sewing_kit"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5137,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_container_022": "consume",
+      "sewing_kit": "keep"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_049",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_049",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 압축 주머니 / 반짇고리 조합으로 보강한 등산 배낭 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_024__fleece_blanket",
+    "ingredients": [
+      "surv_container_024",
+      "fleece_blanket"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5138,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_container_024": "consume",
+      "fleece_blanket": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_050",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_050",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 압축 주머니 / 플리스 담요 조합으로 보강한 허리 지지 배낭 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_035__old_cloth_rag",
+    "ingredients": [
+      "surv_equipment_035",
+      "old_cloth_rag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5139,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_equipment_035": "consume",
+      "old_cloth_rag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_051",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_051",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 두꺼운 후드집업 / 헌 헝겊 조합으로 보강한 두꺼운 후드집업 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_051__sewing_kit",
+    "ingredients": [
+      "surv_equipment_051",
+      "sewing_kit"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5140,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_equipment_051": "consume",
+      "sewing_kit": "keep"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_052",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_052",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "보강한 두꺼운 후드집업 / 반짇고리 조합으로 보강한 기모 작업복 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_070__fleece_blanket",
+    "ingredients": [
+      "surv_equipment_070",
+      "fleece_blanket"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5141,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_equipment_070": "consume",
+      "fleece_blanket": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_053",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_053",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "방한 방수 외피 / 플리스 담요 조합으로 보강한 방한 파카 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_008__rubber_band",
+    "ingredients": [
+      "surv_equipment_008",
+      "rubber_band"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5142,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_equipment_008": "consume",
+      "rubber_band": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_055",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_055",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "낡은 방한 바라클라바 / 고무줄 조합으로 보강한 귀덮개 모자 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_024__steel_wire",
+    "ingredients": [
+      "surv_equipment_024",
+      "steel_wire"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5143,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_equipment_024": "consume",
+      "steel_wire": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_056",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_056",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "마른 방한 바라클라바 / 철사 조합으로 보강한 방한 바라클라바 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_073__towel",
+    "ingredients": [
+      "surv_equipment_073",
+      "towel"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5144,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_equipment_073": "consume",
+      "towel": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_057",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_057",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "방한 넓은 목도리 / 수건 조합으로 보강한 넓은 목도리 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_010__old_blanket",
+    "ingredients": [
+      "surv_equipment_010",
+      "old_blanket"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5145,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_equipment_010": "consume",
+      "old_blanket": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_058",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_058",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "낡은 방진 마스크 / 낡은 담요 조합으로 보강한 방진 마스크 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_027__medical_tape",
+    "ingredients": [
+      "surv_equipment_027",
+      "medical_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5146,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_equipment_027": "consume",
+      "medical_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_059",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_059",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "마른 방수 장갑 / 의료용 테이프 조합으로 보강한 방수 장갑 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_076__packing_tape",
+    "ingredients": [
+      "surv_equipment_076",
+      "packing_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5147,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_equipment_076": "consume",
+      "packing_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_060",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_060",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "방한 얇은 장갑 안감 / 포장 테이프 조합으로 보강한 얇은 장갑 안감 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_029__medical_tape",
+    "ingredients": [
+      "surv_equipment_029",
+      "medical_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5148,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_equipment_029": "consume",
+      "medical_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_061",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_061",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "마른 방한 부츠 / 의료용 테이프 조합으로 보강한 방한 부츠 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_078__old_cloth_rag",
+    "ingredients": [
+      "surv_equipment_078",
+      "old_cloth_rag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5149,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_equipment_078": "consume",
+      "old_cloth_rag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_062",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_062",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "방한 두꺼운 양말 / 헌 헝겊 조합으로 보강한 두꺼운 양말 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_014__rubber_band",
+    "ingredients": [
+      "surv_container_014",
+      "rubber_band"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5150,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_container_014": "consume",
+      "rubber_band": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_063",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_063",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 작은 공구함 / 고무줄 조합으로 보강한 공구 벨트 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_016__steel_wire",
+    "ingredients": [
+      "surv_container_016",
+      "steel_wire"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5151,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_container_016": "consume",
+      "steel_wire": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_064",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_064",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "얇은 플라스틱 통 / 철사 조합으로 보강한 가슴 파우치 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_008__towel",
+    "ingredients": [
+      "surv_container_008",
+      "towel"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5152,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_container_008": "consume",
+      "towel": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_065",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_065",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "손잡이 달린 방수 파우치 / 수건 조합으로 방한 등산 배낭 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_010__old_blanket",
+    "ingredients": [
+      "surv_container_010",
+      "old_blanket"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5153,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_container_010": "consume",
+      "old_blanket": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_066",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_066",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "현장용 방수 파우치 / 낡은 담요 조합으로 방한 허리 지지 배낭 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_020__steel_wire",
+    "ingredients": [
+      "surv_equipment_020",
+      "steel_wire"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5154,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_equipment_020": "consume",
+      "steel_wire": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_067",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_067",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "마른 기모 작업복 / 철사 조합으로 방한 두꺼운 후드집업 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_036__towel",
+    "ingredients": [
+      "surv_equipment_036",
+      "towel"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5155,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_equipment_036": "consume",
+      "towel": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_068",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_068",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 기모 작업복 / 수건 조합으로 방한 기모 작업복 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_054__old_blanket",
+    "ingredients": [
+      "surv_equipment_054",
+      "old_blanket"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5156,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_equipment_054": "consume",
+      "old_blanket": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_069",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_069",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "보강한 방수 외피 / 낡은 담요 조합으로 방한 방한 파카 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_007__packing_tape",
+    "ingredients": [
+      "surv_equipment_007",
+      "packing_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5157,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_equipment_007": "consume",
+      "packing_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_071",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_071",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "낡은 귀덮개 모자 / 포장 테이프 조합으로 방한 귀덮개 모자 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_009__old_cloth_rag",
+    "ingredients": [
+      "surv_equipment_009",
+      "old_cloth_rag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5158,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_equipment_009": "consume",
+      "old_cloth_rag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_073",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_073",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "낡은 넓은 목도리 / 헌 헝겊 조합으로 방한 넓은 목도리 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_042__sewing_kit",
+    "ingredients": [
+      "surv_equipment_042",
+      "sewing_kit"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5159,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_equipment_042": "consume",
+      "sewing_kit": "keep"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_074",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_074",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 방진 마스크 / 반짇고리 조합으로 방한 방진 마스크 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_027__fleece_blanket",
+    "ingredients": [
+      "surv_equipment_027",
+      "fleece_blanket"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5160,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_equipment_027": "consume",
+      "fleece_blanket": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_075",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_075",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "마른 방수 장갑 / 플리스 담요 조합으로 방한 방수 장갑 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_060__duct_tape",
+    "ingredients": [
+      "surv_equipment_060",
+      "duct_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5161,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_equipment_060": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_076",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_076",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "보강한 얇은 장갑 안감 / 덕트테이프 조합으로 방한 얇은 장갑 안감 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_029__rubber_band",
+    "ingredients": [
+      "surv_equipment_029",
+      "rubber_band"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5162,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_equipment_029": "consume",
+      "rubber_band": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_077",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_077",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "마른 방한 부츠 / 고무줄 조합으로 방한 방한 부츠 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_062__steel_wire",
+    "ingredients": [
+      "surv_equipment_062",
+      "steel_wire"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5163,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_equipment_062": "consume",
+      "steel_wire": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_078",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_078",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "보강한 두꺼운 양말 / 철사 조합으로 방한 두꺼운 양말 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_007__packing_tape",
+    "ingredients": [
+      "surv_container_007",
+      "packing_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5164,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_container_007": "consume",
+      "packing_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_079",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_079",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 방수 파우치 / 포장 테이프 조합으로 방한 공구 벨트 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_009__medical_tape",
+    "ingredients": [
+      "surv_container_009",
+      "medical_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 5165,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_container_009": "consume",
+      "medical_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_equipment_080",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_equipment_080",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 방수 파우치 / 의료용 테이프 조합으로 방한 가슴 파우치 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_011__medical_tape",
+    "ingredients": [
+      "surv_medical_011",
+      "medical_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5166,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_medical_011": "consume",
+      "medical_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_001",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_001",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "소형 압박 붕대 / 의료용 테이프 조합으로 소형 멸균 패드 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_013__sterile_gauze_roll",
+    "ingredients": [
+      "surv_medical_013",
+      "sterile_gauze_roll"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5167,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_medical_013": "consume",
+      "sterile_gauze_roll": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_002",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_002",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "응급 압박 붕대 / 멸균 거즈 롤 조합으로 밀봉 멸균 패드 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_015__bandage",
+    "ingredients": [
+      "surv_medical_015",
+      "bandage"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5168,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_medical_015": "consume",
+      "bandage": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_003",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_003",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "여행용 압박 붕대 / 붕대 조합으로 응급 멸균 패드 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_017__rubbing_alcohol",
+    "ingredients": [
+      "surv_medical_017",
+      "rubbing_alcohol"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5169,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_medical_017": "consume",
+      "rubbing_alcohol": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_004",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_004",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 화상 젤 / 소독용 알코올 조합으로 약국용 멸균 패드 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_019__alcohol_swab",
+    "ingredients": [
+      "surv_medical_019",
+      "alcohol_swab"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5170,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_medical_019": "consume",
+      "alcohol_swab": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_005",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_005",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "약국용 화상 젤 / 알코올솜 조합으로 여행용 멸균 패드 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_021__medical_tape",
+    "ingredients": [
+      "surv_medical_021",
+      "medical_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5171,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_medical_021": "consume",
+      "medical_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_006",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_006",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "소형 감기약 파우치 / 의료용 테이프 조합으로 소형 상처 세척액 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_023__sterile_gauze_roll",
+    "ingredients": [
+      "surv_medical_023",
+      "sterile_gauze_roll"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5172,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_medical_023": "consume",
+      "sterile_gauze_roll": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_007",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_007",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "응급 감기약 파우치 / 멸균 거즈 롤 조합으로 밀봉 상처 세척액 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_025__bandage",
+    "ingredients": [
+      "surv_medical_025",
+      "bandage"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5173,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_medical_025": "consume",
+      "bandage": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_008",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_008",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "여행용 감기약 파우치 / 붕대 조합으로 응급 상처 세척액 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_027__rubbing_alcohol",
+    "ingredients": [
+      "surv_medical_027",
+      "rubbing_alcohol"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5174,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_medical_027": "consume",
+      "rubbing_alcohol": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_009",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_009",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 해열제 카드 / 소독용 알코올 조합으로 약국용 상처 세척액 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_029__alcohol_swab",
+    "ingredients": [
+      "surv_medical_029",
+      "alcohol_swab"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5175,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_medical_029": "consume",
+      "alcohol_swab": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_010",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_010",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "약국용 해열제 카드 / 알코올솜 조합으로 여행용 상처 세척액 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_031__medical_tape",
+    "ingredients": [
+      "surv_medical_031",
+      "medical_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5176,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_medical_031": "consume",
+      "medical_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_011",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_011",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "소형 위장약 팩 / 의료용 테이프 조합으로 소형 압박 붕대 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_033__sterile_gauze_roll",
+    "ingredients": [
+      "surv_medical_033",
+      "sterile_gauze_roll"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5177,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_medical_033": "consume",
+      "sterile_gauze_roll": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_012",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_012",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "응급 위장약 팩 / 멸균 거즈 롤 조합으로 밀봉 압박 붕대 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_035__bandage",
+    "ingredients": [
+      "surv_medical_035",
+      "bandage"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5178,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_medical_035": "consume",
+      "bandage": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_013",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_013",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "여행용 위장약 팩 / 붕대 조합으로 응급 압박 붕대 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_037__rubbing_alcohol",
+    "ingredients": [
+      "surv_medical_037",
+      "rubbing_alcohol"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5179,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_medical_037": "consume",
+      "rubbing_alcohol": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_014",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_014",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 전해질 정제 / 소독용 알코올 조합으로 약국용 압박 붕대 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_039__alcohol_swab",
+    "ingredients": [
+      "surv_medical_039",
+      "alcohol_swab"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5180,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_medical_039": "consume",
+      "alcohol_swab": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_015",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_015",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "약국용 전해질 정제 / 알코올솜 조합으로 여행용 압박 붕대 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_041__medical_tape",
+    "ingredients": [
+      "surv_medical_041",
+      "medical_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5181,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_medical_041": "consume",
+      "medical_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_016",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_016",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "소형 소독 티슈 / 의료용 테이프 조합으로 소형 화상 젤 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_043__sterile_gauze_roll",
+    "ingredients": [
+      "surv_medical_043",
+      "sterile_gauze_roll"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5182,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_medical_043": "consume",
+      "sterile_gauze_roll": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_017",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_017",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "응급 소독 티슈 / 멸균 거즈 롤 조합으로 밀봉 화상 젤 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_045__bandage",
+    "ingredients": [
+      "surv_medical_045",
+      "bandage"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5183,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_medical_045": "consume",
+      "bandage": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_018",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_018",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "여행용 소독 티슈 / 붕대 조합으로 응급 화상 젤 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_002__rubbing_alcohol",
+    "ingredients": [
+      "surv_medical_002",
+      "rubbing_alcohol"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5184,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_medical_002": "consume",
+      "rubbing_alcohol": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_019",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_019",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 멸균 패드 / 소독용 알코올 조합으로 약국용 화상 젤 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_004__alcohol_swab",
+    "ingredients": [
+      "surv_medical_004",
+      "alcohol_swab"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5185,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_medical_004": "consume",
+      "alcohol_swab": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_020",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_020",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "약국용 멸균 패드 / 알코올솜 조합으로 여행용 화상 젤 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_006__medical_tape",
+    "ingredients": [
+      "surv_medical_006",
+      "medical_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5186,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_medical_006": "consume",
+      "medical_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_021",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_021",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "소형 상처 세척액 / 의료용 테이프 조합으로 소형 감기약 파우치 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_008__sterile_gauze_roll",
+    "ingredients": [
+      "surv_medical_008",
+      "sterile_gauze_roll"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5187,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_medical_008": "consume",
+      "sterile_gauze_roll": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_022",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_022",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "응급 상처 세척액 / 멸균 거즈 롤 조합으로 밀봉 감기약 파우치 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_010__bandage",
+    "ingredients": [
+      "surv_medical_010",
+      "bandage"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5188,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_medical_010": "consume",
+      "bandage": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_023",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_023",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "여행용 상처 세척액 / 붕대 조합으로 응급 감기약 파우치 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_012__rubbing_alcohol",
+    "ingredients": [
+      "surv_medical_012",
+      "rubbing_alcohol"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5189,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_medical_012": "consume",
+      "rubbing_alcohol": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_024",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_024",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 압박 붕대 / 소독용 알코올 조합으로 약국용 감기약 파우치 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_014__alcohol_swab",
+    "ingredients": [
+      "surv_medical_014",
+      "alcohol_swab"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5190,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_medical_014": "consume",
+      "alcohol_swab": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_025",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_025",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "약국용 압박 붕대 / 알코올솜 조합으로 여행용 감기약 파우치 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_016__medical_tape",
+    "ingredients": [
+      "surv_medical_016",
+      "medical_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5191,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_medical_016": "consume",
+      "medical_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_026",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_026",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "소형 화상 젤 / 의료용 테이프 조합으로 소형 해열제 카드 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_018__sterile_gauze_roll",
+    "ingredients": [
+      "surv_medical_018",
+      "sterile_gauze_roll"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5192,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_medical_018": "consume",
+      "sterile_gauze_roll": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_027",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_027",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "응급 화상 젤 / 멸균 거즈 롤 조합으로 밀봉 해열제 카드 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_020__bandage",
+    "ingredients": [
+      "surv_medical_020",
+      "bandage"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5193,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_medical_020": "consume",
+      "bandage": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_028",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_028",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "여행용 화상 젤 / 붕대 조합으로 응급 해열제 카드 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_022__rubbing_alcohol",
+    "ingredients": [
+      "surv_medical_022",
+      "rubbing_alcohol"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5194,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_medical_022": "consume",
+      "rubbing_alcohol": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_029",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_029",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 감기약 파우치 / 소독용 알코올 조합으로 약국용 해열제 카드 형태를 만들었다."
+  },
+  {
+    "id": "surv_medical_024__alcohol_swab",
+    "ingredients": [
+      "surv_medical_024",
+      "alcohol_swab"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 5195,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_medical_024": "consume",
+      "alcohol_swab": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_medical_030",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_medical_030",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "약국용 감기약 파우치 / 알코올솜 조합으로 여행용 해열제 카드 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_039__soy_sauce_bottle",
+    "ingredients": [
+      "surv_food_039",
+      "soy_sauce_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5196,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_food_039": "consume",
+      "soy_sauce_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_001",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_001",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "찌그러진 레토르트 카레 / 간장병 조합으로 밀봉 곡물바 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_041__bottled_water",
+    "ingredients": [
+      "surv_food_041",
+      "bottled_water"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5197,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_food_041": "consume",
+      "bottled_water": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_002",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_002",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 통조림 햄 / 생수 조합으로 고열량 곡물바 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_043__instant_soup_powder",
+    "ingredients": [
+      "surv_food_043",
+      "instant_soup_powder"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5198,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_food_043": "consume",
+      "instant_soup_powder": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_003",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_003",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "작은 통조림 햄 / 즉석 수프 가루 조합으로 작은 곡물바 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_045__soy_sauce_bottle",
+    "ingredients": [
+      "surv_food_045",
+      "soy_sauce_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5199,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_food_045": "consume",
+      "soy_sauce_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_004",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_004",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "오래된 통조림 햄 / 간장병 조합으로 찌그러진 곡물바 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_047__bottled_water",
+    "ingredients": [
+      "surv_food_047",
+      "bottled_water"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5200,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_food_047": "consume",
+      "bottled_water": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_005",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_005",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "고열량 참깨 라면스프 / 생수 조합으로 오래된 곡물바 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_049__instant_soup_powder",
+    "ingredients": [
+      "surv_food_049",
+      "instant_soup_powder"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5201,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_food_049": "consume",
+      "instant_soup_powder": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_006",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_006",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "찌그러진 참깨 라면스프 / 즉석 수프 가루 조합으로 밀봉 비상 비스킷 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_051__soy_sauce_bottle",
+    "ingredients": [
+      "surv_food_051",
+      "soy_sauce_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5202,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_food_051": "consume",
+      "soy_sauce_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_007",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_007",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 미숫가루 팩 / 간장병 조합으로 고열량 비상 비스킷 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_053__bottled_water",
+    "ingredients": [
+      "surv_food_053",
+      "bottled_water"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5203,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_food_053": "consume",
+      "bottled_water": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_008",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_008",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "작은 미숫가루 팩 / 생수 조합으로 작은 비상 비스킷 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_055__instant_soup_powder",
+    "ingredients": [
+      "surv_food_055",
+      "instant_soup_powder"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5204,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_food_055": "consume",
+      "instant_soup_powder": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_009",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_009",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "오래된 미숫가루 팩 / 즉석 수프 가루 조합으로 찌그러진 비상 비스킷 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_057__soy_sauce_bottle",
+    "ingredients": [
+      "surv_food_057",
+      "soy_sauce_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5205,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_food_057": "consume",
+      "soy_sauce_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_010",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_010",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "고열량 건조 과일 / 간장병 조합으로 오래된 비상 비스킷 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_059__bottled_water",
+    "ingredients": [
+      "surv_food_059",
+      "bottled_water"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5206,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_food_059": "consume",
+      "bottled_water": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_011",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_011",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "찌그러진 건조 과일 / 생수 조합으로 밀봉 단백질 젤 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_061__instant_soup_powder",
+    "ingredients": [
+      "surv_food_061",
+      "instant_soup_powder"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5207,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_food_061": "consume",
+      "instant_soup_powder": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_012",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_012",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 즉석 누룽지 / 즉석 수프 가루 조합으로 고열량 단백질 젤 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_063__soy_sauce_bottle",
+    "ingredients": [
+      "surv_food_063",
+      "soy_sauce_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5208,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_food_063": "consume",
+      "soy_sauce_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_013",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_013",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "작은 즉석 누룽지 / 간장병 조합으로 작은 단백질 젤 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_065__bottled_water",
+    "ingredients": [
+      "surv_food_065",
+      "bottled_water"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5209,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_food_065": "consume",
+      "bottled_water": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_014",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_014",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "오래된 즉석 누룽지 / 생수 조합으로 찌그러진 단백질 젤 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_002__instant_soup_powder",
+    "ingredients": [
+      "surv_food_002",
+      "instant_soup_powder"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5210,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_food_002": "consume",
+      "instant_soup_powder": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_015",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_015",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "고열량 곡물바 / 즉석 수프 가루 조합으로 오래된 단백질 젤 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_004__soy_sauce_bottle",
+    "ingredients": [
+      "surv_food_004",
+      "soy_sauce_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5211,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_food_004": "consume",
+      "soy_sauce_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_016",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_016",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "찌그러진 곡물바 / 간장병 조합으로 밀봉 육포 봉지 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_006__bottled_water",
+    "ingredients": [
+      "surv_food_006",
+      "bottled_water"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5212,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_food_006": "consume",
+      "bottled_water": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_017",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_017",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 비상 비스킷 / 생수 조합으로 고열량 육포 봉지 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_008__instant_soup_powder",
+    "ingredients": [
+      "surv_food_008",
+      "instant_soup_powder"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5213,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_food_008": "consume",
+      "instant_soup_powder": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_018",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_018",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "작은 비상 비스킷 / 즉석 수프 가루 조합으로 작은 육포 봉지 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_010__soy_sauce_bottle",
+    "ingredients": [
+      "surv_food_010",
+      "soy_sauce_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5214,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_food_010": "consume",
+      "soy_sauce_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_019",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_019",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "오래된 비상 비스킷 / 간장병 조합으로 찌그러진 육포 봉지 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_012__bottled_water",
+    "ingredients": [
+      "surv_food_012",
+      "bottled_water"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5215,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_food_012": "consume",
+      "bottled_water": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_020",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_020",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "고열량 단백질 젤 / 생수 조합으로 오래된 육포 봉지 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_014__instant_soup_powder",
+    "ingredients": [
+      "surv_food_014",
+      "instant_soup_powder"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5216,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_food_014": "consume",
+      "instant_soup_powder": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_021",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_021",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "찌그러진 단백질 젤 / 즉석 수프 가루 조합으로 밀봉 견과 믹스 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_016__soy_sauce_bottle",
+    "ingredients": [
+      "surv_food_016",
+      "soy_sauce_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5217,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_food_016": "consume",
+      "soy_sauce_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_022",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_022",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 육포 봉지 / 간장병 조합으로 고열량 견과 믹스 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_018__bottled_water",
+    "ingredients": [
+      "surv_food_018",
+      "bottled_water"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5218,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_food_018": "consume",
+      "bottled_water": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_023",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_023",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "작은 육포 봉지 / 생수 조합으로 작은 견과 믹스 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_020__instant_soup_powder",
+    "ingredients": [
+      "surv_food_020",
+      "instant_soup_powder"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5219,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_food_020": "consume",
+      "instant_soup_powder": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_024",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_024",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "오래된 육포 봉지 / 즉석 수프 가루 조합으로 찌그러진 견과 믹스 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_022__soy_sauce_bottle",
+    "ingredients": [
+      "surv_food_022",
+      "soy_sauce_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5220,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_food_022": "consume",
+      "soy_sauce_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_025",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_025",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "고열량 견과 믹스 / 간장병 조합으로 오래된 견과 믹스 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_024__bottled_water",
+    "ingredients": [
+      "surv_food_024",
+      "bottled_water"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5221,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_food_024": "consume",
+      "bottled_water": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_026",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_026",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "찌그러진 견과 믹스 / 생수 조합으로 밀봉 동결건조 죽 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_026__instant_soup_powder",
+    "ingredients": [
+      "surv_food_026",
+      "instant_soup_powder"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5222,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_food_026": "consume",
+      "instant_soup_powder": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_027",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_027",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 동결건조 죽 / 즉석 수프 가루 조합으로 고열량 동결건조 죽 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_029__soy_sauce_bottle",
+    "ingredients": [
+      "surv_food_029",
+      "soy_sauce_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5223,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_food_029": "consume",
+      "soy_sauce_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_028",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_028",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "찌그러진 동결건조 죽 / 간장병 조합으로 작은 동결건조 죽 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_031__bottled_water",
+    "ingredients": [
+      "surv_food_031",
+      "bottled_water"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5224,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_food_031": "consume",
+      "bottled_water": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_029",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_029",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 오트밀 컵 / 생수 조합으로 찌그러진 동결건조 죽 형태를 만들었다."
+  },
+  {
+    "id": "surv_food_033__instant_soup_powder",
+    "ingredients": [
+      "surv_food_033",
+      "instant_soup_powder"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 5225,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_food_033": "consume",
+      "instant_soup_powder": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_food_030",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_food_030",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "작은 오트밀 컵 / 즉석 수프 가루 조합으로 오래된 동결건조 죽 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_037__rubber_band",
+    "ingredients": [
+      "surv_equipment_037",
+      "rubber_band"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5226,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_equipment_037": "consume",
+      "rubber_band": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_001",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_001",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 방한 파카 / 고무줄 조합으로 조립한 방풍 목가리개 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_041__paper_bag",
+    "ingredients": [
+      "surv_equipment_041",
+      "paper_bag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5227,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_equipment_041": "consume",
+      "paper_bag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_003",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_003",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 넓은 목도리 / 종이봉투 조합으로 말아 묶은 방풍 목가리개 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_043__empty_pet_bottle",
+    "ingredients": [
+      "surv_equipment_043",
+      "empty_pet_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5228,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_equipment_043": "consume",
+      "empty_pet_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_004",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_004",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 방수 장갑 / 빈 페트병 조합으로 밀봉한 방풍 목가리개 형태를 만들었다."
+  },
+  {
+    "id": "surv_equipment_045__duct_tape",
+    "ingredients": [
+      "surv_equipment_045",
+      "duct_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5229,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_equipment_045": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_005",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_005",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 방한 부츠 / 덕트테이프 조합으로 응급 방풍 목가리개 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_022__bottled_water",
+    "ingredients": [
+      "surv_container_022",
+      "bottled_water"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5230,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_container_022": "consume",
+      "bottled_water": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_016",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_016",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 압축 주머니 / 생수 조합으로 조립한 휴대 식수 키트 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_024__paper_cup",
+    "ingredients": [
+      "surv_container_024",
+      "paper_cup"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5231,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_container_024": "consume",
+      "paper_cup": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_017",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_017",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 압축 주머니 / 종이컵 조합으로 보강한 휴대 식수 키트 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_026__cling_wrap_roll",
+    "ingredients": [
+      "surv_container_026",
+      "cling_wrap_roll"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5232,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_container_026": "consume",
+      "cling_wrap_roll": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_018",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_018",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "얇은 보냉 가방 / 랩 조합으로 말아 묶은 휴대 식수 키트 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_028__zip_bag",
+    "ingredients": [
+      "surv_container_028",
+      "zip_bag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5233,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_container_028": "consume",
+      "zip_bag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_019",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_019",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "손잡이 달린 보냉 가방 / 지퍼백 조합으로 밀봉한 휴대 식수 키트 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_030__hot_water_bottle",
+    "ingredients": [
+      "surv_container_030",
+      "hot_water_bottle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5234,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_container_030": "consume",
+      "hot_water_bottle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_020",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_020",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "현장용 보냉 가방 / 온수병 조합으로 응급 휴대 식수 키트 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_007__sealant_tube",
+    "ingredients": [
+      "surv_container_007",
+      "sealant_tube"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5235,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "surv_container_007": "consume",
+      "sealant_tube": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_021",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_021",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "튼튼한 방수 파우치 / 실링제 튜브 조합으로 조립한 소형 수리 키트 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_009__duct_tape",
+    "ingredients": [
+      "surv_container_009",
+      "duct_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5236,
+    "required_tags": [],
+    "minutes": 11,
+    "ingredient_rules": {
+      "surv_container_009": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_022",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_022",
+    "indoor_minutes": 11,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "밀봉 방수 파우치 / 덕트테이프 조합으로 보강한 소형 수리 키트 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_011__rubber_band",
+    "ingredients": [
+      "surv_container_011",
+      "rubber_band"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5237,
+    "required_tags": [],
+    "minutes": 14,
+    "ingredient_rules": {
+      "surv_container_011": "consume",
+      "rubber_band": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_023",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_023",
+    "indoor_minutes": 14,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "얇은 작은 공구함 / 고무줄 조합으로 말아 묶은 소형 수리 키트 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_013__steel_wire",
+    "ingredients": [
+      "surv_container_013",
+      "steel_wire"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5238,
+    "required_tags": [],
+    "minutes": 17,
+    "ingredient_rules": {
+      "surv_container_013": "consume",
+      "steel_wire": "consume"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_024",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_024",
+    "indoor_minutes": 17,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "손잡이 달린 작은 공구함 / 철사 조합으로 밀봉한 소형 수리 키트 형태를 만들었다."
+  },
+  {
+    "id": "surv_container_015__screwdriver",
+    "ingredients": [
+      "surv_container_015",
+      "screwdriver"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 5239,
+    "required_tags": [],
+    "minutes": 20,
+    "ingredient_rules": {
+      "surv_container_015": "consume",
+      "screwdriver": "keep"
+    },
+    "result_items": [
+      {
+        "id": "surv_crafted_025",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "surv_crafted_025",
+    "indoor_minutes": 20,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "현장용 작은 공구함 / 작은 드라이버 조합으로 응급 소형 수리 키트 형태를 만들었다."
+  }
+]

@@ -7,6 +7,19 @@ var outdoor_world_layout: Dictionary = {}
 var outdoor_blocks: Dictionary = {}
 var items: Dictionary = {}
 var crafting_combinations: Dictionary = {}
+var loot_profiles: Dictionary = {}
+
+const ITEM_DATA_PATHS := [
+	"res://data/items.json",
+	"res://data/items_survival_expansion.json",
+]
+const CRAFTING_COMBINATION_DATA_PATHS := [
+	"res://data/crafting_combinations.json",
+	"res://data/crafting_combinations_survival_expansion.json",
+]
+const LOOT_PROFILE_DATA_PATHS := [
+	"res://data/loot_profiles_survival_expansion.json",
+]
 
 
 func _ready() -> void:
@@ -19,8 +32,9 @@ func load_all() -> void:
 	outdoor_world_layout = _load_dictionary("res://data/outdoor/world_layout.json")
 	outdoor_blocks = _load_outdoor_blocks("res://data/outdoor/blocks")
 	buildings = _load_buildings("res://data/buildings.json")
-	items = _load_items("res://data/items.json")
-	crafting_combinations = _load_crafting_combinations("res://data/crafting_combinations.json")
+	items = _load_items_from_paths(ITEM_DATA_PATHS)
+	crafting_combinations = _load_crafting_combinations_from_paths(CRAFTING_COMBINATION_DATA_PATHS)
+	loot_profiles = _load_loot_profiles_from_paths(LOOT_PROFILE_DATA_PATHS)
 
 
 func get_job(job_id: String) -> Dictionary:
@@ -57,6 +71,33 @@ func get_outdoor_block(block_coord: Vector2i) -> Dictionary:
 
 func get_item(item_id: String) -> Dictionary:
 	return items.get(item_id, {})
+
+
+func get_loot_profile_entries(site_id: String) -> Array[Dictionary]:
+	var rows: Array[Dictionary] = []
+	if site_id.is_empty():
+		return rows
+
+	_append_loot_profile_rows(rows, loot_profiles.get("global", []))
+
+	var building := get_building(site_id)
+	var category := String(building.get("category", ""))
+	var category_profiles_variant: Variant = loot_profiles.get("building_categories", {})
+	if typeof(category_profiles_variant) == TYPE_DICTIONARY and not category.is_empty():
+		_append_loot_profile_rows(rows, (category_profiles_variant as Dictionary).get(category, []))
+
+	var site_tags_variant: Variant = building.get("site_tags", [])
+	var site_tag_profiles_variant: Variant = loot_profiles.get("site_tags", {})
+	if typeof(site_tags_variant) == TYPE_ARRAY and typeof(site_tag_profiles_variant) == TYPE_DICTIONARY:
+		var site_tag_profiles := site_tag_profiles_variant as Dictionary
+		for tag_variant in site_tags_variant:
+			_append_loot_profile_rows(rows, site_tag_profiles.get(String(tag_variant), []))
+
+	var building_profiles_variant: Variant = loot_profiles.get("building_ids", {})
+	if typeof(building_profiles_variant) == TYPE_DICTIONARY:
+		_append_loot_profile_rows(rows, (building_profiles_variant as Dictionary).get(site_id, []))
+
+	return _dedup_loot_profile_rows(rows)
 
 
 func get_crafting_combination(primary_item_id: String, secondary_item_id: String) -> Dictionary:
@@ -158,6 +199,22 @@ func _load_items(path: String) -> Dictionary:
 			continue
 		normalized_rows[row_id] = _normalize_item_row(row_variant as Dictionary)
 	return normalized_rows
+
+
+func _load_items_from_paths(paths: Array) -> Dictionary:
+	var merged: Dictionary = {}
+	for path_variant in paths:
+		var path := String(path_variant)
+		if path.is_empty() or not FileAccess.file_exists(path):
+			continue
+		var rows := _load_items(path)
+		for row_id_variant in rows.keys():
+			var row_id := String(row_id_variant)
+			if merged.has(row_id):
+				push_error("%s: duplicate item id '%s' already loaded from an earlier item file." % [path, row_id])
+				continue
+			merged[row_id] = rows[row_id]
+	return merged
 
 
 func _load_buildings(path: String) -> Dictionary:
@@ -346,6 +403,81 @@ func _load_crafting_combinations(path: String) -> Dictionary:
 		indexed_combinations[pair_key] = normalized_row
 
 	return indexed_combinations
+
+
+func _load_crafting_combinations_from_paths(paths: Array) -> Dictionary:
+	var merged: Dictionary = {}
+	for path_variant in paths:
+		var path := String(path_variant)
+		if path.is_empty() or not FileAccess.file_exists(path):
+			continue
+		var rows := _load_crafting_combinations(path)
+		for pair_key_variant in rows.keys():
+			var pair_key := String(pair_key_variant)
+			if merged.has(pair_key):
+				push_error("%s: duplicate crafting pair '%s' already loaded from an earlier crafting file." % [path, pair_key])
+				continue
+			merged[pair_key] = rows[pair_key]
+	return merged
+
+
+func _load_loot_profiles_from_paths(paths: Array) -> Dictionary:
+	var merged := {
+		"global": [],
+		"building_categories": {},
+		"site_tags": {},
+		"building_ids": {},
+	}
+	for path_variant in paths:
+		var path := String(path_variant)
+		if path.is_empty() or not FileAccess.file_exists(path):
+			continue
+		var row := _load_dictionary(path)
+		_append_loot_profile_rows(merged["global"], row.get("global", []))
+		_merge_loot_profile_section(merged["building_categories"], row.get("building_categories", {}))
+		_merge_loot_profile_section(merged["site_tags"], row.get("site_tags", {}))
+		_merge_loot_profile_section(merged["building_ids"], row.get("building_ids", {}))
+	return merged
+
+
+func _merge_loot_profile_section(target: Dictionary, source_variant: Variant) -> void:
+	if typeof(source_variant) != TYPE_DICTIONARY:
+		return
+	var source := source_variant as Dictionary
+	for key_variant in source.keys():
+		var key := String(key_variant)
+		if key.is_empty():
+			continue
+		if not target.has(key):
+			target[key] = []
+		_append_loot_profile_rows(target[key], source.get(key_variant, []))
+
+
+func _append_loot_profile_rows(target: Array, source_variant: Variant) -> void:
+	if typeof(source_variant) != TYPE_ARRAY:
+		return
+	for entry_variant in source_variant:
+		if typeof(entry_variant) != TYPE_DICTIONARY:
+			continue
+		var entry := (entry_variant as Dictionary).duplicate(true)
+		var item_id := String(entry.get("id", ""))
+		if item_id.is_empty() or get_item(item_id).is_empty():
+			continue
+		entry["id"] = item_id
+		entry["weight"] = maxf(0.0, float(entry.get("weight", 1.0)))
+		target.append(entry)
+
+
+func _dedup_loot_profile_rows(source_rows: Array[Dictionary]) -> Array[Dictionary]:
+	var rows: Array[Dictionary] = []
+	var seen := {}
+	for row in source_rows:
+		var item_id := String(row.get("id", ""))
+		if item_id.is_empty() or seen.has(item_id):
+			continue
+		seen[item_id] = true
+		rows.append(row.duplicate(true))
+	return rows
 
 
 func _default_item_tags(row: Dictionary) -> Array:

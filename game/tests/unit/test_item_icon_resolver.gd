@@ -28,6 +28,12 @@ func _run_test() -> void:
 	assert_eq(icon_32.get_width(), 32, "32px item icon variant should resolve the 32px cutout asset.")
 	assert_eq(icon_32.get_height(), 32, "32px item icon variant should keep the 32px cutout height.")
 
+	var generated_icon: Texture2D = resolver.get_item_icon("surv_equipment_001")
+	if not assert_true(generated_icon != null, "Generated survival expansion items should resolve a 24px cutout icon."):
+		return
+	assert_eq(generated_icon.get_width(), 24, "Generated survival item icon should resolve the 24px cutout asset.")
+	assert_eq(generated_icon.get_height(), 24, "Generated survival item icon should keep the 24px cutout height.")
+
 	var missing_icon: Texture2D = resolver.get_item_icon("missing_item_id")
 	assert_true(missing_icon == null, "Unknown item ids should still resolve to null.")
 

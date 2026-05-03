@@ -1154,6 +1154,7 @@ func _push_inventory_payload_into_sheet() -> void:
 	var payload := {
 		"title": _director.get_inventory_title() if _director.has_method("get_inventory_title") else "가방",
 		"status_text": _director.get_inventory_status_text() if _director.has_method("get_inventory_status_text") else "",
+		"equipped_rows": _director.get_equipped_rows() if _director.has_method("get_equipped_rows") else [],
 		"rows": _director.get_inventory_rows() if _director.has_method("get_inventory_rows") else [],
 		"selected_sheet": _director.get_selected_inventory_sheet() if _director.has_method("get_selected_inventory_sheet") else {"visible": false},
 		"feedback_message": _director.get_feedback_message() if _director.has_method("get_feedback_message") else "",

@@ -1,0 +1,5059 @@
+{
+  "global": [
+    {
+      "id": "surv_food_001",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_002",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_003",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_004",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_005",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_006",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_007",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_008",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_009",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_010",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_011",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_012",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_013",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_014",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_015",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_016",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_017",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_018",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_019",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_020",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_021",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_022",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_023",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_024",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_025",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_026",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_027",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_028",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_029",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_030",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_031",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_032",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_033",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_034",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_035",
+      "weight": 0.45
+    },
+    {
+      "id": "surv_food_036",
+      "weight": 0.45
+    }
+  ],
+  "building_categories": {
+    "retail": [
+      {
+        "id": "surv_food_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_036",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_037",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_042",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_043",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_044",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_045",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_046",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_047",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_048",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_049",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_050",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_051",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_052",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_053",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_054",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_055",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_056",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_057",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_058",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_059",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_060",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_061",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_062",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_063",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_064",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_065",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_025",
+        "weight": 1.0
+      }
+    ],
+    "residential": [
+      {
+        "id": "surv_food_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_036",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_037",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_042",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_043",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_044",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_045",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_046",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_047",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_048",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_049",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_050",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_051",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_052",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_053",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_054",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_055",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_056",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_057",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_058",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_059",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_060",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_061",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_062",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_063",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_064",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_065",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_019",
+        "weight": 1.0
+      }
+    ],
+    "medical": [
+      {
+        "id": "surv_drink_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_036",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_037",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_039",
+        "weight": 1.0
+      }
+    ],
+    "office": [
+      {
+        "id": "surv_tool_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_036",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_037",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_042",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_043",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_044",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_045",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_knowledge_001",
+        "weight": 0.45
+      },
+      {
+        "id": "surv_knowledge_002",
+        "weight": 0.45
+      },
+      {
+        "id": "surv_knowledge_003",
+        "weight": 0.45
+      },
+      {
+        "id": "surv_knowledge_004",
+        "weight": 0.45
+      },
+      {
+        "id": "surv_knowledge_005",
+        "weight": 0.45
+      },
+      {
+        "id": "surv_knowledge_006",
+        "weight": 0.45
+      },
+      {
+        "id": "surv_knowledge_007",
+        "weight": 0.45
+      }
+    ],
+    "food_service": [
+      {
+        "id": "surv_food_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_036",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_037",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_042",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_043",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_044",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_045",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_046",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_047",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_048",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_049",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_050",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_051",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_052",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_053",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_054",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_055",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_056",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_057",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_058",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_059",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_060",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_061",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_062",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_063",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_064",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_065",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_007",
+        "weight": 1.0
+      }
+    ],
+    "industrial": [
+      {
+        "id": "surv_tool_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_036",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_037",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_042",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_043",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_044",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_045",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_036",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_037",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_042",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_043",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_044",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_045",
+        "weight": 1.0
+      }
+    ],
+    "security": [
+      {
+        "id": "surv_tool_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_036",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_037",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_042",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_043",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_044",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_045",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_equipment_001",
+        "weight": 0.8
+      },
+      {
+        "id": "surv_equipment_002",
+        "weight": 0.8
+      },
+      {
+        "id": "surv_equipment_003",
+        "weight": 0.8
+      },
+      {
+        "id": "surv_equipment_004",
+        "weight": 0.8
+      },
+      {
+        "id": "surv_equipment_005",
+        "weight": 0.8
+      },
+      {
+        "id": "surv_equipment_006",
+        "weight": 0.8
+      },
+      {
+        "id": "surv_equipment_007",
+        "weight": 0.8
+      },
+      {
+        "id": "surv_equipment_008",
+        "weight": 0.8
+      },
+      {
+        "id": "surv_equipment_009",
+        "weight": 0.8
+      },
+      {
+        "id": "surv_equipment_010",
+        "weight": 0.8
+      },
+      {
+        "id": "surv_equipment_011",
+        "weight": 0.8
+      },
+      {
+        "id": "surv_equipment_012",
+        "weight": 0.8
+      },
+      {
+        "id": "surv_equipment_013",
+        "weight": 0.8
+      }
+    ]
+  },
+  "site_tags": {
+    "repair": [
+      {
+        "id": "surv_tool_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_036",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_037",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_042",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_043",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_044",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_045",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_005",
+        "weight": 1.0
+      }
+    ],
+    "living_goods": [],
+    "logistics": [],
+    "staff_only": [],
+    "materials": [
+      {
+        "id": "surv_tool_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_036",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_037",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_042",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_043",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_044",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_045",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_005",
+        "weight": 1.0
+      }
+    ],
+    "stockroom": [
+      {
+        "id": "surv_food_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_036",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_037",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_042",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_043",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_044",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_045",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_046",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_047",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_048",
+        "weight": 1.0
+      }
+    ]
+  },
+  "building_ids": {
+    "mart_01": [
+      {
+        "id": "surv_food_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_036",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_037",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_042",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_043",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_044",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_045",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_046",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_047",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_048",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_049",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_050",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_051",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_052",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_053",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_054",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_055",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_056",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_057",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_058",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_059",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_060",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_061",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_062",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_063",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_064",
+        "weight": 1.0
+      }
+    ],
+    "convenience_01": [
+      {
+        "id": "surv_food_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_036",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_037",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_042",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_043",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_044",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_045",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_046",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_047",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_048",
+        "weight": 1.0
+      }
+    ],
+    "pharmacy_01": [
+      {
+        "id": "surv_drink_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_029",
+        "weight": 1.0
+      }
+    ],
+    "clinic_01": [
+      {
+        "id": "surv_drink_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_medical_029",
+        "weight": 1.0
+      }
+    ],
+    "hardware_01": [
+      {
+        "id": "surv_tool_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_036",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_037",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_042",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_043",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_044",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_045",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_027",
+        "weight": 1.0
+      }
+    ],
+    "warehouse_01": [
+      {
+        "id": "surv_tool_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_036",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_037",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_042",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_043",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_044",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_045",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_utility_027",
+        "weight": 1.0
+      }
+    ],
+    "garage_01": [
+      {
+        "id": "surv_tool_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_036",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_037",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_042",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_tool_024",
+        "weight": 1.0
+      }
+    ],
+    "hostel_01": [
+      {
+        "id": "surv_food_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_036",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_037",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_042",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_043",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_044",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_045",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_046",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_047",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_048",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_049",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_050",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_051",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_052",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_053",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_054",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_055",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_056",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_057",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_058",
+        "weight": 1.0
+      }
+    ],
+    "apartment_01": [
+      {
+        "id": "surv_food_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_005",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_006",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_007",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_008",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_009",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_010",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_011",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_012",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_013",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_014",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_015",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_016",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_017",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_018",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_019",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_020",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_021",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_022",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_023",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_024",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_025",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_026",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_027",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_028",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_029",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_030",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_031",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_032",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_033",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_034",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_035",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_036",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_037",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_038",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_039",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_040",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_041",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_042",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_043",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_044",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_045",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_046",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_047",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_048",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_049",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_050",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_051",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_052",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_053",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_054",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_055",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_056",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_057",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_058",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_059",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_060",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_061",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_062",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_063",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_064",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_food_065",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_001",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_002",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_003",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_004",
+        "weight": 1.0
+      },
+      {
+        "id": "surv_drink_005",
+        "weight": 1.0
+      }
+    ]
+  }
+}

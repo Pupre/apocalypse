@@ -314,7 +314,7 @@ func get_equipped_rows() -> Array[Dictionary]:
 		}]
 		return empty_rows
 
-	var slot_order := ["back", "body", "neck", "face", "feet", "feet_layer", "hands", "hands_layer"]
+	var slot_order := ["back", "body", "outer", "head", "neck", "face", "feet", "feet_layer", "hands", "hands_layer", "waist", "pocket"]
 	var rows: Array[Dictionary] = []
 	for slot_id in slot_order:
 		var equipped_item: Dictionary = _run_state.equipped_items.get(slot_id, {})
@@ -1005,10 +1005,18 @@ func _slot_label(slot_id: String) -> String:
 			return "발"
 		"feet_layer":
 			return "양말"
+		"outer":
+			return "외투"
+		"head":
+			return "머리"
 		"hands":
 			return "손"
 		"hands_layer":
 			return "장갑 안감"
+		"waist":
+			return "허리"
+		"pocket":
+			return "주머니"
 		"neck":
 			return "목"
 		"face":
