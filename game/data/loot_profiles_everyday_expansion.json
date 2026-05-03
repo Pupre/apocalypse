@@ -1,0 +1,3576 @@
+{
+  "global": [
+    {
+      "id": "evd_hair_tie_pack",
+      "weight": 0.35
+    },
+    {
+      "id": "evd_clear_tape_small",
+      "weight": 0.35
+    },
+    {
+      "id": "evd_freezer_bag_box",
+      "weight": 0.35
+    },
+    {
+      "id": "evd_lip_balm_tube",
+      "weight": 0.3
+    },
+    {
+      "id": "evd_safety_pin_card",
+      "weight": 0.3
+    }
+  ],
+  "building_categories": {
+    "retail": [
+      {
+        "id": "evd_cling_film_roll",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_bag_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_paper_cup_stack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_coffee_filter_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_straw_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_aluminum_takeout_lid",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_takeout_chopsticks",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_soy_sauce_packets",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_salt_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sugar_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_peanut_butter_jar",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cereal_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_instant_oatmeal_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rice_bag_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pet_food_pouch",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baby_formula_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sports_drink_powder",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_canned_fruit_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_bread_clip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_twist_tie_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baking_soda_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_vinegar_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_kitchen_sponge",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dish_scrubber",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_microfiber_cloth",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_old_tshirt",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_shower_cap",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_hair_tie_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_shoelace_pair",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_clothespin_set",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_silicone_hot_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_laundry_mesh_bag",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dryer_sheet_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_candle_stub",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_empty_coffee_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_plastic_lid_round",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_binder_clip_large",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_paper_clip_chain",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_plastic_file_folder",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_lanyard",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_permanent_marker",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sticky_note_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_calendar_page",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_clear_tape_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_hand_wipes_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_lip_balm_tube",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_eye_drop_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_disposable_gloves_pair",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cotton_ball_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sanitary_pad_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dental_floss",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_toothbrush",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pill_organizer",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_usb_cable_short",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_usb_wall_charger",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dead_power_bank",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_led_keychain_light",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_broken_earbuds",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_phone_case",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_remote_control",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_small_speaker",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_screen_cleaning_cloth",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_family_photo_strip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_kids_sticker_sheet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_lottery_ticket",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_transit_card_empty",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pocket_mirror",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sewing_button_card",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_safety_pin_card",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_small_notebook",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_zipper_pull_tab",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cheap_rain_poncho",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_vacuum_storage_bag",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_foam_packaging",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_silica_gel_packets",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rubber_glove_single",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_makeup_sponge",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_umbrella_sleeve",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_measuring_spoon",
+        "weight": 0.9
+      }
+    ],
+    "residential": [
+      {
+        "id": "evd_cling_film_roll",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_bag_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_coffee_filter_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_aluminum_takeout_lid",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_salt_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_peanut_butter_jar",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cereal_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_instant_oatmeal_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rice_bag_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pet_food_pouch",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baby_formula_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sports_drink_powder",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_canned_fruit_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_bread_clip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_twist_tie_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baking_soda_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_vinegar_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_kitchen_sponge",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dish_scrubber",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_microfiber_cloth",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pillowcase",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_old_tshirt",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_shower_cap",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_hair_tie_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_shoelace_pair",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_wire_hanger",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_clothespin_set",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rubber_doorstop",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_silicone_hot_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_laundry_mesh_bag",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dryer_sheet_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_candle_stub",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_plastic_lid_round",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_binder_clip_large",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_permanent_marker",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pencil_stub",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_calendar_page",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_mouse_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_clear_tape_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_hand_wipes_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_lip_balm_tube",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cotton_ball_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sanitary_pad_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dental_floss",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_toothbrush",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pill_organizer",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_elastic_bandage_clip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_usb_cable_short",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_usb_wall_charger",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dead_power_bank",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_led_keychain_light",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_alarm_clock_battery",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_broken_earbuds",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_phone_case",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_remote_control",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_small_speaker",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_screen_cleaning_cloth",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_family_photo_strip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_kids_sticker_sheet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_lottery_ticket",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_transit_card_empty",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_glasses_case",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pocket_mirror",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sewing_button_card",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_safety_pin_card",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_small_notebook",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_zipper_pull_tab",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cheap_rain_poncho",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_vacuum_storage_bag",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_foam_packaging",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_silica_gel_packets",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rubber_glove_single",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_makeup_sponge",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_luggage_tag",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_umbrella_sleeve",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_measuring_spoon",
+        "weight": 0.9
+      }
+    ],
+    "office": [
+      {
+        "id": "evd_paper_cup_stack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_coffee_filter_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_straw_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_takeout_chopsticks",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sugar_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_twist_tie_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_microfiber_cloth",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_wire_hanger",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rubber_doorstop",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_candle_stub",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_empty_coffee_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_binder_clip_large",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_paper_clip_chain",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_plastic_file_folder",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_lanyard",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_permanent_marker",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pencil_stub",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sticky_note_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_calendar_page",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_mouse_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_clear_tape_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_eye_drop_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_usb_cable_short",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_usb_wall_charger",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dead_power_bank",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_led_keychain_light",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_alarm_clock_battery",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_broken_earbuds",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_phone_case",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_remote_control",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_small_speaker",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_screen_cleaning_cloth",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_family_photo_strip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_lottery_ticket",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_transit_card_empty",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_glasses_case",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_small_notebook",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_foam_packaging",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_luggage_tag",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_umbrella_sleeve",
+        "weight": 0.9
+      }
+    ],
+    "medical": [
+      {
+        "id": "evd_baby_formula_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sports_drink_powder",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pillowcase",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_shower_cap",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_hair_tie_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_wire_hanger",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rubber_doorstop",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_hand_wipes_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_lip_balm_tube",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_eye_drop_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_disposable_gloves_pair",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cotton_ball_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sanitary_pad_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dental_floss",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_toothbrush",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pill_organizer",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_elastic_bandage_clip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_glasses_case",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pocket_mirror",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_safety_pin_card",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_silica_gel_packets",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_makeup_sponge",
+        "weight": 0.9
+      }
+    ],
+    "food_service": [
+      {
+        "id": "evd_cling_film_roll",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_bag_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_paper_cup_stack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_coffee_filter_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_straw_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_aluminum_takeout_lid",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_takeout_chopsticks",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_soy_sauce_packets",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_salt_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sugar_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_peanut_butter_jar",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_instant_oatmeal_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rice_bag_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_canned_fruit_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_bread_clip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_twist_tie_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_vinegar_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_kitchen_sponge",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dish_scrubber",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_silicone_hot_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_empty_coffee_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_plastic_lid_round",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_disposable_gloves_pair",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rubber_glove_single",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_measuring_spoon",
+        "weight": 0.9
+      }
+    ],
+    "industrial": [
+      {
+        "id": "evd_mouse_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_usb_cable_short",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_foam_packaging",
+        "weight": 0.9
+      }
+    ],
+    "security": [
+      {
+        "id": "evd_shoelace_pair",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_lanyard",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cheap_rain_poncho",
+        "weight": 0.9
+      }
+    ]
+  },
+  "site_tags": {
+    "living_goods": [
+      {
+        "id": "evd_cling_film_roll",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_bag_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baking_soda_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_kitchen_sponge",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pillowcase",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_old_tshirt",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_clothespin_set",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_laundry_mesh_bag",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sewing_button_card",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_vacuum_storage_bag",
+        "weight": 0.9
+      }
+    ],
+    "stockroom": [
+      {
+        "id": "evd_cling_film_roll",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_bag_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_paper_cup_stack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_coffee_filter_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_straw_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_aluminum_takeout_lid",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_takeout_chopsticks",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_soy_sauce_packets",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_salt_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sugar_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_peanut_butter_jar",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cereal_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_instant_oatmeal_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rice_bag_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pet_food_pouch",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baby_formula_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sports_drink_powder",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_canned_fruit_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_bread_clip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_twist_tie_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baking_soda_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_vinegar_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_kitchen_sponge",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dish_scrubber",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_microfiber_cloth",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_old_tshirt",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_shower_cap",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_hair_tie_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_shoelace_pair",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_clothespin_set",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_silicone_hot_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_laundry_mesh_bag",
+        "weight": 0.9
+      }
+    ],
+    "staff_only": [
+      {
+        "id": "evd_paper_cup_stack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_coffee_filter_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_straw_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_takeout_chopsticks",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sugar_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_twist_tie_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_microfiber_cloth",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_wire_hanger",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rubber_doorstop",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_candle_stub",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_empty_coffee_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_binder_clip_large",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_paper_clip_chain",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_plastic_file_folder",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_lanyard",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_permanent_marker",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pencil_stub",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sticky_note_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_calendar_page",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_mouse_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_clear_tape_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_eye_drop_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_usb_cable_short",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_usb_wall_charger",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cling_film_roll",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_bag_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_paper_cup_stack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_coffee_filter_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_straw_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_aluminum_takeout_lid",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_takeout_chopsticks",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_soy_sauce_packets",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_salt_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sugar_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_peanut_butter_jar",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_instant_oatmeal_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rice_bag_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_canned_fruit_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_bread_clip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_twist_tie_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_vinegar_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_kitchen_sponge",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dish_scrubber",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_silicone_hot_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_empty_coffee_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_plastic_lid_round",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_disposable_gloves_pair",
+        "weight": 0.9
+      }
+    ],
+    "repair": [
+      {
+        "id": "evd_mouse_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_usb_cable_short",
+        "weight": 0.9
+      }
+    ],
+    "materials": [
+      {
+        "id": "evd_mouse_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_usb_cable_short",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_foam_packaging",
+        "weight": 0.9
+      }
+    ],
+    "logistics": [
+      {
+        "id": "evd_foam_packaging",
+        "weight": 0.9
+      }
+    ],
+    "living_trace": [
+      {
+        "id": "evd_cling_film_roll",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_bag_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_coffee_filter_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_aluminum_takeout_lid",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_salt_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_peanut_butter_jar",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cereal_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_instant_oatmeal_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rice_bag_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pet_food_pouch",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baby_formula_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sports_drink_powder",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_canned_fruit_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_bread_clip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_twist_tie_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baking_soda_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_vinegar_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_kitchen_sponge",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dish_scrubber",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_microfiber_cloth",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pillowcase",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_old_tshirt",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_shower_cap",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_hair_tie_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_shoelace_pair",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_wire_hanger",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_clothespin_set",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rubber_doorstop",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_silicone_hot_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_laundry_mesh_bag",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dryer_sheet_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_candle_stub",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_plastic_lid_round",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_binder_clip_large",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_permanent_marker",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pencil_stub",
+        "weight": 0.9
+      }
+    ]
+  },
+  "building_ids": {
+    "mart_01": [
+      {
+        "id": "evd_cling_film_roll",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_bag_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_paper_cup_stack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_coffee_filter_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_straw_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_aluminum_takeout_lid",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_takeout_chopsticks",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_soy_sauce_packets",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_salt_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sugar_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_peanut_butter_jar",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cereal_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_instant_oatmeal_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rice_bag_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pet_food_pouch",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baby_formula_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sports_drink_powder",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_canned_fruit_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_bread_clip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_twist_tie_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baking_soda_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_vinegar_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_kitchen_sponge",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dish_scrubber",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_microfiber_cloth",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_old_tshirt",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_shower_cap",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_hair_tie_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_shoelace_pair",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_clothespin_set",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_silicone_hot_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_laundry_mesh_bag",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dryer_sheet_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_candle_stub",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_empty_coffee_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_plastic_lid_round",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_binder_clip_large",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_paper_clip_chain",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_plastic_file_folder",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_lanyard",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_permanent_marker",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sticky_note_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_calendar_page",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_clear_tape_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_hand_wipes_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_lip_balm_tube",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_eye_drop_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_disposable_gloves_pair",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cotton_ball_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sanitary_pad_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dental_floss",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_toothbrush",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pill_organizer",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_usb_cable_short",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cling_film_roll",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_bag_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baking_soda_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_kitchen_sponge",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pillowcase",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_old_tshirt",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_clothespin_set",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_laundry_mesh_bag",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sewing_button_card",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_vacuum_storage_bag",
+        "weight": 0.9
+      }
+    ],
+    "convenience_01": [
+      {
+        "id": "evd_cling_film_roll",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_bag_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_paper_cup_stack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_coffee_filter_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_straw_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_aluminum_takeout_lid",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_takeout_chopsticks",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_soy_sauce_packets",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_salt_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sugar_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_peanut_butter_jar",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cereal_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_instant_oatmeal_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rice_bag_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pet_food_pouch",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baby_formula_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sports_drink_powder",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_canned_fruit_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_bread_clip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_twist_tie_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baking_soda_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_vinegar_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_kitchen_sponge",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dish_scrubber",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_microfiber_cloth",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_old_tshirt",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_shower_cap",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_hair_tie_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_shoelace_pair",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_clothespin_set",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_silicone_hot_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_laundry_mesh_bag",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dryer_sheet_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_candle_stub",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_empty_coffee_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_plastic_lid_round",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_binder_clip_large",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_paper_clip_chain",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_plastic_file_folder",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_lanyard",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_permanent_marker",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sticky_note_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_calendar_page",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_clear_tape_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cling_film_roll",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_bag_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_paper_cup_stack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_coffee_filter_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_straw_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_aluminum_takeout_lid",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_takeout_chopsticks",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_soy_sauce_packets",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_salt_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sugar_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_peanut_butter_jar",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_instant_oatmeal_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rice_bag_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_canned_fruit_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_bread_clip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_twist_tie_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_vinegar_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_kitchen_sponge",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dish_scrubber",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_silicone_hot_pad",
+        "weight": 0.9
+      }
+    ],
+    "apartment_01": [
+      {
+        "id": "evd_cling_film_roll",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_bag_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_coffee_filter_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_aluminum_takeout_lid",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_salt_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_peanut_butter_jar",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cereal_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_instant_oatmeal_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rice_bag_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pet_food_pouch",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baby_formula_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sports_drink_powder",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_canned_fruit_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_bread_clip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_twist_tie_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baking_soda_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_vinegar_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_kitchen_sponge",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dish_scrubber",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_microfiber_cloth",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pillowcase",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_old_tshirt",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_shower_cap",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_hair_tie_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_shoelace_pair",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_wire_hanger",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_clothespin_set",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rubber_doorstop",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_silicone_hot_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_laundry_mesh_bag",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dryer_sheet_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_candle_stub",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_plastic_lid_round",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_binder_clip_large",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_permanent_marker",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pencil_stub",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_calendar_page",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_mouse_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_clear_tape_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_hand_wipes_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_lip_balm_tube",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cotton_ball_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sanitary_pad_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dental_floss",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_toothbrush",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pill_organizer",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_elastic_bandage_clip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_usb_cable_short",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_usb_wall_charger",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dead_power_bank",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_led_keychain_light",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_alarm_clock_battery",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_broken_earbuds",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_phone_case",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_remote_control",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_small_speaker",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_screen_cleaning_cloth",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_family_photo_strip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_kids_sticker_sheet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_lottery_ticket",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_transit_card_empty",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_glasses_case",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pocket_mirror",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sewing_button_card",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_safety_pin_card",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_small_notebook",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_zipper_pull_tab",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cheap_rain_poncho",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_vacuum_storage_bag",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_foam_packaging",
+        "weight": 0.9
+      }
+    ],
+    "residence_01": [
+      {
+        "id": "evd_cling_film_roll",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_bag_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_coffee_filter_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_aluminum_takeout_lid",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_salt_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_peanut_butter_jar",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cereal_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_instant_oatmeal_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rice_bag_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pet_food_pouch",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baby_formula_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sports_drink_powder",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_canned_fruit_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_bread_clip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_twist_tie_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baking_soda_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_vinegar_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_kitchen_sponge",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dish_scrubber",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_microfiber_cloth",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pillowcase",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_old_tshirt",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_shower_cap",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_hair_tie_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_shoelace_pair",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_wire_hanger",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_clothespin_set",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rubber_doorstop",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_silicone_hot_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_laundry_mesh_bag",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dryer_sheet_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_candle_stub",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_plastic_lid_round",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_binder_clip_large",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_permanent_marker",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pencil_stub",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_calendar_page",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_mouse_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_clear_tape_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_hand_wipes_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_lip_balm_tube",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cotton_ball_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sanitary_pad_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dental_floss",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_toothbrush",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pill_organizer",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_elastic_bandage_clip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_usb_cable_short",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_usb_wall_charger",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dead_power_bank",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_led_keychain_light",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_alarm_clock_battery",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_broken_earbuds",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_phone_case",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_remote_control",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_small_speaker",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_screen_cleaning_cloth",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_family_photo_strip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_kids_sticker_sheet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_lottery_ticket",
+        "weight": 0.9
+      }
+    ],
+    "pharmacy_01": [
+      {
+        "id": "evd_baby_formula_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sports_drink_powder",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pillowcase",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_shower_cap",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_hair_tie_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_wire_hanger",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rubber_doorstop",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_hand_wipes_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_lip_balm_tube",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_eye_drop_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_disposable_gloves_pair",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cotton_ball_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sanitary_pad_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dental_floss",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_toothbrush",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pill_organizer",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_elastic_bandage_clip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_glasses_case",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pocket_mirror",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_safety_pin_card",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_silica_gel_packets",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_makeup_sponge",
+        "weight": 0.9
+      }
+    ],
+    "clinic_01": [
+      {
+        "id": "evd_baby_formula_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sports_drink_powder",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pillowcase",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_shower_cap",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_hair_tie_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_wire_hanger",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rubber_doorstop",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_hand_wipes_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_lip_balm_tube",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_eye_drop_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_disposable_gloves_pair",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cotton_ball_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sanitary_pad_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dental_floss",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_toothbrush",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pill_organizer",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_elastic_bandage_clip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_glasses_case",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pocket_mirror",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_safety_pin_card",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_silica_gel_packets",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_makeup_sponge",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_paper_cup_stack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_coffee_filter_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_straw_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_takeout_chopsticks",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sugar_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_twist_tie_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_microfiber_cloth",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_wire_hanger",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rubber_doorstop",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_candle_stub",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_empty_coffee_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_binder_clip_large",
+        "weight": 0.9
+      }
+    ],
+    "office_01": [
+      {
+        "id": "evd_paper_cup_stack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_coffee_filter_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_straw_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_takeout_chopsticks",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sugar_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_twist_tie_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_microfiber_cloth",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_wire_hanger",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rubber_doorstop",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_candle_stub",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_empty_coffee_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_binder_clip_large",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_paper_clip_chain",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_plastic_file_folder",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_lanyard",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_permanent_marker",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pencil_stub",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sticky_note_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_calendar_page",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_mouse_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_clear_tape_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_eye_drop_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_usb_cable_short",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_usb_wall_charger",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dead_power_bank",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_led_keychain_light",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_alarm_clock_battery",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_broken_earbuds",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_phone_case",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_remote_control",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_small_speaker",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_screen_cleaning_cloth",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_family_photo_strip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_lottery_ticket",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_transit_card_empty",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_glasses_case",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_small_notebook",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_foam_packaging",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_luggage_tag",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_umbrella_sleeve",
+        "weight": 0.9
+      }
+    ],
+    "cafe_01": [
+      {
+        "id": "evd_cling_film_roll",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_bag_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_paper_cup_stack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_coffee_filter_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_straw_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_aluminum_takeout_lid",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_takeout_chopsticks",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_soy_sauce_packets",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_salt_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sugar_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_peanut_butter_jar",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_instant_oatmeal_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rice_bag_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_canned_fruit_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_bread_clip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_twist_tie_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_vinegar_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_kitchen_sponge",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dish_scrubber",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_silicone_hot_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_empty_coffee_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_plastic_lid_round",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_disposable_gloves_pair",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rubber_glove_single",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_measuring_spoon",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_paper_cup_stack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_coffee_filter_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_straw_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_takeout_chopsticks",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sugar_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_twist_tie_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_microfiber_cloth",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_wire_hanger",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rubber_doorstop",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_candle_stub",
+        "weight": 0.9
+      }
+    ],
+    "restaurant_01": [
+      {
+        "id": "evd_cling_film_roll",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_bag_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_paper_cup_stack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_coffee_filter_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_straw_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_aluminum_takeout_lid",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_takeout_chopsticks",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_soy_sauce_packets",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_salt_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sugar_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_peanut_butter_jar",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_instant_oatmeal_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rice_bag_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_canned_fruit_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_bread_clip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_twist_tie_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_vinegar_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_kitchen_sponge",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_dish_scrubber",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_silicone_hot_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_empty_coffee_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_plastic_lid_round",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_disposable_gloves_pair",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rubber_glove_single",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_measuring_spoon",
+        "weight": 0.9
+      }
+    ],
+    "laundry_01": [
+      {
+        "id": "evd_cling_film_roll",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_bag_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_coffee_filter_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_aluminum_takeout_lid",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_salt_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_peanut_butter_jar",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cereal_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_instant_oatmeal_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rice_bag_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pet_food_pouch",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baby_formula_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sports_drink_powder",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_canned_fruit_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_bread_clip",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_twist_tie_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baking_soda_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_vinegar_bottle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_kitchen_sponge",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cling_film_roll",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_bag_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baking_soda_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_kitchen_sponge",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pillowcase",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_old_tshirt",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_clothespin_set",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_laundry_mesh_bag",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sewing_button_card",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_vacuum_storage_bag",
+        "weight": 0.9
+      }
+    ],
+    "warehouse_01": [
+      {
+        "id": "evd_foam_packaging",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cling_film_roll",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_bag_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_paper_cup_stack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_coffee_filter_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_straw_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_aluminum_takeout_lid",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_takeout_chopsticks",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_soy_sauce_packets",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_salt_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sugar_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_peanut_butter_jar",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cereal_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_instant_oatmeal_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rice_bag_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pet_food_pouch",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baby_formula_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sports_drink_powder",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_canned_fruit_cup",
+        "weight": 0.9
+      }
+    ],
+    "garage_01": [
+      {
+        "id": "evd_mouse_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_usb_cable_short",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_foam_packaging",
+        "weight": 0.9
+      }
+    ],
+    "hardware_01": [
+      {
+        "id": "evd_mouse_pad",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_usb_cable_short",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cling_film_roll",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_freezer_bag_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_paper_cup_stack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_coffee_filter_pack",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_straw_bundle",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_aluminum_takeout_lid",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_takeout_chopsticks",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_soy_sauce_packets",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_salt_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sugar_sachet",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_peanut_butter_jar",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_cereal_box",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_instant_oatmeal_cup",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_rice_bag_small",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_pet_food_pouch",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_baby_formula_can",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_sports_drink_powder",
+        "weight": 0.9
+      },
+      {
+        "id": "evd_canned_fruit_cup",
+        "weight": 0.9
+      }
+    ]
+  }
+}

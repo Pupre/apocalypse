@@ -1,0 +1,1738 @@
+[
+  {
+    "id": "newspaper__plastic_bag",
+    "ingredients": [
+      "plastic_bag",
+      "newspaper"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 6501,
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "plastic_bag": "consume",
+      "newspaper": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_dry_tinder_pouch",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_dry_tinder_pouch",
+    "indoor_minutes": 6,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "신문지를 비닐봉투 안에 나눠 넣어 젖지 않는 점화재 파우치를 만들었다."
+  },
+  {
+    "id": "evd_freezer_bag_box__receipt_bundle",
+    "ingredients": [
+      "evd_freezer_bag_box",
+      "receipt_bundle"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 6502,
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "evd_freezer_bag_box": "consume",
+      "receipt_bundle": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_dry_tinder_pouch",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_dry_tinder_pouch",
+    "indoor_minutes": 5,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "영수증을 지퍼백에 말아 넣어 작고 마른 불쏘시개 묶음을 만들었다."
+  },
+  {
+    "id": "evd_cotton_ball_pack__evd_lip_balm_tube",
+    "ingredients": [
+      "evd_lip_balm_tube",
+      "evd_cotton_ball_pack"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 6503,
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "evd_lip_balm_tube": "consume",
+      "evd_cotton_ball_pack": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_waxed_cotton_tinder",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_waxed_cotton_tinder",
+    "indoor_minutes": 6,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "솜에 립밤을 문질러 불씨가 오래 붙는 작은 점화재를 만들었다."
+  },
+  {
+    "id": "evd_candle_stub__evd_cotton_ball_pack",
+    "ingredients": [
+      "evd_candle_stub",
+      "evd_cotton_ball_pack"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 6504,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "evd_candle_stub": "consume",
+      "evd_cotton_ball_pack": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_waxed_cotton_tinder",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_waxed_cotton_tinder",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "양초 토막의 왁스를 솜에 먹여 작은 점화재를 만들었다."
+  },
+  {
+    "id": "evd_plastic_file_folder__evd_small_notebook",
+    "ingredients": [
+      "evd_plastic_file_folder",
+      "evd_small_notebook"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6505,
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "evd_plastic_file_folder": "consume",
+      "evd_small_notebook": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_waterproof_document_pack",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_waterproof_document_pack",
+    "indoor_minutes": 4,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "수첩을 투명 파일철 안에 넣고 접어 물에 덜 젖는 문서 팩으로 만들었다."
+  },
+  {
+    "id": "evd_family_photo_strip__evd_freezer_bag_box",
+    "ingredients": [
+      "evd_freezer_bag_box",
+      "evd_family_photo_strip"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6506,
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "evd_freezer_bag_box": "consume",
+      "evd_family_photo_strip": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_waterproof_document_pack",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_waterproof_document_pack",
+    "indoor_minutes": 3,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "사진을 두꺼운 지퍼백에 넣어 버리기 어려운 종이를 보호했다."
+  },
+  {
+    "id": "evd_cling_film_roll__towel",
+    "ingredients": [
+      "evd_cling_film_roll",
+      "towel"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6507,
+    "required_tags": [],
+    "minutes": 10,
+    "ingredient_rules": {
+      "evd_cling_film_roll": "consume",
+      "towel": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_window_gap_roll",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_window_gap_roll",
+    "indoor_minutes": 10,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "수건을 길게 말고 랩으로 감싸 창문 틈에 밀어 넣을 롤을 만들었다."
+  },
+  {
+    "id": "clear_plastic_sheet__evd_binder_clip_large",
+    "ingredients": [
+      "clear_plastic_sheet",
+      "evd_binder_clip_large"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6508,
+    "required_tags": [],
+    "minutes": 7,
+    "ingredient_rules": {
+      "clear_plastic_sheet": "consume",
+      "evd_binder_clip_large": "keep"
+    },
+    "result_items": [
+      {
+        "id": "evd_window_gap_roll",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_window_gap_roll",
+    "indoor_minutes": 7,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "투명 비닐을 집게로 접어 고정해 찬바람이 새는 창가를 막을 조각을 만들었다."
+  },
+  {
+    "id": "evd_old_tshirt__evd_pillowcase",
+    "ingredients": [
+      "evd_pillowcase",
+      "evd_old_tshirt"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6509,
+    "required_tags": [],
+    "minutes": 9,
+    "ingredient_rules": {
+      "evd_pillowcase": "consume",
+      "evd_old_tshirt": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_door_draft_snake",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_door_draft_snake",
+    "indoor_minutes": 9,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "베개커버 안에 티셔츠를 말아 넣어 문 밑을 막는 긴 덧감을 만들었다."
+  },
+  {
+    "id": "evd_rubber_doorstop__towel",
+    "ingredients": [
+      "evd_rubber_doorstop",
+      "towel"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6510,
+    "required_tags": [],
+    "minutes": 7,
+    "ingredient_rules": {
+      "evd_rubber_doorstop": "keep",
+      "towel": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_door_draft_snake",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_door_draft_snake",
+    "indoor_minutes": 7,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "문쐐기와 수건을 묶어 문 밑에서 밀리지 않는 틈막이를 만들었다."
+  },
+  {
+    "id": "evd_hair_tie_pack__evd_led_keychain_light",
+    "ingredients": [
+      "evd_led_keychain_light",
+      "evd_hair_tie_pack"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6511,
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "evd_led_keychain_light": "consume",
+      "evd_hair_tie_pack": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_hand_loop_light",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_hand_loop_light",
+    "indoor_minutes": 5,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "작은 LED를 머리끈으로 손목에 고정해 양손을 덜 가로막는 조명으로 만들었다."
+  },
+  {
+    "id": "evd_lanyard__evd_led_keychain_light",
+    "ingredients": [
+      "evd_led_keychain_light",
+      "evd_lanyard"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6512,
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "evd_led_keychain_light": "consume",
+      "evd_lanyard": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_hand_loop_light",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_hand_loop_light",
+    "indoor_minutes": 5,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "목걸이 줄에 LED를 묶어 손 가까이에 매달리는 보조 조명을 만들었다."
+  },
+  {
+    "id": "evd_phone_case__hand_warmer_pack",
+    "ingredients": [
+      "evd_phone_case",
+      "hand_warmer_pack"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6513,
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "evd_phone_case": "consume",
+      "hand_warmer_pack": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_phone_warmer_pouch",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_phone_warmer_pouch",
+    "indoor_minutes": 6,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "휴대폰 케이스 안쪽에 핫팩을 붙여 작은 전자기기를 품을 보온 파우치를 만들었다."
+  },
+  {
+    "id": "evd_freezer_bag_box__hand_warmer_pack",
+    "ingredients": [
+      "evd_freezer_bag_box",
+      "hand_warmer_pack"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6514,
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "evd_freezer_bag_box": "consume",
+      "hand_warmer_pack": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_phone_warmer_pouch",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_phone_warmer_pouch",
+    "indoor_minutes": 5,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "지퍼백 안에 핫팩을 분리해 넣어 배터리를 잠깐 보온할 파우치를 만들었다."
+  },
+  {
+    "id": "evd_coffee_filter_pack__evd_empty_coffee_can",
+    "ingredients": [
+      "evd_coffee_filter_pack",
+      "evd_empty_coffee_can"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 6515,
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "evd_coffee_filter_pack": "consume",
+      "evd_empty_coffee_can": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_clean_water_prefilter",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_clean_water_prefilter",
+    "indoor_minutes": 6,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "커피 캔 위에 필터를 걸쳐 큰 찌꺼기를 거르는 임시 필터를 만들었다."
+  },
+  {
+    "id": "evd_coffee_filter_pack__evd_plastic_lid_round",
+    "ingredients": [
+      "evd_coffee_filter_pack",
+      "evd_plastic_lid_round"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 6516,
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "evd_coffee_filter_pack": "consume",
+      "evd_plastic_lid_round": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_clean_water_prefilter",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_clean_water_prefilter",
+    "indoor_minutes": 5,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "플라스틱 뚜껑에 필터를 고정해 컵 위에 올릴 거름망을 만들었다."
+  },
+  {
+    "id": "duct_tape__evd_disposable_gloves_pair",
+    "ingredients": [
+      "evd_disposable_gloves_pair",
+      "duct_tape"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 6517,
+    "required_tags": [],
+    "minutes": 7,
+    "ingredient_rules": {
+      "evd_disposable_gloves_pair": "consume",
+      "duct_tape": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_glass_search_gloves",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_glass_search_gloves",
+    "indoor_minutes": 7,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "얇은 장갑 손가락에 테이프를 덧대 깨진 유리를 뒤질 때 쓸 장갑으로 보강했다."
+  },
+  {
+    "id": "evd_clear_tape_small__evd_rubber_glove_single",
+    "ingredients": [
+      "evd_rubber_glove_single",
+      "evd_clear_tape_small"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 6518,
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "evd_rubber_glove_single": "consume",
+      "evd_clear_tape_small": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_glass_search_gloves",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_glass_search_gloves",
+    "indoor_minutes": 6,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "고무장갑 한 짝을 투명 테이프로 보강해 날카로운 조각을 만질 손 보호구로 만들었다."
+  },
+  {
+    "id": "evd_hair_tie_pack__evd_zipper_pull_tab",
+    "ingredients": [
+      "evd_zipper_pull_tab",
+      "evd_hair_tie_pack"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6519,
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "evd_zipper_pull_tab": "consume",
+      "evd_hair_tie_pack": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_quiet_key_bundle",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_quiet_key_bundle",
+    "indoor_minutes": 3,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "금속 고리를 머리끈으로 감아 움직일 때 나는 작은 소리를 줄였다."
+  },
+  {
+    "id": "evd_old_tshirt__evd_safety_pin_card",
+    "ingredients": [
+      "evd_safety_pin_card",
+      "evd_old_tshirt"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6520,
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "evd_safety_pin_card": "consume",
+      "evd_old_tshirt": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_quiet_key_bundle",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_quiet_key_bundle",
+    "indoor_minutes": 5,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "옷핀과 천 조각을 묶어 금속 물건끼리 부딪히는 소리를 줄일 덮개를 만들었다."
+  },
+  {
+    "id": "evd_permanent_marker__evd_sticky_note_pad",
+    "ingredients": [
+      "evd_permanent_marker",
+      "evd_sticky_note_pad"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6521,
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "evd_permanent_marker": "keep",
+      "evd_sticky_note_pad": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_marker_route_flags",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_marker_route_flags",
+    "indoor_minutes": 4,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "포스트잇에 굵은 화살표를 그려 수색한 방을 표시할 묶음을 만들었다."
+  },
+  {
+    "id": "evd_calendar_page__evd_permanent_marker",
+    "ingredients": [
+      "evd_permanent_marker",
+      "evd_calendar_page"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6522,
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "evd_permanent_marker": "keep",
+      "evd_calendar_page": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_marker_route_flags",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_marker_route_flags",
+    "indoor_minutes": 4,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "찢어진 달력장에 큰 표시를 그려 눈에 띄는 경로 표식을 만들었다."
+  },
+  {
+    "id": "evd_dental_floss__evd_paper_clip_chain",
+    "ingredients": [
+      "evd_dental_floss",
+      "evd_paper_clip_chain"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6523,
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "evd_dental_floss": "consume",
+      "evd_paper_clip_chain": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_cordage_bundle",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_cordage_bundle",
+    "indoor_minutes": 6,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "치실과 클립 줄을 이어 가볍지만 질긴 생활용 끈 묶음을 만들었다."
+  },
+  {
+    "id": "evd_lanyard__evd_shoelace_pair",
+    "ingredients": [
+      "evd_shoelace_pair",
+      "evd_lanyard"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6524,
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "evd_shoelace_pair": "consume",
+      "evd_lanyard": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_cordage_bundle",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_cordage_bundle",
+    "indoor_minutes": 4,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "신발끈과 목걸이 줄을 이어 묶고 걸기 쉬운 끈 묶음으로 정리했다."
+  },
+  {
+    "id": "evd_foam_packaging__evd_microfiber_cloth",
+    "ingredients": [
+      "evd_microfiber_cloth",
+      "evd_foam_packaging"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 6525,
+    "required_tags": [],
+    "minutes": 7,
+    "ingredient_rules": {
+      "evd_microfiber_cloth": "consume",
+      "evd_foam_packaging": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_thermal_bottle_sleeve",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_thermal_bottle_sleeve",
+    "indoor_minutes": 7,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "천 안에 완충재를 넣어 작은 병을 감싸는 보온 덧싸개를 만들었다."
+  },
+  {
+    "id": "evd_old_tshirt__evd_silicone_hot_pad",
+    "ingredients": [
+      "evd_old_tshirt",
+      "evd_silicone_hot_pad"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 6526,
+    "required_tags": [],
+    "minutes": 7,
+    "ingredient_rules": {
+      "evd_old_tshirt": "consume",
+      "evd_silicone_hot_pad": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_thermal_bottle_sleeve",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_thermal_bottle_sleeve",
+    "indoor_minutes": 7,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "티셔츠 천과 냄비받침을 겹쳐 뜨거운 병을 잡고 감쌀 덧싸개를 만들었다."
+  },
+  {
+    "id": "cardboard_sheet__evd_aluminum_takeout_lid",
+    "ingredients": [
+      "evd_aluminum_takeout_lid",
+      "cardboard_sheet"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 6527,
+    "required_tags": [],
+    "minutes": 7,
+    "ingredient_rules": {
+      "evd_aluminum_takeout_lid": "consume",
+      "cardboard_sheet": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_reflector_panel_small",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_reflector_panel_small",
+    "indoor_minutes": 7,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "알루미늄 뚜껑을 골판지에 펴 붙여 작은 열 반사판을 만들었다."
+  },
+  {
+    "id": "aluminum_foil__evd_plastic_lid_round",
+    "ingredients": [
+      "aluminum_foil",
+      "evd_plastic_lid_round"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 6528,
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "aluminum_foil": "consume",
+      "evd_plastic_lid_round": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_reflector_panel_small",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_reflector_panel_small",
+    "indoor_minutes": 6,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "플라스틱 뚜껑에 포일을 감아 작은 양초 뒤에 세울 반사판을 만들었다."
+  },
+  {
+    "id": "evd_shower_cap__evd_silica_gel_packets",
+    "ingredients": [
+      "evd_silica_gel_packets",
+      "evd_shower_cap"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 6529,
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "evd_silica_gel_packets": "consume",
+      "evd_shower_cap": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_foot_dry_kit",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_foot_dry_kit",
+    "indoor_minutes": 5,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "샤워캡 안에 건조제를 넣어 젖은 발 주변 물기를 늦추는 키트를 만들었다."
+  },
+  {
+    "id": "evd_sanitary_pad_pack__evd_shoelace_pair",
+    "ingredients": [
+      "evd_sanitary_pad_pack",
+      "evd_shoelace_pair"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 6530,
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "evd_sanitary_pad_pack": "consume",
+      "evd_shoelace_pair": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_blister_foot_wrap",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_blister_foot_wrap",
+    "indoor_minutes": 6,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "흡수 패드를 신발끈으로 고정해 오래 걸을 때 쓸 발 감개를 만들었다."
+  },
+  {
+    "id": "evd_umbrella_sleeve__matchbox",
+    "ingredients": [
+      "matchbox",
+      "evd_umbrella_sleeve"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 6531,
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "matchbox": "consume",
+      "evd_umbrella_sleeve": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_windproof_match_sleeve",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_windproof_match_sleeve",
+    "indoor_minutes": 4,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "성냥갑을 우산 비닐 커버 조각으로 감싸 젖음과 바람을 조금 막았다."
+  },
+  {
+    "id": "evd_lip_balm_tube__matchbox",
+    "ingredients": [
+      "matchbox",
+      "evd_lip_balm_tube"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "fire_heat",
+    "codex_order": 6532,
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "matchbox": "consume",
+      "evd_lip_balm_tube": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_windproof_match_sleeve",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_windproof_match_sleeve",
+    "indoor_minutes": 5,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "성냥갑 모서리에 립밤을 발라 습기를 덜 먹는 작은 슬리브를 만들었다."
+  },
+  {
+    "id": "evd_lanyard__evd_pocket_mirror",
+    "ingredients": [
+      "evd_pocket_mirror",
+      "evd_lanyard"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6533,
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "evd_pocket_mirror": "consume",
+      "evd_lanyard": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_signal_mirror_tag",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_signal_mirror_tag",
+    "indoor_minutes": 4,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "손거울에 목걸이 줄을 묶어 떨어뜨리지 않는 반사 신호 도구를 만들었다."
+  },
+  {
+    "id": "evd_aluminum_takeout_lid__evd_wire_hanger",
+    "ingredients": [
+      "evd_wire_hanger",
+      "evd_aluminum_takeout_lid"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6534,
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "evd_wire_hanger": "consume",
+      "evd_aluminum_takeout_lid": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_signal_mirror_tag",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_signal_mirror_tag",
+    "indoor_minutes": 6,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "철사 옷걸이에 반사 뚜껑을 고정해 손에 들기 쉬운 신호판을 만들었다."
+  },
+  {
+    "id": "evd_pet_food_pouch__evd_shoelace_pair",
+    "ingredients": [
+      "evd_pet_food_pouch",
+      "evd_shoelace_pair"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6535,
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "evd_pet_food_pouch": "consume",
+      "evd_shoelace_pair": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_food_hanging_bundle",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_food_hanging_bundle",
+    "indoor_minutes": 5,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "냄새 나는 파우치를 끈으로 묶어 바닥에서 띄워 둘 수 있게 정리했다."
+  },
+  {
+    "id": "evd_cereal_box__plastic_bag",
+    "ingredients": [
+      "evd_cereal_box",
+      "plastic_bag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6536,
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "evd_cereal_box": "consume",
+      "plastic_bag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_food_hanging_bundle",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_food_hanging_bundle",
+    "indoor_minutes": 5,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "시리얼 속봉지와 비닐봉투를 묶어 마른 식량을 따로 걸어 둘 묶음을 만들었다."
+  },
+  {
+    "id": "evd_foam_packaging__evd_safety_pin_card",
+    "ingredients": [
+      "evd_foam_packaging",
+      "evd_safety_pin_card"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6537,
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "evd_foam_packaging": "consume",
+      "evd_safety_pin_card": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_padded_shoulder_wrap",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_padded_shoulder_wrap",
+    "indoor_minutes": 6,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "완충재를 옷핀으로 천에 고정해 가방끈 아래 덧댈 어깨 패드를 만들었다."
+  },
+  {
+    "id": "evd_clear_tape_small__evd_mouse_pad",
+    "ingredients": [
+      "evd_mouse_pad",
+      "evd_clear_tape_small"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6538,
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "evd_mouse_pad": "consume",
+      "evd_clear_tape_small": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_padded_shoulder_wrap",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_padded_shoulder_wrap",
+    "indoor_minutes": 6,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "마우스패드 고무면을 테이프로 감아 어깨에 덧댈 미끄럼 방지 패드를 만들었다."
+  },
+  {
+    "id": "evd_clear_tape_small__evd_cling_film_roll",
+    "ingredients": [
+      "evd_cling_film_roll",
+      "evd_clear_tape_small"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6539,
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "evd_cling_film_roll": "consume",
+      "evd_clear_tape_small": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_bag_repair_patch",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_bag_repair_patch",
+    "indoor_minutes": 4,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "랩과 투명 테이프를 겹쳐 찢어진 봉투에 붙일 작은 패치를 만들었다."
+  },
+  {
+    "id": "evd_freezer_bag_box__evd_twist_tie_bundle",
+    "ingredients": [
+      "evd_twist_tie_bundle",
+      "evd_freezer_bag_box"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6540,
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "evd_twist_tie_bundle": "consume",
+      "evd_freezer_bag_box": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_bag_repair_patch",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_bag_repair_patch",
+    "indoor_minutes": 5,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "지퍼백 조각과 철심 끈을 묶어 다시 여닫을 수 있는 작은 수선 패치를 만들었다."
+  },
+  {
+    "id": "evd_permanent_marker__evd_small_notebook",
+    "ingredients": [
+      "evd_small_notebook",
+      "evd_permanent_marker"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6541,
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "evd_small_notebook": "consume",
+      "evd_permanent_marker": "keep"
+    },
+    "result_items": [
+      {
+        "id": "evd_map_marker_kit",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_map_marker_kit",
+    "indoor_minutes": 5,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "수첩 첫 장에 굵은 범례를 적어 반복 수색용 지도 표시 키트로 정리했다."
+  },
+  {
+    "id": "evd_kids_sticker_sheet__evd_permanent_marker",
+    "ingredients": [
+      "evd_kids_sticker_sheet",
+      "evd_permanent_marker"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6542,
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "evd_kids_sticker_sheet": "consume",
+      "evd_permanent_marker": "keep"
+    },
+    "result_items": [
+      {
+        "id": "evd_map_marker_kit",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_map_marker_kit",
+    "indoor_minutes": 4,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "스티커와 매직을 묶어 문과 지도에 함께 쓰는 표시 키트로 만들었다."
+  },
+  {
+    "id": "evd_alarm_clock_battery__evd_clear_tape_small",
+    "ingredients": [
+      "evd_alarm_clock_battery",
+      "evd_clear_tape_small"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6543,
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "evd_alarm_clock_battery": "consume",
+      "evd_clear_tape_small": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_taped_battery_pack",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_taped_battery_pack",
+    "indoor_minutes": 3,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "작은 전지를 극성이 보이게 테이프로 묶어 잃어버리지 않게 정리했다."
+  },
+  {
+    "id": "evd_bread_clip__spare_batteries",
+    "ingredients": [
+      "spare_batteries",
+      "evd_bread_clip"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6544,
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "spare_batteries": "consume",
+      "evd_bread_clip": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_taped_battery_pack",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_taped_battery_pack",
+    "indoor_minutes": 3,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "건전지를 작은 클립으로 묶어 가방 안에서 흩어지지 않게 했다."
+  },
+  {
+    "id": "evd_empty_coffee_can__evd_takeout_chopsticks",
+    "ingredients": [
+      "evd_empty_coffee_can",
+      "evd_takeout_chopsticks"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6545,
+    "required_tags": [],
+    "minutes": 7,
+    "ingredient_rules": {
+      "evd_empty_coffee_can": "consume",
+      "evd_takeout_chopsticks": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_can_scoop",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_can_scoop",
+    "indoor_minutes": 7,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "빈 커피 캔 한쪽을 접고 젓가락을 손잡이처럼 끼워 작은 손삽을 만들었다."
+  },
+  {
+    "id": "evd_binder_clip_large__steel_food_can",
+    "ingredients": [
+      "steel_food_can",
+      "evd_binder_clip_large"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6546,
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "steel_food_can": "consume",
+      "evd_binder_clip_large": "keep"
+    },
+    "result_items": [
+      {
+        "id": "evd_can_scoop",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_can_scoop",
+    "indoor_minutes": 6,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "깡통 가장자리를 접고 집게를 물려 차가운 눈을 퍼낼 손잡이로 만들었다."
+  },
+  {
+    "id": "evd_hair_tie_pack__evd_shower_cap",
+    "ingredients": [
+      "evd_shower_cap",
+      "evd_hair_tie_pack"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6547,
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "evd_shower_cap": "consume",
+      "evd_hair_tie_pack": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_rainproof_hand_wrap",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_rainproof_hand_wrap",
+    "indoor_minutes": 4,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "샤워캡 비닐을 손등에 씌우고 머리끈으로 고정해 임시 방수 덮개를 만들었다."
+  },
+  {
+    "id": "evd_hair_tie_pack__plastic_bag",
+    "ingredients": [
+      "plastic_bag",
+      "evd_hair_tie_pack"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6548,
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "plastic_bag": "consume",
+      "evd_hair_tie_pack": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_rainproof_hand_wrap",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_rainproof_hand_wrap",
+    "indoor_minutes": 4,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "비닐봉투를 손 모양으로 접고 머리끈으로 묶어 젖은 물건을 만질 덮개를 만들었다."
+  },
+  {
+    "id": "evd_cling_film_roll__evd_straw_bundle",
+    "ingredients": [
+      "evd_straw_bundle",
+      "evd_cling_film_roll"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 6549,
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "evd_straw_bundle": "consume",
+      "evd_cling_film_roll": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_disposable_funnel",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_disposable_funnel",
+    "indoor_minutes": 4,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "빨대를 중심으로 랩을 말아 작은 액체용 깔때기를 만들었다."
+  },
+  {
+    "id": "evd_straw_bundle__plastic_bag",
+    "ingredients": [
+      "evd_straw_bundle",
+      "plastic_bag"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 6550,
+    "required_tags": [],
+    "minutes": 4,
+    "ingredient_rules": {
+      "evd_straw_bundle": "consume",
+      "plastic_bag": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_disposable_funnel",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_disposable_funnel",
+    "indoor_minutes": 4,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "비닐봉투 귀퉁이와 빨대를 맞춰 흘리지 않고 따를 깔때기를 만들었다."
+  },
+  {
+    "id": "evd_baking_soda_box__evd_dryer_sheet_box",
+    "ingredients": [
+      "evd_dryer_sheet_box",
+      "evd_baking_soda_box"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 6551,
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "evd_dryer_sheet_box": "consume",
+      "evd_baking_soda_box": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_odor_mask_pack",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_odor_mask_pack",
+    "indoor_minutes": 5,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "건조기 시트와 베이킹소다를 작은 파우치로 묶어 냄새를 눌러 줄 물건을 만들었다."
+  },
+  {
+    "id": "evd_baking_soda_box__evd_old_tshirt",
+    "ingredients": [
+      "evd_old_tshirt",
+      "evd_baking_soda_box"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "hygiene_medical",
+    "codex_order": 6552,
+    "required_tags": [],
+    "minutes": 5,
+    "ingredient_rules": {
+      "evd_old_tshirt": "consume",
+      "evd_baking_soda_box": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_odor_mask_pack",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_odor_mask_pack",
+    "indoor_minutes": 5,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "티셔츠 조각 안에 베이킹소다를 넣고 묶어 젖은 냄새를 줄일 파우치를 만들었다."
+  },
+  {
+    "id": "evd_pillowcase__evd_shoelace_pair",
+    "ingredients": [
+      "evd_pillowcase",
+      "evd_shoelace_pair"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6553,
+    "required_tags": [],
+    "minutes": 8,
+    "ingredient_rules": {
+      "evd_pillowcase": "consume",
+      "evd_shoelace_pair": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_shoulder_carry_sling",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_shoulder_carry_sling",
+    "indoor_minutes": 8,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "베개커버 입구에 신발끈을 꿰어 어깨에 걸 수 있는 운반끈을 만들었다."
+  },
+  {
+    "id": "evd_lanyard__evd_laundry_mesh_bag",
+    "ingredients": [
+      "evd_laundry_mesh_bag",
+      "evd_lanyard"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "repair_fortify",
+    "codex_order": 6554,
+    "required_tags": [],
+    "minutes": 6,
+    "ingredient_rules": {
+      "evd_laundry_mesh_bag": "consume",
+      "evd_lanyard": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_shoulder_carry_sling",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_shoulder_carry_sling",
+    "indoor_minutes": 6,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "세탁망에 목걸이 줄을 달아 가볍게 어깨에 걸 수 있는 손짐 가방으로 바꿨다."
+  },
+  {
+    "id": "bottled_water__evd_sports_drink_powder",
+    "ingredients": [
+      "evd_sports_drink_powder",
+      "bottled_water"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 6555,
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "evd_sports_drink_powder": "consume",
+      "bottled_water": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_mixed_sports_drink",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_mixed_sports_drink",
+    "indoor_minutes": 3,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "스포츠음료 분말을 물에 타 갈증과 피로를 조금 덜어 줄 음료로 만들었다."
+  },
+  {
+    "id": "evd_salt_sachet__evd_sugar_sachet",
+    "ingredients": [
+      "evd_sugar_sachet",
+      "evd_salt_sachet"
+    ],
+    "contexts": [
+      "indoor",
+      "outdoor"
+    ],
+    "codex_category": "food_drink",
+    "codex_order": 6556,
+    "required_tags": [],
+    "minutes": 3,
+    "ingredient_rules": {
+      "evd_sugar_sachet": "consume",
+      "evd_salt_sachet": "consume"
+    },
+    "result_items": [
+      {
+        "id": "evd_sports_drink_powder",
+        "count": 1
+      }
+    ],
+    "result_type": "success",
+    "result_item_id": "evd_sports_drink_powder",
+    "indoor_minutes": 3,
+    "required_tool_ids": [],
+    "tool_charge_costs": {},
+    "result_text": "설탕과 소금을 비율 맞춰 섞어 물에 탈 수 있는 간단한 전해질 분말을 만들었다."
+  }
+]

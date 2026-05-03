@@ -12,13 +12,16 @@ var loot_profiles: Dictionary = {}
 const ITEM_DATA_PATHS := [
 	"res://data/items.json",
 	"res://data/items_survival_expansion.json",
+	"res://data/items_everyday_expansion.json",
 ]
 const CRAFTING_COMBINATION_DATA_PATHS := [
 	"res://data/crafting_combinations.json",
 	"res://data/crafting_combinations_survival_expansion.json",
+	"res://data/crafting_combinations_everyday_expansion.json",
 ]
 const LOOT_PROFILE_DATA_PATHS := [
 	"res://data/loot_profiles_survival_expansion.json",
+	"res://data/loot_profiles_everyday_expansion.json",
 ]
 
 
