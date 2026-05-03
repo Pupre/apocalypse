@@ -4,12 +4,20 @@ class_name OutdoorMapView
 signal building_selected(building_id: String)
 
 const BASE_COLOR := Color(0.05, 0.07, 0.09, 0.96)
-const VISITED_BLOCK_COLOR := Color(0.10, 0.13, 0.17, 0.96)
 const ROAD_COLOR := Color(0.30, 0.34, 0.39, 0.95)
 const OBSTACLE_COLOR := Color(0.43, 0.47, 0.53, 0.94)
 const PLAYER_COLOR := Color(0.95, 0.84, 0.42, 1.0)
 const FOG_COLOR := Color(0.01, 0.02, 0.03, 0.94)
 const FRAME_COLOR := Color(1.0, 1.0, 1.0, 0.08)
+const DISTRICT_COLORS := {
+	"north_market": Color(0.18, 0.32, 0.25, 0.88),
+	"east_medical": Color(0.30, 0.22, 0.28, 0.88),
+	"south_residential": Color(0.31, 0.27, 0.19, 0.88),
+	"south_industrial": Color(0.28, 0.30, 0.33, 0.88),
+	"west_shelter": Color(0.19, 0.27, 0.32, 0.88),
+	"central_transfer": Color(0.30, 0.25, 0.18, 0.88),
+	"mixed_edge": Color(0.18, 0.21, 0.24, 0.88),
+}
 const BUILDING_COLORS := {
 	"medical": Color(0.61, 0.43, 0.46, 1.0),
 	"office": Color(0.38, 0.51, 0.68, 1.0),
@@ -19,6 +27,7 @@ const BUILDING_COLORS := {
 	"security": Color(0.56, 0.60, 0.74, 1.0),
 	"retail": Color(0.46, 0.59, 0.45, 1.0),
 }
+const DEFAULT_DISTRICT_COLOR := Color(0.12, 0.15, 0.19, 0.88)
 const DEFAULT_BUILDING_COLOR := Color(0.62, 0.66, 0.70, 1.0)
 const DEFAULT_VISIBLE_WORLD_HEIGHT := 4600.0
 
@@ -52,6 +61,7 @@ func build_snapshot() -> Dictionary:
 	var roads: Array[Dictionary] = []
 	var obstacles: Array[Dictionary] = []
 	var fog_blocks: Array[Dictionary] = []
+	var district_blocks: Array[Dictionary] = []
 	var block_size := _block_size()
 	var city_blocks := _city_blocks()
 
@@ -71,6 +81,14 @@ func build_snapshot() -> Dictionary:
 			if typeof(block_row_variant) != TYPE_DICTIONARY:
 				continue
 			var block_row := block_row_variant as Dictionary
+			if is_visible:
+				district_blocks.append({
+					"key": block_key,
+					"coord": block_coord,
+					"district_id": String(block_row.get("district_id", "mixed_edge")),
+					"layout_id": String(block_row.get("layout_id", "")),
+					"rect": _rect_to_row(block_rect),
+				})
 			for road_variant in block_row.get("roads", []):
 				if typeof(road_variant) != TYPE_DICTIONARY:
 					continue
@@ -116,6 +134,7 @@ func build_snapshot() -> Dictionary:
 		"obstacles": obstacles,
 		"buildings": buildings,
 		"fog_blocks": fog_blocks,
+		"district_blocks": district_blocks,
 	}
 
 
@@ -160,13 +179,14 @@ func _draw() -> void:
 		var fog_rect := _row_to_rect(fog_row.get("rect", {}))
 		draw_rect(_world_rect_to_local(fog_rect, visible_world_rect), FOG_COLOR, true)
 
-	for block_y in range(_city_blocks().y):
-		for block_x in range(_city_blocks().x):
-			var block_coord := Vector2i(block_x, block_y)
-			if not _is_block_visible(block_coord):
-				continue
-			var block_rect := Rect2(_block_origin(block_coord), Vector2(_block_size().x, _block_size().y))
-			draw_rect(_world_rect_to_local(block_rect, visible_world_rect), VISITED_BLOCK_COLOR, true)
+	for district_variant in snapshot.get("district_blocks", []):
+		if typeof(district_variant) != TYPE_DICTIONARY:
+			continue
+		var district_row := district_variant as Dictionary
+		var district_rect := _row_to_rect(district_row.get("rect", {}))
+		var district_local_rect := _world_rect_to_local(district_rect, visible_world_rect)
+		draw_rect(district_local_rect, _district_color(String(district_row.get("district_id", ""))), true)
+		draw_rect(district_local_rect, FRAME_COLOR, false, 1.0)
 
 	for road_variant in snapshot.get("roads", []):
 		if typeof(road_variant) != TYPE_DICTIONARY:
@@ -361,3 +381,7 @@ func _clamp_view_center(world_position: Vector2) -> Vector2:
 
 func _building_color(category: String) -> Color:
 	return BUILDING_COLORS.get(category, DEFAULT_BUILDING_COLOR)
+
+
+func _district_color(district_id: String) -> Color:
+	return DISTRICT_COLORS.get(district_id, DEFAULT_DISTRICT_COLOR)

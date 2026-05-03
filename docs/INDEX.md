@@ -87,6 +87,7 @@ Historical docs live in `docs/handoffs/` and `docs/worklogs/`. Use these when yo
   - [2026-04-02 Indoor UI Restructure](handoffs/2026-04-02-indoor-ui-restructure.md)
   - [2026-04-02 Outdoor Visual Refresh](handoffs/2026-04-02-outdoor-visual-refresh.md)
 - Worklogs
+  - [2026-05-03 야외 지구 지도 피드백](worklogs/2026-05-03-outdoor-district-map-feedback.md)
   - [2026-05-03 맵 다양화와 성능 최적화 패스](worklogs/2026-05-03-map-variety-and-performance-pass.md)
   - [2026-05-03 야외 맵 대확장 1차](worklogs/2026-05-03-outdoor-map-mega-expansion.md)
   - [2026-05-03 생활 아이템 이벤트 선택지 연결](worklogs/2026-05-03-everyday-item-event-options.md)
