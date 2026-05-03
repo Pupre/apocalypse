@@ -198,6 +198,14 @@
     "category": "key"
   },
   {
+    "id": "hostel_linen_key",
+    "name": "린넨실 열쇠",
+    "bulk": 1,
+    "carry_weight": 1,
+    "description": "소형 여관 안쪽 린넨실을 여는 작은 열쇠다.",
+    "category": "key"
+  },
+  {
     "id": "office_keycard",
     "name": "출입 카드키",
     "bulk": 1,

@@ -1,17 +1,28 @@
 {
   "id": "hostel_01",
   "name": "소형 여관",
-  "summary": "로비와 안쪽 침실 구역이 분리돼 있어 생활 보온품이 뒤쪽에 더 남아 있다.",
+  "summary": "로비, 열쇠함, 객실, 린넨실이 이어진 작은 숙박지다. 잠긴 수납과 깨진 창문 때문에 시간을 어떻게 쓸지 판단해야 한다.",
   "entry_zone_id": "lobby",
   "zones": [
     {
       "id": "lobby",
       "floor_id": "floor_1",
       "label": "로비",
-      "summary": "열쇠함과 버려진 가방이 먼지 쌓인 채 남아 있다.",
-      "connected_zone_ids": ["bunk_room"],
+      "summary": "낡은 프런트와 버려진 가방, 안쪽 객실로 이어지는 좁은 복도가 보인다.",
+      "connected_zone_ids": ["key_wall", "bunk_room"],
       "event_ids": ["search_hostel_lobby"],
       "map_position": [0, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "key_wall",
+      "floor_id": "floor_1",
+      "label": "프런트 열쇠함",
+      "summary": "먼지 낀 열쇠판과 투숙 기록철이 프런트 뒤 벽에 남아 있다.",
+      "connected_zone_ids": ["lobby"],
+      "event_ids": ["search_hostel_key_wall"],
+      "map_position": [1, -1],
       "first_visit_cost": 20,
       "revisit_cost": 10
     },
@@ -19,15 +30,49 @@
       "id": "bunk_room",
       "floor_id": "floor_1",
       "label": "안쪽 객실",
-      "summary": "이층침대 아래에 담요와 실내용 물건이 흩어져 있다.",
-      "connected_zone_ids": ["lobby"],
+      "summary": "이층침대와 접힌 이불이 흩어져 있고, 린넨실 문과 창문 깨진 끝방이 복도 끝에 있다.",
+      "connected_zone_ids": ["lobby", "linen_room", "frozen_guest_room"],
       "event_ids": ["search_hostel_bunk_room"],
       "map_position": [1, 0],
       "first_visit_cost": 20,
       "revisit_cost": 10
+    },
+    {
+      "id": "linen_room",
+      "floor_id": "floor_1",
+      "label": "린넨실",
+      "move_label": "린넨실 문을 연다",
+      "blocked_feedback": "린넨실 문은 잠겨 있다. 프런트 열쇠함을 확인하면 맞는 열쇠가 있을 수 있다.",
+      "summary": "손님용 침구와 수건, 생수 상자가 선반에 질서 없이 쌓여 있다.",
+      "connected_zone_ids": ["bunk_room"],
+      "event_ids": ["search_hostel_linen_room"],
+      "map_position": [2, 0],
+      "first_visit_cost": 25,
+      "revisit_cost": 10,
+      "access_requirements": {
+        "required_item_ids": ["hostel_linen_key"]
+      }
+    },
+    {
+      "id": "frozen_guest_room",
+      "floor_id": "floor_1",
+      "label": "창문 깨진 객실",
+      "move_label": "창문 깨진 객실을 확인한다",
+      "summary": "깨진 창문 사이로 눈가루가 날리고, 침대 밑에는 아직 챙기지 못한 물건이 보인다.",
+      "connected_zone_ids": ["bunk_room"],
+      "event_ids": ["search_hostel_frozen_guest_room"],
+      "map_position": [2, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
     }
   ],
-  "clues": [],
+  "clues": [
+    {
+      "id": "hostel_linen_key_hint",
+      "text": "프런트 열쇠판 아래쪽에 린넨실이라고 적힌 작은 열쇠가 걸려 있다.",
+      "visible": false
+    }
+  ],
   "events": [
     {
       "id": "search_hostel_lobby",
@@ -48,9 +93,40 @@
               "entries": [
                 { "id": "shopping_bag", "weight": 3 },
                 { "id": "memo_pad", "weight": 2 },
-                { "id": "bottled_water", "weight": 2 }
+                { "id": "bottled_water", "weight": 2 },
+                { "id": "wet_wipes", "weight": 1 }
               ]
             },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_hostel_key_wall",
+      "zone_id": "key_wall",
+      "type": "search",
+      "hint_text": "열쇠판과 투숙 기록철을 맞춰 보면 잠긴 린넨실을 열 단서가 나올 수 있다.",
+      "options": [
+        {
+          "id": "search_hostel_key_wall_once",
+          "label": "열쇠판과 기록철을 대조한다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [
+              { "id": "hostel_linen_key", "bulk": 1 }
+            ],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "ballpoint_pen", "weight": 2 },
+                { "id": "memo_pad", "weight": 2 },
+                { "id": "tea_light_candle", "weight": 1 }
+              ]
+            },
+            "reveal_clue_ids": ["hostel_linen_key_hint"],
             "consume_on_use": true
           }
         }
@@ -70,13 +146,159 @@
           "outcomes": {
             "discover_loot": [],
             "loot_table": {
-              "rolls": 2,
+              "rolls": 3,
               "allow_duplicates": false,
               "entries": [
                 { "id": "old_blanket", "weight": 3 },
                 { "id": "slippers", "weight": 3 },
-                { "id": "knit_cap", "weight": 2 }
+                { "id": "knit_cap", "weight": 2 },
+                { "id": "soap_bar", "weight": 1 }
               ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_hostel_linen_room",
+      "zone_id": "linen_room",
+      "type": "search",
+      "hint_text": "린넨실 선반에는 보온품과 물이 많지만, 무작정 챙기면 금방 짐이 무거워진다.",
+      "options": [
+        {
+          "id": "search_hostel_linen_room_fast",
+          "label": "린넨실 선반을 빠르게 훑는다",
+          "requirements": {
+            "forbidden_flag_ids": ["hostel_linen_room_cleared"]
+          },
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "fleece_blanket", "weight": 3 },
+                { "id": "towel", "weight": 3 },
+                { "id": "bottled_water", "weight": 2 },
+                { "id": "tea_light_candle", "weight": 1 }
+              ]
+            },
+            "set_flags": ["hostel_linen_room_cleared"],
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "sort_hostel_linen_cache",
+          "label": "시간을 들여 린넨실 보온 물자를 분류한다",
+          "requirements": {
+            "forbidden_flag_ids": ["hostel_linen_room_cleared"]
+          },
+          "costs": { "minutes": 50, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [
+              { "id": "fleece_blanket", "bulk": 1 },
+              { "id": "towel", "bulk": 2 },
+              { "id": "bottled_water", "bulk": 2 }
+            ],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "tea_light_candle", "weight": 3 },
+                { "id": "hand_warmer_pack", "weight": 2 },
+                { "id": "instant_cocoa_mix", "weight": 2 },
+                { "id": "soap_bar", "weight": 1 }
+              ]
+            },
+            "pressure": {
+              "id": "hostel_linen_cache_sorted",
+              "message": "선반을 하나씩 비워 실제로 들고 나갈 수 있는 것만 묶었다. 시간이 걸렸지만 보온과 물 확보가 훨씬 분명해졌다.",
+              "fatigue_gain": 1.0,
+              "noise": 0,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_hostel_linen_cache_success.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_hostel_linen_cache_success.png",
+              "title": "린넨실 보온 물자를 골라냈다",
+              "text": "눈앞에 보이는 모든 침구를 들고 나갈 수는 없다. 젖지 않은 담요, 마른 수건, 생수 몇 병을 추려 묶자 이 작은 여관은 잠깐이나마 피난처처럼 느껴졌다.",
+              "button": "묶은 침구를 챙긴다"
+            },
+            "set_flags": ["hostel_linen_room_cleared"],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_hostel_frozen_guest_room",
+      "zone_id": "frozen_guest_room",
+      "type": "search",
+      "hint_text": "창문이 깨진 객실은 차갑지만, 침대 밑과 욕실 앞에 아직 물건이 남아 있다.",
+      "options": [
+        {
+          "id": "search_hostel_frozen_room_fast",
+          "label": "찬 객실을 빠르게 뒤진다",
+          "requirements": {
+            "forbidden_flag_ids": ["hostel_frozen_room_cleared"]
+          },
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "towel", "weight": 2 },
+                { "id": "wet_wipes", "weight": 2 },
+                { "id": "bottled_water", "weight": 2 },
+                { "id": "paper_bag", "weight": 1 }
+              ]
+            },
+            "set_flags": ["hostel_frozen_room_cleared"],
+            "pressure": {
+              "id": "hostel_frozen_room_cold",
+              "message": "깨진 창문으로 들어온 찬 공기가 방 안에 고여 있었다. 물건은 챙겼지만 손끝이 금세 굳었다.",
+              "exposure_loss": 3.0,
+              "fatigue_gain": 1.0,
+              "noise": 0,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "search_hostel_frozen_room_with_poncho",
+          "label": "우비를 걸치고 찬 객실을 천천히 살핀다",
+          "requirements": {
+            "required_item_ids": ["rain_poncho"],
+            "forbidden_flag_ids": ["hostel_frozen_room_cleared"]
+          },
+          "blocked_feedback": "깨진 창문에서 들어오는 바람이 세다. 우비가 있으면 오래 버티며 살필 수 있다.",
+          "costs": { "minutes": 35, "noise": 0 },
+          "outcomes": {
+            "discover_loot": [],
+            "loot_table": {
+              "rolls": 4,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "towel", "weight": 2 },
+                { "id": "wet_wipes", "weight": 2 },
+                { "id": "bottled_water", "weight": 2 },
+                { "id": "tea_light_candle", "weight": 1 },
+                { "id": "instant_cocoa_mix", "weight": 1 }
+              ]
+            },
+            "set_flags": ["hostel_frozen_room_cleared"],
+            "pressure": {
+              "id": "hostel_frozen_room_wind_blocked",
+              "message": "우비가 바람을 조금 막아 주는 동안 침대 밑과 욕실 앞을 차분히 살폈다.",
+              "exposure_loss": 1.0,
+              "fatigue_gain": 0.5,
+              "noise": 0,
+              "repeatable": false
             },
             "consume_on_use": true
           }

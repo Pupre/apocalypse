@@ -12,6 +12,7 @@ const ANCHOR_MIN_ZONE_COUNTS := {
 	"police_box_01": 3,
 	"residence_01": 4,
 	"row_house_01": 5,
+	"hostel_01": 5,
 	"bakery_01": 4,
 	"bookstore_01": 4,
 	"butcher_01": 4,
@@ -61,6 +62,7 @@ const REQUIRED_NEW_ITEM_IDS := [
 	"slippers",
 	"detergent_pod_pack",
 	"apartment_boiler_key",
+	"hostel_linen_key",
 	"empty_jerrycan",
 	"siphon_hose",
 	"shop_towel_bundle",
@@ -95,6 +97,12 @@ const REQUIRED_ACTION_IDS_BY_BUILDING := {
 		"sort_row_house_floor_cache",
 		"seal_row_house_roof_gap_with_plastic",
 	],
+	"hostel_01": [
+		"search_hostel_key_wall_once",
+		"sort_hostel_linen_cache",
+		"search_hostel_frozen_room_fast",
+		"search_hostel_frozen_room_with_poncho",
+	],
 	"corner_store_01": [
 		"search_corner_cashier_fast",
 		"search_corner_cashier_with_gloves",
@@ -126,6 +134,7 @@ const REQUIRED_ITEM_GATES_BY_ACTION := {
 	"search_storage_pallet_with_gloves": ["work_gloves"],
 	"unscrew_row_house_floor_cache": ["screwdriver"],
 	"seal_row_house_roof_gap_with_plastic": ["clear_plastic_sheet"],
+	"search_hostel_frozen_room_with_poncho": ["rain_poncho"],
 }
 
 

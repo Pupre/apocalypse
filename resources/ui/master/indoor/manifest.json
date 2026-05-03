@@ -254,6 +254,12 @@
       "purpose": "연립 주택 위층 마룻장 아래에서 가족 비상 저장칸을 발견하고 생존 물자를 정리하는 성공 컷신 일러스트",
       "size": "960x480",
       "alpha_policy": "fully opaque illustration banner"
+    },
+    {
+      "filename": "indoor_story_hostel_linen_cache_success.png",
+      "purpose": "소형 여관 린넨실에서 침구, 수건, 생수를 실제 운반 가능한 보온 물자로 분류하는 성공 컷신 일러스트",
+      "size": "960x480",
+      "alpha_policy": "fully opaque illustration banner"
     }
   ]
 }

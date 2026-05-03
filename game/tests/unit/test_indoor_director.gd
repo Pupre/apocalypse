@@ -573,6 +573,64 @@ func _run_test() -> void:
 		0,
 		"Sealing the row-house roof gap should consume the clear plastic sheet."
 	)
+	var hostel_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, self)
+	assert_true(hostel_state != null, "Hostel test should build a clean run state.")
+	director.configure(hostel_state, "hostel_01")
+	assert_eq(director.get_current_zone_id(), "lobby", "Hostel should initialize at the lobby.")
+	assert_true(
+		_action_ids(director.get_actions()).has("move_key_wall"),
+		"Hostel lobby should expose the front-desk key-wall route."
+	)
+	assert_true(director.apply_action("move_bunk_room"), "Hostel should allow moving into the bunk room.")
+	var locked_linen_room_move := _action_by_id(director.get_actions(), "move_linen_room")
+	assert_true(not locked_linen_room_move.is_empty(), "Hostel bunk room should expose the locked linen room route.")
+	assert_true(bool(locked_linen_room_move.get("locked", false)), "Hostel linen room should stay locked before taking the linen key.")
+	assert_true(director.apply_action("move_frozen_guest_room"), "Hostel should allow checking the frozen guest room.")
+	assert_true(
+		String(_action_by_id(director.get_actions(), "search_hostel_frozen_room_with_poncho").get("detail_label", "")).find("필요: 우비") != -1,
+		"Hostel careful frozen-room branch should preview its rain-poncho requirement."
+	)
+	assert_true(director.apply_action("move_bunk_room"), "Hostel should allow returning to the bunk room from the frozen guest room.")
+	assert_true(director.apply_action("move_lobby"), "Hostel should allow returning to the lobby.")
+	assert_true(director.apply_action("move_key_wall"), "Hostel should allow moving to the front-desk key wall.")
+	assert_true(director.apply_action("search_hostel_key_wall_once"), "Hostel key wall should reveal the linen-room key.")
+	var take_hostel_linen_key_action_id := _action_id_by_label_prefix(director.get_actions(), "린넨실 열쇠 챙긴다")
+	assert_true(not take_hostel_linen_key_action_id.is_empty(), "Hostel key-wall search should surface the linen-room key pickup.")
+	assert_true(director.apply_action(take_hostel_linen_key_action_id), "Director should allow taking the hostel linen-room key.")
+	assert_true(director.apply_action("move_lobby"), "Hostel should allow returning to the lobby from the key wall.")
+	assert_true(director.apply_action("move_bunk_room"), "Hostel should allow returning to the bunk room.")
+	var unlocked_linen_room_move := _action_by_id(director.get_actions(), "move_linen_room")
+	assert_true(not unlocked_linen_room_move.is_empty(), "Hostel should still expose the linen room route after taking the key.")
+	assert_true(not bool(unlocked_linen_room_move.get("locked", true)), "Taking the hostel linen key should unlock the linen room.")
+	assert_true(director.apply_action("move_linen_room"), "Hostel should allow entering the opened linen room.")
+	assert_true(
+		_action_ids(director.get_actions()).has("sort_hostel_linen_cache"),
+		"Hostel linen room should expose the major bedding-cache sorting decision."
+	)
+	assert_true(director.apply_action("sort_hostel_linen_cache"), "Director should resolve the hostel linen-cache sorting decision.")
+	assert_eq(
+		director.get_event_illustration_asset(),
+		"indoor/indoor_story_hostel_linen_cache_success.png",
+		"Hostel linen cache sort should swap the reading card to the generated linen-room illustration."
+	)
+	var hostel_cutscene_payload: Dictionary = director.consume_story_cutscene_payload()
+	assert_eq(
+		String(hostel_cutscene_payload.get("asset", "")),
+		"indoor/indoor_story_hostel_linen_cache_success.png",
+		"Hostel linen cache sort should queue a full-screen story cutscene asset."
+	)
+	assert_true(
+		String(hostel_cutscene_payload.get("title", "")).find("린넨실") != -1,
+		"Hostel linen cache cutscene should name the decision result."
+	)
+	assert_true(
+		not _action_ids(director.get_actions()).has("search_hostel_linen_room_fast"),
+		"Resolving the major hostel linen decision should close the quick linen-room search."
+	)
 	director.configure(run_state, "bookstore_01")
 	assert_eq(
 		director.get_event_illustration_asset(),
