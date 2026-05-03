@@ -843,6 +843,20 @@
     "item_tags": ["textile", "warmth", "craft_component"]
   },
   {
+    "id": "plastic_bag",
+    "name": "비닐봉투",
+    "bulk": 1,
+    "carry_weight": 0.2,
+    "description": "얇지만 손잡이가 남아 있는 비닐봉투다.",
+    "usage_hint": "손에 들면 가벼운 물건을 몇 개 더 나눠 담을 수 있다.",
+    "cold_hint": "젖은 물건과 마른 물건을 나눠 담으면 이동 중 손실을 줄일 수 있다.",
+    "category": "container",
+    "item_tags": ["container", "carry", "hand_carry", "craft_component"],
+    "equip_slot": "hand_carry",
+    "carry_capacity_bonus": 1.5,
+    "ideal_carry_bonus": 0.5
+  },
+  {
     "id": "shopping_bag",
     "name": "장바구니 봉투",
     "bulk": 1,
@@ -851,7 +865,10 @@
     "usage_hint": "끈을 더하면 즉석 운반구로 바꾸기 쉽다.",
     "cold_hint": "빠르게 챙겨 이동해야 할 때 임시 운반 수단이 된다.",
     "category": "container",
-    "item_tags": ["container", "carry", "craft_component"]
+    "item_tags": ["container", "carry", "hand_carry", "craft_component"],
+    "equip_slot": "hand_carry",
+    "carry_capacity_bonus": 2.0,
+    "ideal_carry_bonus": 0.75
   },
   {
     "id": "market_basket",
@@ -862,7 +879,10 @@
     "usage_hint": "부피 큰 생활용품을 잠깐 나르기 좋다.",
     "cold_hint": "거점 정리 시 자잘한 물건을 한 번에 옮길 수 있다.",
     "category": "container",
-    "item_tags": ["container", "carry", "craft_component"]
+    "item_tags": ["container", "carry", "hand_carry", "craft_component"],
+    "equip_slot": "hand_carry",
+    "carry_capacity_bonus": 3.0,
+    "ideal_carry_bonus": 0.75
   },
   {
     "id": "food_storage_container",
@@ -906,7 +926,10 @@
     "usage_hint": "음식이나 온기 있는 물건을 잠시 더 오래 보존할 수 있다.",
     "cold_hint": "차갑게만 쓰는 물건이 아니라 열 손실을 늦추는 데도 응용 가능하다.",
     "category": "container",
-    "item_tags": ["container", "insulated_container", "craft_component"]
+    "item_tags": ["container", "insulated_container", "carry", "hand_carry", "craft_component"],
+    "equip_slot": "hand_carry",
+    "carry_capacity_bonus": 2.5,
+    "ideal_carry_bonus": 0.75
   },
   {
     "id": "ice_box",
@@ -1304,7 +1327,10 @@
     "usage_hint": "종이를 모으거나 말아 점화재로 만들기 좋다.",
     "cold_hint": "마른 상태에서는 훌륭한 불쏘시개다.",
     "category": "material",
-    "item_tags": ["paper", "tinder", "container_light"]
+    "item_tags": ["paper", "tinder", "container_light", "hand_carry"],
+    "equip_slot": "hand_carry",
+    "carry_capacity_bonus": 0.8,
+    "ideal_carry_bonus": 0.2
   },
   {
     "id": "cardboard_sheet",

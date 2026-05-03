@@ -107,7 +107,7 @@ func _run_test() -> void:
 	assert_eq(sheet_status.get_theme_font_size("font_size"), 15, "Bag status should use the larger secondary compact font size.")
 	assert_true(browse_hint_label.text.find("먹고 마실 것") != -1, "Bag browse hint should teach the survival-intent grouping.")
 	assert_eq(equipment_rows.columns, 4, "Equipment strip should use a four-column mobile grid instead of one cramped horizontal row.")
-	assert_true(equipment_rows.get_child_count() >= 12, "Equipment strip should show the full loadout slot set.")
+	assert_true(equipment_rows.get_child_count() >= 13, "Equipment strip should show the full loadout slot set, including hand-carry.")
 	assert_true(_has_label_text(inventory_items, "먹고 마실 것"), "Bag list should group food and drink by survival intent.")
 	assert_true(_has_label_text(inventory_items, "불과 도구"), "Bag list should group tools by survival intent.")
 	assert_true(_has_label_text(inventory_items, "읽을 것"), "Bag list should group readable knowledge separately.")

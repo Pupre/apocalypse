@@ -39,11 +39,17 @@ func _run_test() -> void:
 	assert_true(items.size() >= 739, "Merged item library should include the base catalog plus survival expansion.")
 	assert_true(crafting_combinations.size() >= 362, "Merged crafting library should include the base recipes plus survival expansion.")
 
-	for item_id in ["surv_food_001", "surv_medical_001", "surv_equipment_001", "surv_personal_001", "surv_electronics_001", "surv_household_001", "surv_crafted_001"]:
+	for item_id in ["surv_food_001", "surv_medical_001", "surv_container_003", "surv_equipment_001", "surv_personal_001", "surv_electronics_001", "surv_household_001", "surv_crafted_001"]:
 		var item: Dictionary = content_library.get_item(item_id)
 		assert_true(not item.is_empty(), "Expanded item '%s' should load through ContentLibrary." % item_id)
 		assert_true(not String(item.get("description", "")).is_empty(), "Expanded item '%s' should expose description." % item_id)
 		assert_true(typeof(item.get("item_tags", [])) == TYPE_ARRAY and not (item.get("item_tags", []) as Array).is_empty(), "Expanded item '%s' should expose tags." % item_id)
+
+	var generated_plastic_bag: Dictionary = content_library.get_item("surv_container_003")
+	assert_eq(String(generated_plastic_bag.get("equip_slot", "")), "hand_carry", "Generated plastic-bag-style containers should be equippable as hand-carry gear.")
+	assert_true(float(generated_plastic_bag.get("carry_capacity_bonus", 0.0)) > 0.0, "Generated hand-carry containers should improve carrying capacity.")
+	var generated_plastic_bag_tags: Array = generated_plastic_bag.get("item_tags", [])
+	assert_true(generated_plastic_bag_tags.has("hand_carry"), "Generated hand-carry containers should expose a readable tag.")
 
 	var recipe: Dictionary = content_library.get_crafting_combination("surv_utility_002", "rubber_band")
 	assert_true(not recipe.is_empty(), "Generated recipes should be merged into the crafting lookup.")

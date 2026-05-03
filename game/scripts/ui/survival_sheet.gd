@@ -464,7 +464,7 @@ func _render_equipment_summary() -> void:
 				if String(row.get("kind", "")) == "equipped" and not slot_id.is_empty():
 					equipped_by_slot[slot_id] = row
 
-	var slot_order := ["back", "body", "outer", "head", "neck", "face", "hands", "feet", "feet_layer", "hands_layer", "waist", "pocket"]
+	var slot_order := ["back", "hand_carry", "body", "outer", "head", "neck", "face", "hands", "feet", "feet_layer", "hands_layer", "waist", "pocket"]
 	for slot_id in slot_order:
 		var row: Dictionary = equipped_by_slot.get(slot_id, {
 			"kind": "empty",
@@ -1428,6 +1428,8 @@ func _slot_label(slot_id: String) -> String:
 	match slot_id:
 		"back":
 			return "등"
+		"hand_carry":
+			return "손짐"
 		"feet":
 			return "발"
 		"feet_layer":

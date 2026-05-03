@@ -62,4 +62,21 @@ func _run_test() -> void:
 	assert_true(not bool(empty_unequip_result.get("ok", false)), "Unequipping an empty slot should report failure.")
 	assert_true(not String(empty_unequip_result.get("message", "")).is_empty(), "Failed unequip should explain why it failed.")
 
+	var plastic_bag: Dictionary = content_library.get_item("plastic_bag")
+	assert_true(not plastic_bag.is_empty(), "Plastic bag should exist as a lightweight hand-carry container.")
+	assert_eq(String(plastic_bag.get("equip_slot", "")), "hand_carry", "Plastic bag should use the hand-carry equipment slot.")
+	var hand_carry_base_capacity := float(run_state.inventory.carry_capacity)
+	assert_true(run_state.inventory.add_item(plastic_bag), "Plastic bag should be addable before equip.")
+	var hand_carry_result: Dictionary = run_state.equip_inventory_item("plastic_bag", plastic_bag)
+	assert_true(bool(hand_carry_result.get("ok", false)), "Equipping a plastic bag should succeed.")
+	assert_eq(run_state.inventory.count_item_by_id("plastic_bag"), 0, "Equipped plastic bag should leave the carried inventory.")
+	assert_eq(String(run_state.equipped_items.get("hand_carry", {}).get("id", "")), "plastic_bag", "Hand-carry slot should hold the equipped plastic bag.")
+	assert_true(float(run_state.inventory.carry_capacity) > hand_carry_base_capacity, "Equipped plastic bags should improve carrying capacity.")
+
+	var hand_carry_unequip_result: Dictionary = run_state.unequip_slot("hand_carry")
+	assert_true(bool(hand_carry_unequip_result.get("ok", false)), "Unequipping a hand-carry container should succeed.")
+	assert_eq(String(hand_carry_unequip_result.get("item", {}).get("id", "")), "plastic_bag", "Hand-carry unequip should return the plastic bag.")
+	assert_true(not run_state.equipped_items.has("hand_carry"), "Hand-carry slot should be empty after unequip.")
+	assert_eq(run_state.inventory.count_item_by_id("plastic_bag"), 1, "Unequipped plastic bag should return to inventory.")
+
 	pass_test("EQUIPMENT_LOADOUT_OK")

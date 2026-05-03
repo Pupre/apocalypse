@@ -4875,6 +4875,8 @@
     "item_tags": [
       "carry",
       "container",
+      "equipment",
+      "hand_carry",
       "ordinary_world",
       "survival_expansion"
     ],
@@ -4884,7 +4886,10 @@
       "office",
       "residential",
       "retail"
-    ]
+    ],
+    "equip_slot": "hand_carry",
+    "carry_capacity_bonus": 1.6,
+    "ideal_carry_bonus": 0.5
   },
   {
     "id": "surv_container_002",
@@ -4898,6 +4903,8 @@
     "item_tags": [
       "carry",
       "container",
+      "equipment",
+      "hand_carry",
       "ordinary_world",
       "survival_expansion"
     ],
@@ -4907,7 +4914,10 @@
       "office",
       "residential",
       "retail"
-    ]
+    ],
+    "equip_slot": "hand_carry",
+    "carry_capacity_bonus": 2.0,
+    "ideal_carry_bonus": 0.65
   },
   {
     "id": "surv_container_003",
@@ -4921,6 +4931,8 @@
     "item_tags": [
       "carry",
       "container",
+      "equipment",
+      "hand_carry",
       "ordinary_world",
       "survival_expansion"
     ],
@@ -4930,7 +4942,10 @@
       "office",
       "residential",
       "retail"
-    ]
+    ],
+    "equip_slot": "hand_carry",
+    "carry_capacity_bonus": 2.4,
+    "ideal_carry_bonus": 0.35
   },
   {
     "id": "surv_container_004",
@@ -4944,6 +4959,8 @@
     "item_tags": [
       "carry",
       "container",
+      "equipment",
+      "hand_carry",
       "ordinary_world",
       "survival_expansion"
     ],
@@ -4953,7 +4970,10 @@
       "office",
       "residential",
       "retail"
-    ]
+    ],
+    "equip_slot": "hand_carry",
+    "carry_capacity_bonus": 1.2,
+    "ideal_carry_bonus": 0.5
   },
   {
     "id": "surv_container_005",
@@ -4965,8 +4985,10 @@
     "cold_hint": "젖은 것과 마른 것, 먹을 것과 더러운 것을 나누는 것만으로도 생존성이 오른다.",
     "category": "container",
     "item_tags": [
+      "back_carry",
       "carry",
       "container",
+      "equipment",
       "ordinary_world",
       "survival_expansion"
     ],
@@ -4976,7 +4998,10 @@
       "office",
       "residential",
       "retail"
-    ]
+    ],
+    "equip_slot": "back",
+    "carry_capacity_bonus": 3.0,
+    "ideal_carry_bonus": 1.0
   },
   {
     "id": "surv_container_006",
@@ -4990,6 +5015,8 @@
     "item_tags": [
       "carry",
       "container",
+      "equipment",
+      "hand_carry",
       "ordinary_world",
       "survival_expansion"
     ],
@@ -4999,7 +5026,10 @@
       "office",
       "residential",
       "retail"
-    ]
+    ],
+    "equip_slot": "hand_carry",
+    "carry_capacity_bonus": 2.0,
+    "ideal_carry_bonus": 0.35
   },
   {
     "id": "surv_container_007",
@@ -5013,6 +5043,8 @@
     "item_tags": [
       "carry",
       "container",
+      "equipment",
+      "hand_carry",
       "ordinary_world",
       "survival_expansion"
     ],
@@ -5022,7 +5054,10 @@
       "office",
       "residential",
       "retail"
-    ]
+    ],
+    "equip_slot": "hand_carry",
+    "carry_capacity_bonus": 2.4,
+    "ideal_carry_bonus": 0.5
   },
   {
     "id": "surv_container_008",
@@ -5036,6 +5071,8 @@
     "item_tags": [
       "carry",
       "container",
+      "equipment",
+      "hand_carry",
       "ordinary_world",
       "survival_expansion"
     ],
@@ -5045,7 +5082,10 @@
       "office",
       "residential",
       "retail"
-    ]
+    ],
+    "equip_slot": "hand_carry",
+    "carry_capacity_bonus": 1.2,
+    "ideal_carry_bonus": 0.65
   },
   {
     "id": "surv_container_009",
@@ -5174,8 +5214,10 @@
     "item_tags": [
       "carry",
       "container",
+      "equipment",
       "ordinary_world",
-      "survival_expansion"
+      "survival_expansion",
+      "waist_carry"
     ],
     "spawn_profiles": [
       "global",
@@ -5183,7 +5225,10 @@
       "office",
       "residential",
       "retail"
-    ]
+    ],
+    "equip_slot": "waist",
+    "carry_capacity_bonus": 0.8,
+    "ideal_carry_bonus": 0.35
   },
   {
     "id": "surv_container_015",
@@ -5220,8 +5265,10 @@
     "item_tags": [
       "carry",
       "container",
+      "equipment",
       "ordinary_world",
-      "survival_expansion"
+      "survival_expansion",
+      "waist_carry"
     ],
     "spawn_profiles": [
       "global",
@@ -5229,7 +5276,10 @@
       "office",
       "residential",
       "retail"
-    ]
+    ],
+    "equip_slot": "waist",
+    "carry_capacity_bonus": 0.8,
+    "ideal_carry_bonus": 0.35
   },
   {
     "id": "surv_container_017",
@@ -5312,6 +5362,8 @@
     "item_tags": [
       "carry",
       "container",
+      "equipment",
+      "hand_carry",
       "ordinary_world",
       "survival_expansion"
     ],
@@ -5321,7 +5373,10 @@
       "office",
       "residential",
       "retail"
-    ]
+    ],
+    "equip_slot": "hand_carry",
+    "carry_capacity_bonus": 1.2,
+    "ideal_carry_bonus": 0.65
   },
   {
     "id": "surv_container_021",
@@ -5333,8 +5388,10 @@
     "cold_hint": "젖은 것과 마른 것, 먹을 것과 더러운 것을 나누는 것만으로도 생존성이 오른다.",
     "category": "container",
     "item_tags": [
+      "back_carry",
       "carry",
       "container",
+      "equipment",
       "ordinary_world",
       "survival_expansion"
     ],
@@ -5344,7 +5401,10 @@
       "office",
       "residential",
       "retail"
-    ]
+    ],
+    "equip_slot": "back",
+    "carry_capacity_bonus": 2.5,
+    "ideal_carry_bonus": 1.0
   },
   {
     "id": "surv_container_022",
@@ -5404,6 +5464,8 @@
     "item_tags": [
       "carry",
       "container",
+      "equipment",
+      "hand_carry",
       "ordinary_world",
       "survival_expansion"
     ],
@@ -5413,7 +5475,10 @@
       "office",
       "residential",
       "retail"
-    ]
+    ],
+    "equip_slot": "hand_carry",
+    "carry_capacity_bonus": 1.2,
+    "ideal_carry_bonus": 0.35
   },
   {
     "id": "surv_container_025",
@@ -5427,6 +5492,8 @@
     "item_tags": [
       "carry",
       "container",
+      "equipment",
+      "hand_carry",
       "ordinary_world",
       "survival_expansion"
     ],
@@ -5436,7 +5503,10 @@
       "office",
       "residential",
       "retail"
-    ]
+    ],
+    "equip_slot": "hand_carry",
+    "carry_capacity_bonus": 1.6,
+    "ideal_carry_bonus": 0.5
   },
   {
     "id": "surv_equipment_001",

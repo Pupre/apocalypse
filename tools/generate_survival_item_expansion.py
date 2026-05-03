@@ -345,7 +345,41 @@ def apply_stats(row: dict[str, Any], group_key: str, index: int, name: str) -> N
             }
 
 
-EQUIP_SLOTS = ["outer", "body", "neck", "head", "face", "hands", "feet", "waist", "back"]
+EQUIP_SLOTS = ["outer", "body", "neck", "head", "face", "hands", "feet", "waist", "back", "hand_carry"]
+
+
+def add_item_tags(row: dict[str, Any], *tags: str) -> None:
+    existing_tags = set(row.get("item_tags", []))
+    existing_tags.update(tags)
+    row["item_tags"] = sorted(existing_tags)
+
+
+def apply_container_loadout(row: dict[str, Any], index: int, name: str) -> None:
+    del name
+
+    back_carried_indices = {5, 21}
+    waist_carried_indices = {14, 16}
+    hand_carried_indices = {1, 2, 3, 4, 6, 7, 8, 20, 24, 25}
+
+    if index in back_carried_indices:
+        row["equip_slot"] = "back"
+        row["carry_capacity_bonus"] = 3.0 if index == 5 else 2.5
+        row["ideal_carry_bonus"] = 1.0
+        add_item_tags(row, "equipment", "back_carry")
+        return
+
+    if index in waist_carried_indices:
+        row["equip_slot"] = "waist"
+        row["carry_capacity_bonus"] = 0.8
+        row["ideal_carry_bonus"] = 0.35
+        add_item_tags(row, "equipment", "waist_carry")
+        return
+
+    if index in hand_carried_indices:
+        row["equip_slot"] = "hand_carry"
+        row["carry_capacity_bonus"] = round(1.2 + float(index % 4) * 0.4, 2)
+        row["ideal_carry_bonus"] = round(0.35 + float(index % 3) * 0.15, 2)
+        add_item_tags(row, "equipment", "hand_carry")
 
 
 def apply_equipment(row: dict[str, Any], index: int, name: str) -> None:
@@ -411,6 +445,8 @@ def build_items(existing_ids: set[str]) -> list[dict[str, Any]]:
                 "spawn_profiles": sorted(set(group["spawn"])),
             }
             apply_stats(row, group["key"], index, name)
+            if group["key"] == "container":
+                apply_container_loadout(row, index, name)
             if group["key"] == "equipment":
                 apply_equipment(row, index, name)
             if group["key"] == "crafted":
