@@ -655,6 +655,16 @@ func _run_test() -> void:
 	assert_eq(equipped_rows.size(), 1, "Equipping an item should surface one equipped state row.")
 	assert_eq(String(equipped_rows[0].get("slot_label", "")), "등", "The backpack should occupy the back slot.")
 	assert_eq(String(equipped_rows[0].get("item_id", "")), "small_backpack", "Equipped rows should carry the equipped item id so future UI can attach item art.")
+	assert_eq(String(equipped_rows[0].get("action_id", "")), "unequip_inventory_slot_back", "Equipped rows should expose a direct unequip action for the loadout strip.")
+	assert_true(director.apply_action("unequip_inventory_slot_back"), "Indoor mode should allow unequipping gear from the equipment strip.")
+	await process_frame
+	equipped_rows = director.get_equipped_rows()
+	assert_eq(String(equipped_rows[0].get("kind", "")), "empty", "Unequipping should clear the equipment strip.")
+	assert_eq(run_state.inventory.count_item_by_id("small_backpack"), 1, "Unequipped gear should return to the inventory.")
+	assert_true(
+		result_label.text.find("해제") != -1 or director.get_feedback_message().find("해제") != -1,
+		"Unequipping should leave readable feedback."
+	)
 
 	assert_true(director.apply_action("inspect_inventory_lighter"), "Indoor mode should allow selecting the lighter for inspection.")
 	selected_item_sheet = director.get_selected_inventory_sheet()
@@ -662,11 +672,8 @@ func _run_test() -> void:
 	assert_true(String(selected_item_sheet.get("effect_text", "")).find("#ignition_tool") != -1, "Lighter detail should expose ignition tool tags.")
 	assert_true(director.apply_action("drop_inventory_lighter"), "Indoor mode should still allow dropping the remaining utility item.")
 	await process_frame
-	assert_eq(
-		director.get_inventory_rows().size(),
-		1,
-		"Dropping the lighter should leave any other carried loot intact."
-	)
+	assert_eq(run_state.inventory.count_item_by_id("lighter"), 0, "Dropping the lighter should remove it from the carried inventory.")
+	assert_eq(run_state.inventory.count_item_by_id("small_backpack"), 1, "Dropping the lighter should leave unequipped gear intact.")
 	assert_true(
 		result_label.text.find("버렸다") != -1 or result_label.text.find("내려놓았다") != -1,
 		"Dropping an item from the inventory flow should leave readable feedback."

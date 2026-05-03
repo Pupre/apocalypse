@@ -329,6 +329,7 @@ func get_equipped_rows() -> Array[Dictionary]:
 			"summary_text": _slot_label(slot_id),
 			"state_text": "",
 			"detail_text": _item_effect_text(equipped_item),
+			"action_id": "unequip_inventory_slot_%s" % slot_id,
 		})
 
 	if rows.is_empty():
@@ -358,6 +359,7 @@ func get_selected_inventory_sheet() -> Dictionary:
 		"cold_hint": String(item_data.get("cold_hint", "")),
 		"item_tags": item_data.get("item_tags", []),
 		"effect_text": _item_sheet_effect_text(item_data),
+		"mode_message": _equipment_compare_text(item_data),
 		"actions": _inventory_sheet_actions(item_data, _selected_inventory_item_id),
 	}
 
@@ -536,6 +538,21 @@ func apply_action(action_id: String) -> bool:
 				_item_name(equip_item_data, equip_item_id),
 				_item_name(replaced_item, String(replaced_item.get("id", "")))
 			]
+		state_changed.emit()
+		return true
+
+	if action_id.begins_with("unequip_inventory_slot_"):
+		var unequip_slot_id := action_id.trim_prefix("unequip_inventory_slot_")
+		if _run_state == null or not _run_state.has_method("unequip_slot"):
+			return false
+		var unequip_result: Dictionary = _run_state.unequip_slot(unequip_slot_id)
+		if not bool(unequip_result.get("ok", false)):
+			_event_state["last_feedback_message"] = String(unequip_result.get("message", "장비를 해제하지 못했다."))
+			state_changed.emit()
+			return true
+		var unequipped_item: Dictionary = unequip_result.get("item", {})
+		_selected_inventory_item_id = String(unequipped_item.get("id", ""))
+		_event_state["last_feedback_message"] = "%s 해제했다. 가방에 넣었다." % _item_name(unequipped_item, String(unequipped_item.get("id", "")))
 		state_changed.emit()
 		return true
 
@@ -966,9 +983,14 @@ func _inventory_sheet_actions(item_data: Dictionary, item_id: String) -> Array[D
 			"label": _consume_action_label(item_data),
 		})
 	if not String(item_data.get("equip_slot", "")).is_empty():
+		var equip_slot := String(item_data.get("equip_slot", ""))
+		var equipped_item := _equipped_item_in_slot(equip_slot)
+		var label := "장착한다"
+		if not equipped_item.is_empty():
+			label = "%s와 교체한다" % _item_name(equipped_item, String(equipped_item.get("id", "")))
 		actions.append({
 			"id": "equip_inventory_%s" % item_id,
-			"label": "장착한다",
+			"label": label,
 		})
 	actions.append({
 		"id": "drop_inventory_%s" % item_id,
@@ -979,6 +1001,28 @@ func _inventory_sheet_actions(item_data: Dictionary, item_id: String) -> Array[D
 		"label": "닫기",
 	})
 	return actions
+
+
+func _equipped_item_in_slot(slot_id: String) -> Dictionary:
+	if _run_state == null or slot_id.is_empty():
+		return {}
+	var equipped_item_variant: Variant = _run_state.equipped_items.get(slot_id, {})
+	if typeof(equipped_item_variant) != TYPE_DICTIONARY:
+		return {}
+	return (equipped_item_variant as Dictionary).duplicate(true)
+
+
+func _equipment_compare_text(item_data: Dictionary) -> String:
+	var equip_slot := String(item_data.get("equip_slot", ""))
+	if equip_slot.is_empty():
+		return ""
+	var equipped_item := _equipped_item_in_slot(equip_slot)
+	if equipped_item.is_empty():
+		return "%s 칸이 비어 있다. 지금 장착하면 바로 효과가 적용된다." % _slot_label(equip_slot)
+	return "현재 %s: %s\n교체하면 기존 장비는 가방으로 돌아간다." % [
+		_slot_label(equip_slot),
+		_item_name(equipped_item, String(equipped_item.get("id", ""))),
+	]
 
 
 func _sorted_edge_id(from_zone_id: String, to_zone_id: String) -> String:

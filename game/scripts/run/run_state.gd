@@ -482,6 +482,32 @@ func equip_inventory_item(item_id: String, item_data: Dictionary) -> Dictionary:
 	return result
 
 
+func unequip_slot(slot_id: String) -> Dictionary:
+	var result := {
+		"ok": false,
+		"message": "",
+		"item": {},
+	}
+	if slot_id.is_empty():
+		result["message"] = "해제할 장비 칸을 찾지 못했다."
+		return result
+
+	var equipped_item: Dictionary = equipped_items.get(slot_id, {})
+	if equipped_item.is_empty():
+		result["message"] = "해당 칸에 장착한 장비가 없다."
+		return result
+
+	if not inventory.add_item(equipped_item):
+		result["message"] = "가방에 둘 공간이 없어 장비를 해제할 수 없다."
+		return result
+
+	equipped_items.erase(slot_id)
+	_recalculate_derived_stats()
+	result["ok"] = true
+	result["item"] = equipped_item
+	return result
+
+
 func get_carry_state_id() -> String:
 	if inventory == null or not inventory.has_method("get_carry_state_id"):
 		return "normal"

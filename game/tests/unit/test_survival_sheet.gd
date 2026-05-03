@@ -95,19 +95,43 @@ func _run_test() -> void:
 	var sheet_title := _find(survival_sheet, "Sheet/VBox/Header/TitleRow/TitleLabel") as Label
 	var sheet_status := _find(survival_sheet, "Sheet/VBox/Header/StatusLabel") as Label
 	var browse_hint_label := _find(survival_sheet, "Sheet/VBox/InventoryPane/BrowseHintLabel") as Label
+	var equipment_rows := _find(survival_sheet, "Sheet/VBox/InventoryPane/EquipmentRows") as GridContainer
 	var inventory_items := _find(survival_sheet, "Sheet/VBox/InventoryPane/InventoryScroll/InventoryContent/InventoryItems") as VBoxContainer
 	if not assert_true(sheet_title != null and sheet_status != null, "SurvivalSheet should expose title and status labels."):
 		return
 	if not assert_true(browse_hint_label != null and inventory_items != null, "SurvivalSheet should expose the browse hint and item list."):
 		return
+	if not assert_true(equipment_rows != null, "SurvivalSheet should expose a grid-based equipment strip."):
+		return
 	assert_eq(sheet_title.get_theme_font_size("font_size"), 19, "Bag title should use the larger readability-focused heading size.")
 	assert_eq(sheet_status.get_theme_font_size("font_size"), 15, "Bag status should use the larger secondary compact font size.")
 	assert_true(browse_hint_label.text.find("먹고 마실 것") != -1, "Bag browse hint should teach the survival-intent grouping.")
+	assert_eq(equipment_rows.columns, 4, "Equipment strip should use a four-column mobile grid instead of one cramped horizontal row.")
+	assert_true(equipment_rows.get_child_count() >= 12, "Equipment strip should show the full loadout slot set.")
 	assert_true(_has_label_text(inventory_items, "먹고 마실 것"), "Bag list should group food and drink by survival intent.")
 	assert_true(_has_label_text(inventory_items, "불과 도구"), "Bag list should group tools by survival intent.")
 	assert_true(_has_label_text(inventory_items, "읽을 것"), "Bag list should group readable knowledge separately.")
 	var browse_inset_height := detail_inset.custom_minimum_size.y
 	assert_true(not detail_sheet.visible, "Opening the bag should start in list-first browse mode with no detail sheet expanded.")
+
+	survival_sheet.set_inventory_payload({
+		"title": "가방",
+		"status_text": "",
+		"equipped_rows": [{
+			"kind": "equipped",
+			"item_id": "small_backpack",
+			"slot_id": "back",
+			"slot_label": "등",
+			"item_name": "작은 배낭",
+			"detail_text": "운반 한계 +4.0kg / 장착 슬롯: 등",
+			"action_id": "unequip_inventory_slot_back",
+		}],
+		"rows": [],
+		"selected_sheet": {"visible": false},
+		"feedback_message": "",
+	})
+	await process_frame
+	assert_true(_has_button_text(equipment_rows, "해제"), "Equipped chips should expose an immediate unequip button.")
 
 	survival_sheet.select_inventory_item("newspaper")
 	assert_true(detail_sheet.visible, "Selecting an item should open the bottom detail sheet.")
@@ -287,5 +311,17 @@ func _has_label_text(container: Node, expected_text: String) -> bool:
 		if label != null and label.text == expected_text:
 			return true
 		if _has_label_text(child, expected_text):
+			return true
+	return false
+
+
+func _has_button_text(container: Node, expected_text: String) -> bool:
+	if container == null:
+		return false
+	for child in container.get_children():
+		var button := child as Button
+		if button != null and button.text == expected_text:
+			return true
+		if _has_button_text(child, expected_text):
 			return true
 	return false

@@ -72,7 +72,7 @@ var _inventory_scroll: ScrollContainer = null
 var _detail_inset: Control = null
 var _inventory_items: VBoxContainer = null
 var _browse_hint_label: Label = null
-var _equipment_rows: HBoxContainer = null
+var _equipment_rows: GridContainer = null
 var _item_detail_sheet: Control = null
 var _detail_close_button: Button = null
 var _item_name_label: Label = null
@@ -324,7 +324,7 @@ func _cache_nodes() -> void:
 	_inventory_scroll = get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll") as ScrollContainer
 	_detail_inset = get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll/InventoryContent/DetailInset") as Control
 	_browse_hint_label = get_node_or_null("Sheet/VBox/InventoryPane/BrowseHintLabel") as Label
-	_equipment_rows = get_node_or_null("Sheet/VBox/InventoryPane/EquipmentRows") as HBoxContainer
+	_equipment_rows = get_node_or_null("Sheet/VBox/InventoryPane/EquipmentRows") as GridContainer
 	_inventory_items = get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll/InventoryContent/InventoryItems") as VBoxContainer
 	_item_detail_sheet = get_node_or_null("ItemDetailSheet") as Control
 	_detail_close_button = get_node_or_null("ItemDetailSheet/VBox/Header/DetailCloseButton") as Button
@@ -464,7 +464,7 @@ func _render_equipment_summary() -> void:
 				if String(row.get("kind", "")) == "equipped" and not slot_id.is_empty():
 					equipped_by_slot[slot_id] = row
 
-	var slot_order := ["back", "body", "outer", "head", "face", "feet", "hands", "waist"]
+	var slot_order := ["back", "body", "outer", "head", "neck", "face", "hands", "feet", "feet_layer", "hands_layer", "waist", "pocket"]
 	for slot_id in slot_order:
 		var row: Dictionary = equipped_by_slot.get(slot_id, {
 			"kind": "empty",
@@ -479,12 +479,13 @@ func _render_equipment_summary() -> void:
 func _create_equipment_chip(row: Dictionary) -> Control:
 	var equipped := String(row.get("kind", "")) == "equipped"
 	var chip := PanelContainer.new()
+	chip.custom_minimum_size = Vector2(0, 74)
 	chip.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	chip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	chip.mouse_filter = Control.MOUSE_FILTER_PASS
 	chip.add_theme_stylebox_override("panel", _equipment_chip_style(equipped))
 
 	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 1)
+	box.add_theme_constant_override("separation", 3)
 	chip.add_child(box)
 
 	var slot_label := Label.new()
@@ -494,14 +495,71 @@ func _create_equipment_chip(row: Dictionary) -> Control:
 	_apply_label_style(slot_label, 10, TEXT_SECONDARY_COLOR if equipped else TEXT_MUTED_COLOR, 1)
 	box.add_child(slot_label)
 
+	var item_row := HBoxContainer.new()
+	item_row.add_theme_constant_override("separation", 4)
+	box.add_child(item_row)
+
+	var item_icon := TextureRect.new()
+	item_icon.custom_minimum_size = Vector2(18, 18)
+	item_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	item_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	item_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	item_icon.texture = _item_icon_for(String(row.get("item_id", ""))) if equipped else null
+	item_icon.visible = item_icon.texture != null
+	item_row.add_child(item_icon)
+
 	var item_label := Label.new()
 	item_label.text = String(row.get("item_name", "비어 있음"))
-	item_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	item_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT if equipped else HORIZONTAL_ALIGNMENT_CENTER
 	item_label.clip_text = true
+	item_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_apply_label_style(item_label, 11, TEXT_PRIMARY_COLOR if equipped else Color(0.78, 0.84, 0.90, 0.88), 1)
-	box.add_child(item_label)
+	item_row.add_child(item_label)
+
+	var detail_text := _first_equipment_detail_line(String(row.get("detail_text", "")))
+	if equipped and not detail_text.is_empty():
+		var detail_label := Label.new()
+		detail_label.text = detail_text
+		detail_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		detail_label.clip_text = true
+		_apply_label_style(detail_label, 9, TEXT_MUTED_COLOR, 1)
+		box.add_child(detail_label)
+
+	if equipped:
+		var unequip_button := Button.new()
+		unequip_button.text = "해제"
+		unequip_button.custom_minimum_size = Vector2(0, 22)
+		unequip_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		unequip_button.focus_mode = Control.FOCUS_NONE
+		_apply_button_text_style(unequip_button, 10, TEXT_PRIMARY_COLOR, 1)
+		_ui_kit_resolver.apply_button(
+			unequip_button,
+			"sheet_set/action_button_secondary_normal.png",
+			"sheet_set/action_button_secondary_pressed.png"
+		)
+		var action_id := String(row.get("action_id", ""))
+		if not action_id.is_empty():
+			unequip_button.pressed.connect(func() -> void:
+				_selected_item_id = String(row.get("item_id", ""))
+				inventory_action_requested.emit(action_id)
+			)
+		box.add_child(unequip_button)
 
 	return chip
+
+
+func _first_equipment_detail_line(detail_text: String) -> String:
+	if detail_text.is_empty() or detail_text == "효과 없음":
+		return ""
+	var pieces := detail_text.split(" / ", false)
+	for piece_variant in pieces:
+		var piece := String(piece_variant).strip_edges()
+		if piece.is_empty():
+			continue
+		if piece.begins_with("무게 ") or piece.begins_with("장착 슬롯"):
+			continue
+		return piece
+	return ""
 
 
 func _equipment_chip_style(equipped: bool) -> StyleBoxFlat:
