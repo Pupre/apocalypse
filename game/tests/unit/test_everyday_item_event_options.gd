@@ -67,6 +67,16 @@ func _assert_cafe_filter_option(run_state_script: Script, content_library: Node,
 	assert_eq(run_state.inventory.count_item_by_id("evd_clean_water_prefilter"), 0, "The improvised filter should be consumed after filtering dirty machine water.")
 	assert_true(_zone_supply_sources(event_state, "counter").size() > 0, "Cafe prefilter action should expose a water supply source.")
 
+	var seating_state := _event_state("seating_area")
+	_add_item(run_state, content_library, "evd_window_gap_roll")
+	var window_action: Dictionary = _action_by_id(resolver.get_actions(event_data, seating_state, run_state), "seal_cafe_window_and_search")
+	assert_true(not bool(window_action.get("locked", false)), "Window gap roll should unlock the cafe seating deep search.")
+	assert_true(resolver.apply_action(run_state, event_data, seating_state, "seal_cafe_window_and_search"), "Cafe window-sealing search should resolve.")
+	assert_true(_zone_flags(seating_state).has("cafe_seating_gap_blocked"), "Cafe window-sealing search should set its completion flag.")
+	assert_eq(run_state.inventory.count_item_by_id("evd_window_gap_roll"), 0, "Installed cafe window gap roll should be consumed by the room setup.")
+	var cutscene: Dictionary = seating_state.get("pending_story_cutscene", {})
+	assert_eq(String(cutscene.get("asset", "")), "indoor/indoor_story_cafe_window_gap_success.png", "Cafe window-sealing search should trigger its story illustration.")
+
 
 func _assert_laundry_equipment_options(run_state_script: Script, content_library: Node, resolver) -> void:
 	var event_data := _load_json("res://data/events/indoor/laundry_01.json")

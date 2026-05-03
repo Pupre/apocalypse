@@ -48,4 +48,10 @@ func _run_test() -> void:
 	assert_eq(convenience_story_texture.get_width(), 960, "Convenience counter story illustration should match the indoor story width.")
 	assert_eq(convenience_story_texture.get_height(), 480, "Convenience counter story illustration should match the indoor story height.")
 
+	var cafe_story_texture: Texture2D = resolver.get_texture("indoor/indoor_story_cafe_window_gap_success.png")
+	if not assert_true(cafe_story_texture != null, "Resolver should load the cafe window story illustration."):
+		return
+	assert_eq(cafe_story_texture.get_width(), 960, "Cafe window story illustration should match the indoor story width.")
+	assert_eq(cafe_story_texture.get_height(), 480, "Cafe window story illustration should match the indoor story height.")
+
 	pass_test("UI_KIT_RESOLVER_OK")

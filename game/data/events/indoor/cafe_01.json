@@ -168,6 +168,13 @@
               "noise": 0,
               "repeatable": false
             },
+            "result_illustration_asset": "indoor/indoor_story_cafe_window_gap_success.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_cafe_window_gap_success.png",
+              "title": "창가의 바람을 막았다",
+              "text": "차가운 바람을 그대로 두었다면 무릎이 먼저 굳었을 것이다. 천과 비닐을 말아 창가 아래에 밀어 넣자, 잠깐이지만 안쪽 좌석은 뒤질 수 있는 공간이 되었다.",
+              "button": "좌석 아래를 확인한다"
+            },
             "consume_on_use": true
           }
         }
