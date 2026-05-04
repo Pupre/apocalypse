@@ -3,96 +3,86 @@
     "x": 5,
     "y": 7
   },
-  "district_id": "central_transfer",
-  "district_label": "중앙 환승로",
-  "layout_id": "station_crossing",
+  "district_id": "logistics_belt",
+  "district_label": "남부 물류 벨트",
+  "layout_id": "cold_chain_depot",
   "roads": [
     {
-      "id": "bus_loop_top",
+      "id": "cold_chain_dock",
       "texture_id": "road_plain",
       "rect": {
-        "x": 155,
-        "y": 170,
-        "width": 650,
-        "height": 135
+        "x": 120,
+        "y": 225,
+        "width": 720,
+        "height": 250
       }
     },
     {
-      "id": "bus_loop_bottom",
-      "texture_id": "road_plain",
-      "rect": {
-        "x": 155,
-        "y": 650,
-        "width": 650,
-        "height": 135
-      }
-    },
-    {
-      "id": "bus_loop_left",
+      "id": "reefer_lane",
       "texture_id": "slush_road",
       "rect": {
-        "x": 155,
-        "y": 170,
-        "width": 135,
-        "height": 615
+        "x": 0,
+        "y": 640,
+        "width": 960,
+        "height": 150
       }
     },
     {
-      "id": "bus_loop_right",
-      "texture_id": "slush_road",
+      "id": "forklift_cut",
+      "texture_id": "road_cracked",
       "rect": {
-        "x": 670,
-        "y": 170,
-        "width": 135,
-        "height": 615
+        "x": 620,
+        "y": 120,
+        "width": 145,
+        "height": 700
       }
     },
     {
-      "id": "underpass_cut",
-      "texture_id": "alley_dark",
+      "id": "service_walk",
+      "texture_id": "sidewalk_snow",
       "rect": {
-        "x": 390,
-        "y": 0,
-        "width": 175,
-        "height": 960
+        "x": 180,
+        "y": 520,
+        "width": 470,
+        "height": 95
       }
     }
   ],
   "snow_fields": [
     {
-      "id": "terminal_plaza_snow",
+      "id": "container_roof_snow",
       "rect": {
-        "x": 315,
-        "y": 335,
-        "width": 330,
-        "height": 260
+        "x": 165,
+        "y": 145,
+        "width": 520,
+        "height": 150
       }
     },
     {
-      "id": "bus_stop_snowbank",
+      "id": "dock_drift",
       "rect": {
-        "x": 95,
-        "y": 95,
-        "width": 267,
-        "height": 110
+        "x": 705,
+        "y": 560,
+        "width": 190,
+        "height": 170
       }
     },
     {
-      "id": "underpass_drift",
+      "id": "yard_windrow",
       "rect": {
-        "x": 395,
-        "y": 780,
-        "width": 170,
-        "height": 130
+        "x": 35,
+        "y": 735,
+        "width": 480,
+        "height": 120
       }
     },
     {
-      "id": "ticket_curb_snow",
+      "id": "pallet_snow",
       "rect": {
-        "x": 685,
-        "y": 320,
-        "width": 195,
-        "height": 105
+        "x": 295,
+        "y": 520,
+        "width": 220,
+        "height": 95
       }
     }
   ],
@@ -101,10 +91,10 @@
       "id": "intersection_black_ice",
       "kind": "black_ice",
       "rect": {
-        "x": 389,
-        "y": 380,
-        "width": 200,
-        "height": 165
+        "x": 354,
+        "y": 525,
+        "width": 205,
+        "height": 150
       },
       "message": "교차로 그늘에 숨어 있던 빙판이 발을 미끄러뜨렸다.",
       "exposure_loss": 1.5,
@@ -116,10 +106,10 @@
       "id": "building_wind_gap",
       "kind": "wind_gap",
       "rect": {
-        "x": 665,
-        "y": 369,
-        "width": 160,
-        "height": 245
+        "x": 710,
+        "y": 209,
+        "width": 150,
+        "height": 285
       },
       "message": "건물 사이로 눌린 바람이 체온을 빠르게 빼앗았다.",
       "exposure_loss": 2.6,
@@ -130,10 +120,10 @@
       "id": "packed_snow_drift",
       "kind": "snow_drift",
       "rect": {
-        "x": 165,
-        "y": 655,
-        "width": 270,
-        "height": 135
+        "x": 150,
+        "y": 680,
+        "width": 320,
+        "height": 150
       },
       "message": "허벅지까지 쌓인 눈을 헤치느라 숨이 거칠어졌다.",
       "exposure_loss": 1.1,
@@ -144,10 +134,10 @@
       "id": "open_lot_whiteout",
       "kind": "whiteout",
       "rect": {
-        "x": 330,
-        "y": 144,
-        "width": 300,
-        "height": 230
+        "x": 485,
+        "y": 184,
+        "width": 340,
+        "height": 270
       },
       "message": "눈발이 시야를 지워 길과 출입구가 잠깐 구분되지 않았다.",
       "exposure_loss": 2.0,
@@ -157,98 +147,94 @@
   ],
   "obstacles": [
     {
-      "kind": "barrier",
-      "asset_id": "traffic_cone",
+      "kind": "rubble",
+      "asset_id": "dumpster_snow",
       "rect": {
-        "x": 204,
-        "y": 329,
-        "width": 42,
-        "height": 50
-      }
-    },
-    {
-      "kind": "cart",
-      "asset_id": "shopping_cart",
-      "rect": {
-        "x": 736,
-        "y": 348,
-        "width": 66,
-        "height": 54
-      }
-    },
-    {
-      "kind": "light",
-      "asset_id": "street_lamp",
-      "rect": {
-        "x": 220,
-        "y": 630,
-        "width": 42,
+        "x": 184,
+        "y": 239,
+        "width": 124,
         "height": 82
       }
     },
     {
-      "kind": "rubble",
-      "asset_id": "tire_pile",
+      "kind": "fuel",
+      "asset_id": "barrel_empty",
       "rect": {
-        "x": 724,
-        "y": 622,
-        "width": 94,
-        "height": 62
+        "x": 456,
+        "y": 218,
+        "width": 54,
+        "height": 70
       }
     },
     {
-      "kind": "sign",
-      "asset_id": "bus_stop_sign",
+      "kind": "vehicle",
+      "asset_id": "frozen_car",
       "rect": {
-        "x": 458,
-        "y": 104,
-        "width": 48,
+        "x": 730,
+        "y": 245,
+        "width": 64,
+        "height": 60
+      }
+    },
+    {
+      "kind": "barrier",
+      "asset_id": "barricade_wood",
+      "rect": {
+        "x": 214,
+        "y": 582,
+        "width": 112,
+        "height": 50
+      }
+    },
+    {
+      "kind": "crate",
+      "asset_id": "crate_stack",
+      "rect": {
+        "x": 508,
+        "y": 634,
+        "width": 102,
         "height": 86
       }
     },
     {
-      "kind": "barrier",
-      "asset_id": "traffic_cone",
+      "kind": "rubble",
+      "asset_id": "dumpster_snow",
       "rect": {
-        "x": 475,
-        "y": 833,
-        "width": 42,
-        "height": 50
+        "x": 795,
+        "y": 618,
+        "width": 124,
+        "height": 82
       }
     },
     {
-      "kind": "cart",
-      "asset_id": "shopping_cart",
+      "kind": "fuel",
+      "asset_id": "barrel_empty",
       "rect": {
-        "x": 99,
-        "y": 500,
-        "width": 66,
-        "height": 54
+        "x": 114,
+        "y": 745,
+        "width": 54,
+        "height": 70
       }
     },
     {
-      "kind": "light",
-      "asset_id": "street_lamp",
+      "kind": "vehicle",
+      "asset_id": "frozen_car",
       "rect": {
         "x": 833,
-        "y": 492,
-        "width": 42,
-        "height": 82
+        "y": 122,
+        "width": 64,
+        "height": 60
       }
     }
   ],
   "building_anchors": {
     "mapx_05_07_a_anchor": {
-      "x": 720,
-      "y": 700
+      "x": 650,
+      "y": 440
     },
     "mapx_05_07_b_anchor": {
-      "x": 230,
-      "y": 690
-    },
-    "mapx_05_07_c_anchor": {
-      "x": 500,
-      "y": 235
+      "x": 260,
+      "y": 270
     }
   },
   "threat_spawns": [
@@ -266,8 +252,8 @@
   ],
   "landmarks": [
     {
-      "id": "central_transfer_05_07",
-      "label": "막힌 환승 교차로",
+      "id": "logistics_belt_05_07",
+      "label": "멈춰 선 냉동 물류창고",
       "position": {
         "x": 480,
         "y": 470

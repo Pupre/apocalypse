@@ -3,86 +3,86 @@
     "x": 8,
     "y": 5
   },
-  "district_id": "east_medical",
-  "district_label": "동쪽 의료/업무 지구",
-  "layout_id": "clinic_drive",
+  "district_id": "highway_checkpoint",
+  "district_label": "국도 검문·휴게 구역",
+  "layout_id": "rest_stop_loop",
   "roads": [
     {
-      "id": "clinic_drive",
-      "texture_id": "road_plain",
+      "id": "highway_main",
+      "texture_id": "road_lane_h",
       "rect": {
-        "x": 165,
-        "y": 105,
-        "width": 630,
-        "height": 150
+        "x": 0,
+        "y": 390,
+        "width": 960,
+        "height": 175
       }
     },
     {
-      "id": "ambulance_lane",
+      "id": "rest_stop_loop",
       "texture_id": "road_plain",
       "rect": {
-        "x": 660,
-        "y": 0,
-        "width": 145,
-        "height": 960
+        "x": 520,
+        "y": 165,
+        "width": 320,
+        "height": 430
       }
     },
     {
-      "id": "pharmacy_court",
+      "id": "service_parking",
+      "texture_id": "road_cracked",
+      "rect": {
+        "x": 120,
+        "y": 610,
+        "width": 420,
+        "height": 135
+      }
+    },
+    {
+      "id": "bathroom_walk",
       "texture_id": "sidewalk_snow",
       "rect": {
-        "x": 225,
-        "y": 395,
-        "width": 470,
-        "height": 280
-      }
-    },
-    {
-      "id": "service_dropoff",
-      "texture_id": "slush_road",
-      "rect": {
-        "x": 85,
-        "y": 665,
-        "width": 650,
-        "height": 120
+        "x": 580,
+        "y": 610,
+        "width": 260,
+        "height": 90
       }
     }
   ],
   "snow_fields": [
     {
-      "id": "clinic_plaza_snow",
+      "id": "road_shoulder_snow",
       "rect": {
-        "x": 240,
-        "y": 390,
-        "width": 440,
-        "height": 275
+        "x": 0,
+        "y": 570,
+        "width": 960,
+        "height": 95
       }
     },
     {
-      "id": "ambulance_bay_snow",
+      "id": "checkpoint_snowbank",
+      "rect": {
+        "x": 120,
+        "y": 230,
+        "width": 360,
+        "height": 125
+      }
+    },
+    {
+      "id": "rest_stop_curb_snow",
+      "rect": {
+        "x": 560,
+        "y": 150,
+        "width": 300,
+        "height": 115
+      }
+    },
+    {
+      "id": "blocked_lane_snow",
       "rect": {
         "x": 650,
-        "y": 235,
-        "width": 220,
-        "height": 145
-      }
-    },
-    {
-      "id": "pharmacy_curb_snow",
-      "rect": {
-        "x": 80,
-        "y": 690,
-        "width": 310,
-        "height": 95
-      }
-    },
-    {
-      "id": "records_walk_snow",
-      "rect": {
-        "x": 175,
-        "y": 60,
-        "width": 265,
-        "height": 95
+        "y": 675,
+        "width": 240,
+        "height": 130
       }
     }
   ],
@@ -91,10 +91,10 @@
       "id": "intersection_black_ice",
       "kind": "black_ice",
       "rect": {
-        "x": 259,
-        "y": 145,
-        "width": 170,
-        "height": 120
+        "x": 384,
+        "y": 350,
+        "width": 210,
+        "height": 150
       },
       "message": "교차로 그늘에 숨어 있던 빙판이 발을 미끄러뜨렸다.",
       "exposure_loss": 1.5,
@@ -105,10 +105,10 @@
       "id": "building_wind_gap",
       "kind": "wind_gap",
       "rect": {
-        "x": 665,
-        "y": 289,
-        "width": 160,
-        "height": 240
+        "x": 705,
+        "y": 194,
+        "width": 145,
+        "height": 300
       },
       "message": "건물 사이로 눌린 바람이 체온을 빠르게 빼앗았다.",
       "exposure_loss": 2.6,
@@ -119,10 +119,10 @@
       "id": "packed_snow_drift",
       "kind": "snow_drift",
       "rect": {
-        "x": 255,
+        "x": 175,
         "y": 640,
-        "width": 270,
-        "height": 135
+        "width": 340,
+        "height": 145
       },
       "message": "허벅지까지 쌓인 눈을 헤치느라 숨이 거칠어졌다.",
       "exposure_loss": 1.1,
@@ -133,10 +133,10 @@
       "id": "open_lot_whiteout",
       "kind": "whiteout",
       "rect": {
-        "x": 105,
-        "y": 334,
-        "width": 260,
-        "height": 230
+        "x": 515,
+        "y": 164,
+        "width": 300,
+        "height": 275
       },
       "message": "눈발이 시야를 지워 길과 출입구가 잠깐 구분되지 않았다.",
       "exposure_loss": 2.0,
@@ -146,97 +146,101 @@
   ],
   "obstacles": [
     {
-      "kind": "vehicle",
-      "asset_id": "frozen_car",
+      "kind": "barrier",
+      "asset_id": "traffic_cone",
       "rect": {
-        "x": 202,
-        "y": 292,
-        "width": 62,
-        "height": 58
-      }
-    },
-    {
-      "kind": "sign",
-      "asset_id": "bus_stop_sign",
-      "rect": {
-        "x": 681,
-        "y": 331,
-        "width": 48,
-        "height": 86
-      }
-    },
-    {
-      "kind": "utility",
-      "asset_id": "utility_box",
-      "rect": {
-        "x": 803,
-        "y": 523,
-        "width": 76,
-        "height": 68
+        "x": 152,
+        "y": 327,
+        "width": 42,
+        "height": 50
       }
     },
     {
       "kind": "barrier",
       "asset_id": "sandbags",
       "rect": {
-        "x": 132,
-        "y": 685,
-        "width": 108,
-        "height": 48
-      }
-    },
-    {
-      "kind": "light",
-      "asset_id": "street_lamp",
-      "rect": {
-        "x": 471,
-        "y": 692,
-        "width": 42,
-        "height": 82
+        "x": 336,
+        "y": 326,
+        "width": 118,
+        "height": 52
       }
     },
     {
       "kind": "vehicle",
       "asset_id": "frozen_car",
       "rect": {
-        "x": 710,
-        "y": 121,
-        "width": 62,
-        "height": 58
+        "x": 633,
+        "y": 313,
+        "width": 64,
+        "height": 60
       }
     },
     {
       "kind": "sign",
       "asset_id": "bus_stop_sign",
       "rect": {
-        "x": 312,
-        "y": 118,
+        "x": 782,
+        "y": 380,
         "width": 48,
         "height": 86
       }
     },
     {
-      "kind": "utility",
-      "asset_id": "utility_box",
+      "kind": "light",
+      "asset_id": "street_lamp",
       "rect": {
-        "x": 556,
-        "y": 440,
-        "width": 76,
-        "height": 68
+        "x": 216,
+        "y": 622,
+        "width": 42,
+        "height": 82
+      }
+    },
+    {
+      "kind": "barrier",
+      "asset_id": "traffic_cone",
+      "rect": {
+        "x": 510,
+        "y": 681,
+        "width": 42,
+        "height": 50
+      }
+    },
+    {
+      "kind": "barrier",
+      "asset_id": "sandbags",
+      "rect": {
+        "x": 812,
+        "y": 658,
+        "width": 118,
+        "height": 52
+      }
+    },
+    {
+      "kind": "vehicle",
+      "asset_id": "frozen_car",
+      "rect": {
+        "x": 106,
+        "y": 510,
+        "width": 64,
+        "height": 60
       }
     }
   ],
   "building_anchors": {
     "mapx_08_05_a_anchor": {
-      "x": 265,
-      "y": 250
+      "x": 520,
+      "y": 235
+    },
+    "mapx_08_05_b_anchor": {
+      "x": 760,
+      "y": 705
     }
   },
   "threat_spawns": [],
   "landmarks": [
     {
-      "id": "east_medical_08_05",
-      "label": "정전된 업무지구",
+      "id": "highway_checkpoint_08_05",
+      "label": "막힌 국도와 휴게소 불빛",
       "position": {
         "x": 480,
         "y": 470

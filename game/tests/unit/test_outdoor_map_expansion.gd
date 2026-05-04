@@ -1,6 +1,7 @@
 extends "res://tests/support/test_case.gd"
 
 const OUTDOOR_ART_RESOLVER_SCRIPT := preload("res://scripts/outdoor/outdoor_art_resolver.gd")
+const UI_KIT_RESOLVER_SCRIPT := preload("res://scripts/ui/ui_kit_resolver.gd")
 
 
 func _init() -> void:
@@ -36,16 +37,33 @@ func _run_test() -> void:
 		assert_true(typeof(anchors_variant) == TYPE_DICTIONARY and (anchors_variant as Dictionary).size() >= 1, "Expanded outdoor block %s should expose building anchors." % [block_coord])
 
 	var market_block: Dictionary = content_library.get_outdoor_block(Vector2i(3, 0))
+	var market_plaza_block: Dictionary = content_library.get_outdoor_block(Vector2i(4, 0))
+	var market_alley_block: Dictionary = content_library.get_outdoor_block(Vector2i(5, 0))
 	var center_block: Dictionary = content_library.get_outdoor_block(Vector2i(6, 6))
-	var industrial_block: Dictionary = content_library.get_outdoor_block(Vector2i(11, 11))
+	var center_detour_block: Dictionary = content_library.get_outdoor_block(Vector2i(4, 6))
+	var logistics_block: Dictionary = content_library.get_outdoor_block(Vector2i(7, 8))
+	var power_block: Dictionary = content_library.get_outdoor_block(Vector2i(10, 10))
+	var rural_block: Dictionary = content_library.get_outdoor_block(Vector2i(3, 11))
+	var checkpoint_block: Dictionary = content_library.get_outdoor_block(Vector2i(9, 5))
 	assert_eq(String(market_block.get("district_id", "")), "north_market", "The north market should keep a distinct district id.")
 	assert_eq(String(center_block.get("district_id", "")), "central_transfer", "The center should keep a distinct transfer district id.")
-	assert_eq(String(industrial_block.get("district_id", "")), "south_industrial", "The far southeast should read as an industrial district.")
+	assert_eq(String(logistics_block.get("district_id", "")), "logistics_belt", "The southern cargo belt should keep a distinct district id.")
+	assert_eq(String(power_block.get("district_id", "")), "power_plant", "The far southeast should now read as a power-plant district.")
+	assert_eq(String(rural_block.get("district_id", "")), "rural_greenbelt", "The southwest edge should become a rural greenhouse belt.")
+	assert_eq(String(checkpoint_block.get("district_id", "")), "highway_checkpoint", "The eastern road band should become a highway checkpoint district.")
 	assert_true(String(market_block.get("layout_id", "")).begins_with("market_"), "North market blocks should use market-specific layout variants.")
+	assert_true(_road_signature(market_block) != _road_signature(market_plaza_block), "Adjacent north-market blocks should no longer repeat the same road silhouette.")
+	assert_true(_road_signature(market_plaza_block) != _road_signature(market_alley_block), "North-market variants should alternate between arcade, plaza, and back-alley layouts.")
 	assert_true(_block_has_road_id(center_block, "bus_loop_top"), "Central transfer blocks should use a bus-loop road layout instead of the generic cross.")
-	assert_true(_block_has_road_id(industrial_block, "loading_yard"), "Industrial blocks should use a loading-yard layout instead of the generic cross.")
+	assert_true(_block_has_road_id(center_detour_block, "underpass_cut"), "Central transfer variants should include an underpass detour silhouette.")
+	assert_true(not _block_has_road_id(center_detour_block, "bus_loop_top"), "Not every central transfer block should repeat the bus-loop silhouette.")
+	assert_true(_block_has_road_id(logistics_block, "parcel_sorter_floor"), "Logistics blocks should use parcel-sorting or freight-yard silhouettes.")
+	assert_true(_block_has_road_id(power_block, "pipeway_vertical"), "Power-plant blocks should expose service pipeway silhouettes.")
+	assert_true(_block_has_road_id(rural_block, "greenhouse_lane"), "Rural greenhouse blocks should expose field-lane silhouettes.")
+	assert_true(_block_has_road_id(checkpoint_block, "highway_roadblock"), "Highway checkpoint blocks should expose roadblock silhouettes.")
 	assert_true(_block_has_obstacle_asset(market_block, "shopping_cart"), "Market blocks should stage retail props.")
-	assert_true(_block_has_obstacle_asset(industrial_block, "barrel_empty"), "Industrial blocks should stage fuel-yard props.")
+	assert_true(_block_has_obstacle_asset(power_block, "barrel_empty"), "Power-plant blocks should stage utility and fuel-yard props.")
+	assert_true(_block_has_obstacle_asset(rural_block, "dead_tree"), "Rural blocks should stage open-field and farm-edge props.")
 
 	var building_rows: Array[Dictionary] = content_library.get_building_rows()
 	var generated_count := 0
@@ -74,6 +92,17 @@ func _run_test() -> void:
 
 	var art_resolver = OUTDOOR_ART_RESOLVER_SCRIPT.new()
 	assert_true(art_resolver.get_building_texture(far_building) != null, "Generated buildings should resolve to an existing category fallback texture.")
+
+	for landmark in [
+		{"building_id": "mapx_07_08_a", "tag": "logistics"},
+		{"building_id": "mapx_10_10_a", "tag": "power_plant"},
+		{"building_id": "mapx_03_11_a", "tag": "rural"},
+		{"building_id": "mapx_09_05_a", "tag": "checkpoint"},
+	]:
+		var landmark_building: Dictionary = content_library.get_building(String(landmark.get("building_id", "")))
+		assert_true(not landmark_building.is_empty(), "Regional landmark '%s' should exist." % String(landmark.get("building_id", "")))
+		assert_true((landmark_building.get("site_tags", []) as Array).has("big_decision"), "Regional landmark '%s' should be tagged for big decisions." % String(landmark.get("building_id", "")))
+		assert_true((landmark_building.get("site_tags", []) as Array).has(String(landmark.get("tag", ""))), "Regional landmark '%s' should carry its world-region tag." % String(landmark.get("building_id", "")))
 
 	for scenario in [
 		{
@@ -106,6 +135,210 @@ func _run_test() -> void:
 			"event_id": "mapx_east_medical_convenience_01",
 			"story_action_id": "sort_triage_with_gloves",
 		},
+		{
+			"building_id": "mapx_07_08_a",
+			"event_path": "res://data/events/indoor/mapx_logistics_cold_chain_hub_01.json",
+			"event_id": "mapx_logistics_cold_chain_hub_01",
+			"story_action_id": "triage_cold_chain_pallet",
+		},
+		{
+			"building_id": "mapx_07_08_a",
+			"event_path": "res://data/events/indoor/mapx_logistics_cold_chain_hub_01.json",
+			"event_id": "mapx_logistics_cold_chain_hub_01",
+			"story_action_id": "copy_dispatch_routes",
+			"expected_asset": "indoor/indoor_story_logistics_dispatch_routes_success.png",
+		},
+		{
+			"building_id": "mapx_07_08_a",
+			"event_path": "res://data/events/indoor/mapx_logistics_cold_chain_hub_01.json",
+			"event_id": "mapx_logistics_cold_chain_hub_01",
+			"story_action_id": "drag_full_pallet",
+			"expected_asset": "indoor/indoor_story_logistics_pallet_crash_failure.png",
+		},
+		{
+			"building_id": "mapx_10_10_a",
+			"event_path": "res://data/events/indoor/mapx_power_plant_control_01.json",
+			"event_id": "mapx_power_plant_control_01",
+			"story_action_id": "read_heat_trace_note",
+			"expected_asset": "indoor/indoor_story_power_heat_trace_note_success.png",
+		},
+		{
+			"building_id": "mapx_10_10_a",
+			"event_path": "res://data/events/indoor/mapx_power_plant_control_01.json",
+			"event_id": "mapx_power_plant_control_01",
+			"story_action_id": "bridge_control_heater",
+		},
+		{
+			"building_id": "mapx_10_10_a",
+			"event_path": "res://data/events/indoor/mapx_power_plant_control_01.json",
+			"event_id": "mapx_power_plant_control_01",
+			"story_action_id": "salvage_pipe_parts",
+			"expected_asset": "indoor/indoor_story_power_pipe_gallery_slip_failure.png",
+		},
+		{
+			"building_id": "mapx_03_11_a",
+			"event_path": "res://data/events/indoor/mapx_rural_greenhouse_01.json",
+			"event_id": "mapx_rural_greenhouse_01",
+			"story_action_id": "save_seedling_cache",
+		},
+		{
+			"building_id": "mapx_03_11_a",
+			"event_path": "res://data/events/indoor/mapx_rural_greenhouse_01.json",
+			"event_id": "mapx_rural_greenhouse_01",
+			"story_action_id": "strip_seedling_trays_fast",
+			"expected_asset": "indoor/indoor_story_greenhouse_fast_strip_failure.png",
+		},
+		{
+			"building_id": "mapx_03_11_a",
+			"event_path": "res://data/events/indoor/mapx_rural_greenhouse_01.json",
+			"event_id": "mapx_rural_greenhouse_01",
+			"story_action_id": "chip_water_barrel_ice",
+			"expected_asset": "indoor/indoor_story_greenhouse_water_barrel_success.png",
+		},
+		{
+			"building_id": "mapx_09_05_a",
+			"event_path": "res://data/events/indoor/mapx_highway_checkpoint_01.json",
+			"event_id": "mapx_highway_checkpoint_01",
+			"story_action_id": "plot_safe_detour",
+		},
+		{
+			"building_id": "mapx_09_05_a",
+			"event_path": "res://data/events/indoor/mapx_highway_checkpoint_01.json",
+			"event_id": "mapx_highway_checkpoint_01",
+			"story_action_id": "cross_roadblock_now",
+			"expected_asset": "indoor/indoor_story_checkpoint_exposed_crossing_failure.png",
+		},
+		{
+			"building_id": "mapx_09_05_a",
+			"event_path": "res://data/events/indoor/mapx_highway_checkpoint_01.json",
+			"event_id": "mapx_highway_checkpoint_01",
+			"story_action_id": "search_bus_seats",
+			"expected_asset": "indoor/indoor_story_checkpoint_bus_seat_cache_success.png",
+		},
+		{
+			"building_id": "mapx_09_01_b",
+			"event_path": "res://data/events/indoor/mapx_civic_triage_clinic_01.json",
+			"event_id": "mapx_civic_triage_clinic_01",
+			"story_action_id": "sort_safe_medicine_with_gloves",
+			"expected_asset": "indoor/indoor_story_civic_triage_gloved_sort_success.png",
+		},
+		{
+			"building_id": "mapx_09_01_b",
+			"event_path": "res://data/events/indoor/mapx_civic_triage_clinic_01.json",
+			"event_id": "mapx_civic_triage_clinic_01",
+			"story_action_id": "sweep_medicine_fast",
+			"expected_asset": "indoor/indoor_story_civic_triage_fast_sweep_failure.png",
+		},
+		{
+			"building_id": "mapx_00_05_a",
+			"event_path": "res://data/events/indoor/mapx_west_shelter_registration_01.json",
+			"event_id": "mapx_west_shelter_registration_01",
+			"story_action_id": "take_only_personal_share",
+			"expected_asset": "indoor/indoor_story_shelter_personal_share_success.png",
+		},
+		{
+			"building_id": "mapx_00_05_a",
+			"event_path": "res://data/events/indoor/mapx_west_shelter_registration_01.json",
+			"event_id": "mapx_west_shelter_registration_01",
+			"story_action_id": "empty_relief_boxes_fast",
+			"expected_asset": "indoor/indoor_story_shelter_empty_boxes_failure.png",
+		},
+		{
+			"building_id": "mapx_02_09_b",
+			"event_path": "res://data/events/indoor/mapx_outer_row_house_garage_01.json",
+			"event_id": "mapx_outer_row_house_garage_01",
+			"story_action_id": "make_garage_carry_sling",
+		},
+		{
+			"building_id": "mapx_08_04_a",
+			"event_path": "res://data/events/indoor/mapx_highway_rest_stop_vending_01.json",
+			"event_id": "mapx_highway_rest_stop_vending_01",
+			"story_action_id": "open_vending_service_panel",
+			"expected_asset": "indoor/indoor_story_rest_stop_vending_panel_success.png",
+		},
+		{
+			"building_id": "mapx_06_07_b",
+			"event_path": "res://data/events/indoor/mapx_parcel_sorting_center_01.json",
+			"event_id": "mapx_parcel_sorting_center_01",
+			"story_action_id": "open_random_parcels",
+			"expected_asset": "indoor/indoor_story_parcel_random_boxes_failure.png",
+		},
+		{
+			"building_id": "mapx_06_07_b",
+			"event_path": "res://data/events/indoor/mapx_parcel_sorting_center_01.json",
+			"event_id": "mapx_parcel_sorting_center_01",
+			"story_action_id": "map_parcel_routes",
+			"expected_asset": "indoor/indoor_story_parcel_route_map_success.png",
+		},
+		{
+			"building_id": "mapx_05_11_a",
+			"event_path": "res://data/events/indoor/mapx_rural_farm_storage_01.json",
+			"event_id": "mapx_rural_farm_storage_01",
+			"story_action_id": "balance_rice_and_tools",
+		},
+		{
+			"building_id": "mapx_09_07_b",
+			"event_path": "res://data/events/indoor/mapx_substation_control_01.json",
+			"event_id": "mapx_substation_control_01",
+			"story_action_id": "reroute_substation_breaker",
+		},
+		{
+			"building_id": "mapx_03_07_c",
+			"event_path": "res://data/events/indoor/mapx_school_cafeteria_01.json",
+			"event_id": "mapx_school_cafeteria_01",
+			"story_action_id": "pack_light_cafeteria_rations",
+		},
+		{
+			"building_id": "mapx_10_06_a",
+			"event_path": "res://data/events/indoor/mapx_bus_depot_garage_01.json",
+			"event_id": "mapx_bus_depot_garage_01",
+			"story_action_id": "read_bus_route_board",
+		},
+		{
+			"building_id": "mapx_08_02_a",
+			"event_path": "res://data/events/indoor/mapx_public_health_cold_room_01.json",
+			"event_id": "mapx_public_health_cold_room_01",
+			"story_action_id": "preserve_cold_room_meds",
+		},
+		{
+			"building_id": "mapx_01_05_c",
+			"event_path": "res://data/events/indoor/mapx_shelter_water_checkpoint_01.json",
+			"event_id": "mapx_shelter_water_checkpoint_01",
+			"story_action_id": "repair_prefilter_and_mark_share",
+			"expected_asset": "indoor/indoor_story_shelter_water_prefilter_success.png",
+		},
+		{
+			"building_id": "mapx_07_07_a",
+			"event_path": "res://data/events/indoor/mapx_logistics_forklift_workshop_01.json",
+			"event_id": "mapx_logistics_forklift_workshop_01",
+			"story_action_id": "build_cargo_drag_sled",
+		},
+		{
+			"building_id": "mapx_08_04_a",
+			"event_path": "res://data/events/indoor/mapx_highway_rest_stop_vending_01.json",
+			"event_id": "mapx_highway_rest_stop_vending_01",
+			"story_action_id": "smash_vending_glass",
+			"expected_asset": "indoor/indoor_story_rest_stop_vending_glass_failure.png",
+		},
+		{
+			"building_id": "mapx_03_07_c",
+			"event_path": "res://data/events/indoor/mapx_school_cafeteria_01.json",
+			"event_id": "mapx_school_cafeteria_01",
+			"story_action_id": "haul_heavy_cafeteria_rice",
+		},
+		{
+			"building_id": "mapx_01_05_c",
+			"event_path": "res://data/events/indoor/mapx_shelter_water_checkpoint_01.json",
+			"event_id": "mapx_shelter_water_checkpoint_01",
+			"story_action_id": "take_all_checkpoint_water",
+			"expected_asset": "indoor/indoor_story_shelter_water_heavy_take_failure.png",
+		},
+		{
+			"building_id": "mapx_07_07_a",
+			"event_path": "res://data/events/indoor/mapx_logistics_forklift_workshop_01.json",
+			"event_id": "mapx_logistics_forklift_workshop_01",
+			"story_action_id": "strip_forklift_battery_tools",
+		},
 	]:
 		_assert_scenario_building(content_library, scenario)
 
@@ -122,7 +355,18 @@ func _assert_scenario_building(content_library: Node, scenario: Dictionary) -> v
 
 	var event_data := _load_json(expected_event_path)
 	assert_eq(String(event_data.get("id", "")), String(scenario.get("event_id", "")), "Scenario event file should expose the expected id.")
-	assert_true(_has_story_action(event_data, String(scenario.get("story_action_id", ""))), "Scenario event '%s' should include a story cutscene decision." % expected_event_path)
+	var story_action := _find_story_action(event_data, String(scenario.get("story_action_id", "")))
+	assert_true(not story_action.is_empty(), "Scenario event '%s' should include a story cutscene decision." % expected_event_path)
+	if not story_action.is_empty():
+		var outcomes := story_action.get("outcomes", {}) as Dictionary
+		var story_cutscene := outcomes.get("story_cutscene", {}) as Dictionary
+		var story_asset := String(story_cutscene.get("asset", ""))
+		assert_true(not story_asset.is_empty(), "Scenario event '%s' should expose a story cutscene asset." % expected_event_path)
+		var expected_asset := String(scenario.get("expected_asset", ""))
+		if not expected_asset.is_empty():
+			assert_eq(story_asset, expected_asset, "Scenario action '%s' should use its dedicated result cutscene asset." % String(scenario.get("story_action_id", "")))
+		var ui_kit_resolver = UI_KIT_RESOLVER_SCRIPT.new()
+		assert_true(ui_kit_resolver.get_texture(story_asset) != null, "Scenario cutscene asset '%s' should resolve to a texture." % story_asset)
 
 
 func _load_json(path: String) -> Dictionary:
@@ -141,10 +385,10 @@ func _load_json(path: String) -> Dictionary:
 	return json.data
 
 
-func _has_story_action(event_data: Dictionary, action_id: String) -> bool:
+func _find_story_action(event_data: Dictionary, action_id: String) -> Dictionary:
 	var events_variant: Variant = event_data.get("events", [])
 	if typeof(events_variant) != TYPE_ARRAY:
-		return false
+		return {}
 	for event_variant in events_variant as Array:
 		if typeof(event_variant) != TYPE_DICTIONARY:
 			continue
@@ -160,9 +404,11 @@ func _has_story_action(event_data: Dictionary, action_id: String) -> bool:
 				continue
 			var outcomes_variant: Variant = option.get("outcomes", {})
 			if typeof(outcomes_variant) != TYPE_DICTIONARY:
-				return false
-			return typeof((outcomes_variant as Dictionary).get("story_cutscene", {})) == TYPE_DICTIONARY
-	return false
+				return {}
+			if typeof((outcomes_variant as Dictionary).get("story_cutscene", {})) != TYPE_DICTIONARY:
+				return {}
+			return option
+	return {}
 
 
 func _block_has_road_id(block: Dictionary, road_id: String) -> bool:
@@ -173,6 +419,18 @@ func _block_has_road_id(block: Dictionary, road_id: String) -> bool:
 		if typeof(road_variant) == TYPE_DICTIONARY and String((road_variant as Dictionary).get("id", "")) == road_id:
 			return true
 	return false
+
+
+func _road_signature(block: Dictionary) -> String:
+	var ids: Array[String] = []
+	var roads_variant: Variant = block.get("roads", [])
+	if typeof(roads_variant) != TYPE_ARRAY:
+		return ""
+	for road_variant in roads_variant as Array:
+		if typeof(road_variant) != TYPE_DICTIONARY:
+			continue
+		ids.append(String((road_variant as Dictionary).get("id", "")))
+	return "|".join(PackedStringArray(ids))
 
 
 func _block_has_obstacle_asset(block: Dictionary, asset_id: String) -> bool:

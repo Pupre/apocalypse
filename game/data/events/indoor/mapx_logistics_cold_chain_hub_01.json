@@ -1,0 +1,218 @@
+{
+  "id": "mapx_logistics_cold_chain_hub_01",
+  "name": "백색 물류 허브",
+  "summary": "냉동 컨테이너와 택배 팔레트가 멈춘 대형 물류 도크다. 보급품은 많지만 무게, 소음, 시간 때문에 전부 가져갈 수 없다.",
+  "illustration_asset": "indoor/indoor_story_logistics_cold_chain_choice.png",
+  "entry_zone_id": "loading_dock",
+  "zones": [
+    {
+      "id": "loading_dock",
+      "floor_id": "floor_1",
+      "label": "냉동 도크",
+      "summary": "열린 셔터 사이로 눈발이 들이치고, 팔레트 위 상자들이 얼어붙은 랩에 묶여 있다.",
+      "connected_zone_ids": ["cold_container", "dispatch_desk"],
+      "event_ids": ["search_loading_dock_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "cold_container",
+      "floor_id": "floor_1",
+      "label": "정지한 냉동 컨테이너",
+      "summary": "전원이 꺼진 컨테이너 안쪽에 보냉 가방과 식품 상자가 남아 있지만 내부 공기가 매섭다.",
+      "connected_zone_ids": ["loading_dock", "pallet_maze"],
+      "event_ids": ["inspect_cold_container_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 35,
+      "revisit_cost": 15
+    },
+    {
+      "id": "dispatch_desk",
+      "floor_id": "floor_1",
+      "label": "배차 데스크",
+      "summary": "운송장과 기사 메모가 흩어져 있어 다음 지역의 물자 흐름을 읽을 수 있을 것 같다.",
+      "connected_zone_ids": ["loading_dock"],
+      "event_ids": ["read_dispatch_desk_event"],
+      "map_position": [0, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "pallet_maze",
+      "floor_id": "floor_1",
+      "label": "무너진 팔레트 통로",
+      "summary": "무너진 상자 더미 사이로 작은 생활용품이 보인다. 건드리면 크게 쏟아질 수 있다.",
+      "connected_zone_ids": ["cold_container"],
+      "event_ids": ["search_pallet_maze_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [
+    {
+      "id": "logistics_route_hint",
+      "text": "배차표에는 남쪽 발전소와 국도 휴게소로 향하던 마지막 냉동 차량 번호가 동그라미 쳐져 있다.",
+      "visible": false
+    }
+  ],
+  "events": [
+    {
+      "id": "search_loading_dock_event",
+      "zone_id": "loading_dock",
+      "type": "search",
+      "hint_text": "도크 가장자리에는 당장 들 수 있는 포장재와 운반 보조품이 남아 있다.",
+      "options": [
+        {
+          "id": "collect_dock_packaging",
+          "label": "도크 가장자리의 포장재를 챙긴다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "cooler_bag", "weight": 3 },
+                { "id": "evd_freezer_bag_box", "weight": 3 },
+                { "id": "packing_tape", "weight": 2 },
+                { "id": "cardboard_box", "weight": 2 },
+                { "id": "bubble_wrap_roll", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "inspect_cold_container_event",
+      "zone_id": "cold_container",
+      "type": "search",
+      "hint_text": "컨테이너 안에는 먹을 수 있는 물건도 있지만, 오래 머물수록 손끝 감각이 무뎌진다.",
+      "options": [
+        {
+          "id": "triage_cold_chain_pallet",
+          "label": "팔레트를 전부 털지 않고 들 수 있는 것만 고른다",
+          "requirements": { "forbidden_flag_ids": ["logistics_cold_chain_triaged"] },
+          "costs": { "minutes": 45, "noise": 1 },
+          "outcomes": {
+            "set_flags": ["logistics_cold_chain_triaged"],
+            "discover_loot": [
+              { "id": "cooler_bag", "bulk": 2 }
+            ],
+            "loot_table": {
+              "rolls": 4,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "canned_tuna", "weight": 4 },
+                { "id": "instant_rice_bowl", "weight": 3 },
+                { "id": "bottled_water", "weight": 3 },
+                { "id": "evd_rice_bag_small", "weight": 2 },
+                { "id": "energy_bar", "weight": 2 }
+              ]
+            },
+            "pressure": {
+              "id": "logistics_cold_chain_hand_pain",
+              "message": "얼어붙은 랩을 뜯는 동안 손끝이 저려 왔다. 그래도 무게를 계산해 들 수 있는 것만 골랐다.",
+              "exposure_loss": 1.5,
+              "fatigue_gain": 1.0,
+              "noise": 1,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_logistics_cold_chain_choice.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_logistics_cold_chain_choice.png",
+              "title": "많지만 전부는 아니다",
+              "text": "상자는 산처럼 쌓여 있었지만 네 몸은 하나뿐이다. 필요한 것만 고르는 순간, 이 장소는 보물창고가 아니라 판단 시험장이 되었다.",
+              "button": "무게를 기억한다"
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "drag_full_pallet",
+          "label": "욕심내서 큰 팔레트를 끌어내 본다",
+          "requirements": { "forbidden_flag_ids": ["logistics_pallet_dragged"] },
+          "costs": { "minutes": 25, "noise": 4 },
+          "outcomes": {
+            "set_flags": ["logistics_pallet_dragged"],
+            "pressure": {
+              "id": "logistics_pallet_crash",
+              "message": "얼어붙은 바퀴가 한 번에 풀리며 팔레트가 도크 바닥을 긁었다. 소리가 너무 멀리 갔다.",
+              "fatigue_gain": 2.0,
+              "noise": 4,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_logistics_pallet_crash_failure.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_logistics_pallet_crash_failure.png",
+              "title": "너무 큰 욕심",
+              "text": "팔레트는 물자가 아니라 짐승처럼 끌려 나왔다. 쏟아진 캔과 찢어진 랩이 바닥을 울리고, 네가 얻은 건 몇 걸음의 후회와 너무 큰 소리였다.",
+              "button": "소리를 삼킨다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "read_dispatch_desk_event",
+      "zone_id": "dispatch_desk",
+      "type": "search",
+      "hint_text": "마지막 운송 기록을 읽으면 어느 방향에 아직 물자가 남았는지 짐작할 수 있다.",
+      "options": [
+        {
+          "id": "copy_dispatch_routes",
+          "label": "운송장 번호와 마지막 경로를 베낀다",
+          "requirements": { "forbidden_flag_ids": ["logistics_route_copied"] },
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["logistics_route_copied"],
+            "reveal_clue_ids": ["logistics_route_hint"],
+            "discover_loot": [
+              { "id": "memo_pad", "bulk": 1 },
+              { "id": "ballpoint_pen", "bulk": 1 }
+            ],
+            "result_illustration_asset": "indoor/indoor_story_logistics_dispatch_routes_success.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_logistics_dispatch_routes_success.png",
+              "title": "상자보다 값진 동선",
+              "text": "상자 하나를 더 여는 대신 마지막 운송 경로를 베껴 적었다. 오늘 들고 나갈 물자는 적어도, 내일 어디로 가야 하는지는 조금 선명해졌다.",
+              "button": "경로를 접어 넣는다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_pallet_maze_event",
+      "zone_id": "pallet_maze",
+      "type": "search",
+      "hint_text": "무너진 통로 안쪽에는 작은 생활용품이 끼어 있다.",
+      "options": [
+        {
+          "id": "search_pallet_gaps",
+          "label": "상자 틈 사이만 조용히 뒤진다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "work_gloves", "weight": 3 },
+                { "id": "disposable_mask", "weight": 3 },
+                { "id": "evd_hand_wipes_pack", "weight": 2 },
+                { "id": "zip_bag", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,227 @@
+{
+  "id": "mapx_school_cafeteria_01",
+  "name": "폐교 급식실",
+  "summary": "농촌 외곽의 폐교 급식실이다. 쌀과 통조림이 남아 있지만, 큰 포대를 욕심내면 이동 자체가 위험해진다.",
+  "illustration_asset": "indoor/indoor_story_school_cafeteria_ration_choice.png",
+  "entry_zone_id": "serving_line",
+  "zones": [
+    {
+      "id": "serving_line",
+      "floor_id": "floor_1",
+      "label": "배식대",
+      "summary": "차가운 배식대 위에 빈 식판과 묵직한 조리통이 남아 있다. 창밖 운동장은 눈에 묻혔다.",
+      "connected_zone_ids": ["dry_storage", "kitchen_pot_station"],
+      "event_ids": ["sort_cafeteria_rations_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "dry_storage",
+      "floor_id": "floor_1",
+      "label": "건식 창고",
+      "summary": "선반에는 종이 박스와 작은 비닐 포장이 남아 있다. 쓸 만한 것은 가볍지만 찾는 데 시간이 든다.",
+      "connected_zone_ids": ["serving_line"],
+      "event_ids": ["search_dry_storage_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "kitchen_pot_station",
+      "floor_id": "floor_1",
+      "label": "큰 솥 자리",
+      "summary": "대형 솥과 조리 도구가 놓인 공간이다. 금속 도구와 수건은 쓸 만하지만 소리가 크게 날 수 있다.",
+      "connected_zone_ids": ["serving_line", "staff_exit"],
+      "event_ids": ["search_pot_station_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "staff_exit",
+      "floor_id": "floor_1",
+      "label": "후문",
+      "summary": "급식실 후문은 비닐 커튼과 쓰레기 봉투로 막혀 있다. 농로 쪽으로 빠질 수 있을지도 모른다.",
+      "connected_zone_ids": ["kitchen_pot_station"],
+      "event_ids": ["inspect_staff_exit_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [
+    {
+      "id": "school_backroad_note",
+      "text": "급식실 후문은 운동장보다 좁지만 바람이 덜 닿는 농로로 이어진다. 식량을 무겁게 챙겼다면 이 길이 더 안전하다.",
+      "visible": false
+    }
+  ],
+  "events": [
+    {
+      "id": "sort_cafeteria_rations_event",
+      "zone_id": "serving_line",
+      "type": "search",
+      "hint_text": "눈앞의 쌀 포대는 오래 버틸 식량이지만, 작은 식량을 골라 담아야 다른 장비도 들 수 있다.",
+      "options": [
+        {
+          "id": "pack_light_cafeteria_rations",
+          "label": "가방에 맞게 즉석식과 통조림을 나눠 담는다",
+          "requirements": { "forbidden_flag_ids": ["cafeteria_rations_sorted"] },
+          "costs": { "minutes": 35, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["cafeteria_rations_sorted"],
+            "reveal_clue_ids": ["school_backroad_note"],
+            "loot_table": {
+              "rolls": 4,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "instant_rice_bowl", "weight": 3 },
+                { "id": "canned_beans", "weight": 3 },
+                { "id": "crackers", "weight": 2 },
+                { "id": "evd_rice_bag_small", "weight": 2 },
+                { "id": "plastic_bag", "weight": 1 }
+              ]
+            },
+            "pressure": {
+              "id": "cafeteria_light_pack",
+              "message": "쌀 포대를 전부 들 수는 없었다. 대신 바로 먹을 것과 나눠 담을 봉투를 골라 이동 가능성을 남겼다.",
+              "fatigue_gain": 0.5,
+              "noise": 0,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_school_cafeteria_ration_choice.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_school_cafeteria_ration_choice.png",
+              "title": "전부가 아니라, 들고 나갈 만큼",
+              "text": "쌀 포대는 눈앞에 있었다. 하지만 네가 살아남는 것은 창고를 털어서가 아니라, 다음 길을 걸을 만큼만 들고 나와서였다.",
+              "button": "가벼운 식량을 챙긴다"
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "haul_heavy_cafeteria_rice",
+          "label": "무거운 쌀 포대를 욕심내서 끌어낸다",
+          "requirements": { "forbidden_flag_ids": ["cafeteria_rations_sorted"] },
+          "costs": { "minutes": 25, "noise": 1 },
+          "outcomes": {
+            "set_flags": ["cafeteria_rations_sorted"],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "surv_food_035", "weight": 3 },
+                { "id": "evd_rice_bag_small", "weight": 3 },
+                { "id": "old_blanket", "weight": 1 }
+              ]
+            },
+            "pressure": {
+              "id": "cafeteria_heavy_rice",
+              "message": "쌀 포대는 들 수 있는 물건이라기보다 끌고 나와야 하는 물건이었다. 식량은 늘었지만 몸이 먼저 무거워졌다.",
+              "exposure_loss": 0.5,
+              "fatigue_gain": 1.5,
+              "noise": 1,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_overburdened_exit_failure.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_overburdened_exit_failure.png",
+              "title": "식량의 무게",
+              "text": "쌀은 분명 생존이다. 하지만 문턱까지 끌고 온 순간, 그 생존이 네 발목을 붙잡는 무게가 될 수도 있다는 걸 알았다.",
+              "button": "무게를 견딘다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_dry_storage_event",
+      "zone_id": "dry_storage",
+      "type": "search",
+      "hint_text": "건식 창고에는 작은 식품과 포장재가 남아 있다.",
+      "options": [
+        {
+          "id": "search_cafeteria_dry_storage",
+          "label": "선반 뒤의 작은 식품 상자를 확인한다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "crackers", "weight": 3 },
+                { "id": "instant_rice_bowl", "weight": 2 },
+                { "id": "canned_beans", "weight": 2 },
+                { "id": "trash_bag_roll", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_pot_station_event",
+      "zone_id": "kitchen_pot_station",
+      "type": "search",
+      "hint_text": "큰 솥 자리 주변에는 보온과 수리에 쓸 생활 재료가 있다.",
+      "options": [
+        {
+          "id": "collect_cafeteria_kitchen_materials",
+          "label": "수건과 장갑, 봉투를 조심히 챙긴다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 1 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "shop_towel_bundle", "weight": 3 },
+                { "id": "work_gloves", "weight": 2 },
+                { "id": "trash_bag_roll", "weight": 2 },
+                { "id": "plastic_bag", "weight": 2 }
+              ]
+            },
+            "pressure": {
+              "id": "cafeteria_pot_clang",
+              "message": "식판 하나가 떨어지며 빈 급식실에 얇은 금속음이 퍼졌다.",
+              "noise": 1,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "inspect_staff_exit_event",
+      "zone_id": "staff_exit",
+      "type": "search",
+      "hint_text": "후문을 살피면 운동장을 가로지르지 않고 농로로 빠지는 길을 찾을 수 있다.",
+      "options": [
+        {
+          "id": "mark_school_backroad",
+          "label": "후문 밖 농로와 바람 방향을 확인한다",
+          "requirements": { "forbidden_flag_ids": ["school_backroad_marked"] },
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["school_backroad_marked"],
+            "reveal_clue_ids": ["school_backroad_note"],
+            "pressure": {
+              "id": "school_backroad_cold",
+              "message": "후문 틈으로 들어온 바람이 손목을 파고들었다. 그래도 운동장을 가로지르는 것보다 덜 노출된 길이 보였다.",
+              "exposure_loss": 0.75,
+              "fatigue_gain": 0.25,
+              "noise": 0,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

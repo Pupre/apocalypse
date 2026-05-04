@@ -1,0 +1,226 @@
+{
+  "id": "mapx_rural_greenhouse_01",
+  "name": "눈 묻은 비닐하우스",
+  "summary": "눈 무게에 눌린 비닐하우스다. 남은 식량은 많지 않지만, 잘 고르면 지금 먹을 것과 다음 이동을 위한 단서를 얻을 수 있다.",
+  "illustration_asset": "indoor/indoor_story_greenhouse_seed_cache_success.png",
+  "entry_zone_id": "greenhouse_entry",
+  "zones": [
+    {
+      "id": "greenhouse_entry",
+      "floor_id": "floor_1",
+      "label": "처진 비닐 입구",
+      "summary": "비닐 문틈이 얼어붙어 있고, 안쪽에는 젖은 상토 냄새와 찬 공기가 섞여 있다.",
+      "connected_zone_ids": ["seedling_trays", "tool_corner"],
+      "event_ids": ["open_greenhouse_entry_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "seedling_trays",
+      "floor_id": "floor_1",
+      "label": "모종 선반",
+      "summary": "일부 모종은 얼어 죽었지만, 안쪽 선반에는 아직 쓸 수 있는 식재료와 씨앗 꾸러미가 남아 있다.",
+      "connected_zone_ids": ["greenhouse_entry", "water_barrel"],
+      "event_ids": ["inspect_seedling_trays_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 35,
+      "revisit_cost": 10
+    },
+    {
+      "id": "tool_corner",
+      "floor_id": "floor_1",
+      "label": "농기구 모서리",
+      "summary": "낡은 장갑, 끈, 비닐 조각, 작은 공구가 진흙과 얼음 사이에 흩어져 있다.",
+      "connected_zone_ids": ["greenhouse_entry"],
+      "event_ids": ["search_tool_corner_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "water_barrel",
+      "floor_id": "floor_1",
+      "label": "얼어붙은 물통",
+      "summary": "큰 물통 표면은 얼었지만, 안쪽에는 아직 녹일 수 있는 물이 남아 있다.",
+      "connected_zone_ids": ["seedling_trays"],
+      "event_ids": ["inspect_water_barrel_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [
+    {
+      "id": "rural_storehouse_note",
+      "text": "작업 달력에는 '아래 마을 농협 창고, 쌀 포대 반출 금지'라는 메모가 남아 있다.",
+      "visible": false
+    }
+  ],
+  "events": [
+    {
+      "id": "open_greenhouse_entry_event",
+      "zone_id": "greenhouse_entry",
+      "type": "search",
+      "hint_text": "입구를 크게 찢으면 빠르지만 바람이 들어와 안쪽 선반까지 얼릴 수 있다.",
+      "options": [
+        {
+          "id": "slit_greenhouse_entry_carefully",
+          "label": "비닐 입구를 작게 벌려 몸만 넣는다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "pressure": {
+              "id": "greenhouse_entry_careful",
+              "message": "비닐이 찢어지는 소리를 죽이며 안으로 들어갔다. 찬바람은 조금만 따라 들어왔다.",
+              "exposure_loss": 0.5,
+              "fatigue_gain": 0.5,
+              "noise": 0,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "inspect_seedling_trays_event",
+      "zone_id": "seedling_trays",
+      "type": "search",
+      "hint_text": "모종 선반은 당장 먹을 것과 나중을 위한 것을 동시에 보여준다.",
+      "options": [
+        {
+          "id": "save_seedling_cache",
+          "label": "먹을 것과 남길 것을 나눠 모종 상자를 정리한다",
+          "requirements": { "forbidden_flag_ids": ["greenhouse_seed_cache_sorted"] },
+          "costs": { "minutes": 45, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["greenhouse_seed_cache_sorted"],
+            "reveal_clue_ids": ["rural_storehouse_note"],
+            "loot_table": {
+              "rolls": 4,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "evd_rice_bag_small", "weight": 3 },
+                { "id": "instant_rice_bowl", "weight": 3 },
+                { "id": "canned_beans", "weight": 2 },
+                { "id": "bottled_water", "weight": 2 },
+                { "id": "evd_food_hanging_bundle", "weight": 1 }
+              ]
+            },
+            "pressure": {
+              "id": "greenhouse_seed_cache_choice",
+              "message": "상한 것은 버리고, 지금 먹을 것과 다시 쓸 수 있는 꾸러미를 나눴다. 손은 느려졌지만 판단은 또렷해졌다.",
+              "exposure_loss": 1.0,
+              "fatigue_gain": 0.75,
+              "noise": 0,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_greenhouse_seed_cache_success.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_greenhouse_seed_cache_success.png",
+              "title": "얼음 밑의 다음 끼니",
+              "text": "비닐하우스는 보물창고가 아니었다. 그래도 죽은 잎 사이에 남은 작은 가능성을 골라내자, 다음 이동이 조금 덜 막막해졌다.",
+              "button": "남은 가능성을 챙긴다"
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "strip_seedling_trays_fast",
+          "label": "선반을 빠르게 훑어 먹을 것만 챙긴다",
+          "requirements": { "forbidden_flag_ids": ["greenhouse_seed_cache_sorted"] },
+          "costs": { "minutes": 20, "noise": 1 },
+          "outcomes": {
+            "set_flags": ["greenhouse_seed_cache_sorted"],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "instant_rice_bowl", "weight": 3 },
+                { "id": "canned_beans", "weight": 2 },
+                { "id": "bottled_water", "weight": 2 }
+              ]
+            },
+            "pressure": {
+              "id": "greenhouse_fast_strip",
+              "message": "급하게 잡아당긴 선반에서 상토와 얼음 조각이 쏟아졌다.",
+              "fatigue_gain": 1.0,
+              "noise": 1,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_greenhouse_fast_strip_failure.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_greenhouse_fast_strip_failure.png",
+              "title": "서두른 손끝",
+              "text": "먹을 것만 빠르게 챙기려는 순간, 얼어붙은 선반이 먼저 무너졌다. 손에 남은 건 몇 봉지의 식량과 다시 쓸 수 있었던 것들이 흩어지는 소리였다.",
+              "button": "흩어진 것을 넘는다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_tool_corner_event",
+      "zone_id": "tool_corner",
+      "type": "search",
+      "hint_text": "농기구 모서리에는 의외로 이동과 보온에 쓸 수 있는 생활 재료가 남아 있다.",
+      "options": [
+        {
+          "id": "collect_greenhouse_tools",
+          "label": "농기구 모서리의 생활 재료를 챙긴다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "cotton_gloves", "weight": 3 },
+                { "id": "rope_bundle", "weight": 2 },
+                { "id": "clear_plastic_sheet", "weight": 2 },
+                { "id": "duct_tape", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "inspect_water_barrel_event",
+      "zone_id": "water_barrel",
+      "type": "search",
+      "hint_text": "물통 안쪽의 얼음은 녹이면 쓸 수 있지만, 깨는 소리는 크게 울린다.",
+      "options": [
+        {
+          "id": "chip_water_barrel_ice",
+          "label": "물통 가장자리 얼음을 조심히 깨 물을 확보한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 1 },
+          "outcomes": {
+            "discover_loot": [
+              { "id": "water_jug", "bulk": 3 }
+            ],
+            "pressure": {
+              "id": "greenhouse_water_ice_chip",
+              "message": "얼음을 조금씩 깨자 둔탁한 소리가 비닐하우스 안에 낮게 번졌다.",
+              "fatigue_gain": 1.0,
+              "noise": 1,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_greenhouse_water_barrel_success.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_greenhouse_water_barrel_success.png",
+              "title": "얼음 아래의 물",
+              "text": "통을 세게 내려치지 않고 가장자리부터 조금씩 깼다. 손은 얼얼했지만, 얼음 아래 어둡게 고인 물은 다음 몇 시간을 버틸 수 있는 이유가 되었다.",
+              "button": "물을 챙긴다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -4,47 +4,47 @@
     "y": 2
   },
   "district_id": "north_market",
-  "district_label": "북쪽 상권",
+  "district_label": "북부 시장가",
   "layout_id": "market_back_alley",
   "roads": [
-    {
-      "id": "market_main_street",
-      "texture_id": "road_plain",
-      "rect": {
-        "x": 0,
-        "y": 285,
-        "width": 960,
-        "height": 165
-      }
-    },
     {
       "id": "market_back_alley",
       "texture_id": "alley_dark",
       "rect": {
-        "x": 180,
+        "x": 220,
         "y": 0,
         "width": 105,
         "height": 960
       }
     },
     {
-      "id": "arcade_walk",
-      "texture_id": "sidewalk_snow",
+      "id": "market_delivery_lane",
+      "texture_id": "road_plain",
       "rect": {
         "x": 0,
-        "y": 170,
+        "y": 620,
         "width": 960,
-        "height": 78
+        "height": 135
       }
     },
     {
-      "id": "delivery_cut",
-      "texture_id": "road_plain",
+      "id": "market_side_passage",
+      "texture_id": "sidewalk_snow",
       "rect": {
-        "x": 620,
-        "y": 455,
-        "width": 150,
-        "height": 360
+        "x": 325,
+        "y": 155,
+        "width": 425,
+        "height": 90
+      }
+    },
+    {
+      "id": "market_loading_cut",
+      "texture_id": "slush_road",
+      "rect": {
+        "x": 630,
+        "y": 225,
+        "width": 145,
+        "height": 505
       }
     }
   ],
@@ -226,7 +226,7 @@
   "landmarks": [
     {
       "id": "north_market_05_02",
-      "label": "눈 덮인 상가 거리",
+      "label": "얼어붙은 시장 아케이드",
       "position": {
         "x": 480,
         "y": 470

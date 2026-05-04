@@ -1,0 +1,192 @@
+{
+  "id": "mapx_outer_row_house_garage_01",
+  "name": "차고 딸린 연립 주택",
+  "summary": "외곽 주택가의 작은 차고다. 가족 비상 상자와 생활 공구가 남아 있어, 물건을 얻는 것뿐 아니라 어떻게 들고 나갈지도 결정해야 한다.",
+  "illustration_asset": "indoor/indoor_story_outer_garage_sling_success.png",
+  "entry_zone_id": "garage_entry",
+  "zones": [
+    {
+      "id": "garage_entry",
+      "floor_id": "floor_1",
+      "label": "얼어붙은 차고 입구",
+      "summary": "차고 문틈으로 눈이 밀려 있고, 바닥에는 자전거와 빈 상자가 얼어붙어 있다.",
+      "connected_zone_ids": ["family_cache", "tool_shelf"],
+      "event_ids": ["search_garage_entry_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "family_cache",
+      "floor_id": "floor_1",
+      "label": "가족 비상 상자",
+      "summary": "물, 통조림, 오래된 담요, 가족 사진이 한 상자에 함께 담겨 있다.",
+      "connected_zone_ids": ["garage_entry", "laundry_corner"],
+      "event_ids": ["open_family_cache_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "tool_shelf",
+      "floor_id": "floor_1",
+      "label": "생활 공구 선반",
+      "summary": "덕트테이프와 끈, 낡은 공구가 차고 선반에 정리되어 있다.",
+      "connected_zone_ids": ["garage_entry"],
+      "event_ids": ["search_tool_shelf_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "laundry_corner",
+      "floor_id": "floor_1",
+      "label": "세탁 바구니 모서리",
+      "summary": "세탁망과 낡은 옷, 끈이 남아 있어 손짐 보조 장치를 만들 수 있을 것 같다.",
+      "connected_zone_ids": ["family_cache"],
+      "event_ids": ["craft_laundry_sling_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 35,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [
+    {
+      "id": "outer_neighbor_note",
+      "text": "상자 뚜껑 안쪽에는 '옆집 차고에도 물통 있음. 문은 잘 안 닫힘'이라는 메모가 붙어 있다.",
+      "visible": false
+    }
+  ],
+  "events": [
+    {
+      "id": "search_garage_entry_event",
+      "zone_id": "garage_entry",
+      "type": "search",
+      "hint_text": "차고 입구에는 당장 집어 들 수 있는 작은 생활용품이 있다.",
+      "options": [
+        {
+          "id": "search_garage_entry_supplies",
+          "label": "차고 입구의 작은 생활용품을 챙긴다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "cardboard_box", "weight": 2 },
+                { "id": "plastic_bag", "weight": 2 },
+                { "id": "bottled_water", "weight": 2 },
+                { "id": "candle", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "open_family_cache_event",
+      "zone_id": "family_cache",
+      "type": "search",
+      "hint_text": "가족 비상 상자는 유용하지만 무게가 금방 늘어난다.",
+      "options": [
+        {
+          "id": "sort_family_cache",
+          "label": "비상 상자에서 지금 들 수 있는 것만 고른다",
+          "requirements": { "forbidden_flag_ids": ["outer_family_cache_sorted"] },
+          "costs": { "minutes": 35, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["outer_family_cache_sorted"],
+            "reveal_clue_ids": ["outer_neighbor_note"],
+            "loot_table": {
+              "rolls": 4,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "bottled_water", "weight": 3 },
+                { "id": "canned_tuna", "weight": 2 },
+                { "id": "old_blanket", "weight": 2 },
+                { "id": "evd_family_photo_strip", "weight": 1 },
+                { "id": "evd_dead_power_bank", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_tool_shelf_event",
+      "zone_id": "tool_shelf",
+      "type": "search",
+      "hint_text": "공구 선반은 조합 재료가 풍부하지만 금속 소리가 날 수 있다.",
+      "options": [
+        {
+          "id": "collect_household_tools",
+          "label": "조합에 쓸 생활 공구를 챙긴다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 1 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "duct_tape", "weight": 3 },
+                { "id": "rope_bundle", "weight": 2 },
+                { "id": "wire_hooks", "weight": 2 },
+                { "id": "measuring_tape", "weight": 1 }
+              ]
+            },
+            "pressure": {
+              "id": "outer_tool_shelf_metal_rattle",
+              "message": "선반 위 공구가 한 번 작게 흔들렸다. 소리는 짧았지만 차고 안에서는 크게 들렸다.",
+              "noise": 1,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "craft_laundry_sling_event",
+      "zone_id": "laundry_corner",
+      "type": "search",
+      "hint_text": "세탁망과 테이프, 낡은 담요를 엮으면 손짐을 조금 더 안정적으로 들 수 있다.",
+      "options": [
+        {
+          "id": "make_garage_carry_sling",
+          "label": "세탁망과 테이프로 임시 손짐 슬링을 만든다",
+          "requirements": {
+            "required_item_ids": ["duct_tape"],
+            "forbidden_flag_ids": ["outer_garage_sling_made"]
+          },
+          "blocked_feedback": "손짐 슬링을 묶으려면 덕트테이프가 필요하다.",
+          "costs": { "minutes": 40, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["outer_garage_sling_made"],
+            "discover_loot": [
+              { "id": "carry_sling", "bulk": 1 }
+            ],
+            "pressure": {
+              "id": "outer_garage_sling_focus",
+              "message": "차가운 바닥에 무릎을 대고 매듭을 다시 묶었다. 손은 시렸지만 다음 이동이 조금 덜 버거워졌다.",
+              "exposure_loss": 0.5,
+              "fatigue_gain": 0.5,
+              "noise": 0,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_outer_garage_sling_success.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_outer_garage_sling_success.png",
+              "title": "들고 나갈 방법",
+              "text": "물건을 찾는 것만으로는 부족했다. 들고 나갈 방법을 만든 뒤에야, 이 차고의 물자들이 실제 선택지가 되었다.",
+              "button": "슬링을 걸친다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

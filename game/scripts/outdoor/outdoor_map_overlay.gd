@@ -12,8 +12,14 @@ const TEXT_OUTLINE_COLOR := Color(0.0, 0.02, 0.04, 1.0)
 const DISTRICT_LABELS := {
 	"north_market": "북부 시장가",
 	"east_medical": "동부 의료지구",
+	"civic_medical": "동부 의료·관공 지구",
 	"south_residential": "남부 주거지",
+	"outer_residential": "남서 외곽 주거지",
 	"south_industrial": "남동 공업지대",
+	"logistics_belt": "남부 물류 벨트",
+	"power_plant": "동남 발전소 지대",
+	"rural_greenbelt": "남서 농촌·비닐하우스",
+	"highway_checkpoint": "국도 검문·휴게 구역",
 	"west_shelter": "서부 대피선",
 	"central_transfer": "중앙 환승로",
 	"mixed_edge": "외곽 혼합지대",
@@ -94,8 +100,7 @@ func _apply_ui_skin() -> void:
 	_apply_label_style(_detail_title, 17, TEXT_PRIMARY_COLOR, 3)
 	_apply_label_style(_detail_message, 15, TEXT_SECONDARY_COLOR, 2)
 	if _legend_row != null:
-		for child in _legend_row.get_children():
-			_apply_label_style(child as Label, 12, TEXT_MUTED_COLOR, 1)
+		_legend_row.visible = false
 	if _close_button != null:
 		_close_button.text = ""
 		_close_button.tooltip_text = "닫기"

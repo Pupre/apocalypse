@@ -139,6 +139,7 @@ func _run_test() -> void:
 	var map_status_label := outdoor_mode.get_node_or_null("MapOverlay/Panel/VBox/Header/StatusLabel") as Label
 	var map_focus_button := outdoor_mode.get_node_or_null("MapOverlay/Panel/VBox/Header/FocusButton") as Button
 	var overlay_close := outdoor_mode.get_node_or_null("MapOverlay/Panel/VBox/Header/CloseButton") as Button
+	var map_legend_row := outdoor_mode.get_node_or_null("MapOverlay/Panel/VBox/LegendRow") as HBoxContainer
 	if not assert_true(top_ribbon != null, "Outdoor mode should expose a compact outdoor status ribbon."):
 		outdoor_mode.free()
 		return
@@ -169,6 +170,9 @@ func _run_test() -> void:
 	if not assert_true(map_status_label != null and map_focus_button != null and overlay_close != null, "Outdoor map overlay should expose status, focus, and close controls above the map."):
 		outdoor_mode.free()
 		return
+	if not assert_true(map_legend_row != null, "Outdoor map overlay should keep a legend row node available for future redesign."):
+		outdoor_mode.free()
+		return
 	if not assert_true(outdoor_mode.has_method("get_world_bounds"), "Outdoor mode should expose get_world_bounds() for district-scale verification."):
 		outdoor_mode.free()
 		return
@@ -179,6 +183,7 @@ func _run_test() -> void:
 	assert_true(frost_crystals.modulate.a <= 0.05, "Healthy outdoor exposure should start with almost no frost crystal coverage.")
 	assert_true(not map_overlay.visible, "Outdoor map overlay should start closed.")
 	assert_eq(String(full_map_view.get_script().resource_path), "res://scripts/outdoor/outdoor_map_view.gd", "Outdoor overlay should use the full-screen spatial map renderer.")
+	assert_true(not map_legend_row.visible, "Outdoor map overlay should not show cramped legend text above the map.")
 	assert_true(outdoor_mode.has_method("show_map_overlay"), "Outdoor mode should expose show_map_overlay().")
 	assert_true(outdoor_mode.has_method("hide_map_overlay"), "Outdoor mode should expose hide_map_overlay().")
 	outdoor_mode.bind_run_state(run_state, "mart_01", Vector2(300.0, 360.0))
@@ -217,6 +222,32 @@ func _run_test() -> void:
 	var world_rect: Rect2 = outdoor_mode.get_world_bounds()
 	assert_true(world_rect.size.x >= 7680.0, "Outdoor world width should reflect the larger fixed-city authoring grid, not just a one-off district rectangle.")
 	assert_true(world_rect.size.y >= 7680.0, "Outdoor world height should reflect the larger fixed-city authoring grid.")
+
+	var district_pressure_state = run_state_script.from_survivor_config({
+		"job_id": "courier",
+		"trait_ids": PackedStringArray(["athlete"]),
+		"remaining_points": 0,
+	}, self)
+	if not assert_true(district_pressure_state != null, "RunState should build for district travel incidents."):
+		outdoor_mode.free()
+		return
+	var highway_edge_position := Vector2((7.0 * 960.0) + 480.0, (6.0 * 960.0) + 920.0)
+	outdoor_mode.bind_run_state(district_pressure_state, "mart_01", highway_edge_position)
+	var district_exposure_before: float = district_pressure_state.exposure
+	var district_fatigue_before: float = district_pressure_state.fatigue
+	var district_minute_before: int = district_pressure_state.clock.minute_of_day
+	outdoor_mode.move_player(Vector2.DOWN, 1.0)
+	assert_eq(outdoor_mode._current_district_id, "logistics_belt", "Crossing into a new authored district should update the active district id.")
+	assert_true(district_pressure_state.exposure < district_exposure_before, "Entering a new authored district should be able to apply region-specific outdoor pressure.")
+	assert_true(district_pressure_state.fatigue > district_fatigue_before, "District travel incidents should add fatigue so wide-map movement has a cost.")
+	assert_true(district_pressure_state.clock.minute_of_day > district_minute_before, "District travel incidents should be able to cost a small amount of travel time.")
+	assert_true(hint_label.text.find("지역 사건") >= 0 and hint_label.text.find("물류 벨트") >= 0, "District travel incidents should surface readable region-specific HUD feedback.")
+	var district_exposure_after_first: float = district_pressure_state.exposure
+	var district_fatigue_after_first: float = district_pressure_state.fatigue
+	outdoor_mode._trigger_district_travel_incident("logistics_belt")
+	assert_eq(district_pressure_state.exposure, district_exposure_after_first, "The same district travel incident should not repeatedly punish the player in one outdoor session.")
+	assert_eq(district_pressure_state.fatigue, district_fatigue_after_first, "Repeated district checks should respect the once-per-session incident memory.")
+	outdoor_mode.bind_run_state(run_state)
 
 	var start_position: Vector2 = outdoor_mode.get_player_position()
 	outdoor_mode.move_player(Vector2.RIGHT, 8.0)

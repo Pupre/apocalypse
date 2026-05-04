@@ -1,0 +1,193 @@
+{
+  "id": "mapx_parcel_sorting_center_01",
+  "name": "택배 분류 센터",
+  "summary": "컨베이어가 멈춘 택배 분류 센터다. 무작정 상자를 뜯을 수도 있지만, 배송 동선을 읽으면 더 좋은 목적지를 고를 수 있다.",
+  "illustration_asset": "indoor/indoor_story_parcel_route_sort_choice.png",
+  "entry_zone_id": "conveyor_floor",
+  "zones": [
+    {
+      "id": "conveyor_floor",
+      "floor_id": "floor_1",
+      "label": "멈춘 컨베이어",
+      "summary": "컨베이어 위에 작은 택배 상자들이 멈춰 있다. 아무 상자나 열면 빠르지만 쓸모는 운에 달렸다.",
+      "connected_zone_ids": ["route_cages", "packing_table"],
+      "event_ids": ["search_conveyor_floor_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "route_cages",
+      "floor_id": "floor_1",
+      "label": "배송 구역 철망",
+      "summary": "동네별 철망 카트에 상자가 나뉘어 있다. 라벨과 방향을 읽으면 지역별 물자 흐름이 보인다.",
+      "connected_zone_ids": ["conveyor_floor", "loading_gate"],
+      "event_ids": ["read_route_cages_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 40,
+      "revisit_cost": 10
+    },
+    {
+      "id": "packing_table",
+      "floor_id": "floor_1",
+      "label": "포장 작업대",
+      "summary": "테이프, 완충재, 빈 상자가 작업대 주변에 남아 있다.",
+      "connected_zone_ids": ["conveyor_floor"],
+      "event_ids": ["search_packing_table_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "loading_gate",
+      "floor_id": "floor_1",
+      "label": "얼어붙은 상차문",
+      "summary": "상차문 앞에는 배송 카트와 반쯤 열린 플라스틱 박스가 남아 있다.",
+      "connected_zone_ids": ["route_cages"],
+      "event_ids": ["search_loading_gate_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [
+    {
+      "id": "parcel_route_hint",
+      "text": "배송 철망 표식으로 보아 남쪽 발전소 근처와 국도 휴게소 쪽에 아직 생활용품 상자가 남았을 가능성이 있다.",
+      "visible": false
+    }
+  ],
+  "events": [
+    {
+      "id": "search_conveyor_floor_event",
+      "zone_id": "conveyor_floor",
+      "type": "search",
+      "hint_text": "컨베이어 위 상자는 빨리 열 수 있지만 내용물은 제각각이다.",
+      "options": [
+        {
+          "id": "open_random_parcels",
+          "label": "가벼운 택배 상자 몇 개를 빠르게 연다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 1 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "charging_cable", "weight": 2 },
+                { "id": "evd_dead_power_bank", "weight": 2 },
+                { "id": "evd_hand_wipes_pack", "weight": 2 },
+                { "id": "disposable_mask", "weight": 2 },
+                { "id": "bubble_wrap_roll", "weight": 1 }
+              ]
+            },
+            "pressure": {
+              "id": "parcel_box_rustle",
+              "message": "마른 박스와 완충재가 바스락거리며 어두운 센터 안에 울렸다.",
+              "noise": 1,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_parcel_random_boxes_failure.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_parcel_random_boxes_failure.png",
+              "title": "우연에 맡긴 상자",
+              "text": "상자 몇 개는 열렸고, 작은 물건 몇 개는 손에 들어왔다. 하지만 라벨과 철망이 말하던 더 큰 흐름은 바스락거리는 포장재 아래 묻혀 버렸다.",
+              "button": "흩어진 포장을 넘긴다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "read_route_cages_event",
+      "zone_id": "route_cages",
+      "type": "search",
+      "hint_text": "배송 구역을 읽으면 상자를 덜 열고도 다음 목적지를 고를 수 있다.",
+      "options": [
+        {
+          "id": "map_parcel_routes",
+          "label": "배송 철망과 라벨을 대조해 물자 흐름을 읽는다",
+          "requirements": { "forbidden_flag_ids": ["parcel_routes_mapped"] },
+          "costs": { "minutes": 45, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["parcel_routes_mapped"],
+            "reveal_clue_ids": ["parcel_route_hint"],
+            "discover_loot": [
+              { "id": "evd_map_marker_kit", "bulk": 1 }
+            ],
+            "pressure": {
+              "id": "parcel_route_sort_focus",
+              "message": "상자를 뜯는 대신 방향을 읽었다. 당장 손에 잡히는 물건은 적지만 다음 목적지가 선명해졌다.",
+              "fatigue_gain": 0.5,
+              "noise": 0,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_parcel_route_map_success.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_parcel_route_map_success.png",
+              "title": "상자보다 방향",
+              "text": "택배 상자는 우연을 준다. 하지만 멈춘 철망과 라벨을 읽자, 우연 대신 다음 선택지를 얻었다.",
+              "button": "경로를 표시한다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_packing_table_event",
+      "zone_id": "packing_table",
+      "type": "search",
+      "hint_text": "포장 작업대의 재료는 조합과 운반 보조에 쓸 수 있다.",
+      "options": [
+        {
+          "id": "collect_packing_materials",
+          "label": "테이프와 완충재를 챙긴다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "packing_tape", "weight": 3 },
+                { "id": "bubble_wrap_roll", "weight": 3 },
+                { "id": "cardboard_sheet", "weight": 2 },
+                { "id": "zip_bag", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_loading_gate_event",
+      "zone_id": "loading_gate",
+      "type": "search",
+      "hint_text": "상차문 앞에는 운반에 쓰던 플라스틱 박스와 장갑이 남아 있다.",
+      "options": [
+        {
+          "id": "search_delivery_carts",
+          "label": "배송 카트와 박스 사이를 확인한다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "plastic_storage_bin", "weight": 2 },
+                { "id": "work_gloves", "weight": 2 },
+                { "id": "paper_bag", "weight": 2 },
+                { "id": "rope_bundle", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

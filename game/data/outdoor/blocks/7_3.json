@@ -3,96 +3,86 @@
     "x": 7,
     "y": 3
   },
-  "district_id": "central_transfer",
-  "district_label": "중앙 환승로",
-  "layout_id": "underpass_detour",
+  "district_id": "civic_medical",
+  "district_label": "동부 의료·관공 지구",
+  "layout_id": "civic_records_court",
   "roads": [
     {
-      "id": "bus_loop_top",
+      "id": "records_court",
+      "texture_id": "sidewalk_snow",
+      "rect": {
+        "x": 210,
+        "y": 260,
+        "width": 520,
+        "height": 320
+      }
+    },
+    {
+      "id": "civic_frontage",
       "texture_id": "road_plain",
       "rect": {
-        "x": 155,
-        "y": 170,
-        "width": 650,
+        "x": 0,
+        "y": 640,
+        "width": 960,
         "height": 135
       }
     },
     {
-      "id": "bus_loop_bottom",
-      "texture_id": "road_plain",
-      "rect": {
-        "x": 155,
-        "y": 650,
-        "width": 650,
-        "height": 135
-      }
-    },
-    {
-      "id": "bus_loop_left",
-      "texture_id": "slush_road",
-      "rect": {
-        "x": 155,
-        "y": 170,
-        "width": 135,
-        "height": 615
-      }
-    },
-    {
-      "id": "bus_loop_right",
-      "texture_id": "slush_road",
-      "rect": {
-        "x": 670,
-        "y": 170,
-        "width": 135,
-        "height": 615
-      }
-    },
-    {
-      "id": "underpass_cut",
+      "id": "service_archive_lane",
       "texture_id": "alley_dark",
       "rect": {
-        "x": 390,
+        "x": 125,
         "y": 0,
-        "width": 175,
+        "width": 115,
+        "height": 720
+      }
+    },
+    {
+      "id": "ambulance_lane",
+      "texture_id": "slush_road",
+      "rect": {
+        "x": 690,
+        "y": 0,
+        "width": 130,
         "height": 960
       }
     }
   ],
   "snow_fields": [
     {
-      "id": "terminal_plaza_snow",
+      "id": "clinic_plaza_snow",
       "rect": {
-        "x": 315,
-        "y": 335,
-        "width": 330,
-        "height": 260
+        "x": 240,
+        "y": 390,
+        "width": 440,
+        "height": 275
       }
     },
     {
-      "id": "bus_stop_snowbank",
+      "id": "ambulance_bay_snow",
       "rect": {
-        "x": 95,
-        "y": 95,
-        "width": 219,
-        "height": 110
+        "x": 650,
+        "y": 235,
+        "width": 220,
+        "height": 145
       }
     },
     {
-      "id": "underpass_drift",
+      "id": "records_curb_snow",
       "rect": {
-        "x": 395,
-        "y": 780,
-        "width": 170,
-        "height": 130
+        "x": 80,
+        "y": 690,
+        "width": 310,
+        "height": 95
       }
     },
     {
-      "id": "ticket_curb_snow",
+      "id": "public_walk_snow",
       "rect": {
-        "x": 685,
-        "y": 320,
-        "width": 195,
-        "height": 105
+        "x": 175,
+        "y": 60,
+        "width": 265,
+        "height": 95
       }
     }
   ],
@@ -101,10 +91,10 @@
       "id": "intersection_black_ice",
       "kind": "black_ice",
       "rect": {
-        "x": 387,
-        "y": 380,
-        "width": 200,
-        "height": 165
+        "x": 267,
+        "y": 175,
+        "width": 180,
+        "height": 125
       },
       "message": "교차로 그늘에 숨어 있던 빙판이 발을 미끄러뜨렸다.",
       "exposure_loss": 1.5,
@@ -115,8 +105,8 @@
       "id": "building_wind_gap",
       "kind": "wind_gap",
       "rect": {
-        "x": 665,
-        "y": 367,
+        "x": 690,
+        "y": 262,
         "width": 160,
         "height": 245
       },
@@ -129,10 +119,10 @@
       "id": "packed_snow_drift",
       "kind": "snow_drift",
       "rect": {
-        "x": 165,
-        "y": 655,
-        "width": 270,
-        "height": 135
+        "x": 260,
+        "y": 620,
+        "width": 290,
+        "height": 145
       },
       "message": "허벅지까지 쌓인 눈을 헤치느라 숨이 거칠어졌다.",
       "exposure_loss": 1.1,
@@ -143,10 +133,10 @@
       "id": "open_lot_whiteout",
       "kind": "whiteout",
       "rect": {
-        "x": 330,
-        "y": 142,
-        "width": 300,
-        "height": 230
+        "x": 95,
+        "y": 397,
+        "width": 280,
+        "height": 235
       },
       "message": "눈발이 시야를 지워 길과 출입구가 잠깐 구분되지 않았다.",
       "exposure_loss": 2.0,
@@ -156,101 +146,101 @@
   ],
   "obstacles": [
     {
-      "kind": "rubble",
-      "asset_id": "tire_pile",
+      "kind": "light",
+      "asset_id": "street_lamp",
       "rect": {
-        "x": 206,
-        "y": 325,
-        "width": 94,
-        "height": 62
+        "x": 201,
+        "y": 290,
+        "width": 42,
+        "height": 82
+      }
+    },
+    {
+      "kind": "vehicle",
+      "asset_id": "frozen_car",
+      "rect": {
+        "x": 680,
+        "y": 329,
+        "width": 62,
+        "height": 58
       }
     },
     {
       "kind": "sign",
       "asset_id": "bus_stop_sign",
       "rect": {
-        "x": 715,
-        "y": 344,
+        "x": 802,
+        "y": 521,
         "width": 48,
         "height": 86
       }
     },
     {
-      "kind": "barrier",
-      "asset_id": "traffic_cone",
+      "kind": "utility",
+      "asset_id": "utility_box",
       "rect": {
-        "x": 222,
-        "y": 626,
-        "width": 42,
-        "height": 50
+        "x": 131,
+        "y": 683,
+        "width": 76,
+        "height": 68
       }
     },
     {
-      "kind": "cart",
-      "asset_id": "shopping_cart",
+      "kind": "barrier",
+      "asset_id": "sandbags",
       "rect": {
-        "x": 726,
-        "y": 618,
-        "width": 66,
-        "height": 54
+        "x": 470,
+        "y": 717,
+        "width": 108,
+        "height": 48
       }
     },
     {
       "kind": "light",
       "asset_id": "street_lamp",
       "rect": {
-        "x": 460,
-        "y": 127,
+        "x": 709,
+        "y": 119,
         "width": 42,
         "height": 82
       }
     },
     {
-      "kind": "rubble",
-      "asset_id": "tire_pile",
+      "kind": "vehicle",
+      "asset_id": "frozen_car",
       "rect": {
-        "x": 454,
-        "y": 829,
-        "width": 94,
-        "height": 62
+        "x": 311,
+        "y": 116,
+        "width": 62,
+        "height": 58
       }
     },
     {
       "kind": "sign",
       "asset_id": "bus_stop_sign",
       "rect": {
-        "x": 101,
-        "y": 496,
+        "x": 555,
+        "y": 438,
         "width": 48,
         "height": 86
-      }
-    },
-    {
-      "kind": "barrier",
-      "asset_id": "traffic_cone",
-      "rect": {
-        "x": 835,
-        "y": 488,
-        "width": 42,
-        "height": 50
       }
     }
   ],
   "building_anchors": {
     "mapx_07_03_a_anchor": {
-      "x": 720,
-      "y": 700
+      "x": 705,
+      "y": 255
     },
     "mapx_07_03_b_anchor": {
-      "x": 230,
-      "y": 690
+      "x": 245,
+      "y": 685
     }
   },
   "threat_spawns": [],
   "landmarks": [
     {
-      "id": "central_transfer_07_03",
-      "label": "막힌 환승 교차로",
+      "id": "civic_medical_07_03",
+      "label": "응급 진료소와 관공서 거리",
       "position": {
         "x": 480,
         "y": 470

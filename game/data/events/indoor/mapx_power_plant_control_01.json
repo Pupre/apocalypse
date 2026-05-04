@@ -1,0 +1,212 @@
+{
+  "id": "mapx_power_plant_control_01",
+  "name": "열병합 발전소 제어동",
+  "summary": "꺼진 계기판, 얼어붙은 배관, 임시 정비 기록이 남은 발전소 제어동이다. 아주 작은 열을 되살릴 수 있을지도 모른다.",
+  "illustration_asset": "indoor/indoor_story_power_control_warmth_success.png",
+  "entry_zone_id": "control_room",
+  "zones": [
+    {
+      "id": "control_room",
+      "floor_id": "floor_1",
+      "label": "어두운 제어실",
+      "summary": "전원이 꺼진 콘솔과 서리 낀 창 사이로 배관 그림자가 길게 드리워져 있다.",
+      "connected_zone_ids": ["battery_cabinet", "pipe_gallery"],
+      "event_ids": ["inspect_control_room_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "battery_cabinet",
+      "floor_id": "floor_1",
+      "label": "정비 배터리함",
+      "summary": "낡은 보조 배터리와 절연 테이프, 잘린 케이블이 금속함 안에 남아 있다.",
+      "connected_zone_ids": ["control_room"],
+      "event_ids": ["search_battery_cabinet_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "pipe_gallery",
+      "floor_id": "floor_1",
+      "label": "배관 점검 통로",
+      "summary": "바닥에는 물이 얼어 있고, 벽면 밸브에는 최근 누군가 만진 듯한 손자국이 남아 있다.",
+      "connected_zone_ids": ["control_room", "maintenance_locker"],
+      "event_ids": ["inspect_pipe_gallery_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 35,
+      "revisit_cost": 10
+    },
+    {
+      "id": "maintenance_locker",
+      "floor_id": "floor_1",
+      "label": "정비 사물함",
+      "summary": "작업복과 수리 부품이 뒤섞인 사물함이다. 소모품은 많지 않지만 쓸모는 커 보인다.",
+      "connected_zone_ids": ["pipe_gallery"],
+      "event_ids": ["search_maintenance_locker_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [
+    {
+      "id": "plant_heat_trace_note",
+      "text": "정비 기록에는 '보조 순환 펌프 3분 가동 가능, 장시간 사용 금지'라고 적혀 있다.",
+      "visible": false
+    }
+  ],
+  "events": [
+    {
+      "id": "inspect_control_room_event",
+      "zone_id": "control_room",
+      "type": "search",
+      "hint_text": "제어실에는 열을 살릴 수 있는 단서가 있지만, 잘못 건드리면 시간만 잃을 수 있다.",
+      "options": [
+        {
+          "id": "read_heat_trace_note",
+          "label": "콘솔 옆 정비 기록을 확인한다",
+          "requirements": { "forbidden_flag_ids": ["plant_heat_note_read"] },
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["plant_heat_note_read"],
+            "reveal_clue_ids": ["plant_heat_trace_note"],
+            "result_illustration_asset": "indoor/indoor_story_power_heat_trace_note_success.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_power_heat_trace_note_success.png",
+              "title": "죽은 계기판의 단서",
+              "text": "꺼진 계기판은 아무 말도 하지 않았지만, 정비 기록은 아직 읽을 수 있었다. 도시 전체를 켤 수는 없어도, 몇 분의 온기를 되살릴 순 있다.",
+              "button": "기록을 접는다"
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "bridge_control_heater",
+          "label": "배터리와 케이블로 정비 히터를 잠깐 살린다",
+          "requirements": {
+            "required_item_ids": ["electrical_tape"],
+            "forbidden_flag_ids": ["plant_heater_bridged"]
+          },
+          "blocked_feedback": "노출된 전선을 임시로 고정하려면 절연 테이프가 필요하다.",
+          "costs": { "minutes": 45, "noise": 1 },
+          "outcomes": {
+            "set_flags": ["plant_heater_bridged"],
+            "pressure": {
+              "id": "plant_heater_amber_glow",
+              "message": "히터가 낮게 울며 붉은 빛을 냈다. 오래가진 않겠지만 얼어붙은 손을 움직일 정도의 온기는 돌아왔다.",
+              "exposure_loss": -2.0,
+              "fatigue_gain": 0.5,
+              "noise": 1,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_power_control_warmth_success.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_power_control_warmth_success.png",
+              "title": "꺼진 도시의 작은 열",
+              "text": "발전소 전체를 되살릴 수는 없었다. 하지만 네 손바닥만 한 온기가 돌아오는 순간, 이 폐허에도 아직 쓸 수 있는 질서가 남아 있다는 걸 알았다.",
+              "button": "온기를 기억한다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_battery_cabinet_event",
+      "zone_id": "battery_cabinet",
+      "type": "search",
+      "hint_text": "배터리함 안쪽에는 작은 전기 부품과 보조 전원이 남아 있다.",
+      "options": [
+        {
+          "id": "collect_battery_parts",
+          "label": "배터리함의 부품을 분류한다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "electrical_tape", "weight": 4 },
+                { "id": "charging_cable", "weight": 3 },
+                { "id": "evd_dead_power_bank", "weight": 3 },
+                { "id": "flashlight", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "inspect_pipe_gallery_event",
+      "zone_id": "pipe_gallery",
+      "type": "search",
+      "hint_text": "배관 통로는 위험하지만 밸브와 호스 부품을 얻을 수 있다.",
+      "options": [
+        {
+          "id": "salvage_pipe_parts",
+          "label": "얼어붙은 밸브 주변의 부품을 떼어낸다",
+          "requirements": {},
+          "costs": { "minutes": 35, "noise": 2 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "hose_clamp", "weight": 3 },
+                { "id": "transfer_hose", "weight": 2 },
+                { "id": "work_gloves", "weight": 2 },
+                { "id": "shop_towel_bundle", "weight": 1 }
+              ]
+            },
+            "pressure": {
+              "id": "plant_pipe_gallery_slip",
+              "message": "얼어붙은 물웅덩이를 피하느라 다리에 힘이 들어갔다.",
+              "fatigue_gain": 1.0,
+              "noise": 1,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_power_pipe_gallery_slip_failure.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_power_pipe_gallery_slip_failure.png",
+              "title": "배관 아래의 얼음",
+              "text": "호스 클램프 하나를 더 얻으려 몸을 낮춘 순간, 발밑의 얼음이 먼저 움직였다. 넘어지진 않았지만 이 통로는 쉽게 허락되는 곳이 아니었다.",
+              "button": "균형을 되찾는다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_maintenance_locker_event",
+      "zone_id": "maintenance_locker",
+      "type": "search",
+      "hint_text": "정비 사물함에는 몸을 보호할 작업 소모품이 남아 있다.",
+      "options": [
+        {
+          "id": "search_locker_supplies",
+          "label": "정비 사물함을 정리해 쓸 만한 것을 챙긴다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "work_gloves", "weight": 3 },
+                { "id": "disposable_mask", "weight": 2 },
+                { "id": "duct_tape", "weight": 2 },
+                { "id": "shop_towel_bundle", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

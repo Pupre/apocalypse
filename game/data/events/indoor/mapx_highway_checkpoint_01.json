@@ -1,0 +1,193 @@
+{
+  "id": "mapx_highway_checkpoint_01",
+  "name": "국도 검문소",
+  "summary": "차단된 국도와 작은 검문 부스, 버려진 휴게 구역이 이어진 장소다. 길을 뚫을지, 우회할지 결정해야 한다.",
+  "illustration_asset": "indoor/indoor_story_checkpoint_detour_choice.png",
+  "entry_zone_id": "guard_booth",
+  "zones": [
+    {
+      "id": "guard_booth",
+      "floor_id": "floor_1",
+      "label": "검문 부스",
+      "summary": "서리 낀 창문 아래로 기록철, 무전기, 손전등이 뒤섞여 있다.",
+      "connected_zone_ids": ["roadblock", "radio_desk"],
+      "event_ids": ["search_guard_booth_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "roadblock",
+      "floor_id": "floor_1",
+      "label": "국도 차단선",
+      "summary": "바리케이드 너머 도로는 눈보라 속으로 사라진다. 바로 넘으면 빠르지만 너무 드러난다.",
+      "connected_zone_ids": ["guard_booth", "abandoned_bus"],
+      "event_ids": ["inspect_roadblock_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 35,
+      "revisit_cost": 10
+    },
+    {
+      "id": "radio_desk",
+      "floor_id": "floor_1",
+      "label": "무전 기록 책상",
+      "summary": "마지막 교신 메모와 도로 통제표가 젖은 파일철 속에 끼어 있다.",
+      "connected_zone_ids": ["guard_booth"],
+      "event_ids": ["read_radio_desk_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "abandoned_bus",
+      "floor_id": "floor_1",
+      "label": "버려진 버스",
+      "summary": "비상망치가 사라진 버스 안에는 승객이 두고 간 작은 물건들이 남아 있다.",
+      "connected_zone_ids": ["roadblock"],
+      "event_ids": ["search_abandoned_bus_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [
+    {
+      "id": "checkpoint_detour_route",
+      "text": "무전 기록에는 '동쪽 큰길 폐쇄, 남쪽 정비 차고 뒤 샛길만 제설 흔적 있음'이라고 적혀 있다.",
+      "visible": false
+    }
+  ],
+  "events": [
+    {
+      "id": "search_guard_booth_event",
+      "zone_id": "guard_booth",
+      "type": "search",
+      "hint_text": "검문 부스 안에는 길을 판단할 기록과 작은 장비가 남아 있다.",
+      "options": [
+        {
+          "id": "search_guard_booth_supplies",
+          "label": "부스 안의 작은 장비를 챙긴다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "portable_radio", "weight": 2 },
+                { "id": "flashlight", "weight": 2 },
+                { "id": "disposable_mask", "weight": 2 },
+                { "id": "memo_pad", "weight": 2 },
+                { "id": "ballpoint_pen", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "inspect_roadblock_event",
+      "zone_id": "roadblock",
+      "type": "search",
+      "hint_text": "차단선을 넘는 길은 빠르지만 눈보라와 노출 위험이 크다.",
+      "options": [
+        {
+          "id": "cross_roadblock_now",
+          "label": "바리케이드를 넘어 국도를 바로 가로지른다",
+          "requirements": { "forbidden_flag_ids": ["checkpoint_crossed_or_mapped"] },
+          "costs": { "minutes": 15, "noise": 2 },
+          "outcomes": {
+            "set_flags": ["checkpoint_crossed_or_mapped"],
+            "pressure": {
+              "id": "checkpoint_exposed_crossing",
+              "message": "큰길 위로 올라서자 바람이 몸을 밀어냈다. 빠르지만 너무 드러난 선택이었다.",
+              "exposure_loss": 2.5,
+              "fatigue_gain": 1.0,
+              "noise": 2,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_checkpoint_exposed_crossing_failure.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_checkpoint_exposed_crossing_failure.png",
+              "title": "빠르지만 드러난 길",
+              "text": "바리케이드를 넘자마자 국도 위의 바람이 몸을 밀었다. 길은 넓고 빨랐지만, 넓은 길 위에서는 너도 너무 잘 보였다.",
+              "button": "몸을 낮춘다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "read_radio_desk_event",
+      "zone_id": "radio_desk",
+      "type": "search",
+      "hint_text": "젖은 기록을 살리면 국도 대신 돌아갈 샛길을 찾을 수 있을지도 모른다.",
+      "options": [
+        {
+          "id": "plot_safe_detour",
+          "label": "무전 기록과 도로표를 맞춰 안전한 우회로를 그린다",
+          "requirements": { "forbidden_flag_ids": ["checkpoint_crossed_or_mapped"] },
+          "costs": { "minutes": 40, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["checkpoint_crossed_or_mapped"],
+            "reveal_clue_ids": ["checkpoint_detour_route"],
+            "discover_loot": [
+              { "id": "evd_map_marker_kit", "bulk": 1 }
+            ],
+            "pressure": {
+              "id": "checkpoint_detour_mapped",
+              "message": "젖은 종이 위에 길을 다시 그렸다. 당장은 느리지만 다음 이동에서 덜 드러나는 길이다.",
+              "fatigue_gain": 0.5,
+              "noise": 0,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_checkpoint_detour_choice.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_checkpoint_detour_choice.png",
+              "title": "막힌 길 옆의 길",
+              "text": "눈보라 속 국도는 빠른 답처럼 보였다. 하지만 기록을 맞춰 보자, 조금 돌아가도 살아서 도착할 가능성이 있는 길이 떠올랐다.",
+              "button": "우회로를 접어 둔다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_abandoned_bus_event",
+      "zone_id": "abandoned_bus",
+      "type": "search",
+      "hint_text": "버스 안쪽은 춥지만 좌석 틈에는 승객이 두고 간 물건이 남아 있다.",
+      "options": [
+        {
+          "id": "search_bus_seats",
+          "label": "버스 좌석 사이를 뒤진다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 1 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "bottled_water", "weight": 3 },
+                { "id": "energy_bar", "weight": 2 },
+                { "id": "evd_dead_power_bank", "weight": 2 },
+                { "id": "old_blanket", "weight": 1 }
+              ]
+            },
+            "result_illustration_asset": "indoor/indoor_story_checkpoint_bus_seat_cache_success.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_checkpoint_bus_seat_cache_success.png",
+              "title": "좌석 밑의 흔적",
+              "text": "버스는 오래전에 멈췄지만, 사람들은 서둘러 떠나며 아주 작은 것들을 두고 갔다. 생수 한 병, 낡은 담요, 꺼진 보조배터리가 오늘의 시간을 조금 늘려 준다.",
+              "button": "작은 물건을 챙긴다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

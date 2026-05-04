@@ -1,0 +1,218 @@
+{
+  "id": "mapx_civic_triage_clinic_01",
+  "name": "응급 분류 진료소",
+  "summary": "관공서 로비를 임시 진료소로 바꾼 장소다. 약품은 많지 않지만, 무엇이 안전하고 무엇을 남겨야 하는지 판단할 수 있다.",
+  "illustration_asset": "indoor/indoor_story_civic_triage_sort_choice.png",
+  "entry_zone_id": "triage_lobby",
+  "zones": [
+    {
+      "id": "triage_lobby",
+      "floor_id": "floor_1",
+      "label": "분류 로비",
+      "summary": "접이식 책상과 플라스틱 상자가 줄지어 있고, 서리 낀 유리문 너머로 눈이 밀려 있다.",
+      "connected_zone_ids": ["medicine_table", "records_wall"],
+      "event_ids": ["search_triage_lobby_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "medicine_table",
+      "floor_id": "floor_1",
+      "label": "약품 분류대",
+      "summary": "뒤섞인 약품과 위생용품이 놓여 있다. 라벨을 확인하지 않고 챙기면 오히려 위험할 수 있다.",
+      "connected_zone_ids": ["triage_lobby", "cold_storage_box"],
+      "event_ids": ["sort_medicine_table_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 35,
+      "revisit_cost": 10
+    },
+    {
+      "id": "records_wall",
+      "floor_id": "floor_1",
+      "label": "진료 기록 벽",
+      "summary": "젖은 클립보드와 동선표가 벽에 붙어 있다. 어느 방이 오염됐는지 알 수 있을 것 같다.",
+      "connected_zone_ids": ["triage_lobby"],
+      "event_ids": ["read_records_wall_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "cold_storage_box",
+      "floor_id": "floor_1",
+      "label": "꺼진 보냉 상자",
+      "summary": "보냉 상자 안쪽에는 아직 쓸 수 있는 냉찜질팩과 위생 소모품이 남아 있다.",
+      "connected_zone_ids": ["medicine_table"],
+      "event_ids": ["search_cold_storage_box_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [
+    {
+      "id": "civic_contamination_note",
+      "text": "기록 벽에는 '후문 대기실은 유리 파손, 장갑 없이 접근 금지'라는 표시가 남아 있다.",
+      "visible": false
+    }
+  ],
+  "events": [
+    {
+      "id": "search_triage_lobby_event",
+      "zone_id": "triage_lobby",
+      "type": "search",
+      "hint_text": "로비 입구의 상자에는 기본 위생용품이 남아 있다.",
+      "options": [
+        {
+          "id": "collect_lobby_hygiene",
+          "label": "로비 상자의 위생용품을 챙긴다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "disposable_mask", "weight": 3 },
+                { "id": "alcohol_swab", "weight": 3 },
+                { "id": "bandage", "weight": 2 },
+                { "id": "evd_hand_wipes_pack", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "sort_medicine_table_event",
+      "zone_id": "medicine_table",
+      "type": "search",
+      "hint_text": "약품 분류대는 천천히 확인하면 안전하지만 시간이 걸린다.",
+      "options": [
+        {
+          "id": "sort_safe_medicine_with_gloves",
+          "label": "장갑을 끼고 쓸 수 있는 약품만 분류한다",
+          "requirements": {
+            "required_item_ids": ["evd_disposable_gloves_pair"],
+            "forbidden_flag_ids": ["civic_medicine_sorted"]
+          },
+          "blocked_feedback": "깨진 유리와 젖은 약봉지를 안전하게 다루려면 일회용 장갑이 필요하다.",
+          "costs": { "minutes": 45, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["civic_medicine_sorted"],
+            "loot_table": {
+              "rolls": 4,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "cold_medicine", "weight": 3 },
+                { "id": "anti_inflammatory_ointment", "weight": 2 },
+                { "id": "medical_tape", "weight": 2 },
+                { "id": "alcohol_swab", "weight": 2 },
+                { "id": "bandage", "weight": 2 }
+              ]
+            },
+            "pressure": {
+              "id": "civic_triage_gloved_sort",
+              "message": "라벨이 젖은 약품을 하나씩 버리고 남겼다. 손은 느렸지만 위험한 물건을 걸러냈다.",
+              "fatigue_gain": 0.75,
+              "noise": 0,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_civic_triage_gloved_sort_success.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_civic_triage_gloved_sort_success.png",
+              "title": "가져갈 수 있는 약",
+              "text": "많이 챙기는 것보다 틀리지 않는 것이 중요했다. 쓸 수 없는 약을 버리는 일도, 살아남기 위한 행동이었다.",
+              "button": "분류한 약품을 챙긴다"
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "sweep_medicine_fast",
+          "label": "눈에 띄는 약품을 빠르게 쓸어 담는다",
+          "requirements": { "forbidden_flag_ids": ["civic_medicine_sorted"] },
+          "costs": { "minutes": 20, "noise": 1 },
+          "outcomes": {
+            "set_flags": ["civic_medicine_sorted"],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "cold_medicine", "weight": 2 },
+                { "id": "bandage", "weight": 2 },
+                { "id": "alcohol_swab", "weight": 1 }
+              ]
+            },
+            "pressure": {
+              "id": "civic_triage_fast_sweep",
+              "message": "플라스틱 통이 책상 모서리에 부딪히며 큰 소리를 냈다. 무엇을 놓쳤는지는 확인하지 못했다.",
+              "fatigue_gain": 0.5,
+              "noise": 1,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_civic_triage_fast_sweep_failure.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_civic_triage_fast_sweep_failure.png",
+              "title": "너무 빠른 손",
+              "text": "주머니는 조금 무거워졌지만 바닥에 흩어진 약봉지와 깨진 통을 다시 확인할 시간은 없었다. 빠른 선택은 늘 챙긴 것보다 놓친 것을 먼저 떠올리게 했다.",
+              "button": "소리를 삼키고 물러난다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "read_records_wall_event",
+      "zone_id": "records_wall",
+      "type": "search",
+      "hint_text": "젖은 기록을 읽으면 위험한 구역을 피할 단서를 얻을 수 있다.",
+      "options": [
+        {
+          "id": "copy_contamination_note",
+          "label": "동선표의 위험 표시를 베껴 둔다",
+          "requirements": { "forbidden_flag_ids": ["civic_records_read"] },
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["civic_records_read"],
+            "reveal_clue_ids": ["civic_contamination_note"],
+            "discover_loot": [
+              { "id": "memo_pad", "bulk": 1 }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_cold_storage_box_event",
+      "zone_id": "cold_storage_box",
+      "type": "search",
+      "hint_text": "꺼진 보냉 상자는 차갑지만 위생 소모품과 냉찜질팩이 남아 있다.",
+      "options": [
+        {
+          "id": "open_cold_storage_box",
+          "label": "보냉 상자를 열어 남은 소모품을 챙긴다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "evd_freezer_pack", "weight": 3 },
+                { "id": "evd_disposable_gloves_pair", "weight": 3 },
+                { "id": "medical_tape", "weight": 2 },
+                { "id": "cotton_swab_pack", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

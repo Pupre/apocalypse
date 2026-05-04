@@ -251,7 +251,7 @@
   "landmarks": [
     {
       "id": "central_transfer_03_05",
-      "label": "막힌 환승 교차로",
+      "label": "멈춰 선 환승 교차로",
       "position": {
         "x": 480,
         "y": 470

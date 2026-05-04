@@ -4,6 +4,10 @@ Thumbs.db
 .vscode/
 *.swp
 *.tmp
+**/__pycache__/
+tools/__pycache__/
+godot_user_data/
+tmp_*contact_sheet.jpg
 .worktrees/
 .codex
 .codex/

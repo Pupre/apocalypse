@@ -4,47 +4,47 @@
     "y": 4
   },
   "district_id": "west_shelter",
-  "district_label": "서쪽 대피 흔적",
+  "district_label": "서부 대피선",
   "layout_id": "barricaded_square",
   "roads": [
+    {
+      "id": "barricaded_square",
+      "texture_id": "road_plain",
+      "rect": {
+        "x": 275,
+        "y": 255,
+        "width": 390,
+        "height": 335
+      }
+    },
     {
       "id": "relief_route",
       "texture_id": "road_cracked",
       "rect": {
         "x": 0,
-        "y": 360,
+        "y": 650,
         "width": 960,
-        "height": 150
+        "height": 145
       }
     },
     {
-      "id": "checkpoint_chicane_a",
-      "texture_id": "road_plain",
+      "id": "north_checkpoint",
+      "texture_id": "slush_road",
       "rect": {
-        "x": 165,
-        "y": 205,
-        "width": 430,
-        "height": 115
-      }
-    },
-    {
-      "id": "checkpoint_chicane_b",
-      "texture_id": "road_plain",
-      "rect": {
-        "x": 360,
-        "y": 505,
-        "width": 430,
-        "height": 115
+        "x": 110,
+        "y": 120,
+        "width": 610,
+        "height": 120
       }
     },
     {
       "id": "chapel_walk",
       "texture_id": "sidewalk_snow",
       "rect": {
-        "x": 100,
-        "y": 630,
-        "width": 300,
-        "height": 155
+        "x": 95,
+        "y": 590,
+        "width": 290,
+        "height": 115
       }
     }
   ],
@@ -226,7 +226,7 @@
   "landmarks": [
     {
       "id": "west_shelter_01_04",
-      "label": "흩어진 임시 대피선",
+      "label": "무너진 임시 대피선",
       "position": {
         "x": 480,
         "y": 470

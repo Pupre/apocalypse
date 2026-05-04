@@ -3,86 +3,86 @@
     "x": 0,
     "y": 7
   },
-  "district_id": "west_shelter",
-  "district_label": "서쪽 대피 흔적",
-  "layout_id": "shelter_checkpoint",
+  "district_id": "outer_residential",
+  "district_label": "남서 외곽 주거지",
+  "layout_id": "outer_row_houses",
   "roads": [
     {
-      "id": "relief_route",
-      "texture_id": "road_plain",
+      "id": "outer_row_house_lane",
+      "texture_id": "alley_dark",
+      "rect": {
+        "x": 90,
+        "y": 220,
+        "width": 760,
+        "height": 110
+      }
+    },
+    {
+      "id": "back_lane",
+      "texture_id": "road_cracked",
       "rect": {
         "x": 0,
-        "y": 360,
+        "y": 625,
         "width": 960,
-        "height": 150
+        "height": 120
       }
     },
     {
-      "id": "checkpoint_chicane_a",
-      "texture_id": "road_plain",
-      "rect": {
-        "x": 165,
-        "y": 205,
-        "width": 430,
-        "height": 115
-      }
-    },
-    {
-      "id": "checkpoint_chicane_b",
-      "texture_id": "road_plain",
-      "rect": {
-        "x": 360,
-        "y": 505,
-        "width": 430,
-        "height": 115
-      }
-    },
-    {
-      "id": "chapel_walk",
+      "id": "shared_yard_walk",
       "texture_id": "sidewalk_snow",
       "rect": {
-        "x": 100,
-        "y": 630,
-        "width": 300,
-        "height": 155
+        "x": 250,
+        "y": 410,
+        "width": 460,
+        "height": 95
+      }
+    },
+    {
+      "id": "frozen_driveway",
+      "texture_id": "slush_road",
+      "rect": {
+        "x": 700,
+        "y": 320,
+        "width": 115,
+        "height": 360
       }
     }
   ],
   "snow_fields": [
     {
-      "id": "relief_square_snow",
+      "id": "yard_snow",
       "rect": {
-        "x": 95,
-        "y": 610,
-        "width": 330,
-        "height": 215
+        "x": 470,
+        "y": 145,
+        "width": 310,
+        "height": 260
       }
     },
     {
-      "id": "checkpoint_snowbank",
+      "id": "garage_curb_snow",
       "rect": {
-        "x": 520,
-        "y": 210,
-        "width": 300,
+        "x": 55,
+        "y": 590,
+        "width": 340,
+        "height": 160
+      }
+    },
+    {
+      "id": "garden_drift",
+      "rect": {
+        "x": 30,
+        "y": 190,
+        "width": 250,
         "height": 155
       }
     },
     {
-      "id": "queue_line_snow",
+      "id": "back_fence_snow",
       "rect": {
-        "x": 50,
-        "y": 330,
-        "width": 210,
-        "height": 95
-      }
-    },
-    {
-      "id": "chapel_curb_snow",
-      "rect": {
-        "x": 560,
-        "y": 640,
-        "width": 260,
-        "height": 125
+        "x": 680,
+        "y": 690,
+        "width": 220,
+        "height": 165
       }
     }
   ],
@@ -91,10 +91,10 @@
       "id": "intersection_black_ice",
       "kind": "black_ice",
       "rect": {
-        "x": 439,
-        "y": 340,
-        "width": 170,
-        "height": 130
+        "x": 130,
+        "y": 464,
+        "width": 165,
+        "height": 135
       },
       "message": "교차로 그늘에 숨어 있던 빙판이 발을 미끄러뜨렸다.",
       "exposure_loss": 1.5,
@@ -105,10 +105,10 @@
       "id": "building_wind_gap",
       "kind": "wind_gap",
       "rect": {
-        "x": 125,
-        "y": 564,
-        "width": 180,
-        "height": 220
+        "x": 510,
+        "y": 209,
+        "width": 190,
+        "height": 230
       },
       "message": "건물 사이로 눌린 바람이 체온을 빠르게 빼앗았다.",
       "exposure_loss": 2.6,
@@ -119,10 +119,10 @@
       "id": "packed_snow_drift",
       "kind": "snow_drift",
       "rect": {
-        "x": 560,
-        "y": 205,
-        "width": 260,
-        "height": 135
+        "x": 625,
+        "y": 660,
+        "width": 235,
+        "height": 150
       },
       "message": "허벅지까지 쌓인 눈을 헤치느라 숨이 거칠어졌다.",
       "exposure_loss": 1.1,
@@ -132,101 +132,101 @@
   ],
   "obstacles": [
     {
-      "kind": "barrier",
-      "asset_id": "barricade_wood",
+      "kind": "snow",
+      "asset_id": "snow_drift",
       "rect": {
-        "x": 144,
-        "y": 324,
-        "width": 112,
-        "height": 50
+        "x": 109,
+        "y": 204,
+        "width": 138,
+        "height": 82
       }
     },
     {
-      "kind": "fire",
-      "asset_id": "barrel_fire",
+      "kind": "rubble",
+      "asset_id": "tire_pile",
       "rect": {
-        "x": 396,
-        "y": 328,
-        "width": 56,
-        "height": 72
+        "x": 346,
+        "y": 158,
+        "width": 94,
+        "height": 62
       }
     },
     {
-      "kind": "sign",
-      "asset_id": "bus_stop_sign",
+      "kind": "utility",
+      "asset_id": "utility_box",
       "rect": {
-        "x": 610,
-        "y": 290,
-        "width": 48,
-        "height": 86
-      }
-    },
-    {
-      "kind": "crate",
-      "asset_id": "crate_stack",
-      "rect": {
-        "x": 729,
-        "y": 512,
-        "width": 90,
-        "height": 76
-      }
-    },
-    {
-      "kind": "barrier",
-      "asset_id": "sandbags",
-      "rect": {
-        "x": 226,
-        "y": 654,
-        "width": 118,
-        "height": 52
+        "x": 735,
+        "y": 180,
+        "width": 76,
+        "height": 68
       }
     },
     {
       "kind": "barrier",
       "asset_id": "barricade_wood",
       "rect": {
-        "x": 545,
-        "y": 698,
-        "width": 112,
-        "height": 50
+        "x": 499,
+        "y": 467,
+        "width": 104,
+        "height": 48
       }
     },
     {
-      "kind": "fire",
-      "asset_id": "barrel_fire",
+      "kind": "tree",
+      "asset_id": "dead_tree",
       "rect": {
-        "x": 799,
-        "y": 660,
-        "width": 56,
-        "height": 72
+        "x": 221,
+        "y": 699,
+        "width": 92,
+        "height": 112
       }
     },
     {
-      "kind": "sign",
-      "asset_id": "bus_stop_sign",
+      "kind": "snow",
+      "asset_id": "snow_drift",
       "rect": {
-        "x": 88,
-        "y": 517,
-        "width": 48,
-        "height": 86
+        "x": 820,
+        "y": 658,
+        "width": 138,
+        "height": 82
+      }
+    },
+    {
+      "kind": "rubble",
+      "asset_id": "tire_pile",
+      "rect": {
+        "x": 614,
+        "y": 780,
+        "width": 94,
+        "height": 62
+      }
+    },
+    {
+      "kind": "utility",
+      "asset_id": "utility_box",
+      "rect": {
+        "x": 323,
+        "y": 552,
+        "width": 76,
+        "height": 68
       }
     }
   ],
   "building_anchors": {
     "mapx_00_07_a_anchor": {
-      "x": 205,
-      "y": 250
+      "x": 285,
+      "y": 320
     },
     "mapx_00_07_b_anchor": {
-      "x": 710,
-      "y": 655
+      "x": 690,
+      "y": 620
     }
   },
   "threat_spawns": [],
   "landmarks": [
     {
-      "id": "west_shelter_00_07",
-      "label": "흩어진 임시 대피선",
+      "id": "outer_residential_00_07",
+      "label": "낮은 주택과 골목 창고",
       "position": {
         "x": 480,
         "y": 470

@@ -91,6 +91,11 @@ size_flags_horizontal = 3
 toggle_mode = true
 text = "가방"
 
+[node name="LoadoutTabButton" type="Button" parent="Sheet/VBox/Tabs"]
+size_flags_horizontal = 3
+toggle_mode = true
+text = "장착"
+
 [node name="CodexTabButton" type="Button" parent="Sheet/VBox/Tabs"]
 size_flags_horizontal = 3
 toggle_mode = true
@@ -266,13 +271,52 @@ theme_override_constants/separation = 8
 autowrap_mode = 3
 text = "아이템을 고르면 아래에서 상세를 본다."
 
-[node name="EquipmentRows" type="GridContainer" parent="Sheet/VBox/InventoryPane"]
+[node name="InventoryFilterFrame" type="PanelContainer" parent="Sheet/VBox/InventoryPane"]
 size_flags_horizontal = 3
-theme_override_constants/separation = 6
-columns = 4
+theme_override_styles/panel = SubResource("3")
+
+[node name="Padding" type="MarginContainer" parent="Sheet/VBox/InventoryPane/InventoryFilterFrame"]
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 6
+
+[node name="InventoryFilterRow" type="HBoxContainer" parent="Sheet/VBox/InventoryPane/InventoryFilterFrame/Padding"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 5
+
+[node name="AllFilterButton" type="Button" parent="Sheet/VBox/InventoryPane/InventoryFilterFrame/Padding/InventoryFilterRow"]
+size_flags_horizontal = 3
+toggle_mode = true
+text = "전체"
+
+[node name="SurvivalFilterButton" type="Button" parent="Sheet/VBox/InventoryPane/InventoryFilterFrame/Padding/InventoryFilterRow"]
+size_flags_horizontal = 3
+toggle_mode = true
+text = "생존"
+
+[node name="ToolsFilterButton" type="Button" parent="Sheet/VBox/InventoryPane/InventoryFilterFrame/Padding/InventoryFilterRow"]
+size_flags_horizontal = 3
+toggle_mode = true
+text = "도구"
+
+[node name="WearableFilterButton" type="Button" parent="Sheet/VBox/InventoryPane/InventoryFilterFrame/Padding/InventoryFilterRow"]
+size_flags_horizontal = 3
+toggle_mode = true
+text = "장착"
+
+[node name="KnowledgeFilterButton" type="Button" parent="Sheet/VBox/InventoryPane/InventoryFilterFrame/Padding/InventoryFilterRow"]
+size_flags_horizontal = 3
+toggle_mode = true
+text = "읽을 것"
+
+[node name="HeavyFilterButton" type="Button" parent="Sheet/VBox/InventoryPane/InventoryFilterFrame/Padding/InventoryFilterRow"]
+size_flags_horizontal = 3
+toggle_mode = true
+text = "무거움"
 
 [node name="InventoryScroll" type="ScrollContainer" parent="Sheet/VBox/InventoryPane"]
-custom_minimum_size = Vector2(0, 420)
+custom_minimum_size = Vector2(0, 480)
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
@@ -286,6 +330,40 @@ theme_override_constants/separation = 8
 
 [node name="DetailInset" type="Control" parent="Sheet/VBox/InventoryPane/InventoryScroll/InventoryContent"]
 custom_minimum_size = Vector2(0, 0)
+
+[node name="LoadoutPane" type="VBoxContainer" parent="Sheet/VBox"]
+visible = false
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="LoadoutHintLabel" type="Label" parent="Sheet/VBox/LoadoutPane"]
+autowrap_mode = 3
+text = "가방에서 물건을 고른 뒤 장착하고, 여기서 바로 해제한다."
+
+[node name="LoadoutFrame" type="PanelContainer" parent="Sheet/VBox/LoadoutPane"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("3")
+
+[node name="LoadoutScroll" type="ScrollContainer" parent="Sheet/VBox/LoadoutPane/LoadoutFrame"]
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="LoadoutContent" type="VBoxContainer" parent="Sheet/VBox/LoadoutPane/LoadoutFrame/LoadoutScroll"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="EquipmentRows" type="GridContainer" parent="Sheet/VBox/LoadoutPane/LoadoutFrame/LoadoutScroll/LoadoutContent"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+columns = 2
+
+[node name="LoadoutCandidateHeader" type="Label" parent="Sheet/VBox/LoadoutPane/LoadoutFrame/LoadoutScroll/LoadoutContent"]
+text = "장착 후보"
+
+[node name="LoadoutCandidateRows" type="VBoxContainer" parent="Sheet/VBox/LoadoutPane/LoadoutFrame/LoadoutScroll/LoadoutContent"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
 
 [node name="CodexPane" type="VBoxContainer" parent="Sheet/VBox"]
 visible = false

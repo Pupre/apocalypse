@@ -10,12 +10,12 @@
     {
       "pack_folder": "indoor",
       "manifest": "manifest.json",
-      "png_asset_count": 30
+      "png_asset_count": 66
     },
     {
       "pack_folder": "sheet",
       "manifest": "manifest.json",
-      "png_asset_count": 13
+      "png_asset_count": 15
     },
     {
       "pack_folder": "overlay",

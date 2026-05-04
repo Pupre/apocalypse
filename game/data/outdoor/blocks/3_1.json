@@ -4,7 +4,7 @@
     "y": 1
   },
   "district_id": "north_market",
-  "district_label": "북쪽 상권",
+  "district_label": "북부 시장가",
   "layout_id": "market_arcade",
   "roads": [
     {
@@ -227,7 +227,7 @@
   "landmarks": [
     {
       "id": "north_market_03_01",
-      "label": "눈 덮인 상가 거리",
+      "label": "얼어붙은 시장 아케이드",
       "position": {
         "x": 480,
         "y": 470

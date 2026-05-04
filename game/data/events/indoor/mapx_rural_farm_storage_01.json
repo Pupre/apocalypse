@@ -1,0 +1,220 @@
+{
+  "id": "mapx_rural_farm_storage_01",
+  "name": "외곽 농가 창고",
+  "summary": "눈 덮인 마을 끝의 농가 창고다. 쌀 포대와 물통, 연료통, 농기구가 남아 있지만 무거운 것과 오래 버틸 것을 함께 고를 수는 없다.",
+  "illustration_asset": "indoor/indoor_story_farm_storage_weight_choice.png",
+  "entry_zone_id": "shed_entry",
+  "zones": [
+    {
+      "id": "shed_entry",
+      "floor_id": "floor_1",
+      "label": "창고 입구",
+      "summary": "삐걱이는 나무문 안쪽으로 쌀겨 냄새와 차가운 흙냄새가 섞여 나온다.",
+      "connected_zone_ids": ["rice_sacks", "tool_wall"],
+      "event_ids": ["search_shed_entry_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "rice_sacks",
+      "floor_id": "floor_1",
+      "label": "쌀 포대 더미",
+      "summary": "반쯤 열린 쌀 포대와 작은 곡물 봉투가 놓여 있다. 오래 버틸 식량이지만 무겁다.",
+      "connected_zone_ids": ["shed_entry", "fuel_corner"],
+      "event_ids": ["sort_rice_sacks_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 35,
+      "revisit_cost": 10
+    },
+    {
+      "id": "tool_wall",
+      "floor_id": "floor_1",
+      "label": "농기구 벽",
+      "summary": "장갑, 끈, 비닐, 작은 손도구가 벽에 걸려 있다.",
+      "connected_zone_ids": ["shed_entry"],
+      "event_ids": ["search_tool_wall_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "fuel_corner",
+      "floor_id": "floor_1",
+      "label": "작은 연료 모서리",
+      "summary": "낡은 연료통과 숯 봉지가 구석에 남아 있다. 냄새가 강해 오래 머물면 위험하다.",
+      "connected_zone_ids": ["rice_sacks"],
+      "event_ids": ["inspect_fuel_corner_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [
+    {
+      "id": "farm_neighbor_cache_note",
+      "text": "창고 벽 낙서에는 '마을 아래 공동 우물은 아직 얼지 않았다'는 메모가 남아 있다.",
+      "visible": false
+    }
+  ],
+  "events": [
+    {
+      "id": "search_shed_entry_event",
+      "zone_id": "shed_entry",
+      "type": "search",
+      "hint_text": "입구 주변에는 바로 챙길 수 있는 작은 생활 재료가 있다.",
+      "options": [
+        {
+          "id": "collect_shed_entry_items",
+          "label": "창고 입구의 작은 재료를 챙긴다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "cotton_gloves", "weight": 2 },
+                { "id": "plastic_bag", "weight": 2 },
+                { "id": "cardboard_sheet", "weight": 2 },
+                { "id": "evd_rice_bag_small", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "sort_rice_sacks_event",
+      "zone_id": "rice_sacks",
+      "type": "search",
+      "hint_text": "쌀 포대는 강력한 식량이지만 무겁다. 조금만 나누면 다른 도구도 들 수 있다.",
+      "options": [
+        {
+          "id": "balance_rice_and_tools",
+          "label": "쌀을 조금만 나눠 담고 도구를 함께 챙긴다",
+          "requirements": { "forbidden_flag_ids": ["farm_storage_sorted"] },
+          "costs": { "minutes": 45, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["farm_storage_sorted"],
+            "reveal_clue_ids": ["farm_neighbor_cache_note"],
+            "loot_table": {
+              "rolls": 4,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "evd_rice_bag_small", "weight": 4 },
+                { "id": "water_jug", "weight": 2 },
+                { "id": "rope_bundle", "weight": 2 },
+                { "id": "clear_plastic_sheet", "weight": 2 },
+                { "id": "cotton_gloves", "weight": 2 }
+              ]
+            },
+            "pressure": {
+              "id": "farm_storage_weight_sort",
+              "message": "쌀을 전부 들 수는 없었다. 대신 작은 봉투로 나누자 남은 손에 도구가 들어왔다.",
+              "fatigue_gain": 1.0,
+              "noise": 0,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_farm_storage_weight_choice.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_farm_storage_weight_choice.png",
+              "title": "무거운 식량, 가벼운 길",
+              "text": "쌀 포대 하나가 며칠을 버티게 할 수 있었다. 하지만 그 무게가 다음 길을 막을 수도 있었다. 결국 네가 챙긴 것은 식량과 이동 가능성의 절충안이었다.",
+              "button": "나눠 담은 짐을 든다"
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "haul_big_rice_sack",
+          "label": "큰 쌀 포대를 욕심내서 끌어낸다",
+          "requirements": { "forbidden_flag_ids": ["farm_storage_sorted"] },
+          "costs": { "minutes": 25, "noise": 1 },
+          "outcomes": {
+            "set_flags": ["farm_storage_sorted"],
+            "discover_loot": [
+              { "id": "evd_rice_bag_small", "bulk": 3 }
+            ],
+            "pressure": {
+              "id": "farm_storage_heavy_rice",
+              "message": "쌀 포대는 생각보다 무거웠다. 끌어내는 동안 어깨와 허리가 먼저 반응했다.",
+              "fatigue_gain": 2.0,
+              "noise": 1,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_overburdened_exit_failure.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_overburdened_exit_failure.png",
+              "title": "창고 밖으로 끌고 나온 것",
+              "text": "포대 하나가 며칠을 버티게 할 수 있었다. 동시에 그 포대 하나가 다음 눈길을 건너기 어렵게 만들 수도 있었다.",
+              "button": "포대를 끌어낸다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_tool_wall_event",
+      "zone_id": "tool_wall",
+      "type": "search",
+      "hint_text": "농기구 벽에는 보온과 수선에 쓸 재료가 걸려 있다.",
+      "options": [
+        {
+          "id": "collect_farm_tools",
+          "label": "농기구 벽의 재료를 챙긴다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "rope_bundle", "weight": 3 },
+                { "id": "clear_plastic_sheet", "weight": 2 },
+                { "id": "work_gloves", "weight": 2 },
+                { "id": "duct_tape", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "inspect_fuel_corner_event",
+      "zone_id": "fuel_corner",
+      "type": "search",
+      "hint_text": "연료 모서리에는 쓸 만한 열원 재료가 있지만 냄새와 무게가 부담스럽다.",
+      "options": [
+        {
+          "id": "take_small_fuel_bundle",
+          "label": "작은 연료와 숯 봉지만 골라 챙긴다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "charcoal_bag_small", "weight": 3 },
+                { "id": "empty_jerrycan", "weight": 2 },
+                { "id": "shop_towel_bundle", "weight": 1 }
+              ]
+            },
+            "pressure": {
+              "id": "farm_fuel_smell",
+              "message": "연료 냄새가 장갑에 배었다. 오래 머물기 좋은 모서리는 아니었다.",
+              "fatigue_gain": 0.75,
+              "noise": 0,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

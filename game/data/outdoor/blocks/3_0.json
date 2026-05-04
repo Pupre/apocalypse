@@ -4,7 +4,7 @@
     "y": 0
   },
   "district_id": "north_market",
-  "district_label": "북쪽 상권",
+  "district_label": "북부 시장가",
   "layout_id": "market_arcade",
   "roads": [
     {
@@ -228,16 +228,16 @@
   ],
   "building_anchors": {
     "mapx_03_00_a_anchor": {
-      "x": 730,
-      "y": 220
+      "x": 150,
+      "y": 320
     },
     "mapx_03_00_b_anchor": {
-      "x": 215,
-      "y": 520
+      "x": 520,
+      "y": 500
     },
     "mapx_03_00_c_anchor": {
-      "x": 680,
-      "y": 735
+      "x": 720,
+      "y": 745
     }
   },
   "threat_spawns": [
@@ -256,7 +256,7 @@
   "landmarks": [
     {
       "id": "north_market_03_00",
-      "label": "눈 덮인 상가 거리",
+      "label": "얼어붙은 시장 아케이드",
       "position": {
         "x": 480,
         "y": 470

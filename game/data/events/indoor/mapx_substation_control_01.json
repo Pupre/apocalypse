@@ -1,0 +1,230 @@
+{
+  "id": "mapx_substation_control_01",
+  "name": "변전소 제어동",
+  "summary": "발전소 지대 외곽의 작은 변전소 제어동이다. 얼어붙은 차단기와 낡은 배터리함이 남아 있어 전기 부품을 얻을 수 있지만, 무리하면 소음과 피로가 크게 쌓인다.",
+  "illustration_asset": "indoor/indoor_story_substation_breaker_choice.png",
+  "entry_zone_id": "relay_room",
+  "zones": [
+    {
+      "id": "relay_room",
+      "floor_id": "floor_1",
+      "label": "릴레이실",
+      "summary": "서리 낀 계기판과 낡은 차단기가 벽을 채우고 있다. 손전등 불빛 아래에서 배선도가 희미하게 보인다.",
+      "connected_zone_ids": ["battery_shelf", "cable_trench"],
+      "event_ids": ["inspect_relay_room_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 35,
+      "revisit_cost": 10
+    },
+    {
+      "id": "battery_shelf",
+      "floor_id": "floor_1",
+      "label": "보조 배터리 선반",
+      "summary": "정전용 배터리팩과 케이블이 선반에 남아 있다. 충전이 살아 있는지는 직접 확인해야 한다.",
+      "connected_zone_ids": ["relay_room"],
+      "event_ids": ["search_battery_shelf_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "cable_trench",
+      "floor_id": "floor_1",
+      "label": "케이블 트렌치",
+      "summary": "바닥 덮개 아래로 얼어붙은 케이블 묶음이 이어진다. 쓸 만한 선재가 보이지만 건드리면 크게 울릴 수 있다.",
+      "connected_zone_ids": ["relay_room", "switchyard_window"],
+      "event_ids": ["search_cable_trench_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 35,
+      "revisit_cost": 10
+    },
+    {
+      "id": "switchyard_window",
+      "floor_id": "floor_1",
+      "label": "송전 마당 창",
+      "summary": "깨진 창밖으로 송전탑과 눈발이 보인다. 바람의 방향을 읽으면 다음 이동의 노출을 줄일 수 있다.",
+      "connected_zone_ids": ["cable_trench"],
+      "event_ids": ["read_switchyard_window_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [
+    {
+      "id": "substation_reroute_note",
+      "text": "차단기 배선도를 보면 남쪽 송전 마당의 바람막이 통로가 아직 막히지 않은 듯하다. 큰길보다 위험은 적지만 시간이 더 걸린다.",
+      "visible": false
+    }
+  ],
+  "events": [
+    {
+      "id": "inspect_relay_room_event",
+      "zone_id": "relay_room",
+      "type": "search",
+      "hint_text": "차단기를 건드리면 작은 온기와 길 정보를 얻을 수 있지만, 절연 없이 만지는 것은 위험하다.",
+      "options": [
+        {
+          "id": "reroute_substation_breaker",
+          "label": "절연 테이프로 손잡이를 감고 차단기 배선을 다시 맞춘다",
+          "requirements": {
+            "required_item_ids": ["electrical_tape"],
+            "forbidden_flag_ids": ["substation_breaker_rerouted"]
+          },
+          "blocked_feedback": "얼어붙은 차단기 손잡이를 맨손으로 잡기엔 위험하다. 절연 테이프가 필요하다.",
+          "costs": { "minutes": 45, "noise": 2 },
+          "outcomes": {
+            "set_flags": ["substation_breaker_rerouted"],
+            "reveal_clue_ids": ["substation_reroute_note"],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "power_bank", "weight": 2 },
+                { "id": "spare_batteries", "weight": 3 },
+                { "id": "charging_cable", "weight": 2 },
+                { "id": "wire_hooks", "weight": 1 }
+              ]
+            },
+            "pressure": {
+              "id": "substation_breaker_reroute",
+              "message": "차단기가 얼음 깨지는 소리를 내며 내려갔다. 제어동 안의 램프 하나가 잠깐 살아나고, 창밖 바람길이 보였다.",
+              "exposure_loss": -1.0,
+              "fatigue_gain": 0.75,
+              "noise": 2,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_substation_breaker_choice.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_substation_breaker_choice.png",
+              "title": "얼어붙은 전기의 방향",
+              "text": "전기는 돌아오지 않았다. 하지만 네가 맞춘 차단기와 배선도는, 적어도 어디로 나가야 눈보라를 덜 맞을지 알려 주었다.",
+              "button": "우회 통로를 기억한다"
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "pull_live_battery_pack",
+          "label": "전원함의 배터리팩을 빠르게 뽑아 챙긴다",
+          "requirements": { "forbidden_flag_ids": ["substation_battery_pack_taken"] },
+          "costs": { "minutes": 20, "noise": 3 },
+          "outcomes": {
+            "set_flags": ["substation_battery_pack_taken"],
+            "loot_table": {
+              "rolls": 2,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "evd_dead_power_bank", "weight": 3 },
+                { "id": "spare_batteries", "weight": 2 },
+                { "id": "jumper_cable", "weight": 1 }
+              ]
+            },
+            "pressure": {
+              "id": "substation_battery_pull",
+              "message": "배터리함이 거칠게 떨어지며 금속 울림이 번졌다. 빠르긴 했지만 제어동 안의 고요가 깨졌다.",
+              "fatigue_gain": 1.0,
+              "noise": 3,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_noisy_scavenge_failure.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_noisy_scavenge_failure.png",
+              "title": "떨어진 배터리함",
+              "text": "전원함은 생각보다 무겁고 차가웠다. 배터리팩은 얻었지만, 금속이 바닥을 때리는 소리는 제어동 밖까지 밀려 나갔다.",
+              "button": "배터리를 움켜쥔다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_battery_shelf_event",
+      "zone_id": "battery_shelf",
+      "type": "search",
+      "hint_text": "보조 배터리 선반에는 충전 관련 소모품이 남아 있다.",
+      "options": [
+        {
+          "id": "sort_substation_battery_shelf",
+          "label": "배터리 선반의 케이블과 소모품을 분류한다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "spare_batteries", "weight": 3 },
+                { "id": "charging_cable", "weight": 3 },
+                { "id": "evd_dead_power_bank", "weight": 2 },
+                { "id": "electrical_tape", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_cable_trench_event",
+      "zone_id": "cable_trench",
+      "type": "search",
+      "hint_text": "케이블 트렌치에는 조합에 쓸 선재와 고정 부품이 있다.",
+      "options": [
+        {
+          "id": "collect_substation_wire_parts",
+          "label": "케이블 덮개를 조금 열어 선재를 챙긴다",
+          "requirements": {},
+          "costs": { "minutes": 35, "noise": 1 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "wire_hooks", "weight": 3 },
+                { "id": "hose_clamp", "weight": 2 },
+                { "id": "electrical_tape", "weight": 2 },
+                { "id": "work_gloves", "weight": 1 }
+              ]
+            },
+            "pressure": {
+              "id": "substation_trench_echo",
+              "message": "바닥 덮개가 금속성 울림을 냈다. 깊은 밤에는 이런 소리도 멀리 간다.",
+              "noise": 1,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "read_switchyard_window_event",
+      "zone_id": "switchyard_window",
+      "type": "search",
+      "hint_text": "창밖 송전 마당을 보면 발전소 지대의 바람길을 읽을 수 있다.",
+      "options": [
+        {
+          "id": "read_switchyard_wind_path",
+          "label": "송전 마당의 눈발과 바람막이 통로를 살핀다",
+          "requirements": { "forbidden_flag_ids": ["substation_wind_path_read"] },
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["substation_wind_path_read"],
+            "reveal_clue_ids": ["substation_reroute_note"],
+            "pressure": {
+              "id": "substation_window_cold",
+              "message": "창가에서 오래 서 있자 손끝이 식었다. 대신 송전 마당 뒤편의 바람이 덜 닿는 길이 보였다.",
+              "exposure_loss": 0.75,
+              "fatigue_gain": 0.25,
+              "noise": 0,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

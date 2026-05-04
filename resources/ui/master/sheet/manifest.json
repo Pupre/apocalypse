@@ -124,6 +124,30 @@
       "alpha_policy": "outside transparent only; interior opaque"
     },
     {
+      "filename": "loadout_panel_expanded.png",
+      "purpose": "Dedicated equipment/loadout tab panel generated for the separated loadout management UX",
+      "size": "604x332",
+      "nine_slice": {
+        "left": 52,
+        "right": 52,
+        "top": 48,
+        "bottom": 48
+      },
+      "alpha_policy": "rectangular opaque panel; safe to stretch as an interior surface"
+    },
+    {
+      "filename": "inventory_filter_rail.png",
+      "purpose": "Text-free category filter rail for the expanded bag browsing UX",
+      "size": "604x54",
+      "nine_slice": {
+        "left": 36,
+        "right": 36,
+        "top": 18,
+        "bottom": 18
+      },
+      "alpha_policy": "rectangular opaque panel; safe to stretch as a compact control rail"
+    },
+    {
       "filename": "sheet_button_primary_normal.png",
       "purpose": "Primary full-width sheet button background",
       "size": "286x56",

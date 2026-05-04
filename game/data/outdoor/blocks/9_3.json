@@ -3,12 +3,12 @@
     "x": 9,
     "y": 3
   },
-  "district_id": "east_medical",
-  "district_label": "동쪽 의료/업무 지구",
+  "district_id": "civic_medical",
+  "district_label": "동부 의료·관공 지구",
   "layout_id": "medical_campus",
   "roads": [
     {
-      "id": "clinic_drive",
+      "id": "medical_campus_drive",
       "texture_id": "road_plain",
       "rect": {
         "x": 165,
@@ -28,7 +28,7 @@
       }
     },
     {
-      "id": "pharmacy_court",
+      "id": "civic_records_court",
       "texture_id": "sidewalk_snow",
       "rect": {
         "x": 225,
@@ -38,7 +38,7 @@
       }
     },
     {
-      "id": "service_dropoff",
+      "id": "public_service_dropoff",
       "texture_id": "slush_road",
       "rect": {
         "x": 85,
@@ -68,7 +68,7 @@
       }
     },
     {
-      "id": "pharmacy_curb_snow",
+      "id": "records_curb_snow",
       "rect": {
         "x": 80,
         "y": 690,
@@ -77,7 +77,7 @@
       }
     },
     {
-      "id": "records_walk_snow",
+      "id": "public_walk_snow",
       "rect": {
         "x": 175,
         "y": 60,
@@ -91,10 +91,10 @@
       "id": "intersection_black_ice",
       "kind": "black_ice",
       "rect": {
-        "x": 258,
-        "y": 145,
-        "width": 170,
-        "height": 120
+        "x": 293,
+        "y": 175,
+        "width": 180,
+        "height": 125
       },
       "message": "교차로 그늘에 숨어 있던 빙판이 발을 미끄러뜨렸다.",
       "exposure_loss": 1.5,
@@ -106,10 +106,10 @@
       "id": "building_wind_gap",
       "kind": "wind_gap",
       "rect": {
-        "x": 665,
+        "x": 690,
         "y": 288,
         "width": 160,
-        "height": 240
+        "height": 245
       },
       "message": "건물 사이로 눌린 바람이 체온을 빠르게 빼앗았다.",
       "exposure_loss": 2.6,
@@ -120,10 +120,10 @@
       "id": "packed_snow_drift",
       "kind": "snow_drift",
       "rect": {
-        "x": 255,
-        "y": 640,
-        "width": 270,
-        "height": 135
+        "x": 260,
+        "y": 620,
+        "width": 290,
+        "height": 145
       },
       "message": "허벅지까지 쌓인 눈을 헤치느라 숨이 거칠어졌다.",
       "exposure_loss": 1.1,
@@ -134,10 +134,10 @@
       "id": "open_lot_whiteout",
       "kind": "whiteout",
       "rect": {
-        "x": 105,
-        "y": 333,
-        "width": 260,
-        "height": 230
+        "x": 95,
+        "y": 303,
+        "width": 280,
+        "height": 235
       },
       "message": "눈발이 시야를 지워 길과 출입구가 잠깐 구분되지 않았다.",
       "exposure_loss": 2.0,
@@ -229,12 +229,12 @@
   ],
   "building_anchors": {
     "mapx_09_03_a_anchor": {
-      "x": 700,
-      "y": 255
+      "x": 210,
+      "y": 670
     },
     "mapx_09_03_b_anchor": {
-      "x": 245,
-      "y": 690
+      "x": 705,
+      "y": 250
     }
   },
   "threat_spawns": [
@@ -252,8 +252,8 @@
   ],
   "landmarks": [
     {
-      "id": "east_medical_09_03",
-      "label": "정전된 업무지구",
+      "id": "civic_medical_09_03",
+      "label": "응급 진료소와 관공서 거리",
       "position": {
         "x": 480,
         "y": 470

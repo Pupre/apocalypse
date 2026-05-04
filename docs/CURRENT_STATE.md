@@ -1,7 +1,291 @@
 # Current State
 
 - Status: active
-- Last updated: 2026-05-03
+- Last updated: 2026-05-04
+
+## 2026-05-04 택배 분류 센터 다중 결과 컷신
+
+- `택배 분류 센터`의 핵심 선택을 전용 성공/실패 컷신으로 분리했다.
+- 새 AI 생성 컷신 2장을 추가했다.
+  - `indoor_story_parcel_route_map_success.png`: 상자를 덜 열고 배송 철망과 라벨을 읽어 다음 목적지를 찾는 장면.
+  - `indoor_story_parcel_random_boxes_failure.png`: 무작위 상자를 빠르게 뜯어 작은 물건은 얻지만 포장재 소음과 불확실성을 남기는 장면.
+- `mapx_parcel_sorting_center_01.json`에서 아래 선택지에 전용 결과 일러스트와 전체화면 스토리 컷신을 연결했다.
+  - `map_parcel_routes`: 우연한 상자보다 다음 이동 정보를 얻는 전략 선택.
+  - `open_random_parcels`: 당장 작은 물건을 얻지만 더 큰 배송 흐름을 놓치는 선택.
+- 검증: 이벤트 JSON 파싱, 신규 이미지 960x480 확인, `test_outdoor_map_expansion.gd`, `test_indoor_director.gd`, `test_ui_kit_resolver.gd`, `test_first_playable_loop.gd` 통과.
+
+## 2026-05-04 고속도로 휴게소 다중 결과 컷신
+
+- `고속도로 휴게소`의 자판기 선택을 장소 전용 성공/실패 컷신으로 분리했다.
+- 새 AI 생성 컷신 2장을 추가했다.
+  - `indoor_story_rest_stop_vending_panel_success.png`: 철사 고리로 서비스 패널을 조용히 열어 유리와 소리를 아끼는 장면.
+  - `indoor_story_rest_stop_vending_glass_failure.png`: 자판기 유리를 깨고 간식을 빠르게 챙기지만 유리 파편과 굴러가는 캔 소리를 남기는 장면.
+- `mapx_highway_rest_stop_vending_01.json`에서 아래 선택지에 전용 결과 일러스트와 전체화면 스토리 컷신을 연결했다.
+  - `open_vending_service_panel`: 시간이 걸리지만 휴게소 안의 고요를 유지하는 선택.
+  - `smash_vending_glass`: 빠르게 물자를 얻지만 국도 휴게소의 노출과 소음을 키우는 선택.
+- 검증: 이벤트 JSON 파싱, 신규 이미지 960x480 확인, `test_outdoor_map_expansion.gd`, `test_indoor_director.gd`, `test_ui_kit_resolver.gd`, `test_first_playable_loop.gd` 통과.
+
+## 2026-05-04 대피선 급수 초소 다중 결과 컷신
+
+- `대피선 급수 초소`의 물 선택을 장소 전용 성공/실패 컷신으로 분리했다.
+- 새 AI 생성 컷신 2장을 추가했다.
+  - `indoor_story_shelter_water_prefilter_success.png`: 프리필터를 고치고 가져갈 물과 남길 물을 표시하는 장면.
+  - `indoor_story_shelter_water_heavy_take_failure.png`: 너무 많은 물을 챙기다 문턱과 눈길에서 물의 무게를 체감하는 장면.
+- `mapx_shelter_water_checkpoint_01.json`에서 아래 선택지에 전용 결과 일러스트와 전체화면 스토리 컷신을 연결했다.
+  - `repair_prefilter_and_mark_share`: 물을 얻는 동시에 다음 이동자와 다음 생존자의 가능성을 남기는 선택.
+  - `take_all_checkpoint_water`: 확실한 생존 자원을 얻지만 이동력과 판단 여지를 잃는 선택.
+- 검증: 이벤트 JSON 파싱, 신규 이미지 960x480 확인, `test_outdoor_map_expansion.gd`, `test_indoor_director.gd`, `test_ui_kit_resolver.gd`, `test_first_playable_loop.gd` 통과.
+
+## 2026-05-04 임시 대피 등록소 다중 결과 컷신
+
+- `임시 대피 등록소`의 공동 보급 상자 선택을 성공/실패가 서로 다른 장면으로 남도록 확장했다.
+- 새 AI 생성 컷신 2장을 추가했다.
+  - `indoor_story_shelter_personal_share_success.png`: 내가 들 수 있는 몫만 챙기고 남은 공동 보급 상자를 다시 묶는 장면.
+  - `indoor_story_shelter_empty_boxes_failure.png`: 보급품을 빠르게 쓸어 담아 방이 비고, 빈 상자와 흩어진 물건만 남는 장면.
+- `mapx_west_shelter_registration_01.json`에서 아래 선택지에 전용 결과 일러스트와 전체화면 스토리 컷신을 연결했다.
+  - `take_only_personal_share`: 당장은 덜 가져가지만 대피소의 의미를 남기는 선택.
+  - `empty_relief_boxes_fast`: 빠르게 물자를 얻지만 다음 생존자의 가능성을 지우는 선택.
+- 검증: 이벤트 JSON 파싱, 신규 이미지 960x480 확인, `test_outdoor_map_expansion.gd`, `test_indoor_director.gd`, `test_ui_kit_resolver.gd`, `test_first_playable_loop.gd` 통과.
+
+## 2026-05-04 응급 분류 진료소 다중 결과 컷신
+
+- `응급 분류 진료소`의 약품 선택을 성공/실패가 서로 다른 장면으로 남도록 확장했다.
+- 새 AI 생성 컷신 2장을 추가했다.
+  - `indoor_story_civic_triage_gloved_sort_success.png`: 장갑을 끼고 젖은 약품을 하나씩 걸러내 쓸 수 있는 약만 남기는 성공 장면.
+  - `indoor_story_civic_triage_fast_sweep_failure.png`: 급하게 약품을 쓸어 담다가 플라스틱 통과 약봉지가 흩어져 소음과 손실을 남기는 실패 장면.
+- `mapx_civic_triage_clinic_01.json`에서 아래 선택지에 전용 결과 일러스트와 전체화면 스토리 컷신을 연결했다.
+  - `sort_safe_medicine_with_gloves`: 느리지만 안전하게 가져갈 수 있는 약만 남기는 선택.
+  - `sweep_medicine_fast`: 빠르지만 무엇을 망쳤는지 확인하지 못하는 선택.
+- 검증: 이벤트 JSON 파싱, 신규 이미지 960x480 확인, `test_outdoor_map_expansion.gd`, `test_indoor_director.gd`, `test_ui_kit_resolver.gd`, `test_first_playable_loop.gd` 통과.
+
+## 2026-05-04 국도 검문소 다중 결과 컷신
+
+- `국도 검문소`에도 한 건물 다중 컷신 패턴을 확장했다.
+- 새 AI 생성 컷신 2장을 추가했다.
+  - `indoor_story_checkpoint_exposed_crossing_failure.png`: 바리케이드를 넘어 빠른 큰길로 나섰을 때 눈보라와 노출 위험을 체감하는 장면.
+  - `indoor_story_checkpoint_bus_seat_cache_success.png`: 버려진 버스 좌석 밑에서 생수, 담요, 보조배터리 같은 작은 승객 흔적을 찾는 장면.
+- `mapx_highway_checkpoint_01.json`에서 아래 선택지에 전용 결과 일러스트와 전체화면 스토리 컷신을 연결했다.
+  - `cross_roadblock_now`: 빠른 길이지만 너무 드러난 선택.
+  - `search_bus_seats`: 큰 결정은 아니지만 생활감 있는 작은 보급을 얻는 선택.
+- 검증: 이벤트 JSON 파싱, 신규 이미지 960x480 확인, `test_outdoor_map_expansion.gd`, `test_indoor_director.gd`, `test_ui_kit_resolver.gd`, `test_first_playable_loop.gd` 통과.
+
+## 2026-05-04 비닐하우스 다중 결과 컷신
+
+- `눈 묻은 비닐하우스`에도 한 건물 다중 컷신 패턴을 확장했다.
+- 새 AI 생성 컷신 2장을 추가했다.
+  - `indoor_story_greenhouse_fast_strip_failure.png`: 모종 선반을 빠르게 훑다가 상토와 얼음 조각을 쏟아 손실과 소음을 남기는 실패 장면.
+  - `indoor_story_greenhouse_water_barrel_success.png`: 얼어붙은 물통 가장자리를 조심히 깨 쓸 수 있는 물을 확보하는 장면.
+- `mapx_rural_greenhouse_01.json`에서 아래 선택지에 전용 결과 일러스트와 전체화면 스토리 컷신을 연결했다.
+  - `strip_seedling_trays_fast`: 당장 먹을 것을 빠르게 챙기는 대신 다음 가능성을 망치는 선택.
+  - `chip_water_barrel_ice`: 둔탁한 소리와 피로를 감수하고 물을 확보하는 실용적 선택.
+- 검증: 이벤트 JSON 파싱, 신규 이미지 960x480 확인, `test_outdoor_map_expansion.gd`, `test_indoor_director.gd`, `test_ui_kit_resolver.gd`, `test_first_playable_loop.gd` 통과.
+
+## 2026-05-04 발전소 제어동 다중 결과 컷신
+
+- `열병합 발전소 제어동`에도 한 건물 다중 컷신 패턴을 확장했다.
+- 새 AI 생성 컷신 2장을 추가했다.
+  - `indoor_story_power_heat_trace_note_success.png`: 죽은 계기판 옆 정비 기록에서 작은 온기의 단서를 발견하는 장면.
+  - `indoor_story_power_pipe_gallery_slip_failure.png`: 배관 점검 통로에서 부품을 떼어내다 빙판에 미끄러지는 위험 결과 장면.
+- `mapx_power_plant_control_01.json`에서 아래 선택지에 전용 결과 일러스트와 전체화면 스토리 컷신을 연결했다.
+  - `read_heat_trace_note`: 단순 문서 읽기가 아니라 다음 큰 결정을 여는 발견 컷신이 된다.
+  - `salvage_pipe_parts`: 유용한 부품을 얻는 대신 피로와 위험을 체감하는 결과 컷신이 된다.
+- 검증: 이벤트 JSON 파싱, 신규 이미지 960x480 확인, `test_outdoor_map_expansion.gd`, `test_indoor_director.gd`, `test_ui_kit_resolver.gd`, `test_first_playable_loop.gd` 통과.
+
+## 2026-05-04 백색 물류 허브 다중 결과 컷신
+
+- 한 건물에 하나의 일러스트만 붙는 느낌을 줄이기 위해 `백색 물류 허브`를 다중 장면 컷신 패턴의 첫 사례로 확장했다.
+- 새 AI 생성 컷신 2장을 추가했다.
+  - `indoor_story_logistics_dispatch_routes_success.png`: 배차 데스크에서 상자보다 값진 운송 경로를 베껴 적는 성공 장면.
+  - `indoor_story_logistics_pallet_crash_failure.png`: 큰 팔레트를 욕심내다 소음과 피로를 키우는 실패 장면.
+- `mapx_logistics_cold_chain_hub_01.json`에서 아래 선택지에 전용 결과 일러스트와 전체화면 스토리 컷신을 연결했다.
+  - `copy_dispatch_routes`: 즉시 아이템보다 다음 이동 정보를 얻는 조용한 전략 선택.
+  - `drag_full_pallet`: 대량 물자를 욕심냈을 때 소음과 후회를 보여 주는 실패 선택.
+- 검증: 이벤트 JSON 파싱, 신규 이미지 960x480 확인, `test_outdoor_map_expansion.gd`, `test_indoor_director.gd`, `test_ui_kit_resolver.gd`, `test_first_playable_loop.gd` 통과.
+
+## 2026-05-04 대지역 이동 사건 1차
+
+- 야외 맵이 넓어졌을 때 “새 구역에 들어섰다”는 안내만 뜨고 실제 플레이 압박은 기존 위험 타일에만 의존하던 문제를 보완했다.
+- `OutdoorController`에 대지역별 이동 사건을 추가했다.
+  - 북부 시장가, 의료·관공 지구, 주거지, 공업지대, 물류 벨트, 발전소, 농촌·비닐하우스, 국도 검문 구역, 대피선, 중앙 환승로마다 서로 다른 짧은 사건과 체온·피로·부상·시간 비용을 갖는다.
+  - 사건은 최초 진입 시 한 번만 발동해 넓은 맵 이동에 리듬과 비용을 주되, 같은 구역 안에서 반복 처벌처럼 느껴지지 않게 했다.
+  - 기존 야외 위험 피드백 HUD와 서리 플래시를 재사용해 “지역 사건: …” 메시지가 즉시 보이도록 연결했다.
+- 이번 변경의 의도는 대지역을 단순 배경 분류가 아니라 실제 플레이 상태를 흔드는 여행 압박으로 승격하는 것이다.
+- 검증: `test_outdoor_controller.gd`, `test_outdoor_map_expansion.gd`, `test_first_playable_loop.gd` 통과.
+
+## 2026-05-04 변전소·급식실·버스 차고 목적지 확장
+
+- 야외 대지역 확장 콘텐츠의 실제 플레이 밀도를 높이기 위해 `변전소 제어동`, `폐교 급식실`, `버려진 버스 차고`를 전용 실내 이벤트로 승격했다.
+- 세 장소 모두 전용 960x480 컷신 일러스트를 연결했고, 큰 결정 선택지 하나 이상을 포함한다.
+  - 변전소는 절연 테이프를 이용한 차단기 조작, 빠른 배터리 회수, 송전 마당 바람길 확인을 다룬다.
+  - 폐교 급식실은 무거운 쌀 포대와 실제 이동 가능한 식량 꾸러미 사이의 선택을 다룬다.
+  - 버스 차고는 우회 노선, 연료, 보온 재료 중 무엇을 우선할지 고르게 한다.
+- `tools/generate_outdoor_map_expansion.py`의 특수 건물 오버라이드에 세 목적지를 추가했다. 이후 맵 재생성 시 각 건물이 전용 이벤트 파일과 `big_decision` 태그를 유지한다.
+- 작업 원칙: 지역이 단순히 넓어지는 것이 아니라, 발전소 지대·농촌 외곽·국도 구역마다 서로 다른 판단과 파밍 기대감을 갖도록 목적지를 계속 깊게 채운다.
+- 검증: `test_outdoor_map_expansion.gd`, `test_indoor_director.gd`, `test_content_library.gd`, `test_first_playable_loop.gd` 통과.
+
+## 2026-05-04 보건소·급수 초소·지게차 정비고 확장
+
+- 의료·관공 지구, 서쪽 대피선, 남부 물류 벨트가 서로 다른 플레이 질문을 갖도록 `보건소 냉장 약품실`, `대피선 급수 초소`, `지게차 정비고`를 전용 실내 이벤트로 승격했다.
+- 보건소는 보냉 운반 조건이 있는 약품과 바로 쓸 수 있는 처치품 사이의 선택을 만든다.
+- 급수 초소는 깨끗한 물을 모두 가져가는 선택과, 필터를 고치고 다음 생존자의 몫을 남기는 선택을 나눈다.
+- 지게차 정비고는 공구·배터리 회수와 임시 운반 보조 장치 제작 사이의 선택으로, 물류 구역의 핵심인 “많이 찾았지만 어떻게 들고 나갈 것인가”를 직접 다룬다.
+- 세 장소 모두 전용 960x480 컷신 일러스트를 연결했고, 야외 맵 생성 오버라이드와 시나리오 테스트에 추가했다.
+- 검증: `test_outdoor_map_expansion.gd`, `test_indoor_director.gd`, `test_content_library.gd`, `test_first_playable_loop.gd` 통과.
+
+## 2026-05-04 무리한 선택 결과 컷신 패턴
+
+- 성공 컷신뿐 아니라 무리한 선택의 대가도 전체화면으로 보이도록 실패감 있는 결과 컷신 2장을 추가했다.
+  - `indoor_story_noisy_scavenge_failure.png`: 유리 파손, 배터리 탈거, 시트 절단처럼 빠르지만 소리를 키우는 선택에 사용한다.
+  - `indoor_story_overburdened_exit_failure.png`: 쌀 포대, 물통처럼 생존에는 확실하지만 이동을 망가뜨리는 과적 선택에 사용한다.
+- 아래 선택지에 `result_illustration_asset`과 `story_cutscene`을 붙였다.
+  - 휴게소 자판기 유리 파손, 변전소 배터리팩 강제 회수, 버스 차고 시트 절단, 지게차 배터리 탈거.
+  - 폐교 급식실 쌀 포대 욕심, 농가 창고 큰 쌀 포대, 대피선 급수 초소 물 전량 회수.
+- 검증: `test_outdoor_map_expansion.gd`, `test_indoor_director.gd`, `test_ui_kit_resolver.gd`, `test_first_playable_loop.gd` 통과.
+
+## 2026-05-04 가방 필터와 장착 후보 UX 확장
+
+- 가방 탭에 빠른 분류 필터를 추가했다.
+  - `전체`, `생존`, `도구`, `장착`, `읽을 것`, `무거움` 필터로 아이템 풀이 커져도 원하는 물건군을 빠르게 좁혀 볼 수 있다.
+  - 필터는 조합 모드에서는 숨겨져 조합 가능 재료 목록을 방해하지 않는다.
+- 장착 탭을 단순 슬롯 확인 화면에서 장비 교체 화면으로 확장했다.
+  - 장착 가능한 인벤토리 아이템을 `장착 후보`로 따로 보여 준다.
+  - 후보 행에서 바로 `장착`하거나, 이미 해당 슬롯에 장비가 있으면 `교체`할 수 있다.
+  - 장착 후보는 슬롯 순서와 아이템 이름 기준으로 정렬된다.
+- 아이템 상세 행동의 우선순위를 조정했다.
+  - `먹는다`, `마신다`, `사용한다`, `장착한다`, `읽는다`는 주요 행동으로 유지한다.
+  - `버린다`는 실수 터치를 줄이기 위해 `조합 시작`과 같은 보조 행동 영역으로 내렸다.
+- AI 이미지 생성으로 가방 필터 전용 컨트롤 레일 `inventory_filter_rail.png`를 만들고 `resources/ui/master/sheet/`에 연결했다.
+- 검증
+  - `res://tests/unit/test_survival_sheet.gd`
+  - `res://tests/unit/test_ui_kit_resolver.gd`
+  - `res://tests/unit/test_equipment_loadout.gd`
+  - `res://tests/unit/test_run_controller_live_transition.gd`
+  - `res://tests/smoke/test_first_playable_loop.gd`
+
+## 2026-05-04 가방·장착 UX 분리 패스
+
+- 아이템 장착 UI가 가방 목록 공간을 잡아먹던 문제를 해결하기 위해 생존 시트를 `가방 / 장착 / 도감` 3탭 구조로 재편했다.
+  - `가방` 탭은 아이템 목록과 선택 상세에 집중한다.
+  - `장착` 탭은 등, 손짐, 몸, 외투, 머리, 손, 발, 주머니 등 전체 장착 슬롯을 별도 화면에서 관리한다.
+  - `도감` 탭은 기존 조합 지식 흐름을 유지한다.
+- 장비 슬롯은 가방 목록 위에 끼워 넣지 않고 전용 장착 탭의 2열 카드 그리드로 이동했다.
+  - 기본 가방 화면의 스크롤 영역을 520px 기준으로 넓혀 파밍 후 아이템을 더 많이 한 번에 볼 수 있게 했다.
+  - 장착 화면에서는 착용 수량과 전체 슬롯 수를 먼저 보여 주고, 장착 중인 슬롯은 바로 `해제`할 수 있게 유지했다.
+- AI 이미지 생성으로 장착 전용 패널 배경 `loadout_panel_expanded.png`를 만들고 `resources/ui/master/sheet/`에 연결했다.
+- 검증
+  - `res://tests/unit/test_survival_sheet.gd`
+  - `res://tests/unit/test_ui_kit_resolver.gd`
+  - `res://tests/unit/test_equipment_loadout.gd`
+  - `res://tests/smoke/test_first_playable_loop.gd`
+
+## 2026-05-04 중간 목적지 이벤트와 컷신 확장
+
+- 대지역 맵이 거대한 랜드마크만 띄엄띄엄 있는 느낌이 되지 않도록, 이동 중 들르게 되는 중간 목적지 3곳을 전용 실내 이벤트로 승격했다.
+  - `mapx_08_04_a` 눈보라 휴게소 자판기 코너: 서비스 패널을 조용히 열어 필요한 것만 챙길지, 유리를 깨고 빠르게 털어 위험을 키울지 결정한다.
+  - `mapx_06_07_b` 동결된 택배 분류 센터: 무작위 상자를 뜯을지, 송장과 노선을 읽어 다음 탐색 경로까지 얻을지 결정한다.
+  - `mapx_05_11_a` 외곽 농가 창고: 쌀과 공구를 균형 있게 나눌지, 무거운 쌀 포대를 무리해서 들고 나갈지 결정한다.
+- AI 이미지 생성으로 960x480 컷신 일러스트 3장을 만들고 `resources/ui/master/indoor/`에 연결했다.
+  - `indoor_story_rest_stop_vending_choice.png`
+  - `indoor_story_parcel_route_sort_choice.png`
+  - `indoor_story_farm_storage_weight_choice.png`
+- 새 이벤트는 단순 보급품 보상이 아니라 생활감 있는 판단, 위험 감수, 다음 이동 정보, 운반 무게 고민을 함께 주도록 설계했다.
+- 검증
+  - 신규 `mapx_` 실내 이벤트 JSON 15개 파싱 확인.
+  - 신규 이벤트 안의 아이템 참조가 현재 아이템 풀에 존재하는지 확인.
+  - 신규 컷신 이미지 3장 960x480 확인.
+  - `res://tests/unit/test_outdoor_map_expansion.gd`
+  - `res://tests/unit/test_indoor_director.gd`
+  - `res://tests/unit/test_content_library.gd`
+  - `res://tests/smoke/test_first_playable_loop.gd`
+
+## 2026-05-04 야외 대지역 세계화 1차
+
+- 야외 12x12 확장 맵의 외곽 135개 블록을 단순 도시 반복에서 대지역 기반 탐험 지도로 재생성했다.
+  - 기존 중심 3x3 수작업 구역은 유지했다.
+  - 새 대지역은 북부 시장가, 동부 의료·관공 지구, 중앙 환승로, 국도 검문·휴게 구역, 서부 대피선, 남서 외곽 주거지, 남서 농촌·비닐하우스, 남부 물류 벨트, 동남 발전소 지대로 나뉜다.
+  - 각 대지역은 서로 다른 도로 실루엣, 눈더미, 빙판, 화이트아웃, 길거리 소품, 건물 앵커 배치를 갖는다.
+- 자동화가 이후 일러스트와 실내 선택지를 붙일 수 있도록 지역별 큰 결정 랜드마크를 추가했다.
+  - `mapx_07_08_a` 백색 물류 허브: 대량 보급품과 운반 무게 판단.
+  - `mapx_10_10_a` 열병합 발전소 제어동: 열원·전력 흔적과 통제실 판단.
+  - `mapx_03_11_a` 눈 묻은 비닐하우스: 식량 기대와 노출 위험 판단.
+  - `mapx_09_05_a` 국도 검문소: 통과, 은폐, 기록 확인 판단.
+- 전체 지도 UI와 야외 HUD가 새 대지역 이름과 색을 이해하도록 연결했다.
+- 운영 규칙은 유지한다.
+  - Codex는 `git add`, `git commit`, `git push`를 하지 않고 개발, 검증, 문서화만 진행한다.
+  - 사용자가 직접 확인한 뒤 Git 처리를 한다.
+- 검증
+  - 전체 야외 블록 JSON 144개 UTF-8 파싱 확인.
+  - `res://tests/unit/test_outdoor_map_expansion.gd`
+  - `res://tests/unit/test_outdoor_controller.gd`
+  - `res://tests/unit/test_outdoor_map_view.gd`
+  - `res://tests/unit/test_content_library.gd`
+  - `res://tests/smoke/test_first_playable_loop.gd`
+
+## 2026-05-04 대지역 랜드마크 이벤트와 컷신 1차
+
+- 대지역 세계화에서 추가한 핵심 랜드마크 4곳을 범용 실내 이벤트에서 전용 이벤트로 승격했다.
+  - `mapx_07_08_a` 백색 물류 허브: 냉동 도크, 정지한 냉동 컨테이너, 배차 데스크, 무너진 팔레트 통로를 가진다.
+  - `mapx_10_10_a` 열병합 발전소 제어동: 어두운 제어실, 정비 배터리함, 배관 점검 통로, 정비 사물함을 가진다.
+  - `mapx_03_11_a` 눈 묻은 비닐하우스: 처진 비닐 입구, 모종 선반, 농기구 모서리, 얼어붙은 물통을 가진다.
+  - `mapx_09_05_a` 국도 검문소: 검문 부스, 국도 차단선, 무전 기록 책상, 버려진 버스를 가진다.
+- 각 랜드마크에 사용자의 방향성과 맞는 큰 결정 선택지를 추가했다.
+  - 물류 허브는 많은 보급품 중 실제로 들 수 있는 것만 고르는 판단을 다룬다.
+  - 발전소는 위험한 제어실에서 아주 작은 온기를 살릴지 결정한다.
+  - 비닐하우스는 당장 먹을 것과 다음 가능성을 나누는 판단을 다룬다.
+  - 검문소는 빠른 큰길과 안전한 우회로 사이의 판단을 다룬다.
+- AI 이미지 생성으로 960x480 컷신 일러스트 4장을 만들고 `resources/ui/master/indoor/`에 연결했다.
+  - `indoor_story_logistics_cold_chain_choice.png`
+  - `indoor_story_power_control_warmth_success.png`
+  - `indoor_story_greenhouse_seed_cache_success.png`
+  - `indoor_story_checkpoint_detour_choice.png`
+- `UiKitResolver` 별칭과 UI 마스터 매니페스트를 갱신해 새 컷신 이미지가 게임에서 로드되도록 했다.
+- 검증
+  - 신규 `mapx_` 실내 이벤트 JSON 9개 파싱 확인.
+  - 신규 랜드마크 이벤트 안의 아이템 참조가 현재 아이템 풀에 존재하는지 확인.
+  - `res://tests/unit/test_outdoor_map_expansion.gd`
+  - `res://tests/unit/test_indoor_director.gd`
+  - `res://tests/unit/test_content_library.gd`
+  - `res://tests/unit/test_outdoor_controller.gd`
+  - `res://tests/smoke/test_first_playable_loop.gd`
+
+## 2026-05-04 의료·대피·외곽 주거 랜드마크 확장
+
+- 대지역 콘텐츠가 물류, 발전소, 농촌, 검문소에만 쏠리지 않도록 의료·관공 지구, 서부 대피선, 남서 외곽 주거지에도 전용 랜드마크 이벤트를 추가했다.
+  - `mapx_09_01_b` 응급 분류 진료소: 장갑을 끼고 안전한 약품만 분류할지, 빠르게 쓸어 담을지 결정한다.
+  - `mapx_00_05_a` 임시 대피 등록소: 공동 보급품을 전부 털지, 내 몫만 챙기고 남길 물자를 다시 묶을지 결정한다.
+  - `mapx_02_09_b` 차고 딸린 연립 주택: 가족 비상 상자와 생활 공구를 이용해 손짐 슬링을 만들지 결정한다.
+- AI 이미지 생성으로 960x480 컷신 일러스트 3장을 만들고 `resources/ui/master/indoor/`에 연결했다.
+  - `indoor_story_civic_triage_sort_choice.png`
+  - `indoor_story_shelter_registration_choice.png`
+  - `indoor_story_outer_garage_sling_success.png`
+- 이 패스의 디자인 의도는 파밍지를 "전리품 상자"가 아니라 생활 윤리, 운반 방식, 위험 분류를 판단하는 장소로 만드는 것이다.
+- 검증
+  - 신규 `mapx_` 실내 이벤트 JSON 12개 파싱 확인.
+  - 신규 이벤트 안의 아이템 참조가 현재 아이템 풀에 존재하는지 확인.
+  - 신규 컷신 이미지 3장 960x480 확인.
+  - `res://tests/unit/test_outdoor_map_expansion.gd`
+  - `res://tests/unit/test_indoor_director.gd`
+  - `res://tests/unit/test_content_library.gd`
+  - `res://tests/smoke/test_first_playable_loop.gd`
+
+## 2026-05-03 야외 지도 UI와 지구 내부 반복감 보정
+
+- 전체 지도 상단에 범례 텍스트가 좁은 폭에서 세로로 찢겨 보이는 문제를 막기 위해, 현재 전체 지도에서는 범례 행을 숨기고 상태줄과 지도 본문만 남겼다.
+- 12x12 맵 확장 생성기에서 `layout_id`가 실제 도로 배치에 반영되도록 바꿨다.
+  - 북부 시장가는 `market_arcade`, `market_plaza`, `market_back_alley`가 서로 다른 도로 실루엣을 가진다.
+  - 중앙 환승로는 `bus_loop`, `station_crossing`, `underpass_detour`로 나뉘어 모든 블록이 같은 순환도로처럼 보이지 않는다.
+  - 동부 의료지구, 남부 주거지, 남동 공업지대, 서부 대피선, 외곽 혼합지대도 각 레이아웃별 도로 모양이 갈라진다.
+  - 건물 앵커 후보도 지구별 2종에서 4종 중심으로 늘려, 같은 지구 안에서도 건물 위치가 덜 반복된다.
+- 생성기를 다시 실행해 외곽 135개 블록 파일을 갱신했다. 핵심 3x3 수동 블록은 건드리지 않았다.
+- 운영 규칙 변경:
+  - 앞으로 자동 배치 작업은 `git add`, `git commit`, `git push`를 하지 않는다.
+  - 사용자가 직접 확인한 뒤 Git 처리를 한다. Codex는 변경 파일과 테스트 결과만 보고한다.
+- 검증:
+  - 전체 야외 블록 JSON 144개 UTF-8 파싱 확인.
+  - `res://tests/unit/test_outdoor_map_expansion.gd`
+  - `res://tests/unit/test_outdoor_controller.gd`
+  - `res://tests/unit/test_outdoor_map_view.gd`
+  - `res://tests/smoke/test_first_playable_loop.gd`
 
 ## 2026-05-03 야외 지구 지도 피드백
 

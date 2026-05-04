@@ -19,8 +19,16 @@ const CODEX_CATEGORY_LABELS := {
 	"hygiene_medical": "위생 / 의료",
 	"repair_fortify": "수리 / 보강",
 }
+const INVENTORY_FILTERS := [
+	{"id": "all", "label": "전체"},
+	{"id": "survival", "label": "생존"},
+	{"id": "tools", "label": "도구"},
+	{"id": "wearable", "label": "장착"},
+	{"id": "knowledge", "label": "읽을 것"},
+	{"id": "heavy", "label": "무거움"},
+]
 
-const INVENTORY_SCROLL_MIN_HEIGHT_BROWSE := 420.0
+const INVENTORY_SCROLL_MIN_HEIGHT_BROWSE := 480.0
 const DETAIL_LIST_INSET_HEIGHT := 300.0
 const CRAFT_BAR_GAP := 10.0
 const CRAFT_BAR_HEIGHT := 154.0
@@ -36,6 +44,7 @@ const TEXT_OUTLINE_COLOR := Color(0.0, 0.02, 0.04, 1.0)
 var run_state = null
 var _mode_name := "indoor"
 var _active_tab := "inventory"
+var _inventory_filter_id := "all"
 var _sheet_state := STATE_HIDDEN
 var _selected_item_id := ""
 var _craft_base_item_id := ""
@@ -54,6 +63,7 @@ var _item_row_panels: Dictionary = {}
 var _title_label: Label = null
 var _status_label: Label = null
 var _inventory_tab_button: Button = null
+var _loadout_tab_button: Button = null
 var _codex_tab_button: Button = null
 var _close_button: Button = null
 var _craft_card: Control = null
@@ -72,7 +82,15 @@ var _inventory_scroll: ScrollContainer = null
 var _detail_inset: Control = null
 var _inventory_items: VBoxContainer = null
 var _browse_hint_label: Label = null
+var _inventory_filter_frame: PanelContainer = null
+var _inventory_filter_row: HBoxContainer = null
+var _inventory_filter_buttons: Dictionary = {}
+var _loadout_pane: Control = null
+var _loadout_hint_label: Label = null
+var _loadout_frame: PanelContainer = null
 var _equipment_rows: GridContainer = null
+var _loadout_candidate_rows: VBoxContainer = null
+var _loadout_candidate_header: Label = null
 var _item_detail_sheet: Control = null
 var _detail_close_button: Button = null
 var _item_name_label: Label = null
@@ -189,6 +207,15 @@ func open_codex() -> void:
 	_render()
 
 
+func open_loadout() -> void:
+	visible = true
+	_active_tab = "loadout"
+	_sheet_state = STATE_INVENTORY_BROWSE
+	_selected_item_id = ""
+	_last_craft_feedback_text = ""
+	_render()
+
+
 func close_sheet() -> void:
 	visible = false
 	_active_tab = "inventory"
@@ -212,6 +239,16 @@ func set_inventory_payload(payload: Dictionary) -> void:
 
 func get_active_tab_id() -> String:
 	return _active_tab
+
+
+func get_inventory_filter_id() -> String:
+	return _inventory_filter_id
+
+
+func set_inventory_filter_id(filter_id: String) -> void:
+	_inventory_filter_id = filter_id if _known_inventory_filter_id(filter_id) else "all"
+	if visible and _active_tab == "inventory":
+		_render()
 
 
 func get_sheet_state_id() -> String:
@@ -316,6 +353,7 @@ func _cache_nodes() -> void:
 	_title_label = get_node_or_null("Sheet/VBox/Header/TitleRow/TitleLabel") as Label
 	_status_label = get_node_or_null("Sheet/VBox/Header/StatusLabel") as Label
 	_inventory_tab_button = get_node_or_null("Sheet/VBox/Tabs/InventoryTabButton") as Button
+	_loadout_tab_button = get_node_or_null("Sheet/VBox/Tabs/LoadoutTabButton") as Button
 	_codex_tab_button = get_node_or_null("Sheet/VBox/Tabs/CodexTabButton") as Button
 	_close_button = get_node_or_null("Sheet/VBox/Header/TitleRow/CloseButton") as Button
 	_craft_card = get_node_or_null("CraftCard") as Control
@@ -329,7 +367,15 @@ func _cache_nodes() -> void:
 	_inventory_scroll = get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll") as ScrollContainer
 	_detail_inset = get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll/InventoryContent/DetailInset") as Control
 	_browse_hint_label = get_node_or_null("Sheet/VBox/InventoryPane/BrowseHintLabel") as Label
-	_equipment_rows = get_node_or_null("Sheet/VBox/InventoryPane/EquipmentRows") as GridContainer
+	_inventory_filter_frame = get_node_or_null("Sheet/VBox/InventoryPane/InventoryFilterFrame") as PanelContainer
+	_inventory_filter_row = get_node_or_null("Sheet/VBox/InventoryPane/InventoryFilterFrame/Padding/InventoryFilterRow") as HBoxContainer
+	_cache_inventory_filter_buttons()
+	_loadout_pane = get_node_or_null("Sheet/VBox/LoadoutPane") as Control
+	_loadout_hint_label = get_node_or_null("Sheet/VBox/LoadoutPane/LoadoutHintLabel") as Label
+	_loadout_frame = get_node_or_null("Sheet/VBox/LoadoutPane/LoadoutFrame") as PanelContainer
+	_equipment_rows = get_node_or_null("Sheet/VBox/LoadoutPane/LoadoutFrame/LoadoutScroll/LoadoutContent/EquipmentRows") as GridContainer
+	_loadout_candidate_header = get_node_or_null("Sheet/VBox/LoadoutPane/LoadoutFrame/LoadoutScroll/LoadoutContent/LoadoutCandidateHeader") as Label
+	_loadout_candidate_rows = get_node_or_null("Sheet/VBox/LoadoutPane/LoadoutFrame/LoadoutScroll/LoadoutContent/LoadoutCandidateRows") as VBoxContainer
 	_inventory_items = get_node_or_null("Sheet/VBox/InventoryPane/InventoryScroll/InventoryContent/InventoryItems") as VBoxContainer
 	_item_detail_sheet = get_node_or_null("ItemDetailSheet") as Control
 	_detail_close_button = get_node_or_null("ItemDetailSheet/VBox/Header/DetailCloseButton") as Button
@@ -348,9 +394,22 @@ func _cache_nodes() -> void:
 	_codex_rows = get_node_or_null("Sheet/VBox/CodexPane/CodexScroll/CodexRows") as VBoxContainer
 
 
+func _cache_inventory_filter_buttons() -> void:
+	_inventory_filter_buttons.clear()
+	if _inventory_filter_row == null:
+		return
+	for filter in INVENTORY_FILTERS:
+		var filter_id := String(filter.get("id", ""))
+		var button := _inventory_filter_row.get_node_or_null(_filter_button_node_name(filter_id)) as Button
+		if button != null:
+			_inventory_filter_buttons[filter_id] = button
+
+
 func _bind_buttons() -> void:
 	if _inventory_tab_button != null and not _inventory_tab_button.pressed.is_connected(Callable(self, "_on_inventory_tab_pressed")):
 		_inventory_tab_button.pressed.connect(Callable(self, "_on_inventory_tab_pressed"))
+	if _loadout_tab_button != null and not _loadout_tab_button.pressed.is_connected(Callable(self, "_on_loadout_tab_pressed")):
+		_loadout_tab_button.pressed.connect(Callable(self, "_on_loadout_tab_pressed"))
 	if _codex_tab_button != null and not _codex_tab_button.pressed.is_connected(Callable(self, "_on_codex_tab_pressed")):
 		_codex_tab_button.pressed.connect(Callable(self, "_on_codex_tab_pressed"))
 	if _close_button != null and not _close_button.pressed.is_connected(Callable(self, "_on_close_pressed")):
@@ -361,6 +420,11 @@ func _bind_buttons() -> void:
 		_craft_confirm_button.pressed.connect(Callable(self, "_on_craft_confirm_pressed"))
 	if _detail_close_button != null and not _detail_close_button.pressed.is_connected(Callable(self, "_on_detail_close_pressed")):
 		_detail_close_button.pressed.connect(Callable(self, "_on_detail_close_pressed"))
+	for filter_id_variant in _inventory_filter_buttons.keys():
+		var filter_id := String(filter_id_variant)
+		var button := _inventory_filter_buttons.get(filter_id) as Button
+		if button != null and not button.pressed.is_connected(Callable(self, "_on_inventory_filter_pressed").bind(filter_id)):
+			button.pressed.connect(Callable(self, "_on_inventory_filter_pressed").bind(filter_id))
 
 
 func _render() -> void:
@@ -371,6 +435,9 @@ func _render() -> void:
 	_render_craft_card()
 	if _active_tab == "inventory":
 		_render_inventory()
+	elif _active_tab == "loadout":
+		_render_item_detail()
+		_render_loadout()
 	elif _active_tab == "codex":
 		_render_item_detail()
 		_render_codex()
@@ -387,13 +454,20 @@ func _render_header() -> void:
 func _render_tabs() -> void:
 	if _inventory_pane != null:
 		_inventory_pane.visible = _active_tab == "inventory"
+	if _loadout_pane != null:
+		_loadout_pane.visible = _active_tab == "loadout"
 	if _codex_pane != null:
 		_codex_pane.visible = _active_tab == "codex"
 	if _browse_hint_label != null:
 		_browse_hint_label.visible = _active_tab == "inventory"
+	if _inventory_filter_frame != null:
+		_inventory_filter_frame.visible = _active_tab == "inventory" and _sheet_state != STATE_INVENTORY_CRAFT_SELECT
 	if _inventory_tab_button != null:
 		_inventory_tab_button.button_pressed = _active_tab == "inventory"
 		_style_sheet_tab(_inventory_tab_button, _active_tab == "inventory")
+	if _loadout_tab_button != null:
+		_loadout_tab_button.button_pressed = _active_tab == "loadout"
+		_style_sheet_tab(_loadout_tab_button, _active_tab == "loadout")
 	if _codex_tab_button != null:
 		_codex_tab_button.button_pressed = _active_tab == "codex"
 		_style_sheet_tab(_codex_tab_button, _active_tab == "codex")
@@ -437,7 +511,7 @@ func _render_inventory() -> void:
 	var inventory_rows := _inventory_rows_for_render()
 	if _browse_hint_label != null:
 		_browse_hint_label.text = _inventory_hint_text()
-	_render_equipment_summary()
+	_render_inventory_filters()
 	for row in inventory_rows:
 		if String(row.get("kind", "")) == "section":
 			_inventory_items.add_child(_create_inventory_section_header(row))
@@ -453,14 +527,45 @@ func _render_inventory() -> void:
 func _inventory_hint_text() -> String:
 	if _sheet_state == STATE_INVENTORY_CRAFT_SELECT:
 		return "조합 가능 섹션의 물건부터 눌러 두 번째 재료를 고른다."
-	return "먹고 마실 것, 불과 도구, 입을 것을 먼저 나눠 본다."
+	return "지금 들고 있는 물건을 먼저 넓게 훑고, 장착 관리는 위의 장착 탭에서 따로 본다."
+
+
+func _render_inventory_filters() -> void:
+	if _inventory_filter_frame != null:
+		_ui_kit_resolver.apply_panel(_inventory_filter_frame, "sheet/inventory_filter_rail.png")
+	if _inventory_filter_row == null:
+		return
+	for filter in INVENTORY_FILTERS:
+		var filter_id := String(filter.get("id", "all"))
+		var button := _inventory_filter_buttons.get(filter_id) as Button
+		if button == null:
+			continue
+		var active := filter_id == _inventory_filter_id
+		button.text = String(filter.get("label", filter_id))
+		button.toggle_mode = true
+		button.button_pressed = active
+		button.custom_minimum_size = Vector2(0, 32)
+		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		button.focus_mode = Control.FOCUS_NONE
+		_ui_kit_resolver.apply_button(
+			button,
+			"sheet/sheet_tab_compact_active.png" if active else "sheet/sheet_tab_compact_idle.png",
+			"sheet/sheet_tab_compact_active.png"
+		)
+		_apply_button_text_style(button, 12, TEXT_PRIMARY_COLOR if active else TEXT_SECONDARY_COLOR, 1)
+		button.modulate = Color(1.08, 1.16, 1.24, 1.0) if active else Color(0.80, 0.85, 0.92, 0.95)
+
+
+func _render_loadout() -> void:
+	_render_equipment_summary()
+	_render_loadout_candidates()
 
 
 func _render_equipment_summary() -> void:
 	if _equipment_rows == null:
 		return
 	_clear_children(_equipment_rows)
-	_equipment_rows.visible = _active_tab == "inventory" and _sheet_state != STATE_INVENTORY_CRAFT_SELECT
+	_equipment_rows.visible = _active_tab == "loadout" and _sheet_state != STATE_INVENTORY_CRAFT_SELECT
 	if not _equipment_rows.visible:
 		return
 
@@ -474,7 +579,9 @@ func _render_equipment_summary() -> void:
 				if String(row.get("kind", "")) == "equipped" and not slot_id.is_empty():
 					equipped_by_slot[slot_id] = row
 
-	var slot_order := ["back", "hand_carry", "body", "outer", "head", "neck", "face", "hands", "feet", "feet_layer", "hands_layer", "waist", "pocket"]
+	var slot_order := _loadout_slot_order()
+	if _loadout_hint_label != null:
+		_loadout_hint_label.text = "장착 %d/%d · 가방에서 물건을 고른 뒤 장착하고, 여기서 바로 해제한다." % [equipped_by_slot.size(), slot_order.size()]
 	for slot_id in slot_order:
 		var row: Dictionary = equipped_by_slot.get(slot_id, {
 			"kind": "empty",
@@ -486,10 +593,173 @@ func _render_equipment_summary() -> void:
 		_equipment_rows.add_child(_create_equipment_chip(row))
 
 
+func _render_loadout_candidates() -> void:
+	if _loadout_candidate_rows == null:
+		return
+	_clear_children(_loadout_candidate_rows)
+	var candidate_items := _loadout_candidate_items()
+	if _loadout_candidate_header != null:
+		_loadout_candidate_header.text = "장착 후보 %d" % candidate_items.size()
+		_loadout_candidate_header.visible = true
+		_apply_label_style(_loadout_candidate_header, 14, TEXT_PRIMARY_COLOR, 2)
+	if candidate_items.is_empty():
+		_loadout_candidate_rows.add_child(_create_empty_loadout_candidate_label())
+		return
+	for item_data in candidate_items:
+		_loadout_candidate_rows.add_child(_create_loadout_candidate_row(item_data))
+
+
+func _loadout_candidate_items() -> Array[Dictionary]:
+	var candidates: Array[Dictionary] = []
+	var grouped := _group_inventory_rows_by_item_id()
+	for item_id_variant in grouped.keys():
+		var item_id := String(item_id_variant)
+		var item_data := _item_definition(item_id)
+		var equip_slot := String(item_data.get("equip_slot", ""))
+		if equip_slot.is_empty():
+			continue
+		var row := item_data.duplicate(true)
+		row["_count"] = int(grouped.get(item_id, 0))
+		row["_slot_id"] = equip_slot
+		candidates.append(row)
+	candidates.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+		var a_slot_order := _loadout_slot_order().find(String(a.get("_slot_id", "")))
+		var b_slot_order := _loadout_slot_order().find(String(b.get("_slot_id", "")))
+		if a_slot_order != b_slot_order:
+			return a_slot_order < b_slot_order
+		return String(a.get("name", a.get("id", ""))) < String(b.get("name", b.get("id", "")))
+	)
+	return candidates
+
+
+func _create_empty_loadout_candidate_label() -> Control:
+	var panel := PanelContainer.new()
+	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	panel.add_theme_stylebox_override("panel", _inventory_section_style())
+	var label := Label.new()
+	label.text = "가방 안에 바로 장착할 수 있는 물건이 없다."
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_apply_label_style(label, 13, TEXT_SECONDARY_COLOR, 1)
+	panel.add_child(label)
+	return panel
+
+
+func _create_loadout_candidate_row(item_data: Dictionary) -> Control:
+	var item_id := String(item_data.get("id", ""))
+	var equip_slot := String(item_data.get("_slot_id", item_data.get("equip_slot", "")))
+	var candidate := PanelContainer.new()
+	candidate.name = "LoadoutCandidate_%s" % item_id
+	candidate.set_meta("item_id", item_id)
+	candidate.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	candidate.mouse_filter = Control.MOUSE_FILTER_PASS
+	_ui_kit_resolver.apply_panel(candidate, "sheet_set/item_row_idle.png")
+
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 10)
+	candidate.add_child(row)
+
+	var icon_slot := PanelContainer.new()
+	icon_slot.custom_minimum_size = Vector2(44, 44)
+	icon_slot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_ui_kit_resolver.apply_panel(icon_slot, "sheet/inventory_icon_slot.png")
+	row.add_child(icon_slot)
+
+	var icon_center := CenterContainer.new()
+	icon_center.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	icon_center.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	icon_slot.add_child(icon_center)
+
+	var icon_rect := TextureRect.new()
+	icon_rect.custom_minimum_size = Vector2(24, 24)
+	icon_rect.texture = _item_icon_for(item_id)
+	icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	icon_center.add_child(icon_rect)
+
+	var text_box := VBoxContainer.new()
+	text_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	text_box.add_theme_constant_override("separation", 2)
+	row.add_child(text_box)
+
+	var title := Label.new()
+	var count_text := " x%d" % int(item_data.get("_count", 1)) if int(item_data.get("_count", 1)) > 1 else ""
+	title.text = "%s%s" % [String(item_data.get("name", item_id)), count_text]
+	title.clip_text = true
+	_apply_label_style(title, 14, TEXT_PRIMARY_COLOR, 1)
+	text_box.add_child(title)
+
+	var detail := Label.new()
+	var detail_line := _first_equipment_detail_line(_item_effect_text(item_data))
+	var detail_suffix := " · %s" % detail_line if not detail_line.is_empty() else ""
+	detail.text = "%s%s" % [_slot_label(equip_slot), detail_suffix]
+	detail.clip_text = true
+	_apply_label_style(detail, 11, TEXT_SECONDARY_COLOR, 1)
+	text_box.add_child(detail)
+
+	var equip_button := Button.new()
+	equip_button.text = "교체" if _slot_is_equipped(equip_slot) else "장착"
+	equip_button.custom_minimum_size = Vector2(76, 38)
+	equip_button.focus_mode = Control.FOCUS_NONE
+	_apply_button_text_style(equip_button, 12, TEXT_PRIMARY_COLOR, 1)
+	_ui_kit_resolver.apply_button(
+		equip_button,
+		"sheet_set/action_button_primary_normal.png",
+		"sheet_set/action_button_primary_pressed.png"
+	)
+	equip_button.pressed.connect(func() -> void:
+		_selected_item_id = item_id
+		inventory_action_requested.emit("equip_inventory_%s" % item_id)
+	)
+	row.add_child(equip_button)
+	return candidate
+
+
+func _slot_is_equipped(slot_id: String) -> bool:
+	if run_state == null or slot_id.is_empty():
+		return false
+	var equipped_items_variant: Variant = run_state.equipped_items
+	if typeof(equipped_items_variant) != TYPE_DICTIONARY:
+		return false
+	var equipped_items := equipped_items_variant as Dictionary
+	var equipped_item_variant: Variant = equipped_items.get(slot_id, {})
+	return typeof(equipped_item_variant) == TYPE_DICTIONARY and not (equipped_item_variant as Dictionary).is_empty()
+
+
+func _known_inventory_filter_id(filter_id: String) -> bool:
+	for filter in INVENTORY_FILTERS:
+		if String(filter.get("id", "")) == filter_id:
+			return true
+	return false
+
+
+func _filter_button_node_name(filter_id: String) -> String:
+	match filter_id:
+		"all":
+			return "AllFilterButton"
+		"survival":
+			return "SurvivalFilterButton"
+		"tools":
+			return "ToolsFilterButton"
+		"wearable":
+			return "WearableFilterButton"
+		"knowledge":
+			return "KnowledgeFilterButton"
+		"heavy":
+			return "HeavyFilterButton"
+		_:
+			return "%sFilterButton" % filter_id.capitalize()
+
+
+func _loadout_slot_order() -> Array[String]:
+	return ["back", "hand_carry", "body", "outer", "head", "neck", "face", "hands", "feet", "feet_layer", "hands_layer", "waist", "pocket"]
+
+
 func _create_equipment_chip(row: Dictionary) -> Control:
 	var equipped := String(row.get("kind", "")) == "equipped"
 	var chip := PanelContainer.new()
-	chip.custom_minimum_size = Vector2(0, 74)
+	chip.name = "LoadoutChip_%s" % String(row.get("slot_id", "slot"))
+	chip.custom_minimum_size = Vector2(0, 92)
 	chip.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	chip.mouse_filter = Control.MOUSE_FILTER_PASS
 	chip.add_theme_stylebox_override("panel", _equipment_chip_style(equipped))
@@ -502,7 +772,7 @@ func _create_equipment_chip(row: Dictionary) -> Control:
 	slot_label.text = String(row.get("slot_label", row.get("summary_text", "장비")))
 	slot_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	slot_label.clip_text = true
-	_apply_label_style(slot_label, 10, TEXT_SECONDARY_COLOR if equipped else TEXT_MUTED_COLOR, 1)
+	_apply_label_style(slot_label, 12, TEXT_SECONDARY_COLOR if equipped else TEXT_MUTED_COLOR, 1)
 	box.add_child(slot_label)
 
 	var item_row := HBoxContainer.new()
@@ -510,7 +780,7 @@ func _create_equipment_chip(row: Dictionary) -> Control:
 	box.add_child(item_row)
 
 	var item_icon := TextureRect.new()
-	item_icon.custom_minimum_size = Vector2(18, 18)
+	item_icon.custom_minimum_size = Vector2(24, 24)
 	item_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	item_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	item_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -523,7 +793,7 @@ func _create_equipment_chip(row: Dictionary) -> Control:
 	item_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT if equipped else HORIZONTAL_ALIGNMENT_CENTER
 	item_label.clip_text = true
 	item_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_apply_label_style(item_label, 11, TEXT_PRIMARY_COLOR if equipped else Color(0.78, 0.84, 0.90, 0.88), 1)
+	_apply_label_style(item_label, 13, TEXT_PRIMARY_COLOR if equipped else Color(0.78, 0.84, 0.90, 0.88), 1)
 	item_row.add_child(item_label)
 
 	var detail_text := _first_equipment_detail_line(String(row.get("detail_text", "")))
@@ -532,16 +802,22 @@ func _create_equipment_chip(row: Dictionary) -> Control:
 		detail_label.text = detail_text
 		detail_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		detail_label.clip_text = true
-		_apply_label_style(detail_label, 9, TEXT_MUTED_COLOR, 1)
+		_apply_label_style(detail_label, 11, TEXT_MUTED_COLOR, 1)
 		box.add_child(detail_label)
+	elif not equipped:
+		var empty_hint_label := Label.new()
+		empty_hint_label.text = "가방에서 장착"
+		empty_hint_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_apply_label_style(empty_hint_label, 10, TEXT_MUTED_COLOR, 1)
+		box.add_child(empty_hint_label)
 
 	if equipped:
 		var unequip_button := Button.new()
 		unequip_button.text = "해제"
-		unequip_button.custom_minimum_size = Vector2(0, 22)
+		unequip_button.custom_minimum_size = Vector2(0, 26)
 		unequip_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		unequip_button.focus_mode = Control.FOCUS_NONE
-		_apply_button_text_style(unequip_button, 10, TEXT_PRIMARY_COLOR, 1)
+		_apply_button_text_style(unequip_button, 12, TEXT_PRIMARY_COLOR, 1)
 		_ui_kit_resolver.apply_button(
 			unequip_button,
 			"sheet_set/action_button_secondary_normal.png",
@@ -849,16 +1125,20 @@ func _render_item_actions(selected_sheet: Dictionary) -> void:
 			var button := Button.new()
 			button.text = action_label
 			button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			_apply_button_text_style(button, 14, TEXT_PRIMARY_COLOR, 1)
+			var destructive := action_id.begins_with("drop_inventory_")
+			_apply_button_text_style(button, 14, TEXT_SECONDARY_COLOR if destructive else TEXT_PRIMARY_COLOR, 1)
 			_ui_kit_resolver.apply_button(
 				button,
-				"sheet_set/action_button_primary_normal.png",
-				"sheet_set/action_button_primary_pressed.png"
+				"sheet_set/action_button_secondary_normal.png" if destructive else "sheet_set/action_button_primary_normal.png",
+				"sheet_set/action_button_secondary_pressed.png" if destructive else "sheet_set/action_button_primary_pressed.png"
 			)
 			button.pressed.connect(func() -> void:
 				inventory_action_requested.emit(action_id)
 			)
-			_primary_actions.add_child(button)
+			if destructive:
+				_secondary_actions.add_child(button)
+			else:
+				_primary_actions.add_child(button)
 
 	var craft_button := Button.new()
 	craft_button.text = "조합 시작"
@@ -951,7 +1231,7 @@ func _inventory_rows_for_render() -> Array[Dictionary]:
 			rows.append(row)
 
 	if not rows.is_empty():
-		return _sectioned_inventory_rows(_sorted_inventory_rows(rows))
+		return _sectioned_inventory_rows(_filtered_inventory_rows(_sorted_inventory_rows(rows)))
 
 	var grouped := _group_inventory_rows_by_item_id()
 	var item_ids: Array[String] = []
@@ -968,7 +1248,17 @@ func _inventory_rows_for_render() -> Array[Dictionary]:
 			"charges_text": _item_charges_text(item_id, item_data),
 		})
 
-	return _sectioned_inventory_rows(_sorted_inventory_rows(rows))
+	return _sectioned_inventory_rows(_filtered_inventory_rows(_sorted_inventory_rows(rows)))
+
+
+func _filtered_inventory_rows(rows: Array[Dictionary]) -> Array[Dictionary]:
+	if _sheet_state == STATE_INVENTORY_CRAFT_SELECT or _inventory_filter_id == "all":
+		return rows
+	var filtered_rows: Array[Dictionary] = []
+	for row in rows:
+		if _browse_section_id_for_row(row) == _inventory_filter_id:
+			filtered_rows.append(row)
+	return filtered_rows
 
 
 func _sorted_inventory_rows(rows: Array[Dictionary]) -> Array[Dictionary]:
@@ -1001,7 +1291,7 @@ func _sectioned_inventory_rows(rows: Array[Dictionary]) -> Array[Dictionary]:
 		return [{
 			"kind": "section",
 			"section_id": "empty",
-			"label": "가방이 비었다",
+			"label": "이 분류에는 물건이 없다" if _inventory_filter_id != "all" and _sheet_state != STATE_INVENTORY_CRAFT_SELECT else "가방이 비었다",
 		}]
 
 	var sectioned: Array[Dictionary] = []
@@ -1712,6 +2002,14 @@ func _on_inventory_tab_pressed() -> void:
 	open_inventory()
 
 
+func _on_inventory_filter_pressed(filter_id: String) -> void:
+	set_inventory_filter_id(filter_id)
+
+
+func _on_loadout_tab_pressed() -> void:
+	open_loadout()
+
+
 func _on_codex_tab_pressed() -> void:
 	open_codex()
 
@@ -1760,6 +2058,7 @@ func _apply_ui_skin() -> void:
 	var sheet := get_node_or_null("Sheet") as PanelContainer
 	var craft_card := get_node_or_null("CraftCard") as PanelContainer
 	var item_detail_sheet := get_node_or_null("ItemDetailSheet") as PanelContainer
+	var loadout_frame := get_node_or_null("Sheet/VBox/LoadoutPane/LoadoutFrame") as PanelContainer
 	var material_one_card := get_node_or_null("CraftCard/Padding/VBox/SlotsRow/MaterialOneCard") as PanelContainer
 	var material_two_card := get_node_or_null("CraftCard/Padding/VBox/SlotsRow/MaterialTwoCard") as PanelContainer
 	var result_card := get_node_or_null("CraftCard/Padding/VBox/ResultCard") as PanelContainer
@@ -1769,6 +2068,7 @@ func _apply_ui_skin() -> void:
 	_ui_kit_resolver.apply_panel(sheet, "sheet/sheet_bg_compact.png")
 	_ui_kit_resolver.apply_panel(craft_card, "sheet/detail_panel_compact.png")
 	_ui_kit_resolver.apply_panel(item_detail_sheet, "sheet/detail_panel_compact.png")
+	_ui_kit_resolver.apply_panel(loadout_frame, "sheet/loadout_panel_expanded.png")
 	_ui_kit_resolver.apply_panel(material_one_card, "sheet/inventory_row_compact_idle.png")
 	_ui_kit_resolver.apply_panel(material_two_card, "sheet/inventory_row_compact_idle.png")
 	_ui_kit_resolver.apply_panel(result_card, "sheet/inventory_row_compact_selected.png")
@@ -1776,6 +2076,7 @@ func _apply_ui_skin() -> void:
 	_ui_kit_resolver.apply_panel(material_two_icon_slot, "sheet/inventory_icon_slot.png")
 	_ui_kit_resolver.apply_panel(result_icon_slot, "sheet/inventory_icon_slot.png")
 	_style_sheet_tab(_inventory_tab_button, true)
+	_style_sheet_tab(_loadout_tab_button, false)
 	_style_sheet_tab(_codex_tab_button, false)
 	_ui_kit_resolver.apply_button(
 		_close_button,
@@ -1807,8 +2108,12 @@ func _apply_ui_skin() -> void:
 		_apply_label_style(_status_label, 15, TEXT_SECONDARY_COLOR, 3)
 	if _browse_hint_label != null:
 		_apply_label_style(_browse_hint_label, 15, TEXT_SECONDARY_COLOR, 3)
+	if _loadout_hint_label != null:
+		_apply_label_style(_loadout_hint_label, 15, TEXT_SECONDARY_COLOR, 3)
 	if _inventory_tab_button != null:
 		_apply_button_text_style(_inventory_tab_button, 15, TEXT_PRIMARY_COLOR, 2)
+	if _loadout_tab_button != null:
+		_apply_button_text_style(_loadout_tab_button, 15, TEXT_PRIMARY_COLOR, 2)
 	if _codex_tab_button != null:
 		_apply_button_text_style(_codex_tab_button, 15, TEXT_PRIMARY_COLOR, 2)
 	var craft_header_label := get_node_or_null("CraftCard/Padding/VBox/HeaderLabel") as Label

@@ -1,0 +1,214 @@
+{
+  "id": "mapx_public_health_cold_room_01",
+  "name": "보건소 냉장 약품실",
+  "summary": "의료·관공 지구 보건소 뒤편의 냉장 약품실이다. 약품은 남아 있지만 온도, 오염, 운반 조건을 모두 따져야 한다.",
+  "illustration_asset": "indoor/indoor_story_public_health_cold_room_choice.png",
+  "entry_zone_id": "triage_lobby",
+  "zones": [
+    {
+      "id": "triage_lobby",
+      "floor_id": "floor_1",
+      "label": "분류 로비",
+      "summary": "접수대 위에는 임시 분류표와 빈 마스크 상자가 흩어져 있다. 안쪽 냉장실 문틈으로 차가운 김이 새어 나온다.",
+      "connected_zone_ids": ["cold_room", "supply_cabinet"],
+      "event_ids": ["read_public_health_board_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "cold_room",
+      "floor_id": "floor_1",
+      "label": "냉장 약품실",
+      "summary": "정전된 냉장고와 아이스박스가 줄지어 있다. 안쪽 약품 일부는 아직 얼음 덕분에 온도를 버틴 듯하다.",
+      "connected_zone_ids": ["triage_lobby"],
+      "event_ids": ["choose_cold_room_medicine_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 40,
+      "revisit_cost": 10
+    },
+    {
+      "id": "supply_cabinet",
+      "floor_id": "floor_1",
+      "label": "소모품 캐비닛",
+      "summary": "거즈, 테이프, 소독 솜이 뒤섞인 캐비닛이다. 값비싼 약보다 확실히 쓸 수 있는 물건들이 보인다.",
+      "connected_zone_ids": ["triage_lobby", "back_exit"],
+      "event_ids": ["search_public_health_supplies_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "back_exit",
+      "floor_id": "floor_1",
+      "label": "후문 통로",
+      "summary": "후문 쪽 바닥은 미끄럽지만 의료지구 골목으로 바로 빠진다.",
+      "connected_zone_ids": ["supply_cabinet"],
+      "event_ids": ["inspect_public_health_back_exit_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [
+    {
+      "id": "public_health_clean_route_note",
+      "text": "보건소 후문은 대로보다 좁지만 오염된 처치 천막을 피할 수 있다. 의료지구를 빠져나갈 때 더 조용한 길이 될 수 있다.",
+      "visible": false
+    }
+  ],
+  "events": [
+    {
+      "id": "choose_cold_room_medicine_event",
+      "zone_id": "cold_room",
+      "type": "search",
+      "hint_text": "냉장 약품은 가치가 있지만 운반 조건이 까다롭다. 안전한 기본 처치품만 골라도 생존에는 도움이 된다.",
+      "options": [
+        {
+          "id": "preserve_cold_room_meds",
+          "label": "보냉 가방에 아직 차가운 약품과 처치품을 분리해 담는다",
+          "requirements": {
+            "required_item_ids": ["cooler_bag"],
+            "forbidden_flag_ids": ["public_health_cold_room_sorted"]
+          },
+          "blocked_feedback": "온도 유지가 필요한 약품을 그냥 가방에 넣으면 금방 망가질 수 있다. 보냉 가방이 필요하다.",
+          "costs": { "minutes": 45, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["public_health_cold_room_sorted"],
+            "reveal_clue_ids": ["public_health_clean_route_note"],
+            "loot_table": {
+              "rolls": 4,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "cold_medicine", "weight": 3 },
+                { "id": "painkillers", "weight": 3 },
+                { "id": "sterile_gauze_roll", "weight": 2 },
+                { "id": "alcohol_swab", "weight": 2 },
+                { "id": "disposable_mask", "weight": 2 }
+              ]
+            },
+            "pressure": {
+              "id": "public_health_cold_sort_focus",
+              "message": "약품을 모두 가져갈 수는 없었다. 온도를 버틴 것과 바로 쓸 수 있는 것을 나누는 동안 손끝이 저려 왔다.",
+              "exposure_loss": 0.75,
+              "fatigue_gain": 0.75,
+              "noise": 0,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_public_health_cold_room_choice.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_public_health_cold_room_choice.png",
+              "title": "살릴 수 있는 약",
+              "text": "차가운 방 안에는 많은 약이 있었다. 하지만 지금 네가 들고 나가야 하는 것은 가장 귀한 약이 아니라, 망가지지 않고 다음 사람에게도 의미가 남는 약이었다.",
+              "button": "보냉 가방을 잠근다"
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "take_basic_first_aid_only",
+          "label": "냉장 약품은 포기하고 기본 처치품만 빠르게 챙긴다",
+          "requirements": { "forbidden_flag_ids": ["public_health_cold_room_sorted"] },
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["public_health_cold_room_sorted"],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "gauze_pad", "weight": 3 },
+                { "id": "medical_tape", "weight": 3 },
+                { "id": "bandage", "weight": 2 },
+                { "id": "hand_sanitizer_gel", "weight": 1 }
+              ]
+            },
+            "pressure": {
+              "id": "public_health_basic_aid",
+              "message": "냉장고 안쪽은 그대로 닫아 두었다. 적어도 지금 쓸 수 있는 처치품은 빠르게 챙겼다.",
+              "fatigue_gain": 0.25,
+              "noise": 0,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "read_public_health_board_event",
+      "zone_id": "triage_lobby",
+      "type": "search",
+      "hint_text": "분류표와 후문 동선을 읽으면 의료지구를 덜 위험하게 빠져나갈 수 있다.",
+      "options": [
+        {
+          "id": "mark_public_health_clean_route",
+          "label": "분류표와 후문 동선을 대조해 조용한 길을 표시한다",
+          "requirements": { "forbidden_flag_ids": ["public_health_route_marked"] },
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["public_health_route_marked"],
+            "reveal_clue_ids": ["public_health_clean_route_note"],
+            "discover_loot": [
+              { "id": "evd_map_marker_kit", "bulk": 1 }
+            ],
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_public_health_supplies_event",
+      "zone_id": "supply_cabinet",
+      "type": "search",
+      "hint_text": "소모품 캐비닛은 약품보다 덜 화려하지만 실패가 적다.",
+      "options": [
+        {
+          "id": "collect_public_health_supplies",
+          "label": "거즈와 소독 용품을 분류해 챙긴다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "sterile_gauze_roll", "weight": 2 },
+                { "id": "gauze_pad", "weight": 3 },
+                { "id": "medical_tape", "weight": 2 },
+                { "id": "evd_disposable_gloves_pair", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "inspect_public_health_back_exit_event",
+      "zone_id": "back_exit",
+      "type": "search",
+      "hint_text": "후문 통로는 춥지만 의료지구 골목으로 바로 이어진다.",
+      "options": [
+        {
+          "id": "check_public_health_back_exit",
+          "label": "후문 밖 빙판과 골목 방향을 확인한다",
+          "requirements": { "forbidden_flag_ids": ["public_health_back_exit_checked"] },
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["public_health_back_exit_checked"],
+            "reveal_clue_ids": ["public_health_clean_route_note"],
+            "pressure": {
+              "id": "public_health_back_exit_cold",
+              "message": "후문 틈으로 들어온 바람이 땀을 식혔다. 그래도 붐볐던 대로를 피할 골목이 보였다.",
+              "exposure_loss": 0.75,
+              "fatigue_gain": 0.25,
+              "noise": 0,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

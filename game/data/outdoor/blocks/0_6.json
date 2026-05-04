@@ -4,7 +4,7 @@
     "y": 6
   },
   "district_id": "west_shelter",
-  "district_label": "서쪽 대피 흔적",
+  "district_label": "서부 대피선",
   "layout_id": "shelter_checkpoint",
   "roads": [
     {
@@ -256,7 +256,7 @@
   "landmarks": [
     {
       "id": "west_shelter_00_06",
-      "label": "흩어진 임시 대피선",
+      "label": "무너진 임시 대피선",
       "position": {
         "x": 480,
         "y": 470

@@ -49,8 +49,14 @@ const BUILDING_LABELS := {
 const DISTRICT_LABELS := {
 	"north_market": "북부 시장가",
 	"east_medical": "동부 의료지구",
+	"civic_medical": "동부 의료·관공 지구",
 	"south_residential": "남부 주거지",
+	"outer_residential": "남서 외곽 주거지",
 	"south_industrial": "남동 공업지대",
+	"logistics_belt": "남부 물류 벨트",
+	"power_plant": "동남 발전소 지대",
+	"rural_greenbelt": "남서 농촌·비닐하우스",
+	"highway_checkpoint": "국도 검문·휴게 구역",
 	"west_shelter": "서부 대피선",
 	"central_transfer": "중앙 환승로",
 	"mixed_edge": "외곽 혼합지대",
@@ -58,13 +64,122 @@ const DISTRICT_LABELS := {
 const DISTRICT_BRIEFS := {
 	"north_market": "상점 간판과 뒷골목이 이어진다.",
 	"east_medical": "진입로와 임시 진료 흔적이 보인다.",
+	"civic_medical": "임시 진료 흔적과 민원 기록, 닫힌 관공서 문이 뒤섞여 있다.",
 	"south_residential": "좁은 생활 골목이 얼어붙어 있다.",
+	"outer_residential": "낮은 주택과 차고가 드문드문 이어지고 눈길 사이로 생활 흔적이 남아 있다.",
 	"south_industrial": "적재장과 연료 흔적이 눈에 띈다.",
+	"logistics_belt": "컨테이너와 냉동 창고가 늘어서 있어 대량 보급과 중량 선택이 중요하다.",
+	"power_plant": "배관, 변전 설비, 통제실이 얽힌 구역으로 열과 전력의 흔적이 남아 있다.",
+	"rural_greenbelt": "비닐하우스와 얼어붙은 밭이 펼쳐져 식량의 기대와 노출 위험이 함께 커진다.",
+	"highway_checkpoint": "국도 차단선과 휴게 구역이 이어져 통과, 은폐, 기록 확인의 압박이 크다.",
 	"west_shelter": "대피 표식과 통제선이 남아 있다.",
 	"central_transfer": "버스 루프와 우회 통로가 얽혀 있다.",
 	"mixed_edge": "끊긴 도로와 빈 부지가 이어진다.",
 }
 const DISTRICT_MESSAGE_DURATION := 4.0
+const DISTRICT_TRAVEL_INCIDENT_MESSAGE_DURATION := 4.5
+const DISTRICT_TRAVEL_INCIDENTS := {
+	"north_market": {
+		"id": "north_market_awning_shear",
+		"kind": "snow_drift",
+		"message": "북부 시장가의 찢어진 차양에서 얼음 덩어리가 떨어졌다. 발걸음이 느려진다.",
+		"exposure_loss": 1.2,
+		"fatigue_gain": 1.6,
+		"health_loss": 0.2,
+		"minutes": 1,
+	},
+	"east_medical": {
+		"id": "east_medical_ambulance_lane",
+		"kind": "black_ice",
+		"message": "의료지구 진입로의 구급차 바퀴 자국이 검게 얼어붙어 우회했다.",
+		"exposure_loss": 1.3,
+		"fatigue_gain": 1.4,
+		"minutes": 2,
+	},
+	"civic_medical": {
+		"id": "civic_medical_tent_collapse",
+		"kind": "snow_drift",
+		"message": "임시 진료 천막 잔해를 비켜 가느라 손끝 감각이 빠르게 무뎌졌다.",
+		"exposure_loss": 1.6,
+		"fatigue_gain": 1.2,
+		"minutes": 1,
+	},
+	"south_residential": {
+		"id": "south_residential_alley_detour",
+		"kind": "black_ice",
+		"message": "주거지 골목의 경사진 빙판을 피해 담벼락을 짚고 돌아 나갔다.",
+		"exposure_loss": 1.0,
+		"fatigue_gain": 1.5,
+		"minutes": 2,
+	},
+	"outer_residential": {
+		"id": "outer_residential_driveway_drift",
+		"kind": "snow_drift",
+		"message": "외곽 주택 진입로마다 쌓인 눈을 헤치며 작은 체력이 계속 빠져나간다.",
+		"exposure_loss": 1.1,
+		"fatigue_gain": 1.8,
+		"minutes": 1,
+	},
+	"south_industrial": {
+		"id": "south_industrial_oily_ice",
+		"kind": "black_ice",
+		"message": "공업지대의 기름 섞인 얼음 위에서 몸을 낮춰 균형을 잡았다.",
+		"exposure_loss": 1.3,
+		"fatigue_gain": 1.7,
+		"health_loss": 0.3,
+		"minutes": 1,
+	},
+	"logistics_belt": {
+		"id": "logistics_belt_container_wind",
+		"kind": "wind_gap",
+		"message": "물류 벨트의 컨테이너 골목이 바람통처럼 울린다. 짐이 몸을 끌어당긴다.",
+		"exposure_loss": 2.1,
+		"fatigue_gain": 2.3,
+		"minutes": 2,
+	},
+	"power_plant": {
+		"id": "power_plant_pipe_crawl",
+		"kind": "black_ice",
+		"message": "발전소 배관 아래 얼음길을 낮게 통과했다. 장갑 안쪽까지 차갑다.",
+		"exposure_loss": 1.8,
+		"fatigue_gain": 2.0,
+		"health_loss": 0.4,
+		"minutes": 2,
+	},
+	"rural_greenbelt": {
+		"id": "rural_greenbelt_whiteout_row",
+		"kind": "whiteout",
+		"message": "비닐하우스 줄 사이에서 눈발이 길을 지웠다. 방향을 다시 잡느라 시간을 잃었다.",
+		"exposure_loss": 2.3,
+		"fatigue_gain": 1.4,
+		"minutes": 2,
+	},
+	"highway_checkpoint": {
+		"id": "highway_checkpoint_barrier_detour",
+		"kind": "wind_gap",
+		"message": "국도 차단선 옆으로 길게 우회했다. 금속 표지판이 바람에 흔들린다.",
+		"exposure_loss": 1.4,
+		"fatigue_gain": 2.1,
+		"minutes": 3,
+	},
+	"west_shelter": {
+		"id": "west_shelter_queue_line",
+		"kind": "snow_drift",
+		"message": "대피선 표식 아래 얼어붙은 대기 줄을 따라 걷자 다리에 힘이 풀린다.",
+		"exposure_loss": 1.0,
+		"fatigue_gain": 1.9,
+		"minutes": 2,
+	},
+	"central_transfer": {
+		"id": "central_transfer_bus_loop",
+		"kind": "black_ice",
+		"message": "버스 환승 루프의 눌린 눈길에서 발이 한 번 미끄러졌다.",
+		"exposure_loss": 1.1,
+		"fatigue_gain": 1.7,
+		"health_loss": 0.2,
+		"minutes": 1,
+	},
+}
 
 var run_state = null
 var exposure_model := EXPOSURE_MODEL_SCRIPT.new()
@@ -101,6 +216,7 @@ var _hazard_message_seconds := 0.0
 var _last_hazard_message := ""
 var _hazard_flash_seconds := 0.0
 var _hazard_flash_kind := ""
+var _triggered_district_travel_event_ids := {}
 var _player_visual: Sprite2D = null
 var _camera: Camera2D = null
 var _top_ribbon: PanelContainer = null
@@ -142,6 +258,7 @@ func bind_run_state(value, building_id: String = DEFAULT_BUILDING_ID, player_pos
 	_last_hazard_message = ""
 	_hazard_flash_seconds = 0.0
 	_hazard_flash_kind = ""
+	_triggered_district_travel_event_ids.clear()
 	_current_district_id = ""
 	_current_district_label = ""
 	_district_message_seconds = 0.0
@@ -437,7 +554,7 @@ func _sync_active_blocks(force_refresh: bool = false) -> bool:
 	if run_state != null and run_state.has_method("mark_outdoor_block_visited"):
 		run_state.mark_outdoor_block_visited(_current_block_coord)
 		_map_overlay_dirty = true
-	_sync_current_district()
+	_sync_current_district(not force_refresh)
 	_active_block_coords = next_active_block_coords
 	if not force_refresh and next_signature == _active_block_signature:
 		return false
@@ -462,7 +579,7 @@ func _refresh_streamed_world() -> void:
 	_configure_threats()
 
 
-func _sync_current_district() -> void:
+func _sync_current_district(allow_travel_incident: bool = true) -> void:
 	var block_row := world_runtime.get_block_row(_current_block_coord)
 	var next_district_id := String(block_row.get("district_id", "mixed_edge"))
 	var next_district_label := _district_label_for(next_district_id, String(block_row.get("district_label", "")))
@@ -471,8 +588,28 @@ func _sync_current_district() -> void:
 		_current_district_label = next_district_label
 		_district_message_seconds = DISTRICT_MESSAGE_DURATION
 		_map_overlay_dirty = true
+		if allow_travel_incident:
+			_trigger_district_travel_incident(next_district_id)
 	elif _current_district_label.is_empty():
 		_current_district_label = next_district_label
+
+
+func _trigger_district_travel_incident(district_id: String) -> void:
+	if run_state == null or not DISTRICT_TRAVEL_INCIDENTS.has(district_id):
+		return
+
+	var incident := (DISTRICT_TRAVEL_INCIDENTS.get(district_id, {}) as Dictionary).duplicate(true)
+	var incident_id := String(incident.get("id", district_id))
+	if incident_id.is_empty() or _triggered_district_travel_event_ids.has(incident_id):
+		return
+
+	_triggered_district_travel_event_ids[incident_id] = true
+	if run_state.has_method("apply_outdoor_hazard_contact"):
+		run_state.apply_outdoor_hazard_contact(incident)
+	_last_hazard_message = "지역 사건: %s" % String(incident.get("message", "낯선 구역을 지나며 페이스가 흔들렸다."))
+	_hazard_message_seconds = DISTRICT_TRAVEL_INCIDENT_MESSAGE_DURATION
+	_hazard_cooldown_seconds = maxf(_hazard_cooldown_seconds, float(incident.get("cooldown_seconds", 3.0)))
+	_trigger_hazard_feedback(incident)
 
 
 func _district_label_for(district_id: String, fallback_label: String = "") -> String:

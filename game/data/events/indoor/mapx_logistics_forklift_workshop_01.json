@@ -1,0 +1,227 @@
+{
+  "id": "mapx_logistics_forklift_workshop_01",
+  "name": "지게차 정비고",
+  "summary": "물류 벨트 안쪽 지게차 정비고다. 배터리와 공구가 남아 있지만, 시간을 들이면 짐을 더 잘 끌고 갈 임시 운반 보조 장치를 만들 수 있다.",
+  "illustration_asset": "indoor/indoor_story_forklift_workshop_carry_choice.png",
+  "entry_zone_id": "forklift_bay",
+  "zones": [
+    {
+      "id": "forklift_bay",
+      "floor_id": "floor_1",
+      "label": "지게차 베이",
+      "summary": "죽은 지게차와 팔레트가 얼어붙은 정비고 한가운데 멈춰 있다. 바퀴와 끈, 얇은 플라스틱 판이 눈에 들어온다.",
+      "connected_zone_ids": ["tool_locker", "battery_corner"],
+      "event_ids": ["choose_forklift_workshop_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 35,
+      "revisit_cost": 10
+    },
+    {
+      "id": "tool_locker",
+      "floor_id": "floor_1",
+      "label": "공구 사물함",
+      "summary": "잠기지 않은 사물함 안에 장갑, 테이프, 클램프가 굴러다닌다.",
+      "connected_zone_ids": ["forklift_bay"],
+      "event_ids": ["search_forklift_tool_locker_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "battery_corner",
+      "floor_id": "floor_1",
+      "label": "배터리 모서리",
+      "summary": "무거운 지게차 배터리팩과 점프 케이블이 벽에 기대어 있다. 쓸 수는 있지만 다루기 버겁다.",
+      "connected_zone_ids": ["forklift_bay", "loading_door"],
+      "event_ids": ["search_forklift_battery_corner_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "loading_door",
+      "floor_id": "floor_1",
+      "label": "상차문",
+      "summary": "상차문 밖으로 눈 덮인 물류 야드와 낮은 경사로가 보인다. 끌고 갈 짐이 있다면 이 길이 중요하다.",
+      "connected_zone_ids": ["battery_corner"],
+      "event_ids": ["inspect_forklift_loading_door_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [
+    {
+      "id": "forklift_yard_ramp_note",
+      "text": "정비고 뒤쪽 낮은 경사로는 빙판이 덜하다. 임시 운반 보조 장치를 만들었다면 무거운 물자를 끌고 나가기 좋다.",
+      "visible": false
+    }
+  ],
+  "events": [
+    {
+      "id": "choose_forklift_workshop_event",
+      "zone_id": "forklift_bay",
+      "type": "search",
+      "hint_text": "공구와 배터리를 빠르게 챙길 수도 있고, 시간을 써서 짐을 끄는 보조 장치를 만들 수도 있다.",
+      "options": [
+        {
+          "id": "build_cargo_drag_sled",
+          "label": "타프와 끈으로 팔레트 바닥을 감아 임시 끌개를 만든다",
+          "requirements": {
+            "required_item_ids": ["tarp_sheet", "rope_bundle"],
+            "forbidden_flag_ids": ["forklift_workshop_choice_done"]
+          },
+          "blocked_feedback": "팔레트 바닥을 끌개로 만들려면 마찰을 줄일 타프와 묶을 끈이 필요하다.",
+          "costs": { "minutes": 50, "noise": 2 },
+          "outcomes": {
+            "set_flags": ["forklift_workshop_choice_done"],
+            "reveal_clue_ids": ["forklift_yard_ramp_note"],
+            "discover_loot": [
+              { "id": "storage_bundle", "bulk": 1 }
+            ],
+            "pressure": {
+              "id": "forklift_cargo_sled_build",
+              "message": "팔레트 바닥이 완벽한 썰매는 아니었다. 그래도 박스 하나를 더 들고 나갈 방법이 생겼다.",
+              "fatigue_gain": 1.0,
+              "noise": 2,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_forklift_workshop_carry_choice.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_forklift_workshop_carry_choice.png",
+              "title": "짐을 옮기는 방법",
+              "text": "많은 물건을 찾는 것보다 어려운 일은, 그 물건을 실제로 들고 나가는 일이었다. 정비고의 팔레트와 끈이 그 문제를 조금 바꿨다.",
+              "button": "임시 끌개를 묶는다"
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "strip_forklift_battery_tools",
+          "label": "지게차 배터리와 공구만 빠르게 떼어낸다",
+          "requirements": {
+            "required_item_ids": ["work_gloves"],
+            "forbidden_flag_ids": ["forklift_workshop_choice_done"]
+          },
+          "blocked_feedback": "얼어붙은 배터리 단자를 다루려면 작업 장갑이 필요하다.",
+          "costs": { "minutes": 30, "noise": 3 },
+          "outcomes": {
+            "set_flags": ["forklift_workshop_choice_done"],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "jumper_cable", "weight": 3 },
+                { "id": "evd_dead_power_bank", "weight": 2 },
+                { "id": "hose_clamp", "weight": 2 },
+                { "id": "duct_tape", "weight": 1 }
+              ]
+            },
+            "pressure": {
+              "id": "forklift_battery_strip",
+              "message": "배터리 단자가 떨어지며 둔탁한 소리가 났다. 쓸 만한 전기 부품은 얻었지만 정비고의 고요는 깨졌다.",
+              "fatigue_gain": 0.75,
+              "noise": 3,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_noisy_scavenge_failure.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_noisy_scavenge_failure.png",
+              "title": "정비고에 울린 금속음",
+              "text": "배터리와 케이블은 쓸 만했다. 문제는 그걸 떼어내는 소리가 빈 물류 야드 안에서 너무 선명했다는 점이다.",
+              "button": "공구를 숨긴다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_forklift_tool_locker_event",
+      "zone_id": "tool_locker",
+      "type": "search",
+      "hint_text": "공구 사물함에는 수리와 조합에 바로 쓸 수 있는 물건이 있다.",
+      "options": [
+        {
+          "id": "collect_forklift_tool_locker",
+          "label": "장갑과 고정 부품을 챙긴다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "work_gloves", "weight": 2 },
+                { "id": "hose_clamp", "weight": 2 },
+                { "id": "duct_tape", "weight": 2 },
+                { "id": "zip_ties", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_forklift_battery_corner_event",
+      "zone_id": "battery_corner",
+      "type": "search",
+      "hint_text": "배터리 모서리에는 전기 부품과 케이블이 남아 있다.",
+      "options": [
+        {
+          "id": "collect_forklift_battery_parts",
+          "label": "배터리 주변의 케이블과 단자를 챙긴다",
+          "requirements": {},
+          "costs": { "minutes": 30, "noise": 1 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "jumper_cable", "weight": 2 },
+                { "id": "charging_cable", "weight": 2 },
+                { "id": "electrical_tape", "weight": 2 },
+                { "id": "evd_taped_battery_pack", "weight": 1 }
+              ]
+            },
+            "pressure": {
+              "id": "forklift_battery_corner_echo",
+              "message": "케이블이 바닥을 스치며 낮은 소리를 냈다. 물류 야드는 소리가 이상하게 멀리 간다.",
+              "noise": 1,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "inspect_forklift_loading_door_event",
+      "zone_id": "loading_door",
+      "type": "search",
+      "hint_text": "상차문 밖 경사로를 확인하면 무거운 짐을 끌고 나갈 길을 판단할 수 있다.",
+      "options": [
+        {
+          "id": "mark_forklift_yard_ramp",
+          "label": "상차문 밖 낮은 경사로와 빙판을 확인한다",
+          "requirements": { "forbidden_flag_ids": ["forklift_yard_ramp_marked"] },
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["forklift_yard_ramp_marked"],
+            "reveal_clue_ids": ["forklift_yard_ramp_note"],
+            "pressure": {
+              "id": "forklift_loading_door_cold",
+              "message": "상차문을 열자 눈발이 정비고 바닥을 쓸었다. 대신 끌고 나갈 수 있는 완만한 경사로가 보였다.",
+              "exposure_loss": 0.75,
+              "fatigue_gain": 0.25,
+              "noise": 0,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

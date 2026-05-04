@@ -1,0 +1,224 @@
+{
+  "id": "mapx_highway_rest_stop_vending_01",
+  "name": "고속도로 휴게소",
+  "summary": "눈보라가 자동문 사이로 밀려드는 휴게소 매장이다. 자판기와 간식 진열대가 남아 있지만, 조용히 열지 빠르게 깨뜨릴지 선택해야 한다.",
+  "illustration_asset": "indoor/indoor_story_rest_stop_vending_choice.png",
+  "entry_zone_id": "vending_corner",
+  "zones": [
+    {
+      "id": "vending_corner",
+      "floor_id": "floor_1",
+      "label": "자판기 코너",
+      "summary": "서리 낀 자판기 안쪽에 음료와 작은 간식이 보인다. 서비스 패널은 얼어붙어 있다.",
+      "connected_zone_ids": ["snack_shelves", "service_hall"],
+      "event_ids": ["open_vending_corner_event"],
+      "map_position": [0, 1],
+      "first_visit_cost": 30,
+      "revisit_cost": 10
+    },
+    {
+      "id": "snack_shelves",
+      "floor_id": "floor_1",
+      "label": "간식 진열대",
+      "summary": "진열대는 많이 비었지만, 깊은 칸과 바닥 틈에는 아직 작은 식량이 남아 있다.",
+      "connected_zone_ids": ["vending_corner"],
+      "event_ids": ["search_snack_shelves_event"],
+      "map_position": [1, 0],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    },
+    {
+      "id": "service_hall",
+      "floor_id": "floor_1",
+      "label": "후문 복도",
+      "summary": "직원용 후문 복도에는 청소 도구와 빈 비닐봉투가 남아 있다.",
+      "connected_zone_ids": ["vending_corner", "road_window"],
+      "event_ids": ["search_service_hall_event"],
+      "map_position": [1, 1],
+      "first_visit_cost": 25,
+      "revisit_cost": 10
+    },
+    {
+      "id": "road_window",
+      "floor_id": "floor_1",
+      "label": "국도 전망창",
+      "summary": "큰 창 너머로 차단된 국도와 눈보라가 보인다. 다음 이동의 노출 정도를 짐작할 수 있다.",
+      "connected_zone_ids": ["service_hall"],
+      "event_ids": ["read_road_window_event"],
+      "map_position": [2, 1],
+      "first_visit_cost": 20,
+      "revisit_cost": 10
+    }
+  ],
+  "clues": [
+    {
+      "id": "rest_stop_road_exposure_note",
+      "text": "휴게소 창밖으로 보이는 국도는 탁 트여 있다. 눈보라가 약해질 때까지 실내 우회로를 찾는 편이 안전해 보인다.",
+      "visible": false
+    }
+  ],
+  "events": [
+    {
+      "id": "open_vending_corner_event",
+      "zone_id": "vending_corner",
+      "type": "search",
+      "hint_text": "자판기를 조용히 열면 시간이 걸리고, 유리를 깨면 빠르지만 소리가 크다.",
+      "options": [
+        {
+          "id": "open_vending_service_panel",
+          "label": "철사 고리로 서비스 패널을 조용히 연다",
+          "requirements": {
+            "required_item_ids": ["wire_hooks"],
+            "forbidden_flag_ids": ["rest_stop_vending_opened"]
+          },
+          "blocked_feedback": "얼어붙은 서비스 패널 틈을 잡아당길 철사 고리가 필요하다.",
+          "costs": { "minutes": 45, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["rest_stop_vending_opened"],
+            "loot_table": {
+              "rolls": 4,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "canned_coffee", "weight": 3 },
+                { "id": "bottled_water", "weight": 3 },
+                { "id": "energy_bar", "weight": 3 },
+                { "id": "crackers", "weight": 2 },
+                { "id": "plastic_bag", "weight": 1 }
+              ]
+            },
+            "pressure": {
+              "id": "rest_stop_panel_patience",
+              "message": "얼어붙은 패널이 천천히 벌어졌다. 시간은 걸렸지만 휴게소 안은 조용했다.",
+              "exposure_loss": 0.5,
+              "fatigue_gain": 0.75,
+              "noise": 0,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_rest_stop_vending_panel_success.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_rest_stop_vending_panel_success.png",
+              "title": "깨뜨리지 않은 유리",
+              "text": "유리를 깨면 빨랐을 것이다. 하지만 조용히 열린 작은 패널은 음료 몇 개보다 중요한 사실을 남겼다. 아직은 소리를 아낄 수 있다.",
+              "button": "조용히 챙긴다"
+            },
+            "consume_on_use": true
+          }
+        },
+        {
+          "id": "smash_vending_glass",
+          "label": "자판기 유리를 깨고 빠르게 꺼낸다",
+          "requirements": { "forbidden_flag_ids": ["rest_stop_vending_opened"] },
+          "costs": { "minutes": 15, "noise": 4 },
+          "outcomes": {
+            "set_flags": ["rest_stop_vending_opened"],
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "canned_coffee", "weight": 3 },
+                { "id": "bottled_water", "weight": 2 },
+                { "id": "energy_bar", "weight": 2 }
+              ]
+            },
+            "pressure": {
+              "id": "rest_stop_glass_crash",
+              "message": "자판기 유리가 깨지며 휴게소 안쪽에 날카로운 소리가 퍼졌다.",
+              "fatigue_gain": 0.5,
+              "noise": 4,
+              "repeatable": false
+            },
+            "result_illustration_asset": "indoor/indoor_story_rest_stop_vending_glass_failure.png",
+            "story_cutscene": {
+              "asset": "indoor/indoor_story_rest_stop_vending_glass_failure.png",
+              "title": "빠른 대신 시끄러운 선택",
+              "text": "간식 몇 개는 손에 들어왔다. 하지만 깨진 유리와 굴러가는 캔 소리는 휴게소 안의 고요를 완전히 망가뜨렸다.",
+              "button": "소리를 삼킨다"
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_snack_shelves_event",
+      "zone_id": "snack_shelves",
+      "type": "search",
+      "hint_text": "진열대 안쪽에는 가벼운 간식이 조금 남아 있다.",
+      "options": [
+        {
+          "id": "search_deep_shelves",
+          "label": "진열대 깊은 칸과 바닥 틈을 확인한다",
+          "requirements": {},
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "energy_bar", "weight": 3 },
+                { "id": "crackers", "weight": 3 },
+                { "id": "butter_cookie_box", "weight": 1 },
+                { "id": "canned_coffee", "weight": 1 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "search_service_hall_event",
+      "zone_id": "service_hall",
+      "type": "search",
+      "hint_text": "후문 복도는 춥지만 이동과 포장에 쓸 소모품이 있다.",
+      "options": [
+        {
+          "id": "collect_service_hall_supplies",
+          "label": "후문 복도의 소모품을 챙긴다",
+          "requirements": {},
+          "costs": { "minutes": 25, "noise": 0 },
+          "outcomes": {
+            "loot_table": {
+              "rolls": 3,
+              "allow_duplicates": false,
+              "entries": [
+                { "id": "plastic_bag", "weight": 3 },
+                { "id": "trash_bag_roll", "weight": 2 },
+                { "id": "evd_hand_wipes_pack", "weight": 2 },
+                { "id": "paper_bag", "weight": 2 }
+              ]
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "read_road_window_event",
+      "zone_id": "road_window",
+      "type": "search",
+      "hint_text": "창밖을 오래 보면 다음 이동의 위험을 읽을 수 있지만 몸이 식는다.",
+      "options": [
+        {
+          "id": "watch_road_whiteout",
+          "label": "창밖 눈보라와 차단선을 살펴본다",
+          "requirements": { "forbidden_flag_ids": ["rest_stop_road_read"] },
+          "costs": { "minutes": 20, "noise": 0 },
+          "outcomes": {
+            "set_flags": ["rest_stop_road_read"],
+            "reveal_clue_ids": ["rest_stop_road_exposure_note"],
+            "pressure": {
+              "id": "rest_stop_window_cold",
+              "message": "창가에 오래 서 있자 발끝이 차갑게 굳었다. 그래도 큰길의 위험은 분명히 보였다.",
+              "exposure_loss": 1.0,
+              "fatigue_gain": 0.25,
+              "noise": 0,
+              "repeatable": false
+            },
+            "consume_on_use": true
+          }
+        }
+      ]
+    }
+  ]
+}

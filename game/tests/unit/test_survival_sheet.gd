@@ -58,7 +58,7 @@ func _run_test() -> void:
 	if not assert_true(run_state != null, "RunState should build for SurvivalSheet tests."):
 		return
 
-	for item_id in ["newspaper", "cooking_oil", "lighter", "steel_food_can", "bottled_water", "improvised_heat_note_01"]:
+	for item_id in ["newspaper", "cooking_oil", "lighter", "steel_food_can", "bottled_water", "improvised_heat_note_01", "running_shoes"]:
 		assert_true(run_state.inventory.add_item(content_library.get_item(item_id)), "Starter item '%s' should be added." % item_id)
 
 	var survival_sheet = survival_sheet_scene.instantiate()
@@ -95,24 +95,67 @@ func _run_test() -> void:
 	var sheet_title := _find(survival_sheet, "Sheet/VBox/Header/TitleRow/TitleLabel") as Label
 	var sheet_status := _find(survival_sheet, "Sheet/VBox/Header/StatusLabel") as Label
 	var browse_hint_label := _find(survival_sheet, "Sheet/VBox/InventoryPane/BrowseHintLabel") as Label
-	var equipment_rows := _find(survival_sheet, "Sheet/VBox/InventoryPane/EquipmentRows") as GridContainer
+	var inventory_filter_frame := _find(survival_sheet, "Sheet/VBox/InventoryPane/InventoryFilterFrame") as PanelContainer
+	var wearable_filter_button := _find(survival_sheet, "Sheet/VBox/InventoryPane/InventoryFilterFrame/Padding/InventoryFilterRow/WearableFilterButton") as Button
+	var loadout_tab_button := _find(survival_sheet, "Sheet/VBox/Tabs/LoadoutTabButton") as Button
+	var loadout_pane := _find(survival_sheet, "Sheet/VBox/LoadoutPane") as Control
+	var loadout_hint_label := _find(survival_sheet, "Sheet/VBox/LoadoutPane/LoadoutHintLabel") as Label
+	var loadout_frame := _find(survival_sheet, "Sheet/VBox/LoadoutPane/LoadoutFrame") as PanelContainer
+	var equipment_rows := _find(survival_sheet, "Sheet/VBox/LoadoutPane/LoadoutFrame/LoadoutScroll/LoadoutContent/EquipmentRows") as GridContainer
+	var loadout_candidate_rows := _find(survival_sheet, "Sheet/VBox/LoadoutPane/LoadoutFrame/LoadoutScroll/LoadoutContent/LoadoutCandidateRows") as VBoxContainer
 	var inventory_items := _find(survival_sheet, "Sheet/VBox/InventoryPane/InventoryScroll/InventoryContent/InventoryItems") as VBoxContainer
 	if not assert_true(sheet_title != null and sheet_status != null, "SurvivalSheet should expose title and status labels."):
 		return
 	if not assert_true(browse_hint_label != null and inventory_items != null, "SurvivalSheet should expose the browse hint and item list."):
 		return
-	if not assert_true(equipment_rows != null, "SurvivalSheet should expose a grid-based equipment strip."):
+	if not assert_true(loadout_tab_button != null and loadout_pane != null and loadout_hint_label != null and loadout_frame != null, "SurvivalSheet should expose a dedicated loadout tab and pane."):
+		return
+	if not assert_true(inventory_filter_frame != null and wearable_filter_button != null, "SurvivalSheet should expose compact bag filters above the item list."):
+		return
+	if not assert_true(equipment_rows != null, "SurvivalSheet should expose a grid-based equipment layout inside the loadout tab."):
+		return
+	if not assert_true(loadout_candidate_rows != null, "SurvivalSheet should expose loadout candidate rows under the equipment cards."):
 		return
 	assert_eq(sheet_title.get_theme_font_size("font_size"), 19, "Bag title should use the larger readability-focused heading size.")
 	assert_eq(sheet_status.get_theme_font_size("font_size"), 15, "Bag status should use the larger secondary compact font size.")
-	assert_true(browse_hint_label.text.find("먹고 마실 것") != -1, "Bag browse hint should teach the survival-intent grouping.")
-	assert_eq(equipment_rows.columns, 4, "Equipment strip should use a four-column mobile grid instead of one cramped horizontal row.")
-	assert_true(equipment_rows.get_child_count() >= 13, "Equipment strip should show the full loadout slot set, including hand-carry.")
+	assert_true(browse_hint_label.text.find("장착 탭") != -1, "Bag browse hint should keep equipment management out of the item-reading surface.")
+	assert_true(not loadout_pane.visible, "Opening the bag should keep the loadout pane hidden so item rows get the screen height.")
+	var filter_style := inventory_filter_frame.get_theme_stylebox("panel") as StyleBoxTexture
+	if not assert_true(filter_style != null and filter_style.texture != null, "Inventory filters should use a generated texture-backed control rail."):
+		return
+	assert_eq(filter_style.texture.get_width(), 604, "Generated filter rail should match the compact sheet width.")
+	assert_eq(filter_style.texture.get_height(), 54, "Generated filter rail should stay compact enough to preserve list height.")
+	assert_eq(survival_sheet.get_inventory_filter_id(), "all", "Bag filters should default to all items.")
 	assert_true(_has_label_text(inventory_items, "먹고 마실 것"), "Bag list should group food and drink by survival intent.")
 	assert_true(_has_label_text(inventory_items, "불과 도구"), "Bag list should group tools by survival intent.")
 	assert_true(_has_label_text(inventory_items, "읽을 것"), "Bag list should group readable knowledge separately.")
+	survival_sheet.set_inventory_filter_id("wearable")
+	await process_frame
+	assert_eq(survival_sheet.get_inventory_filter_id(), "wearable", "Selecting the equipment filter should persist the active bag filter.")
+	assert_true(wearable_filter_button.button_pressed, "Wearable filter button should visually stay pressed while active.")
+	assert_true(_has_label_text(inventory_items, "입고 버틸 것"), "Equipment filter should reduce the bag list to wearable items.")
+	survival_sheet.set_inventory_filter_id("not_a_filter")
+	await process_frame
+	assert_eq(survival_sheet.get_inventory_filter_id(), "all", "Unknown filters should fall back to all items.")
 	var browse_inset_height := detail_inset.custom_minimum_size.y
 	assert_true(not detail_sheet.visible, "Opening the bag should start in list-first browse mode with no detail sheet expanded.")
+
+	survival_sheet.open_loadout()
+	await process_frame
+	assert_eq(survival_sheet.get_active_tab_id(), "loadout", "The loadout tab should be separated from the item browsing tab.")
+	assert_true(loadout_pane.visible, "Opening the loadout tab should show the equipment management surface.")
+	assert_true(not inventory_scroll.is_visible_in_tree(), "Opening the loadout tab should hide the inventory list instead of stacking equipment above it.")
+	var loadout_style := loadout_frame.get_theme_stylebox("panel") as StyleBoxTexture
+	if not assert_true(loadout_style != null and loadout_style.texture != null, "Loadout pane should use a generated texture-backed equipment panel."):
+		return
+	assert_eq(loadout_style.texture.get_width(), 604, "Generated loadout panel should match the compact sheet width.")
+	assert_eq(loadout_style.texture.get_height(), 332, "Generated loadout panel should match the dedicated loadout art height.")
+	assert_eq(equipment_rows.columns, 2, "Loadout management should use roomier two-column equipment cards inside its own tab.")
+	assert_true(equipment_rows.get_child_count() >= 13, "Loadout tab should show the full slot set, including hand-carry.")
+	assert_true(loadout_hint_label.text.find("장착") != -1, "Loadout hint should explain that equipment is managed separately from item browsing.")
+	var running_shoes_candidate := _find_row_by_item_id(loadout_candidate_rows, "running_shoes")
+	assert_true(running_shoes_candidate != null, "Loadout tab should list equippable inventory items as direct equipment candidates.")
+	assert_true(_has_button_text(running_shoes_candidate, "장착"), "Loadout candidates should expose a direct equip action.")
 
 	survival_sheet.set_inventory_payload({
 		"title": "가방",
@@ -131,7 +174,10 @@ func _run_test() -> void:
 		"feedback_message": "",
 	})
 	await process_frame
-	assert_true(_has_button_text(equipment_rows, "해제"), "Equipped chips should expose an immediate unequip button.")
+	assert_true(_has_button_text(equipment_rows, "해제"), "Equipped loadout cards should expose an immediate unequip button.")
+
+	survival_sheet.open_inventory()
+	await process_frame
 
 	survival_sheet.select_inventory_item("newspaper")
 	assert_true(detail_sheet.visible, "Selecting an item should open the bottom detail sheet.")
@@ -179,8 +225,9 @@ func _run_test() -> void:
 	assert_true(first_row_button.mouse_force_pass_scroll_events, "Inventory rows should pass wheel scroll events through to the list scroll container.")
 	var primary_actions := _find(survival_sheet, "ItemDetailSheet/VBox/DetailActions/PrimaryActions") as VBoxContainer
 	var secondary_actions := _find(survival_sheet, "ItemDetailSheet/VBox/DetailActions/SecondaryActions") as VBoxContainer
-	assert_true(_button_texts(primary_actions).has("버린다"), "Normal inventory detail should still prioritize inventory actions.")
+	assert_true(not _button_texts(primary_actions).has("버린다"), "Destructive drop should not sit beside use/equip/read as a primary action.")
 	assert_true(_button_texts(secondary_actions).has("조합 시작"), "Crafting should begin from a secondary action inside the detail sheet.")
+	assert_true(_button_texts(secondary_actions).has("버린다"), "Destructive drop should move to the secondary action zone to reduce accidental taps.")
 
 	survival_sheet.begin_craft_mode("newspaper")
 	await process_frame

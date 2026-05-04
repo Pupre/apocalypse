@@ -8,53 +8,43 @@
   "layout_id": "underpass_detour",
   "roads": [
     {
-      "id": "bus_loop_top",
-      "texture_id": "road_plain",
-      "rect": {
-        "x": 155,
-        "y": 170,
-        "width": 650,
-        "height": 135
-      }
-    },
-    {
-      "id": "bus_loop_bottom",
-      "texture_id": "road_plain",
-      "rect": {
-        "x": 155,
-        "y": 650,
-        "width": 650,
-        "height": 135
-      }
-    },
-    {
-      "id": "bus_loop_left",
-      "texture_id": "slush_road",
-      "rect": {
-        "x": 155,
-        "y": 170,
-        "width": 135,
-        "height": 615
-      }
-    },
-    {
-      "id": "bus_loop_right",
-      "texture_id": "slush_road",
-      "rect": {
-        "x": 670,
-        "y": 170,
-        "width": 135,
-        "height": 615
-      }
-    },
-    {
       "id": "underpass_cut",
       "texture_id": "alley_dark",
       "rect": {
-        "x": 390,
+        "x": 360,
         "y": 0,
-        "width": 175,
+        "width": 160,
         "height": 960
+      }
+    },
+    {
+      "id": "detour_lane_north",
+      "texture_id": "road_plain",
+      "rect": {
+        "x": 0,
+        "y": 190,
+        "width": 650,
+        "height": 130
+      }
+    },
+    {
+      "id": "detour_lane_south",
+      "texture_id": "road_plain",
+      "rect": {
+        "x": 280,
+        "y": 665,
+        "width": 680,
+        "height": 130
+      }
+    },
+    {
+      "id": "bus_turnout",
+      "texture_id": "slush_road",
+      "rect": {
+        "x": 600,
+        "y": 315,
+        "width": 210,
+        "height": 270
       }
     }
   ],
@@ -238,16 +228,16 @@
   ],
   "building_anchors": {
     "mapx_04_05_a_anchor": {
-      "x": 250,
-      "y": 245
+      "x": 210,
+      "y": 455
     },
     "mapx_04_05_b_anchor": {
-      "x": 725,
-      "y": 265
+      "x": 735,
+      "y": 720
     },
     "mapx_04_05_c_anchor": {
-      "x": 500,
-      "y": 710
+      "x": 610,
+      "y": 210
     }
   },
   "threat_spawns": [
@@ -266,7 +256,7 @@
   "landmarks": [
     {
       "id": "central_transfer_04_05",
-      "label": "막힌 환승 교차로",
+      "label": "멈춰 선 환승 교차로",
       "position": {
         "x": 480,
         "y": 470

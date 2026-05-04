@@ -238,16 +238,16 @@
   ],
   "building_anchors": {
     "mapx_03_06_a_anchor": {
-      "x": 720,
-      "y": 700
+      "x": 520,
+      "y": 675
     },
     "mapx_03_06_b_anchor": {
-      "x": 230,
-      "y": 690
+      "x": 235,
+      "y": 235
     },
     "mapx_03_06_c_anchor": {
-      "x": 500,
-      "y": 235
+      "x": 755,
+      "y": 435
     }
   },
   "threat_spawns": [
@@ -266,7 +266,7 @@
   "landmarks": [
     {
       "id": "central_transfer_03_06",
-      "label": "막힌 환승 교차로",
+      "label": "멈춰 선 환승 교차로",
       "position": {
         "x": 480,
         "y": 470

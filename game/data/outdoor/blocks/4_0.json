@@ -4,47 +4,47 @@
     "y": 0
   },
   "district_id": "north_market",
-  "district_label": "북쪽 상권",
+  "district_label": "북부 시장가",
   "layout_id": "market_plaza",
   "roads": [
     {
-      "id": "market_main_street",
+      "id": "market_plaza_west",
+      "texture_id": "sidewalk_snow",
+      "rect": {
+        "x": 345,
+        "y": 195,
+        "width": 360,
+        "height": 285
+      }
+    },
+    {
+      "id": "market_plaza_south",
+      "texture_id": "road_plain",
+      "rect": {
+        "x": 0,
+        "y": 650,
+        "width": 960,
+        "height": 150
+      }
+    },
+    {
+      "id": "market_shopfront_lane",
       "texture_id": "road_lane_h",
       "rect": {
         "x": 0,
         "y": 285,
         "width": 960,
-        "height": 165
+        "height": 130
       }
     },
     {
-      "id": "market_back_alley",
+      "id": "arcade_service_cut",
       "texture_id": "alley_dark",
       "rect": {
-        "x": 120,
-        "y": 0,
-        "width": 105,
-        "height": 960
-      }
-    },
-    {
-      "id": "arcade_walk",
-      "texture_id": "sidewalk_snow",
-      "rect": {
-        "x": 0,
-        "y": 170,
-        "width": 960,
-        "height": 78
-      }
-    },
-    {
-      "id": "delivery_cut",
-      "texture_id": "road_plain",
-      "rect": {
-        "x": 620,
-        "y": 455,
-        "width": 150,
-        "height": 360
+        "x": 105,
+        "y": 420,
+        "width": 120,
+        "height": 390
       }
     }
   ],
@@ -227,7 +227,7 @@
   "landmarks": [
     {
       "id": "north_market_04_00",
-      "label": "눈 덮인 상가 거리",
+      "label": "얼어붙은 시장 아케이드",
       "position": {
         "x": 480,
         "y": 470

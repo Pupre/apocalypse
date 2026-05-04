@@ -3,86 +3,86 @@
     "x": 11,
     "y": 10
   },
-  "district_id": "south_industrial",
-  "district_label": "남동쪽 창고/정비 지대",
-  "layout_id": "fuel_service_lot",
+  "district_id": "power_plant",
+  "district_label": "동남 발전소 지대",
+  "layout_id": "cooling_yard",
   "roads": [
     {
-      "id": "loading_yard",
+      "id": "cooling_yard",
       "texture_id": "road_plain",
       "rect": {
-        "x": 145,
-        "y": 175,
-        "width": 650,
-        "height": 475
+        "x": 210,
+        "y": 180,
+        "width": 540,
+        "height": 430
       }
     },
     {
-      "id": "warehouse_spur",
+      "id": "pipe_service_road",
+      "texture_id": "road_cracked",
+      "rect": {
+        "x": 660,
+        "y": 0,
+        "width": 150,
+        "height": 960
+      }
+    },
+    {
+      "id": "ash_service_lane",
       "texture_id": "slush_road",
       "rect": {
         "x": 0,
-        "y": 660,
+        "y": 705,
         "width": 960,
-        "height": 150
+        "height": 135
       }
     },
     {
-      "id": "service_lane",
-      "texture_id": "alley_dark",
+      "id": "control_walk",
+      "texture_id": "sidewalk_snow",
       "rect": {
-        "x": 70,
-        "y": 75,
-        "width": 130,
-        "height": 765
-      }
-    },
-    {
-      "id": "fuel_apron",
-      "texture_id": "road_cracked",
-      "rect": {
-        "x": 615,
-        "y": 55,
-        "width": 235,
-        "height": 170
+        "x": 255,
+        "y": 620,
+        "width": 320,
+        "height": 85
       }
     }
   ],
   "snow_fields": [
     {
-      "id": "open_yard_snow",
+      "id": "ash_yard_snow",
       "rect": {
-        "x": 190,
+        "x": 170,
         "y": 210,
         "width": 560,
-        "height": 350
+        "height": 330
       }
     },
     {
-      "id": "dock_drift",
+      "id": "pipe_shadow_snow",
       "rect": {
-        "x": 735,
-        "y": 590,
-        "width": 180,
-        "height": 160
+        "x": 650,
+        "y": 70,
+        "width": 230,
+        "height": 145
       }
     },
     {
-      "id": "fence_snow",
+      "id": "transformer_drift",
       "rect": {
-        "x": 35,
-        "y": 760,
-        "width": 450,
+        "x": 60,
+        "y": 710,
+        "width": 430,
         "height": 125
       }
     },
     {
-      "id": "fuel_curb_snow",
+      "id": "control_curb_snow",
       "rect": {
-        "x": 610,
-        "y": 35,
-        "width": 260,
-        "height": 90
+        "x": 560,
+        "y": 620,
+        "width": 250,
+        "height": 105
       }
     }
   ],
@@ -91,10 +91,10 @@
       "id": "intersection_black_ice",
       "kind": "black_ice",
       "rect": {
-        "x": 308,
-        "y": 520,
-        "width": 190,
-        "height": 140
+        "x": 513,
+        "y": 495,
+        "width": 225,
+        "height": 145
       },
       "message": "교차로 그늘에 숨어 있던 빙판이 발을 미끄러뜨렸다.",
       "exposure_loss": 1.5,
@@ -105,10 +105,10 @@
       "id": "building_wind_gap",
       "kind": "wind_gap",
       "rect": {
-        "x": 695,
-        "y": 163,
-        "width": 160,
-        "height": 260
+        "x": 640,
+        "y": 148,
+        "width": 205,
+        "height": 300
       },
       "message": "건물 사이로 눌린 바람이 체온을 빠르게 빼앗았다.",
       "exposure_loss": 2.6,
@@ -119,10 +119,10 @@
       "id": "packed_snow_drift",
       "kind": "snow_drift",
       "rect": {
-        "x": 160,
-        "y": 690,
-        "width": 300,
-        "height": 135
+        "x": 165,
+        "y": 650,
+        "width": 330,
+        "height": 150
       },
       "message": "허벅지까지 쌓인 눈을 헤치느라 숨이 거칠어졌다.",
       "exposure_loss": 1.1,
@@ -133,10 +133,10 @@
       "id": "open_lot_whiteout",
       "kind": "whiteout",
       "rect": {
-        "x": 510,
-        "y": 173,
-        "width": 310,
-        "height": 250
+        "x": 525,
+        "y": 148,
+        "width": 320,
+        "height": 290
       },
       "message": "눈발이 시야를 지워 길과 출입구가 잠깐 구분되지 않았다.",
       "exposure_loss": 2.0,
@@ -149,91 +149,87 @@
       "kind": "fuel",
       "asset_id": "barrel_empty",
       "rect": {
-        "x": 245,
-        "y": 227,
+        "x": 180,
+        "y": 207,
         "width": 54,
         "height": 70
+      }
+    },
+    {
+      "kind": "utility",
+      "asset_id": "utility_box",
+      "rect": {
+        "x": 389,
+        "y": 144,
+        "width": 80,
+        "height": 72
+      }
+    },
+    {
+      "kind": "barrier",
+      "asset_id": "sandbags",
+      "rect": {
+        "x": 726,
+        "y": 203,
+        "width": 116,
+        "height": 50
+      }
+    },
+    {
+      "kind": "light",
+      "asset_id": "street_lamp",
+      "rect": {
+        "x": 250,
+        "y": 580,
+        "width": 42,
+        "height": 82
       }
     },
     {
       "kind": "crate",
       "asset_id": "crate_stack",
       "rect": {
-        "x": 709,
-        "y": 239,
+        "x": 564,
+        "y": 612,
         "width": 96,
         "height": 82
-      }
-    },
-    {
-      "kind": "rubble",
-      "asset_id": "dumpster_snow",
-      "rect": {
-        "x": 261,
-        "y": 618,
-        "width": 124,
-        "height": 82
-      }
-    },
-    {
-      "kind": "barrier",
-      "asset_id": "barricade_wood",
-      "rect": {
-        "x": 705,
-        "y": 615,
-        "width": 112,
-        "height": 50
-      }
-    },
-    {
-      "kind": "vehicle",
-      "asset_id": "frozen_car",
-      "rect": {
-        "x": 104,
-        "y": 712,
-        "width": 64,
-        "height": 60
       }
     },
     {
       "kind": "fuel",
       "asset_id": "barrel_empty",
       "rect": {
-        "x": 813,
-        "y": 131,
+        "x": 778,
+        "y": 531,
         "width": 54,
         "height": 70
       }
     },
     {
-      "kind": "crate",
-      "asset_id": "crate_stack",
+      "kind": "utility",
+      "asset_id": "utility_box",
       "rect": {
-        "x": 535,
-        "y": 693,
-        "width": 96,
-        "height": 82
+        "x": 145,
+        "y": 748,
+        "width": 80,
+        "height": 72
       }
     },
     {
-      "kind": "rubble",
-      "asset_id": "dumpster_snow",
+      "kind": "barrier",
+      "asset_id": "sandbags",
       "rect": {
-        "x": 434,
-        "y": 150,
-        "width": 124,
-        "height": 82
+        "x": 809,
+        "y": 720,
+        "width": 116,
+        "height": 50
       }
     }
   ],
   "building_anchors": {
     "mapx_11_10_a_anchor": {
-      "x": 245,
-      "y": 315
-    },
-    "mapx_11_10_b_anchor": {
-      "x": 720,
-      "y": 695
+      "x": 745,
+      "y": 380
     }
   },
   "threat_spawns": [
@@ -251,8 +247,8 @@
   ],
   "landmarks": [
     {
-      "id": "south_industrial_11_10",
-      "label": "멈춘 물류 차고",
+      "id": "power_plant_11_10",
+      "label": "열병합 발전소와 변전소",
       "position": {
         "x": 480,
         "y": 470
